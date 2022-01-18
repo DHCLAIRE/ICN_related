@@ -2,23 +2,30 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import visual, core, event
+from psychopy.hardware import keyboard
 import json
 
 # something that is missing
 '''
 key press: need to be set (we'll use 2 bottons in here')
 reaction time: need to be recorded
-exclude other key press: don't  let the mispress botton to influence the  ongoing experiment 
 '''
+
 
 if __name__ == "__main__":
     
+    
+    # testing stimuli (realwordLIST & pseudowordLIST)
+    realwordLIST = ["blue", "green", "yellow", "red", "orange"]
+    pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]    
+    resultKeyLIST = [] # what we want to collect
+    tmpLIST = []
     # Step_1: load in all the stimuli to start the LDT.py, and show the instructions
     
     win = visual.Window(size = [500, 500], units ="pix")
     instructions_0 = visual.TextStim(win = win, text = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n")  # 這裡中文字顯現的有點奇怪
     fixations = visual.TextStim(win = win, text = "+")
-    testing_stimuli = visual.TextStim(win = win, text = "word")
+    
     resultLIST = []  # for contain the response resultLIST
     
     # for showing the instructions, and instruct them to press key to continue
@@ -40,31 +47,68 @@ if __name__ == "__main__":
     instructions_3 = visual.TextStim(win = win, text = "當字詞出現時，請盡快且正確的進行按鍵反應。\n請按任意鍵繼續")  # 這裡中文字顯現的有點奇怪
     instructions_3.draw()
     win.flip()
-    event.waitKeys(keyList = ['z', '/'])
+    event.waitKeys()  #keyList = ['z', '/']
     
     # Step_2: show the cross in the central of the screen
     # for showing the fixation ["+"]
     fixations.draw()
     win.flip()
-    core.wait(3)
+    core.wait(2)
     
     # Step_3: filp to a blank screen
     win.flip()    
     
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms
-    testing_stimuli.draw()
-    win.flip()
-    event.waitKeys(keyList = ['space'])
-    
-    """
-    resultLIST = event.getKeys(keyList = None, modifiers = True, timeStamped = True)
-    
-    with open('/Users/neuroling/Documents/ICN_related-main/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
-        json.dump(resultLIST, jsonfile, ensure_ascii=False)
+    for i in realwordLIST:
+        testing_stimuli = visual.TextStim(win = win, text = i)
+        testing_stimuli.draw()
+        win.flip()
+        core.wait(2)
+        event.waitKeys(keyList = ['space'])
+        keys = event.getKeys()
+        tmpLIST.append(keys)
+    resultKeyLIST = tmpLIST
         
     
-    core.wait(3)
     """
+    kb = keyboard.Keyboard()
+
+    # during your trial
+    kb.clock.reset()  # when you want to start the timer from
+    keys = kb.getKeys(['z', 'right', 'quit'], waitRelease=True)
+    if 'quit' in keys:
+        core.quit()
+    for key in keys:
+        print(key.name, key.rt, key.duration)
+    """
+    #keys = event.getKeys(keyList = ['z', '/'], modifiers = False, timeStamped = False)
+    
+    #core.wait(3)
+    
+    
+    """
+    # the function for getting the keys
+    kb = keyboard.Keyboard()
+
+    # during your trial
+    kb.clock.reset()  # when you want to start the timer from
+    keys = kb.getKeys(['right', 'left', 'quit'], waitRelease=True)
+    if 'quit' in keys:
+    core.quit()
+    for key in keys:
+    print(key.name, key.rt, key.duration)
+    """
+    #event.waitKeys(keyList = ['space'])
+    
+    
+    #resultLIST = event.getKeys(keyList = [], modifiers = True, timeStamped = True)
+    
+    with open('/Users/neuroling/Documents/ICN_related-main/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+        json.dump(resultKeyLIST, jsonfile, ensure_ascii=False)
+        
+    
+    
+    
     # Step_5: remove the stimuli, and then show the blank screen for 1500ms (waiting for the participants to react)
     
     # Step_6: if the participanst react, then record the answer and the reaction time that were given by the participant, if not, then record a blank in the results 
@@ -98,13 +142,3 @@ if __name__ == "__main__":
     
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
