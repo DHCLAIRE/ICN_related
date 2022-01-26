@@ -58,6 +58,7 @@ if __name__ == "__main__":
     # Step_3: filp to a blank screen
     win.flip()    
     
+    """
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms
     for i in realwordLIST:
         testing_stimuli = visual.TextStim(win = win, text = i)
@@ -80,7 +81,7 @@ if __name__ == "__main__":
         core.quit()
     for key in keys:
         print(key.name, key.rt, key.duration)
-    """
+    #"""
     #keys = event.getKeys(keyList = ['z', '/'], modifiers = False, timeStamped = False)
     
     #core.wait(3)
