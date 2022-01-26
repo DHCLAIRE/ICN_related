@@ -103,7 +103,7 @@ if __name__ == "__main__":
     
     #resultLIST = event.getKeys(keyList = [], modifiers = True, timeStamped = True)
     
-    with open('/Users/neuroling/Documents/ICN_related-main/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+    with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
         json.dump(resultKeyLIST, jsonfile, ensure_ascii=False)
         
     
