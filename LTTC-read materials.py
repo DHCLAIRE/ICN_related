@@ -19,8 +19,11 @@ if __name__ == "__main__":
         
         # preprocess the raw texts
         for row in fileLIST:
-            tmpLIST = row.replace(',"', ', ""').split(', "') #.replace(', "', ',"').split(', "')  #LIST 整理未完成
-            
+            if ',"" ' in row:
+                tmpLIST = row.replace(',"" ', ', ""').split(',"') 
+            else:
+                tmpLIST = row.replace(',"', '///"').split('///')  #LIST 整理未完成
+                
             # delete the blank LIST
             lenNum = len(tmpLIST)
             if lenNum == 1:
@@ -28,5 +31,7 @@ if __name__ == "__main__":
             else:
                 tmpLIST_1.append(tmpLIST)
                 
-        pprint(tmpLIST_1)
-        pprint(len(tmpLIST_1))
+        #pprint(tmpLIST_1)
+        #print(len(tmpLIST_1))
+
+
