@@ -41,5 +41,9 @@ if __name__ == "__main__":
             tmpLIST_2.append(textLIST)
         pprint(tmpLIST_2)
         print(len(tmpLIST_2))
+        
+        
+        with open(data_path + 'LTTC-rawText_resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+            json.dump(tmpLIST_2, jsonfile, ensure_ascii=False)
 
         
