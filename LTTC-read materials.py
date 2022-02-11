@@ -17,44 +17,16 @@ if __name__ == "__main__":
         fileLIST = raw_file.read().split("\n")
         #print(fileLIST)
         
+        # preprocess the raw texts
         for row in fileLIST:
-            tmpLIST = row.replace(',"', ', ""').split(', "') #.replace(', "', ',"').split(', "')
-            #rowLIST = tmpLIST[1]
-            print(tmpLIST[0])
-            #print(tmpLIST[1])
-            #print(type(tmpLIST[1]))
-            #print(len(rowLIST))
-            #contentLIST = row.split(",")
-            #print(contentLIST)
+            tmpLIST = row.replace(',"', ', ""').split(', "') #.replace(', "', ',"').split(', "')  #LIST 整理未完成
             
-            #exclude the blank LIST and the first LIST
-
-        """
-        for item in rowLIST:
-            print(len(item))
-        """    
-        '''
-            for content in item:
-                contentLIST = content.split(",,")
-            print(contentLIST)
-            
-            
-            if len(item) == 1:
-                print(item)
-                #rowLIST.remove(item)
-                #rowLIST = y
-            else:
+            # delete the blank LIST
+            lenNum = len(tmpLIST)
+            if lenNum == 1:
                 pass
-        #pprint(rowLIST)
-        
-            for loop in range(len(rowLIST)):
-                if "," in item[0][0]:
-                    print(item)
-            
-                if c == ",":
-                    print(item)
-                else:
-                    pass
+            else:
+                tmpLIST_1.append(tmpLIST)
                 
-        #pprint(rowLIST)
-        '''
+        pprint(tmpLIST_1)
+        pprint(len(tmpLIST_1))
