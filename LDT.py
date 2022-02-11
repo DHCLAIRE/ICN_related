@@ -58,14 +58,14 @@ if __name__ == "__main__":
     # Step_3: filp to a blank screen
     win.flip()    
     
-    """
-    # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms
+    #"""
+    # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for i in realwordLIST:
         testing_stimuli = visual.TextStim(win = win, text = i)
         testing_stimuli.draw()
         win.flip()
-        core.wait(2)
-        event.waitKeys(keyList = ['space'])
+        #core.wait(2) #DON'T NEED THIS IN HERE! #the waiting time need to rethink about it, cause something is not right
+        event.waitKeys() #keyList = ['space'])
         keys = event.getKeys()
         tmpLIST.append(keys)
     resultKeyLIST = tmpLIST
