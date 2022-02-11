@@ -22,7 +22,7 @@ if __name__ == "__main__":
             if ',"" ' in row:
                 tmpLIST = row.replace(',"" ', ', ""').split(',"') 
             else:
-                tmpLIST = row.replace(',"', '///"').split('///')  #LIST 整理未完成
+                tmpLIST = row.replace(',"', '///"').split('///')  
                 
             # delete the blank LIST
             lenNum = len(tmpLIST)
@@ -33,5 +33,13 @@ if __name__ == "__main__":
                 
         #pprint(tmpLIST_1)
         #print(len(tmpLIST_1))
+        
+        
+        for n_row in tmpLIST_1:
+            textLIST = n_row[1].split(", , ,")
+            textLIST.pop(1)
+            tmpLIST_2.append(textLIST)
+        pprint(tmpLIST_2)
+        print(len(tmpLIST_2))
 
-
+        
