@@ -58,47 +58,27 @@ if __name__ == "__main__":
     # Step_3: filp to a blank screen
     win.flip()    
     
-    """
-    # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms
+    #"""
+    # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for i in realwordLIST:
         testing_stimuli = visual.TextStim(win = win, text = i)
         testing_stimuli.draw()
         win.flip()
-        core.wait(2)
-        event.waitKeys(keyList = ['space'])
-        keys = event.getKeys()
+        #core.wait(2) #DON'T NEED THIS IN HERE! #the waiting time need to rethink about it, cause something is not right
+        event.waitKeys(keyList = ["z", "slash"])
+        keys = event.getKeys(keyList = ["z", "slash"], modifiers = True, timeStamped = False) # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+        """
+        # 按鍵反應 + 按鍵時間（RT）+ (trigger_for 腦波) + 正確與否
+        # basic info = trails數（的第幾題）,trai_list(第幾次trial), sub_num, date, duration
+        # added these two
+        # clock.getTime()
+        # clock.reset()
+        """
+        
         tmpLIST.append(keys)
     resultKeyLIST = tmpLIST
-        
-    
-    """
-    kb = keyboard.Keyboard()
-
-    # during your trial
-    kb.clock.reset()  # when you want to start the timer from
-    keys = kb.getKeys(['z', 'right', 'quit'], waitRelease=True)
-    if 'quit' in keys:
-        core.quit()
-    for key in keys:
-        print(key.name, key.rt, key.duration)
-    #"""
     #keys = event.getKeys(keyList = ['z', '/'], modifiers = False, timeStamped = False)
     
-    #core.wait(3)
-    
-    
-    """
-    # the function for getting the keys
-    kb = keyboard.Keyboard()
-
-    # during your trial
-    kb.clock.reset()  # when you want to start the timer from
-    keys = kb.getKeys(['right', 'left', 'quit'], waitRelease=True)
-    if 'quit' in keys:
-    core.quit()
-    for key in keys:
-    print(key.name, key.rt, key.duration)
-    """
     #event.waitKeys(keyList = ['space'])
     
     
