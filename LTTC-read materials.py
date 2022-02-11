@@ -34,7 +34,20 @@ if __name__ == "__main__":
         #pprint(tmpLIST_1)
         #print(len(tmpLIST_1))
         
+        # excluding the unwanted info
+        # save all the texts into one list, but it is a whole text per unit
+        for n_row in tmpLIST_1:
+            textLIST = n_row[1].split(", , ,")
+            tmpLIST_2.extend([textLIST[0]])
+            
+        pprint(tmpLIST_2)
+        #pprint(len(tmpLIST_2))
         
+        # json file = LTTC-rawText_OneLIST.json
+            
+        """
+        # excluding the unwanted info
+        # save all the texts into a list of textLISTs
         for n_row in tmpLIST_1:
             textLIST = n_row[1].split(", , ,")
             textLIST.pop(1)
@@ -42,8 +55,9 @@ if __name__ == "__main__":
         pprint(tmpLIST_2)
         print(len(tmpLIST_2))
         
+        #json file = LTTC-rawText_resultLIST.json 
+        """
         
-        with open(data_path + 'LTTC-rawText_resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+        with open(data_path + 'LTTC-rawText_OneLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
             json.dump(tmpLIST_2, jsonfile, ensure_ascii=False)
-
-        
+            
