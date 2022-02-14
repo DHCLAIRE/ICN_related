@@ -65,18 +65,22 @@ if __name__ == "__main__":
         testing_stimuli.draw()
         win.flip()
         #core.wait(2) #DON'T NEED THIS IN HERE! #the waiting time need to rethink about it, cause something is not right
-        event.waitKeys(keyList = ["z", "slash"])
-        keys = event.getKeys(keyList = ["z", "slash"], modifiers = True, timeStamped = False) # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+        event.waitKeys(maxWait = 0.5, keyList = ["z", "slash"], modifiers = True, timeStamped=False, clearEvents=True)
+        keys = event.getKeys(keyList = ["z", "slash"], modifiers = True, timeStamped = True) # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+        
         """
         # 按鍵反應 + 按鍵時間（RT）+ (trigger_for 腦波) + 正確與否
         # basic info = trails數（的第幾題）,trai_list(第幾次trial), sub_num, date, duration
         # added these two
         # clock.getTime()
         # clock.reset()
-        """
         
-        tmpLIST.append(keys)
-    resultKeyLIST = tmpLIST
+        # probably need to use dataframe to save all the reaction 
+        """
+        #print(keys)
+        
+        resultKeyLIST.append(keys)
+    #resultKeyLIST = tmpLIST
     #keys = event.getKeys(keyList = ['z', '/'], modifiers = False, timeStamped = False)
     
     #event.waitKeys(keyList = ['space'])
@@ -84,7 +88,7 @@ if __name__ == "__main__":
     
     #resultLIST = event.getKeys(keyList = [], modifiers = True, timeStamped = True)
     
-    with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+    with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing!!-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
         json.dump(resultKeyLIST, jsonfile, ensure_ascii=False)
         
     
