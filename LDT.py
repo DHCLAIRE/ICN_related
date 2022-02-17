@@ -65,8 +65,20 @@ if __name__ == "__main__":
         testing_stimuli.draw()
         win.flip()
         #core.wait(2) #DON'T NEED THIS IN HERE! #the waiting time need to rethink about it, cause something is not right
-        event.waitKeys(maxWait = 0.5, keyList = ["z", "slash"], modifiers = True, timeStamped=False, clearEvents=True)
-        keys = event.getKeys(keyList = ["z", "slash"], modifiers = True, timeStamped = True) # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+        keys = event.waitKeys(maxWait = 1.5, keyList = ["z", "slash"], modifiers = False, timeStamped = False, clearEvents = False)
+        event.getKeys(keyList = ["z", "slash"], modifiers = False, timeStamped = False)  #keyList = ["z", "slash"]) #, modifiers = False, timeStamped = True) # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應 
+        print(keys)
+        #print(type(keys))
+        #print(ansKeys)
+        #print(type(ansKeys))
+        if keys == ["z"]:
+            keys = ["real_word"]
+        elif keys == ["slash"]:
+            keys = ["pseudoword"]
+        #else:
+            #keys = ["Wrong!!"]
+        #"""
+        
         
         """
         # 按鍵反應 + 按鍵時間（RT）+ (trigger_for 腦波) + 正確與否
