@@ -4,103 +4,106 @@
 from psychopy import visual, core, event
 from psychopy.hardware import keyboard
 import json
+import random
 
-# something that is missing
 '''
 key press: need to be set (we'll use 2 bottons in here')
 reaction time: need to be recorded
 '''
 
 
+# set the win at the beginning of the experiment
+"""
+
+"""
+
+
+def display(STR, keyPressLIST=None):
+    """
+    設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
+    若未指定反應鍵，則任意鍵皆可換下一張刺激
+    i.e display("啦啦啦", ['space'])
+    """
+    instructionsLIST = STR.split("\\\\")
+    keyPressLIST = keyPressLIST
+        
+    for t in instructionsLIST:
+        instructions = instructions_0 = visual.TextStim(win = win, text = t)
+        instructions.draw()
+        win.flip()
+        event.waitKeys(keyList = keyPressLIST)
+        
+
+
 if __name__ == "__main__":
     
-    
+    # Step_0: load in all the stimuli
     # testing stimuli (realwordLIST & pseudowordLIST)
     realwordLIST = ["blue", "green", "yellow", "red", "orange"]
-    pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]    
-    resultKeyLIST = [] # what we want to collect
-    tmpLIST = []
-    # Step_1: load in all the stimuli to start the LDT.py, and show the instructions
+    pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
     
+    resultKeyLIST = [] # what we want to collect
+    resultLIST = []  # for containing the response resultLIST
+    tmpLIST = []
+    
+    
+    # Step_1: Show the instructions
     win = visual.Window(size = [500, 500], units ="pix")
-    instructions_0 = visual.TextStim(win = win, text = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n")  # 這裡中文字顯現的有點奇怪
+    
+    instructions_1 = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"
+    instructions_2 = "真詞按z 假詞按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
+    keypress = ['space']
+    
+    #Display the instructions
+    display(instructions_1)
+    
+    display(instructions_2, keypress)
+    
+    # Display fixations
     fixations = visual.TextStim(win = win, text = "+")
     
-    resultLIST = []  # for contain the response resultLIST
-    
-    # for showing the instructions, and instruct them to press key to continue
-    instructions_0.draw()
-    win.flip()
-    event.waitKeys(keyList = ['space'])  # 沒有keylist的話，按任何按鍵都會跳到下一張  # 指定按鍵才可以跳到下一張，在這裡指的就是空白鍵
-    
-    instructions_1 = visual.TextStim(win = win, text = "真詞按z 假詞按/\n請按任意鍵繼續")  # 這裡中文字顯現的有點奇怪
-    instructions_1.draw()
-    win.flip()
-    event.waitKeys()
-    
-    
-    instructions_2 = visual.TextStim(win = win, text = "將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按任意鍵繼續")  # 這裡中文字顯現的有點奇怪
-    instructions_2.draw()
-    win.flip()
-    event.waitKeys()       
-    
-    instructions_3 = visual.TextStim(win = win, text = "當字詞出現時，請盡快且正確的進行按鍵反應。\n請按任意鍵繼續")  # 這裡中文字顯現的有點奇怪
-    instructions_3.draw()
-    win.flip()
-    event.waitKeys()  #keyList = ['z', '/']
-    
-    # Step_2: show the cross in the central of the screen
-    # for showing the fixation ["+"]
-    fixations.draw()
-    win.flip()
+
     core.wait(2)
     
     # Step_3: filp to a blank screen
-    win.flip()    
+    win.flip()
     
-    #"""
+    
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in realwordLIST:
-        testing_stimuli = visual.TextStim(win = win, text = i)
+    for i in range(10):
+        testing_stimuli = visual.TextStim(win = win, text = random.choice(realwordLIST))  # how to control that every words only
         testing_stimuli.draw()
+        #core.wait(1)
         win.flip()
-        #core.wait(2) #DON'T NEED THIS IN HERE! #the waiting time need to rethink about it, cause something is not right
-        keys = event.waitKeys(maxWait = 1.5, keyList = ["z", "slash"], modifiers = False, timeStamped = False, clearEvents = False)
-        event.getKeys(keyList = ["z", "slash"], modifiers = False, timeStamped = False)  #keyList = ["z", "slash"]) #, modifiers = False, timeStamped = True) # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應 
+        
+        keys = event.waitKeys(maxWait = 2, keyList = ['z', 'slash'])
+        event.getKeys(keyList = ['z', 'slash'])
+        
         print(keys)
-        #print(type(keys))
-        #print(ansKeys)
-        #print(type(ansKeys))
+        
+        # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應 
         if keys == ["z"]:
             keys = ["real_word"]
         elif keys == ["slash"]:
             keys = ["pseudoword"]
-        #else:
-            #keys = ["Wrong!!"]
-        #"""
-        
-        
-        """
+        else:
+            keys = ["Wrong!!"]
+
+            """
         # 按鍵反應 + 按鍵時間（RT）+ (trigger_for 腦波) + 正確與否
         # basic info = trails數（的第幾題）,trai_list(第幾次trial), sub_num, date, duration
+        
         # added these two
         # clock.getTime()
         # clock.reset()
         
         # probably need to use dataframe to save all the reaction 
         """
-        #print(keys)
         
         resultKeyLIST.append(keys)
-    #resultKeyLIST = tmpLIST
-    #keys = event.getKeys(keyList = ['z', '/'], modifiers = False, timeStamped = False)
-    
-    #event.waitKeys(keyList = ['space'])
-    
-    
-    #resultLIST = event.getKeys(keyList = [], modifiers = True, timeStamped = True)
-    
-    with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing!!-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+
+
+    with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
         json.dump(resultKeyLIST, jsonfile, ensure_ascii=False)
         
     
@@ -110,7 +113,7 @@ if __name__ == "__main__":
     
     # Step_6: if the participanst react, then record the answer and the reaction time that were given by the participant, if not, then record a blank in the results 
     # event.getKeys() # this will give you the result of which key is being press
-    
+
     
         
     """
