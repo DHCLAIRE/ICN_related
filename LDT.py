@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from psychopy import visual, core, event
-from psychopy.hardware import keyboard
+import psychopy
+from psychopy import visual, core, event, clock
+#from psychopy.hardware import keyboard
 import json
 import random
 
@@ -48,7 +49,11 @@ if __name__ == "__main__":
     
     
     # Step_1: Show the instructions
-    win = visual.Window(size = [500, 500], units ="pix")
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    clock = core.Clock()
+    start_time = clock.getTime()
+    
+
     
     instructions_1 = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"
     instructions_2 = "真詞按z 假詞按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
@@ -63,7 +68,7 @@ if __name__ == "__main__":
     fixations = visual.TextStim(win = win, text = "+")
     
 
-    core.wait(2)
+    #core.wait(2)
     
     # Step_3: filp to a blank screen
     win.flip()
@@ -84,12 +89,24 @@ if __name__ == "__main__":
         # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應 
         if keys == ["z"]:
             keys = ["real_word"]
+            end_time = clock.getTime()
+            time_duration = end_time - start_time
+            print(time_duration)
+            clock.reset()
+        
         elif keys == ["slash"]:
             keys = ["pseudoword"]
+            end_time = clock.getTime()
+            time_duration = end_time - start_time
+            print(time_duration)
+            clock.reset()
+            
         else:
             keys = ["Wrong!!"]
-
-            """
+            time_duration = 0
+            clock.reset()
+        
+    """
         # 按鍵反應 + 按鍵時間（RT）+ (trigger_for 腦波) + 正確與否
         # basic info = trails數（的第幾題）,trai_list(第幾次trial), sub_num, date, duration
         
@@ -97,9 +114,23 @@ if __name__ == "__main__":
         # clock.getTime()
         # clock.reset()
         
+        def resp():
+            key=event.getKeys(keyList=['space'])
+            if "space" in key:
+                stop_time=clock.getTime()
+                res_key='space'
+                res_time= round(stop_time-start_time,4)*1000
+                #rt.append(res_time)
+                clock.reset()
+            else:
+                res_key='miss'
+                res_time= 0
+                # key.append(res_key)     
+                clock.reset()
+        
         # probably need to use dataframe to save all the reaction 
         """
-        
+    """
         resultKeyLIST.append(keys)
 
 
@@ -114,7 +145,7 @@ if __name__ == "__main__":
     # Step_6: if the participanst react, then record the answer and the reaction time that were given by the participant, if not, then record a blank in the results 
     # event.getKeys() # this will give you the result of which key is being press
 
-    
+    """
         
     """
         from psychopy.visual  # 主要用這個
@@ -133,11 +164,10 @@ if __name__ == "__main__":
     """
         
     # Step_7: once the results are filled, then show a blank screen for 700-1000ms
-        
     
     # Step_8: to close the LDT.py, and then save all the results into a file
 
-    # close the window
+    # close the window  at the end of the experiment
     win.close()
     
     # close all the possible ongoing commands that could be running in the background
