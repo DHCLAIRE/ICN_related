@@ -15,10 +15,10 @@ if __name__ == "__main__":
     Alice_stm = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/DownTheRabbitHoleFinal_SoundFile{}.wav".format()
     
     
-    for i in range(12):
-        mySound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
+    #for i in range(1):
+    mySound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
-        mySound.play()#when = now + 0.5)  # play in EXACTLY 0.5s
-        core.wait(60)
-        pass
+    mySound.play()#when = now + 0.5)  # play in EXACTLY 0.5s
+    core.wait(60)
+    pass
     #"""
