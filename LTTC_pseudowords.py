@@ -24,7 +24,7 @@ if __name__ == "__main__":
 		
 		for pseudo_item in fileLIST:
 			tmpLIST = pseudo_item.split(",")
-			if len(tmpLIST[0]) == 7:
+			if len(tmpLIST[0]) == 8:
 				#print(tmpLIST[0])
 				raw_pseudowordsLIST.extend([tmpLIST[0]])
 			else:
@@ -36,12 +36,12 @@ if __name__ == "__main__":
 			#print(lvl2_pseudoItem)
 			#print(type(lvl2_pseudoItem))
 			
-			if '' in lvl2_pseudoItem:
+			if 'a' in lvl2_pseudoItem:
 				print(lvl2_pseudoItem)
 				tmpLIST_2.extend([lvl2_pseudoItem])
 			else:
 				pass
-		print(tmpLIST_2)
+		pprint(tmpLIST_2)
 		print(len(tmpLIST_2))
 		"""
 		# the 2nd layer
@@ -86,4 +86,4 @@ if __name__ == "__main__":
 				pass
 		print(tmpLIST_6)
 		print(len(tmpLIST_6))			
-		"""
+		#"""
