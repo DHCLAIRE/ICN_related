@@ -7,7 +7,7 @@ import json
 
 
 if __name__ == "__main__":
-    data_path = "/Users/neuroling/Downloads/"
+    data_path = "/Users/ting-hsin/Downloads/"
     tmpLIST_1 = []
     tmpLIST_2 = []
     tmpLIST_3 = []
@@ -56,6 +56,6 @@ if __name__ == "__main__":
         
         """
         
-        with open(data_path + 'LTTC-rawText_OneLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
-            json.dump(tmpLIST_2, jsonfile, ensure_ascii=False)
+        #with open(data_path + 'LTTC-rawText_OneLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+            #json.dump(tmpLIST_2, jsonfile, ensure_ascii=False)
             
