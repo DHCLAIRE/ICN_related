@@ -11,6 +11,7 @@ key press: need to be set (we'll use 2 bottons in here')
 reaction time: need to be recorded
 '''
 
+# need to add feedbacks of scaling and texts records
 
 def display(STR, keyPressLIST = None):
     """
