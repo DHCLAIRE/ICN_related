@@ -6,6 +6,7 @@ import csv
 import json
 
 if __name__ == "__main__":
+    
     data_path = "/Users/ting-hsin/Downloads/"
     tmpLIST = []
     #tmpLIST_2 = []

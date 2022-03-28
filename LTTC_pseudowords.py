@@ -18,7 +18,7 @@ if __name__ == "__main__":
 	raw_pseudowordsLIST = []
 	
 	
-	with open (data_path + "MALD1_PseudowordsData.csv", "r", encoding = "utf-8") as raw_file:   
+	with open (data_path + "MALD1_PseudowordsData.csv", "r", encoding = "utf-8") as raw_file:
 		fileLIST = raw_file.read().split("\n")
 		#pprint(fileLIST)
 		
