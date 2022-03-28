@@ -25,3 +25,5 @@ if __name__ == "__main__":
             tmpLIST = i.split(",")
             print(tmpLIST[2])
             print(type(tmpLIST))
+            
+            # oolalala
