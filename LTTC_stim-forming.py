@@ -26,6 +26,8 @@ if __name__ == "__main__":
     tmpLIST_2 = []
     pseudoLIST = []
     targetPseudoLIST = []
+    high_CD_setLIST = []
+    low_CD_setLIST = []
     
     """
     # 1_Create the pseudoword LIST and save it into json file
@@ -60,12 +62,22 @@ if __name__ == "__main__":
         #print(pseudoLIST)
         
         # suffle the pseudoword list (shuffle or not, both works)
-        random.shuffle(pseudoLIST)
-        print(pseudoLIST)
+        #random.shuffle(pseudoLIST)
+        #print(pseudoLIST)
         
     # 3_Randomly select 6 out of the list of 12 pseudowords as the target words
         
         # randomly select 6 target pseudowords from the list
         targetPseudoLIST = sample(pseudoLIST, 6)
         print(targetPseudoLIST)
+        
+    # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
+        high_CD_setLIST = sample(targetPseudoLIST, 3)
+        print("High-CD_set = ", high_CD_setLIST)
+        low_CD_setLIST = sample(targetPseudoLIST, 3)
+        print("Low-CD_set = ", low_CD_setLIST)
+        
+        for w in high_CD_setLIST:
+            print(w)
+            print(type(w))
         
