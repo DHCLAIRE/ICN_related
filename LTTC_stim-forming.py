@@ -22,6 +22,8 @@ if __name__ == "__main__":
     data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
     tmpLIST = []
     tmpLIST_2 = []
+    pseudoLIST = []
+    
     
     with open (data_path + "2nd_Pseudowords_12.csv", "r", encoding = "utf-8") as raw_file:
         fileLIST = raw_file.read().split("\n")
@@ -32,11 +34,31 @@ if __name__ == "__main__":
         
         #print(tmpLIST)
         #print(type(tmpLIST))
+        tmpLIST_2.append(tmpLIST)
+        
+    tmpLIST_2.pop(0)
+    
+    print(tmpLIST_2)
+    
+    for k in tmpLIST_2:
+        pseudoSTR = k[0]
+        pseudoLIST.extend([pseudoSTR])
+        #print(k)
+        #print(type(k))
+        #print(pseudoSTR)
+        #print(type(pseudoSTR))
+    print(pseudoLIST)
+        
+    """
         for z in tmpLIST:
             if len(z) == 0:
                 tmpLIST.remove(z)
                 print(tmpLIST)
             else:
-                pass
+                pass 
         tmpLIST_2.append(tmpLIST)
     pprint(tmpLIST_2)
+    """
+    with open(data_path + 'LTTC-pseudowordLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+        json.dump(pseudoLIST, jsonfile, ensure_ascii=False)
+        
