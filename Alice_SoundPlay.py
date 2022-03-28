@@ -22,3 +22,6 @@ if __name__ == "__main__":
     core.wait(60)
     pass
     #"""
+    
+    # what about other tape that have different lengths?
+    
