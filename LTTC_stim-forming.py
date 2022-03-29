@@ -6,7 +6,7 @@ Steps:
 1. (DONE)create a list that only have 12 pseudowords
 2. (DONE)import the pseudoword list
 3. (DONE)randomly select 6 out of the list of 12 pseudowords as the target words
-4. select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
+4. (DONE)select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
 5. import all the pre-selected bunch of texts
 6. randomly selelct a pair set of High-CD and Low-CD texts
 7. insert the assigned pseudowords into the pair set of High-CD and Low-CD texts
@@ -69,7 +69,7 @@ if __name__ == "__main__":
         
         # randomly select 6 target pseudowords from the list
         targetPseudoLIST = sample(pseudoLIST, 6)
-        print(targetPseudoLIST)
+        print("The TargetPseudo words = ", targetPseudoLIST)
         
     # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
         high_CD_setLIST = sample(targetPseudoLIST, 3)
@@ -83,5 +83,4 @@ if __name__ == "__main__":
                 low_CD_setLIST.extend([w])
         print("High-CD_set = ", high_CD_setLIST)
         print("Low-CD_set = ", low_CD_setLIST)
-            #print(w)
-            #print(type(w))
+    # 5_Import all the pre-selected bunch of texts
