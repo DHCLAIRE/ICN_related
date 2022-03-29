@@ -45,6 +45,7 @@ if __name__ == "__main__":
     
         hours, mins, seconds = output_duration(int(t))
         print('SoundFile{}'.format(i+1),'Total Duration: {}:{}:{}'.format(hours, mins, seconds))
+        ## need to convert those all in seconds
     
     
     """
