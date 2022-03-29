@@ -73,11 +73,15 @@ if __name__ == "__main__":
         
     # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
         high_CD_setLIST = sample(targetPseudoLIST, 3)
+        #print("High-CD_set = ", high_CD_setLIST)
+        
+        for w in targetPseudoLIST:
+            if w in high_CD_setLIST:
+                pass
+                #print(w)
+            else:
+                low_CD_setLIST.extend([w])
         print("High-CD_set = ", high_CD_setLIST)
-        low_CD_setLIST = sample(targetPseudoLIST, 3)
         print("Low-CD_set = ", low_CD_setLIST)
-        
-        for w in high_CD_setLIST:
-            print(w)
-            print(type(w))
-        
+            #print(w)
+            #print(type(w))
