@@ -26,6 +26,7 @@ if __name__ == "__main__":
     tmpLIST_2 = []
     pseudoLIST = []
     targetPseudoLIST = []
+    controlPseudoLIST = []
     high_CD_setLIST = []
     low_CD_setLIST = []
     
@@ -59,28 +60,37 @@ if __name__ == "__main__":
     # 2_Import the pseudoword list (in json file form)
     with open (data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
         pseudoLIST = json.load(jfile)
-        #print(pseudoLIST)
+        print("12 pseudowords = ", pseudoLIST)
         
         # suffle the pseudoword list (shuffle or not, both works)
         #random.shuffle(pseudoLIST)
         #print(pseudoLIST)
         
     # 3_Randomly select 6 out of the list of 12 pseudowords as the target words
-        
         # randomly select 6 target pseudowords from the list
         targetPseudoLIST = sample(pseudoLIST, 6)
+        
+        # collect other 6 pseudowords as the control group
+        for t in pseudoLIST:
+            if t not in targetPseudoLIST:
+                controlPseudoLIST.extend([t])
+            else:
+                pass
+            
         print("The TargetPseudo words = ", targetPseudoLIST)
+        print("The ControlPseudo words = ", controlPseudoLIST)
         
     # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
         high_CD_setLIST = sample(targetPseudoLIST, 3)
         #print("High-CD_set = ", high_CD_setLIST)
         
         for w in targetPseudoLIST:
-            if w in high_CD_setLIST:
-                pass
-                #print(w)
-            else:
+            if w not in high_CD_setLIST:
                 low_CD_setLIST.extend([w])
+            else:
+                pass
+
         print("High-CD_set = ", high_CD_setLIST)
         print("Low-CD_set = ", low_CD_setLIST)
+    
     # 5_Import all the pre-selected bunch of texts
