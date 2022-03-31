@@ -35,6 +35,8 @@ if __name__ == "__main__":
     words_low_CD_setLIST = []
     texts_high_CD_setLIST = []
     texts_low_CD_setLIST = []
+    
+    texts_totalDICT = {}
     texts_high_CD_setDICT = {}
     texts_low_CD_setDICT = {}
     
@@ -98,22 +100,20 @@ if __name__ == "__main__":
     
     # 5_Import all the pre-selected bunch of texts
     
-    # High-CD sets 
-    # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
-    
-    # Low-CD sets
-    # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
-    
     # reload the texts
     with open (text_data_path + "LTTC-modifiedText_OneLIST.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
         
-        pprint(textLIST[0:10])
-        for text in range(6):
-            texts_high_CD_setDICT = {'{}'.format(text+1): textLIST}
-        #for text in textLIST:
-            #text = [text]
-            #pprint(text)
-            
-    # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
+        for count in range(10):
+            tmpDICT = {'{}'.format(count+1) : textLIST[count:count+10]}
+            texts_totalDICT.update(tmpDICT)
+        pprint(texts_totalDICT)
         
+    # High-CD sets 
+    # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
+    
+    # Low-CD sets
+    # texts_low_CD_setLIST = [128, 289, 890, 190, 120]        
+        
+        
+    # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
