@@ -46,7 +46,7 @@ if __name__ == "__main__":
     resultLIST = []  # for containing the response resultLIST
     tmpLIST = []
     
-    
+    """
     # Step_1: Show the instructions
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     clock = core.Clock()
@@ -127,6 +127,62 @@ if __name__ == "__main__":
     
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
+    """
+    
+    
+    
+    
+    # Below is the testing zone for testing RatingScale function.
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    
+    ratingScale = visual.RatingScale(win)
+    item = visual.TextStim(win = win, text = "THIS IS A TESTING SENTENCE!")
+    
+    
+    while ratingScale.noResponse:
+        item.draw()
+        ratingScale.draw()# the rating scale could work,but don't know why it can not be clicked
+        keys = event.waitKeys(maxWait = 10, keyList = ['z', 'slash'])
+        event.getKeys(keyList = ['z', 'slash'])
+        
+        
+        if keys == ["z"]:
+            keys = ["real_word"]
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
+            #print(time_duration)
+            #clock.reset()
+        
+        elif keys == ["slash"]:
+            keys = ["pseudoword"]
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
+            #print(time_duration)
+            #clock.reset()
+            
+        else:
+            keys = ["Wrong!!"]
+            #time_duration = 0
+            #print(time_duration)
+            #clock.reset()
+        
+
+        resultKeyLIST.append(keys)
+        
+        
+        
+        
+        
+        win.flip()
+    print(resultKeyLIST)
+    
+    rating = ratingScale.getRating()
+    decisionTime = ratingScale.getRT()
+    choiceHistory = ratingScale.getHistory()
+    
+    
+
+
 
 
     """
