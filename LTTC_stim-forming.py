@@ -11,7 +11,10 @@ Steps:
 6. divided all the pre-selected texts into the High-CD and Low-CD sets
 7. randomly selelct a pair set of High-CD and Low-CD texts
 8. insert the assigned pseudowords into the pair set of High-CD and Low-CD texts
+# The pseudowords need to be inseted in the texts first, and then randomly choose from the texts set??
+
 '''
+
 
 from pprint import pprint
 import csv
@@ -32,6 +35,8 @@ if __name__ == "__main__":
     words_low_CD_setLIST = []
     texts_high_CD_setLIST = []
     texts_low_CD_setLIST = []
+    texts_high_CD_setDICT = {}
+    texts_low_CD_setDICT = {}
     
     """
     # 1_Create the pseudoword LIST and save it into json file
@@ -103,9 +108,12 @@ if __name__ == "__main__":
     with open (text_data_path + "LTTC-modifiedText_OneLIST.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
         
-        for text in textLIST:
-            text = [text]
-            pprint(text)
+        pprint(textLIST[0:10])
+        for text in range(6):
+            texts_high_CD_setDICT = {'{}'.format(text+1): textLIST}
+        #for text in textLIST:
+            #text = [text]
+            #pprint(text)
             
     # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
         
