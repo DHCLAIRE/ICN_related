@@ -38,7 +38,7 @@ import pandas as pd
 # 
 
 
-def display(STR, keyPressLIST = None):
+def display_ins(STR, keyPressLIST = None):
     """
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
     若未指定反應鍵，則任意鍵皆可換下一張刺激
@@ -52,7 +52,14 @@ def display(STR, keyPressLIST = None):
         instructions.draw()
         win.flip()
         event.waitKeys(keyList = keyPressLIST)
-        
+
+def display_fix():
+    """
+    呈現"+"於螢幕中央
+    """
+    fixation = visual.TextStim(win = win, text = "+")
+    fixation.draw()
+    win.flip()
 
 
 if __name__ == "__main__":
@@ -89,26 +96,30 @@ if __name__ == "__main__":
     keypress = ['space']
     
     #Display the instructions
-    #display(instructions_1, keypress)
+    display_ins(instructions_1, keypress)
     
-    #display(instructions_2, keypress)
+    display_ins(instructions_2, keypress)
     
     # Step_3: filp to a blank screen
     #win.flip()
     
+    Testing_fixation = "++++"
     
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for i in range(5):
         #display(instructions_1, keypress)
         
-        #testing_stim = 
-        display(instructions_1, keypress)  # how to control that every words only
+        display_ins(Testing_fixation, keypress)
+        kLIST = display_stim(instructions_1, keypress)  # how to control that every words only
+        
         win.flip()
         
+        tmpLIST.append(kLIST)
+    tmpResultLIST.append(tmpLIST)
         
         # adding rating scale in here!!!!
         
-        
+    """
         keys = event.waitKeys(keyList = keypress)
         event.getKeys(keyList = keypress)
         
@@ -117,17 +128,18 @@ if __name__ == "__main__":
         # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
         if keys == ["space"]:
             end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
             print(time_duration)
             print(type(time_duration))
             clock.reset()
         else:
             pass
-
+        
         resultKeyLIST.append(keys)
         self_paced_rtLIST.append(time_duration)
     tmpResultLIST.append(resultKeyLIST)
     tmpResultLIST.append(self_paced_rtLIST)
+    """
 
     with open('/Users/ting-hsin/Docs/Github/ICN_related/LTTC-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
         json.dump(tmpResultLIST, jsonfile, ensure_ascii=False)
