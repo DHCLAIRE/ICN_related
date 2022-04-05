@@ -105,7 +105,7 @@ if __name__ == "__main__":
         textLIST = json.load(jfile_2)
         
         for count in range(10):
-            tmpDICT = {'{}'.format(count+1) : textLIST[count:count+10]}
+            tmpDICT = {'{}'.format(count+1) : textLIST[count:count+10]}  # This result is wrong!!  #textLIST[0:10]} & textLIST[10:10]}
             texts_totalDICT.update(tmpDICT)
         pprint(texts_totalDICT)
         
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
     
     # Low-CD sets
-    # texts_low_CD_setLIST = [128, 289, 890, 190, 120]        
+    # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
         
         
     # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
