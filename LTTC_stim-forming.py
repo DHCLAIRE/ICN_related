@@ -8,7 +8,7 @@ Steps:
 3. (DONE)randomly select 6 out of the list of 12 pseudowords as the target words
 4. (DONE)select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
 5. (DONE)import all the pre-selected bunch of texts
-6. divided all the pre-selected texts into the High-CD and Low-CD sets
+6. (DONE)divided all the pre-selected texts into the High-CD and Low-CD sets
 7. randomly selelct a pair set of High-CD and Low-CD texts
 8. insert the assigned pseudowords into the pair set of High-CD and Low-CD texts
 # The pseudowords need to be inseted in the texts first, and then randomly choose from the texts set??
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     texts_high_CD_setLIST = []
     texts_low_CD_setLIST = []
     
-    texts_totalDICT = {}
+    #texts_totalDICT = {}
     texts_high_CD_setDICT = {}
     texts_low_CD_setDICT = {}
     
@@ -103,17 +103,49 @@ if __name__ == "__main__":
     # reload the texts
     with open (text_data_path + "LTTC-modifiedText_OneLIST.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
-        
+        #pprint(textLIST[0:10])
+        """
+        # for 
         for count in range(10):
             tmpDICT = {'{}'.format(count+1) : textLIST[count:count+10]}  # This result is wrong!!  #textLIST[0:10]} & textLIST[10:10]}
             texts_totalDICT.update(tmpDICT)
         pprint(texts_totalDICT)
-        
-    # High-CD sets 
-    # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
-    
-    # Low-CD sets
-    # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
-        
-        
+        """
     # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
+     # ALL Sets of Texts  >> the following should be able to set it as a loop
+        # High-CD setsDICT (3/4/5/6/7)
+        sets_3_DICT = {'3':textLIST[20:30]}
+        sets_4_DICT = {'4':textLIST[30:40]}
+        sets_5_DICT = {'5':textLIST[40:50]}
+        sets_6_DICT = {'6':textLIST[50:60]}
+        sets_7_DICT = {'7':textLIST[60:70]}
+        texts_high_CD_setDICT.update(sets_3_DICT)
+        texts_high_CD_setDICT.update(sets_4_DICT)
+        texts_high_CD_setDICT.update(sets_5_DICT)
+        texts_high_CD_setDICT.update(sets_6_DICT)
+        texts_high_CD_setDICT.update(sets_7_DICT)
+        #pprint(texts_high_CD_setDICT)
+        print(len(texts_high_CD_setDICT))
+
+        # Low-CD setsDICT (1/2/8/9/10)
+        sets_1_DICT = {'1':textLIST[0:10]}
+        sets_2_DICT = {'2':textLIST[10:20]}
+        sets_8_DICT = {'8':textLIST[70:80]}
+        sets_9_DICT = {'9':textLIST[80:90]}
+        sets_10_DICT = {'10':textLIST[90:]}
+        
+        texts_low_CD_setDICT.update(sets_1_DICT)
+        texts_low_CD_setDICT.update(sets_2_DICT)
+        texts_low_CD_setDICT.update(sets_8_DICT)
+        texts_low_CD_setDICT.update(sets_9_DICT)
+        texts_low_CD_setDICT.update(sets_10_DICT)
+        #pprint(texts_low_CD_setDICT)
+        print(len(texts_low_CD_setDICT))
+
+        # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
+         
+        # Low-CD sets
+        # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
+        
+        
+    
