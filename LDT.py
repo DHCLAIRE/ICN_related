@@ -46,6 +46,9 @@ if __name__ == "__main__":
     resultLIST = []  # for containing the response resultLIST
     tmpLIST = []
     
+    # key in number for notifying which subject it is
+    sub_id = str(input("Subject: "))
+    
     """
     # Step_1: Show the instructions
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
@@ -121,6 +124,24 @@ if __name__ == "__main__":
     # Step_7: once the results are filled, then show a blank screen for 700-1000ms
     
     # Step_8: to close the LDT.py, and then save all the results into a file
+    
+       # turn all info into dataframe, and then save it as a csv file  # >> rewrite the following info
+    data=pd.DataFrame({'sid':sub_id,
+                   'trial_list':trial,
+                   'duration':interval,
+                   'trial_no':trial_no,
+                    'date':date,
+                    'trigger':trial_trigger,
+                    'response_key':response,
+                    'rt':response_time
+                    })
+
+    spath='C:/Users/TH/Desktop/data/'
+    file_name= sid+'_nback_task'+'.csv'
+    save_path=spath+file_name
+    data.to_csv(save_path, sep=',',index=False)
+
+print('FINISH') 
 
     # close the window  at the end of the experiment
     win.close()
