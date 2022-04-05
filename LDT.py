@@ -5,6 +5,7 @@ import psychopy
 from psychopy import visual, core, event, clock
 import json
 import random
+from random import sample
 
 '''
 key press: need to be set (we'll use 2 bottons in here')
@@ -14,11 +15,11 @@ reaction time: need to be recorded
 # need to add feedbacks of scaling and texts records
 
 def display(STR, keyPressLIST = None):
-    """
+    '''
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
     若未指定反應鍵，則任意鍵皆可換下一張刺激
     i.e display("啦啦啦", ['space'])
-    """
+    '''
     instructionsLIST = STR.split("\\\\")
     keyPressLIST = keyPressLIST
         
@@ -41,6 +42,10 @@ if __name__ == "__main__":
     # testing stimuli (realwordLIST & pseudowordLIST)
     realwordLIST = ["blue", "green", "yellow", "red", "orange"]
     pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
+    
+    print(realwordLIST)  
+    print(sample(realwordLIST, 2))
+    
     
     
     # Data??
@@ -145,6 +150,7 @@ if __name__ == "__main__":
     # Step_7: once the results are filled, then show a blank screen for 700-1000ms
     
     # Step_8: to close the LDT.py, and then save all the results into a file
+    
     """
        # turn all info into dataframe, and then save it as a csv file  # >> rewrite the following info
     data=pd.DataFrame({'sid':sub_id,
