@@ -42,15 +42,20 @@ if __name__ == "__main__":
     realwordLIST = ["blue", "green", "yellow", "red", "orange"]
     pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
     
+    
+    # Data??
     resultKeyLIST = [] # what we want to collect
     resultLIST = []  # for containing the response resultLIST
     tmpLIST = []
+    totalLIST = []
+    
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
     
-    """
+    
     # Step_1: Show the instructions
+    # Setting the presented window
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     clock = core.Clock()
     start_time = clock.getTime()
@@ -66,7 +71,7 @@ if __name__ == "__main__":
     display(instructions_2, keypress)
     
     # Display fixations
-    fixations = visual.TextStim(win = win, text = "+")   # do I need to modifiy this??
+    fixations = visual.TextStim(win = win, text = "+")   # do I need to modifiy this??  >> YES
     
 
     #core.wait(2)
@@ -78,13 +83,23 @@ if __name__ == "__main__":
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for i in range(10):
         testing_stimuli = visual.TextStim(win = win, text = random.choice(realwordLIST))  # how to control that every words only
-        testing_stimuli.draw()
-        #core.wait(1)
+        # Show the fixation ??
+        fixations = visual.TextStim(win = win, text = "+")
+        
+        fixations.draw()
+        #core.wait(0.5)
         win.flip()
         
+        # Show the testing stimulus
+        testing_stimuli.draw()
+        #core.wait(1)
+        win.flip()  # always add this after an item was presented
+        
+        #
         keys = event.waitKeys(maxWait = 2, keyList = ['z', 'slash'])
         event.getKeys(keyList = ['z', 'slash'])
-        fixations.draw()
+        
+        #win.flip()
         
         print(keys)
         
@@ -94,6 +109,7 @@ if __name__ == "__main__":
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
             print(time_duration)
+            print(type(time_duration))
             clock.reset()
         
         elif keys == ["slash"]:
@@ -101,6 +117,7 @@ if __name__ == "__main__":
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
             print(time_duration)
+            print(type(time_duration))
             clock.reset()
             
         else:
@@ -109,12 +126,16 @@ if __name__ == "__main__":
             print(time_duration)
             clock.reset()
         
-
+        
         resultKeyLIST.append(keys)
+        tmpLIST.append(time_duration)
+    totalLIST.append(resultKeyLIST)
+    totalLIST.append(tmpLIST)
+        
 
 
     with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
-        json.dump(resultKeyLIST, jsonfile, ensure_ascii=False)
+        json.dump(totalLIST, jsonfile, ensure_ascii=False)
 
     
     # Step_5: remove the stimuli, and then show the blank screen for 1500ms (waiting for the participants to react)
@@ -124,7 +145,7 @@ if __name__ == "__main__":
     # Step_7: once the results are filled, then show a blank screen for 700-1000ms
     
     # Step_8: to close the LDT.py, and then save all the results into a file
-    
+    """
        # turn all info into dataframe, and then save it as a csv file  # >> rewrite the following info
     data=pd.DataFrame({'sid':sub_id,
                    'trial_list':trial,
@@ -152,7 +173,7 @@ print('FINISH')
     
     
     
-    
+    """
     # Below is the testing zone for testing RatingScale function.
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
@@ -201,7 +222,7 @@ print('FINISH')
     decisionTime = ratingScale.getRT()
     choiceHistory = ratingScale.getHistory()
     
-    
+    """
 
 
 
