@@ -246,9 +246,6 @@ if __name__ == "__main__":
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
     
-    
-    
-    
     # Below is the testing zone for testing RatingScale function.
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
