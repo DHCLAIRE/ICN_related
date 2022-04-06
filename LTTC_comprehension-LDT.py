@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會看到一篇文章\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
-    instructions_2 = """請評分\n，評分完畢後請按下空白鍵繼續"""
+    instructions_2 = """請在紙上評分\n，評分完畢後請按下空白鍵繼續"""
     keypress = ['space']
     
     # Experiment section  # Two parts >> Comprehension(Learning phase) + LDT(Testing Phase)
