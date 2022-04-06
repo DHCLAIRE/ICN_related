@@ -92,6 +92,7 @@ if __name__ == "__main__":
         for count in range(10):
             PLDT_LIST.extend(pseudoLIST)
         print(PLDT_LIST)
+        print(len(PLDT_LIST))
     pass
 
 
@@ -137,7 +138,8 @@ if __name__ == "__main__":
         core.wait(1)
         
         # randomly select the wanted pseudoword from the list
-        stim_wordSTR = random.choice(pseudoLIST)
+        #random.shuffle(PLDT_LIST)
+        stim_wordSTR = random.choice(PLDT_LIST)
         
         # Show the testing stimulus
         testing_stimuli = visual.TextStim(win = win, text = stim_wordSTR)  # how to control that every words only
@@ -174,27 +176,27 @@ if __name__ == "__main__":
             clock.reset()
         
         # calculate the correctness of the LDT response
-        if keys == ["z"]:
-            if stimLIST in targetPseudoLIST:
-                print(stimLIST)
+        if stim_wordSTR in targetPseudoLIST:
+            #conditionLIST = ["seen"]
+            if keys == ["z"]:
                 correctLIST = ["True"]
-            else:
+                
+            #conditionLIST = ["unseen"]
+            elif keys == ["slash"]:
                 correctLIST = ["False"]
-
-        elif keys == ["slash"]:
-            if stimLIST in controlPseudoLIST:
-                print(stimLIST)
+        
+        elif stim_wordSTR not in targetPseudoLIST:
+            #conditionLIST = ["seen"]
+            if keys == ["z"]:
+                correctLIST = ["False"]
+                
+            #conditionLIST = ["unseen"]
+            elif keys == ["slash"]:
                 correctLIST = ["True"]
-            else:
-                correctLIST = ["False"]
+                
         else:
             correctLIST = ["N/A"]
             
-            
-                
-        # but actually the word was not in the targetLIST >> we'll considered the answer is incorrect
-        
-        
         
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
