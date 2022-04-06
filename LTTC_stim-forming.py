@@ -113,6 +113,23 @@ if __name__ == "__main__":
         """
     # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
      # ALL Sets of Texts  >> the following should be able to set it as a loop
+        
+        # High-CD setsLIST (3/4/5/6/7)
+        sets_3_LIST = textLIST[20:30]
+        sets_4_LIST = textLIST[30:40]
+        sets_5_LIST = textLIST[40:50]
+        sets_6_LIST = textLIST[50:60]
+        sets_7_LIST = textLIST[60:70]
+        
+        # Low-CD setsDICT (1/2/8/9/10)
+        sets_1_LIST = textLIST[0:10]
+        sets_2_LIST = textLIST[10:20]
+        sets_8_LIST = textLIST[70:80]
+        sets_9_LIST = textLIST[80:90]
+        sets_10_LIST = textLIST[90:]
+        
+        
+        """
         # High-CD setsDICT (3/4/5/6/7)
         sets_3_DICT = {'3':textLIST[20:30]}
         sets_4_DICT = {'4':textLIST[30:40]}
@@ -141,11 +158,40 @@ if __name__ == "__main__":
         texts_low_CD_setDICT.update(sets_10_DICT)
         #pprint(texts_low_CD_setDICT)
         print(len(texts_low_CD_setDICT))
-    
+        """
+        
         # texts_high_CD_setLIST = [345, 456, 567, 367, 347] >> we randomly choose one the set from these 5 sets
-        #tHigh_345LIST = 
+        tHigh_345LIST = []
+        tHigh_345LIST.append(sets_3_LIST)
+        tHigh_345LIST.append(sets_4_LIST)
+        tHigh_345LIST.append(sets_5_LIST)
+        pprint(tHigh_345LIST)
+        
+        stim_345_LIST = []
+        tmpLIST_3 = sample(sets_3_LIST, 5)
+        tmpLIST_4 = sample(sets_4_LIST, 5)
+        tmpLIST_5 = sample(sets_5_LIST, 5)
+        stim_345_LIST.append(tmpLIST_3)
+        stim_345_LIST.append(tmpLIST_4)
+        stim_345_LIST.append(tmpLIST_5)
+        print(stim_345_LIST)
+        print(len(stim_345_LIST))
+        print(len(stim_345_LIST[0]))
+        
+        
+        """
+        tHigh_456LIST = []
+        tHigh_567LIST = []
+        tHigh_367LIST = []
+        tHigh_347LIST = []
+        
         # Low-CD sets
         # texts_low_CD_setLIST = [128, 289, 890, 190, 120] >> we randomly choose one the set from these 5 sets
+        tlow_128LIST = []
+        tlow_289LIST = []
+        tlow_890LIST = []
+        tlow_190LIST = []
+        tlow_120LIST = []
+        """
         
-        
-    
+        #
