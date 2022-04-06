@@ -56,6 +56,7 @@ if __name__ == "__main__":
     controlPseudoLIST = []
     words_high_CD_setLIST = []
     words_low_CD_setLIST = []
+    PLDT_LIST = []
     
     # 2_Import the pseudoword list (in json file form)
     with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
@@ -73,8 +74,8 @@ if __name__ == "__main__":
             else:
                 pass
             
-        #print("The TargetPseudo words = ", targetPseudoLIST)
-        #print("The ControlPseudo words = ", controlPseudoLIST)
+        print("The TargetPseudo words = ", targetPseudoLIST)
+        print("The ControlPseudo words = ", controlPseudoLIST)
         
     # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
         words_high_CD_setLIST = sample(targetPseudoLIST, 3)
@@ -87,6 +88,10 @@ if __name__ == "__main__":
 
         #print("High-CD_set = ", words_high_CD_setLIST)
         #print("Low-CD_set = ", words_low_CD_setLIST)
+        
+        for count in range(10):
+            PLDT_LIST.extend(pseudoLIST)
+        print(PLDT_LIST)
     pass
 
 
@@ -101,6 +106,7 @@ if __name__ == "__main__":
     LDT_rtLIST = []
     correctnessLIST = []
     responseLIST = []
+    correctLIST = []
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -113,7 +119,7 @@ if __name__ == "__main__":
 
     # Setting the instructions and the response key
     instructions_1 = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"
-    instructions_2 = "真詞按z 假詞按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
+    instructions_2 = "看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
     keypress = ['space']
     
     #Display the instructions
@@ -168,7 +174,24 @@ if __name__ == "__main__":
             clock.reset()
         
         # calculate the correctness of the LDT response
-        #if keys == ["seen"]:
+        if keys == ["z"]:
+            if stimLIST in targetPseudoLIST:
+                print(stimLIST)
+                correctLIST = ["True"]
+            else:
+                correctLIST = ["False"]
+
+        elif keys == ["slash"]:
+            if stimLIST in controlPseudoLIST:
+                print(stimLIST)
+                correctLIST = ["True"]
+            else:
+                correctLIST = ["False"]
+        else:
+            correctLIST = ["N/A"]
+            
+            
+                
         # but actually the word was not in the targetLIST >> we'll considered the answer is incorrect
         
         
@@ -180,7 +203,7 @@ if __name__ == "__main__":
         resultKeyLIST.append(keys)
         responseLIST.append(conditionLIST)
         LDT_rtLIST.append(time_duration)
-        #correctnessLIST.append()
+        correctnessLIST.append(correctLIST)
         
         #core.wait(0.5)
         
@@ -195,7 +218,7 @@ if __name__ == "__main__":
                            'Keypress':resultKeyLIST,
                            'Response':responseLIST,
                            'LDT_RT':LDT_rtLIST,
-                           #'Correctness':correctnessLIST
+                           'Correctness':correctnessLIST
                            })
     
     data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
