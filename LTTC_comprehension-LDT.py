@@ -24,7 +24,7 @@ import json
 import random
 from random import sample
 
-# for LDT
+# for LDT and Reading Comprehension Task
 import psychopy
 from psychopy import visual, core, event, clock   #from psychopy import visual, core, event, gui, prefs, sound, monitors, clock,parallel
 #import json
@@ -32,10 +32,6 @@ from psychopy import visual, core, event, clock   #from psychopy import visual, 
 import numpy as np
 from datetime import datetime,date
 import pandas as pd
-
-
-# Self-paced reading
-# 
 
 
 def display_ins(STR, keyPressLIST = None):
@@ -52,6 +48,7 @@ def display_ins(STR, keyPressLIST = None):
         instructions.draw()
         win.flip()
         event.waitKeys(keyList = keyPressLIST)
+    win.flip()
 
 def display_fix():
     """
@@ -70,62 +67,51 @@ if __name__ == "__main__":
     
     # Wanted data
     day = date.today()
-    date = []
-    sub_id = []
+    dateLIST = []
+    sub_idLIST = []
     self_paced_rtLIST=[]
-    tmpResultLIST = []
+    text_noLIST = []
     resultKeyLIST = []
-    """
-    response=[]
-    response_time=[]
-    trial_no=[]
-    clock=psychopy.core.Clock()
-    keys=[]
-    ran_dur=[]
-    interval=[]
-    """
+    
+    # For key-in the id of the subject
     sub_id = str(input("Subject: "))
     
+    # setting up the display win conditions
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     clock = core.Clock()
     start_time = clock.getTime()
 
-    
-    instructions_1 = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"
-    instructions_2 = "真詞按z 假詞按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
+    # Setting the instructions and the response key
+    instructions_1 = """接下來你會看到一篇文章\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
+    instructions_2 = """請評分\n，評分完畢後請按下空白鍵繼續"""
     keypress = ['space']
     
-    #Display the instructions
-    display_ins(instructions_1, keypress)
-    
-    display_ins(instructions_2, keypress)
-    
-    # Step_3: filp to a blank screen
-    #win.flip()
-    
-    Testing_fixation = "++++"
-    
-    # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
+    # Experiment section  # Two parts >> Comprehension(Learning phase) + LDT(Testing Phase)
+    # Reading Comprehension Task STARTS
     for i in range(5):
-        #display(instructions_1, keypress)
+        # display instructions for Reading Comprehension phase
+        display_ins(instructions_1, keypress)
+        #win.flip()
+        core.wait(0.5)
         
-        display_ins(Testing_fixation, keypress)
-        kLIST = display_stim(instructions_1, keypress)  # how to control that every words only
+        # display fixation in the central of the screen
+        display_fix()
+        core.wait(1)
         
+        # display the stimuli, which would be a series of short texts
+        testing_text = "LALALALLALALALALALALALLLAL"
+        text = visual.TextStim(win = win, text = testing_text)
+        print("text starts")
+        text.draw()
         win.flip()
-        
-        tmpLIST.append(kLIST)
-    tmpResultLIST.append(tmpLIST)
         
         # adding rating scale in here!!!!
         
-    """
+        # setting up what keypress would allow the experiment to proceed
         keys = event.waitKeys(keyList = keypress)
         event.getKeys(keyList = keypress)
-        
         print(keys)
-        
-        # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+        print("text ends")
         if keys == ["space"]:
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -135,21 +121,36 @@ if __name__ == "__main__":
         else:
             pass
         
+        # making the wanted info into the List form for future use
+        text_noLIST.append(i+1)
+        dateLIST.append(day)
+        sub_idLIST.append(sub_id)
         resultKeyLIST.append(keys)
         self_paced_rtLIST.append(time_duration)
-    tmpResultLIST.append(resultKeyLIST)
-    tmpResultLIST.append(self_paced_rtLIST)
-    """
-
-    with open('/Users/ting-hsin/Docs/Github/ICN_related/LTTC-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
-        json.dump(tmpResultLIST, jsonfile, ensure_ascii=False)
-    
-    
+        
+        core.wait(0.5)
+        
+        # ask the participant to evaluate how well they understand the presented text
+        display_ins(instructions_2, keypress)
+        
+        
     # close the window  at the end of the experiment
     win.close()
     
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                       'Date':dateLIST,
+                       'Self-paced RT':self_paced_rtLIST,
+                       'Texts':text_noLIST})
+    print(type(dataDICT))
+    
+    data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = sub_id + '_Reading_task.csv'
+    save_path = data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
-
     
-    # Experiment section  # Two parts >> Comprehension(Learning phase) + LDT(Testing Phase)
+    
+    #### Should I seperate the Comprehension and the LDT task, or should I combine these two tasks together??
