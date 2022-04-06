@@ -141,11 +141,11 @@ if __name__ == "__main__":
         texts_low_CD_setDICT.update(sets_10_DICT)
         #pprint(texts_low_CD_setDICT)
         print(len(texts_low_CD_setDICT))
-
-        # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
-         
+    
+        # texts_high_CD_setLIST = [345, 456, 567, 367, 347] >> we randomly choose one the set from these 5 sets
+        #tHigh_345LIST = 
         # Low-CD sets
-        # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
+        # texts_low_CD_setLIST = [128, 289, 890, 190, 120] >> we randomly choose one the set from these 5 sets
         
         
     
