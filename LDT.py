@@ -14,27 +14,29 @@ reaction time: need to be recorded
 
 # need to add feedbacks of scaling and texts records
 
-def display(STR, keyPressLIST = None):
-    '''
+def display_ins(STR, keyPressLIST = None):
+    """
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
     若未指定反應鍵，則任意鍵皆可換下一張刺激
     i.e display("啦啦啦", ['space'])
-    '''
+    """
     instructionsLIST = STR.split("\\\\")
     keyPressLIST = keyPressLIST
         
     for t in instructionsLIST:
-        instructions = instructions_0 = visual.TextStim(win = win, text = t)
+        instructions = visual.TextStim(win = win, text = t)
         instructions.draw()
         win.flip()
         event.waitKeys(keyList = keyPressLIST)
+    win.flip()
 
-#def reactionLIST(key, resultLIST):
-    
-    
-    #return resultLIST
-        
-
+def display_fix():
+    """
+    呈現"+"於螢幕中央
+    """
+    fixation = visual.TextStim(win = win, text = "+")
+    fixation.draw()
+    win.flip()
 
 if __name__ == "__main__":
     
@@ -43,21 +45,18 @@ if __name__ == "__main__":
     realwordLIST = ["blue", "green", "yellow", "red", "orange"]
     pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
     
-    print(realwordLIST)  
-    print(sample(realwordLIST, 2))
-    
-    
-    
-    # Data??
+    # Wanted data
+    day = date.today()
+    dateLIST = []
+    sub_idLIST = []
     resultKeyLIST = [] # what we want to collect
     resultLIST = []  # for containing the response resultLIST
-    tmpLIST = []
-    totalLIST = []
-    
+    LDT_rtLIST = []
+    totalLIST = []    
+    #text_noLIST = []
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
-    
     
     # Step_1: Show the instructions
     # Setting the presented window
@@ -65,34 +64,24 @@ if __name__ == "__main__":
     clock = core.Clock()
     start_time = clock.getTime()
 
-    
+    # Setting the instructions and the response key
     instructions_1 = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"
     instructions_2 = "真詞按z 假詞按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
     keypress = ['space']
     
     #Display the instructions
-    display(instructions_1, keypress)
-    
-    display(instructions_2, keypress)
+    display_ins(instructions_1, keypress)
+    display_ins(instructions_2, keypress)
     
     # Display fixations
-    fixations = visual.TextStim(win = win, text = "+")   # do I need to modifiy this??  >> YES
-    
-
-    #core.wait(2)
-    
-    # Step_3: filp to a blank screen
+    display_fix()
     win.flip()
-    
     
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for i in range(10):
         testing_stimuli = visual.TextStim(win = win, text = random.choice(realwordLIST))  # how to control that every words only
         # Show the fixation ??
-        fixations = visual.TextStim(win = win, text = "+")
-        
-        fixations.draw()
-        #core.wait(0.5)
+        display_fix()
         win.flip()
         
         # Show the testing stimulus
@@ -131,11 +120,11 @@ if __name__ == "__main__":
             print(time_duration)
             clock.reset()
         
-        
+        #text_noLIST.append(i+1)
+        dateLIST.append(day)
+        sub_idLIST.append(sub_id)
         resultKeyLIST.append(keys)
-        tmpLIST.append(time_duration)
-    totalLIST.append(resultKeyLIST)
-    totalLIST.append(tmpLIST)
+        LDT_rtLIST.append(time_duration)
         
 
 
@@ -151,7 +140,6 @@ if __name__ == "__main__":
     
     # Step_8: to close the LDT.py, and then save all the results into a file
     
-    """
        # turn all info into dataframe, and then save it as a csv file  # >> rewrite the following info
     data=pd.DataFrame({'sid':sub_id,
                    'trial_list':trial,
@@ -175,7 +163,6 @@ print('FINISH')
     
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
-    """
     
     
     
