@@ -101,7 +101,7 @@ if __name__ == "__main__":
     # 5_Import all the pre-selected bunch of texts
     
     # reload the texts
-    with open (text_data_path + "LTTC-modifiedText_OneLIST.json", "r", encoding = "utf-8") as jfile_2:
+    with open (text_data_path + "LTTC-modifiedText_OneLIST_blank.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
         #pprint(textLIST[0:10])
         """
@@ -165,20 +165,53 @@ if __name__ == "__main__":
         tHigh_345LIST.append(sets_3_LIST)
         tHigh_345LIST.append(sets_4_LIST)
         tHigh_345LIST.append(sets_5_LIST)
-        pprint(tHigh_345LIST)
+        #pprint(tHigh_345LIST)
         
         stim_345_LIST = []
         tmpLIST_3 = sample(sets_3_LIST, 5)
         tmpLIST_4 = sample(sets_4_LIST, 5)
         tmpLIST_5 = sample(sets_5_LIST, 5)
-        stim_345_LIST.append(tmpLIST_3)
-        stim_345_LIST.append(tmpLIST_4)
-        stim_345_LIST.append(tmpLIST_5)
-        print(stim_345_LIST)
-        print(len(stim_345_LIST))
-        print(len(stim_345_LIST[0]))
+        stim_345_LIST.extend(tmpLIST_3)
+        stim_345_LIST.extend(tmpLIST_4)
+        stim_345_LIST.extend(tmpLIST_5)
+        #print(stim_345_LIST)
+        #print(len(stim_345_LIST))
         
+        realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
+        tmpLIST_X = []
+        #for realw in range(len(stim_345_LIST)):
+        for t in stim_345_LIST:
+            print(len(t))
+            if "thesis" in t:
+                print("There's a word in here!")
+                t.replace("thesis", "{}")
+                pprint(t)
+            elif "gimmick" in t:
+                print("There's a word in here!")
+                t.replace("gimmick", "{}")
+                pprint(t)
+            elif "yogurt" in t:
+                print("There's a word in here!")
+                t.replace("yogurt", "{}")
+                pprint(t)
+            else:
+                print("NONE")
+                #pass
+            """
+            for realw in realwords:
+                if realw in t:
+                    pprint(t)
+                    #t.replace("{}".format(realw), "{}")
+                    #pprint(t)
+                    #tmpSTR = [t]
+                    #tmpLIST_X.extend(tmpSTR)
+                else:
+                    pass
+            #stim_345_LIST = tmpLIST_X
+        #pprint(stim_345_LIST)
+        #pprint(len(stim_345_LIST))
         
+        """
         """
         tHigh_456LIST = []
         tHigh_567LIST = []
