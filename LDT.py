@@ -119,8 +119,8 @@ if __name__ == "__main__":
     start_time = clock.getTime()
 
     # Setting the instructions and the response key
-    instructions_1 = "接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"
-    instructions_2 = "看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"
+    instructions_1 = """接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
+    instructions_2 = """看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"""
     keypress = ['space']
     
     #Display the instructions
@@ -128,8 +128,8 @@ if __name__ == "__main__":
     display_ins(instructions_2, keypress)
     
     # Display fixations
-    display_fix()
-    win.flip()
+    #display_fix()
+    #win.flip()
     
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for i in range(15):
