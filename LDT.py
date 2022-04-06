@@ -6,6 +6,9 @@ from psychopy import visual, core, event, clock
 import json
 import random
 from random import sample
+import numpy as np
+from datetime import datetime,date
+import pandas as pd
 
 '''
 key press: need to be set (we'll use 2 bottons in here')
@@ -42,18 +45,62 @@ if __name__ == "__main__":
     
     # Step_0: load in all the stimuli
     # testing stimuli (realwordLIST & pseudowordLIST)
-    realwordLIST = ["blue", "green", "yellow", "red", "orange"]
-    pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
+    #realwordLIST = ["blue", "green", "yellow", "red", "orange"]
+    #pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
     
-    # Wanted data
+    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
+    
+    # setting up usable dataLIST
+    pseudoLIST = []
+    targetPseudoLIST = []
+    controlPseudoLIST = []
+    words_high_CD_setLIST = []
+    words_low_CD_setLIST = []
+    
+    # 2_Import the pseudoword list (in json file form)
+    with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
+        pseudoLIST = json.load(jfile)
+        #print("12 pseudowords = ", pseudoLIST)
+        
+    # 3_Randomly select 6 out of the list of 12 pseudowords as the target words
+        # randomly select 6 target pseudowords from the list
+        targetPseudoLIST = sample(pseudoLIST, 6)
+        
+        # collect other 6 pseudowords as the control group
+        for t in pseudoLIST:
+            if t not in targetPseudoLIST:
+                controlPseudoLIST.extend([t])
+            else:
+                pass
+            
+        #print("The TargetPseudo words = ", targetPseudoLIST)
+        #print("The ControlPseudo words = ", controlPseudoLIST)
+        
+    # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
+        words_high_CD_setLIST = sample(targetPseudoLIST, 3)
+        
+        for w in targetPseudoLIST:
+            if w not in words_high_CD_setLIST:
+                words_low_CD_setLIST.extend([w])
+            else:
+                pass
+
+        #print("High-CD_set = ", words_high_CD_setLIST)
+        #print("Low-CD_set = ", words_low_CD_setLIST)
+    pass
+
+
+
+    # LDT Wanted data
     day = date.today()
     dateLIST = []
     sub_idLIST = []
-    resultKeyLIST = [] # what we want to collect
-    resultLIST = []  # for containing the response resultLIST
+    resultKeyLIST = []
+    stimLIST = []
+    conditionLIST = []
     LDT_rtLIST = []
-    totalLIST = []    
-    #text_noLIST = []
+    correctnessLIST = []
+    responseLIST = []
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -78,68 +125,88 @@ if __name__ == "__main__":
     win.flip()
     
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(10):
-        testing_stimuli = visual.TextStim(win = win, text = random.choice(realwordLIST))  # how to control that every words only
-        # Show the fixation ??
+    for i in range(15):
+        # display fixation in the central of the screen
         display_fix()
-        win.flip()
+        core.wait(1)
+        
+        # randomly select the wanted pseudoword from the list
+        stim_wordSTR = random.choice(pseudoLIST)
         
         # Show the testing stimulus
+        testing_stimuli = visual.TextStim(win = win, text = stim_wordSTR)  # how to control that every words only
         testing_stimuli.draw()
-        #core.wait(1)
         win.flip()  # always add this after an item was presented
         
-        #
+        #setting up what keypress would allow the experiment to proceed
         keys = event.waitKeys(maxWait = 2, keyList = ['z', 'slash'])
         event.getKeys(keyList = ['z', 'slash'])
-        
-        #win.flip()
-        
         print(keys)
         
         # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
         if keys == ["z"]:
-            keys = ["real_word"]
+            conditionLIST = ["seen"]
             end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
             print(time_duration)
-            print(type(time_duration))
+            #print(type(time_duration))
             clock.reset()
         
         elif keys == ["slash"]:
-            keys = ["pseudoword"]
+            conditionLIST = ["unseen"]
             end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 4)*1000    # normally 以毫秒作為單位
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
             print(time_duration)
-            print(type(time_duration))
+            #print(type(time_duration))
             clock.reset()
             
         else:
             keys = ["Wrong!!"]
+            conditionLIST = ["N/A"]
             time_duration = 0
             print(time_duration)
             clock.reset()
         
-        #text_noLIST.append(i+1)
-        dateLIST.append(day)
-        sub_idLIST.append(sub_id)
-        resultKeyLIST.append(keys)
-        LDT_rtLIST.append(time_duration)
+        # calculate the correctness of the LDT response
+        #if keys == ["seen"]:
+        # but actually the word was not in the targetLIST >> we'll considered the answer is incorrect
         
+        
+        
+        # making the wanted info into the List form for future use
+        sub_idLIST.append(sub_id)
+        dateLIST.append(day)
+        stimLIST.append(stim_wordSTR)
+        resultKeyLIST.append(keys)
+        responseLIST.append(conditionLIST)
+        LDT_rtLIST.append(time_duration)
+        #correctnessLIST.append()
+        
+        #core.wait(0.5)
+        
+        # close the window  at the end of the experiment
+    win.close()
+        
+        
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                           'Date':dateLIST,
+                           'Stimuli':stimLIST,
+                           'Keypress':resultKeyLIST,
+                           'Response':responseLIST,
+                           'LDT_RT':LDT_rtLIST,
+                           #'Correctness':correctnessLIST
+                           })
+    
+    data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = sub_id + '_LDT_results.csv'
+    save_path = data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    
+    # close all the possible ongoing commands that could be running in the background
+    core.quit()  # normally we would add it, in case that anything happen
 
-
-    with open('/Users/ting-hsin/Docs/Github/ICN_related/LDT-testing-resultLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
-        json.dump(totalLIST, jsonfile, ensure_ascii=False)
-
-    
-    # Step_5: remove the stimuli, and then show the blank screen for 1500ms (waiting for the participants to react)
-    
-    # Step_6: if the participanst react, then record the answer and the reaction time that were given by the participant, if not, then record a blank in the results
-    
-    # Step_7: once the results are filled, then show a blank screen for 700-1000ms
-    
-    # Step_8: to close the LDT.py, and then save all the results into a file
-    
+    """
        # turn all info into dataframe, and then save it as a csv file  # >> rewrite the following info
     data=pd.DataFrame({'sid':sub_id,
                    'trial_list':trial,
@@ -150,23 +217,13 @@ if __name__ == "__main__":
                     'response_key':response,
                     'rt':response_time
                     })
-
-    spath='C:/Users/TH/Desktop/data/'
-    file_name= sid+'_nback_task'+'.csv'
-    save_path=spath+file_name
-    data.to_csv(save_path, sep=',',index=False)
-
-print('FINISH') 
-
-    # close the window  at the end of the experiment
-    win.close()
     
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
     
     
     
-    """
+    
     # Below is the testing zone for testing RatingScale function.
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
