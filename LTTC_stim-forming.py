@@ -101,17 +101,11 @@ if __name__ == "__main__":
         
     
     # 5_Import all the pre-selected bunch of texts
-    """
+    
     # reload the texts
     with open (text_data_path + "LTTC-modifiedText_OneLIST_blank.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
         #pprint(textLIST[0:10])
-        
-        # for 
-        for count in range(10):
-            tmpDICT = {'{}'.format(count+1) : textLIST[count:count+10]}  # This result is wrong!!  #textLIST[0:10]} & textLIST[10:10]}
-            texts_totalDICT.update(tmpDICT)
-        pprint(texts_totalDICT)
         
     # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
      # ALL Sets of Texts  >> the following should be able to set it as a loop
@@ -131,7 +125,7 @@ if __name__ == "__main__":
         sets_10_LIST = textLIST[90:]
         
         
-        
+        """
         # High-CD setsDICT (3/4/5/6/7)
         sets_3_DICT = {'3':textLIST[20:30]}
         sets_4_DICT = {'4':textLIST[30:40]}
@@ -160,7 +154,7 @@ if __name__ == "__main__":
         texts_low_CD_setDICT.update(sets_10_DICT)
         #pprint(texts_low_CD_setDICT)
         print(len(texts_low_CD_setDICT))
-        
+        """
         
         # texts_high_CD_setLIST = [345, 456, 567, 367, 347] >> we randomly choose one the set from these 5 sets
         tHigh_345LIST = []
@@ -214,7 +208,7 @@ if __name__ == "__main__":
         #pprint(len(stim_345_LIST))
         
         
-        
+        """
         tHigh_456LIST = []
         tHigh_567LIST = []
         tHigh_367LIST = []
