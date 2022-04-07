@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # setting up the display win conditions
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     clock = core.Clock()
-    start_time = clock.getTime()
+    #start_time = clock.getTime()
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會看到一篇文章\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
@@ -98,6 +98,7 @@ if __name__ == "__main__":
         display_fix()
         core.wait(1)
         
+        start_time = clock.getTime()
         # display the stimuli, which would be a series of short texts
         testing_text = "LALALALLALALALALALALALLLAL"
         text = visual.TextStim(win = win, text = testing_text)
