@@ -74,8 +74,8 @@ if __name__ == "__main__":
             else:
                 pass
             
-        print("The TargetPseudo words = ", targetPseudoLIST)
-        print("The ControlPseudo words = ", controlPseudoLIST)
+        #print("The TargetPseudo words = ", targetPseudoLIST)
+        #print("The ControlPseudo words = ", controlPseudoLIST)
         
     # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
         words_high_CD_setLIST = sample(targetPseudoLIST, 3)
@@ -88,11 +88,8 @@ if __name__ == "__main__":
 
         #print("High-CD_set = ", words_high_CD_setLIST)
         #print("Low-CD_set = ", words_low_CD_setLIST)
-        
-        for count in range(10):
-            PLDT_LIST.extend(pseudoLIST)
-        print(PLDT_LIST)
-        print(len(PLDT_LIST))
+
+        random.shuffle(pseudoLIST)
     pass
 
 
@@ -116,10 +113,10 @@ if __name__ == "__main__":
     # Setting the presented window
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     clock = core.Clock()
-    start_time = clock.getTime()
+    #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會看到一串數字\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
+    instructions_1 = """接下來你會看到一連串的字詞\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
     instructions_2 = """看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"""
     keypress = ['space']
     
@@ -127,89 +124,88 @@ if __name__ == "__main__":
     display_ins(instructions_1, keypress)
     display_ins(instructions_2, keypress)
     
-    # Display fixations
-    #display_fix()
-    #win.flip()
-    
+    # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(15):
-        # display fixation in the central of the screen
-        display_fix()
-        core.wait(1)
+    for i in range(2):
         
-        # randomly select the wanted pseudoword from the list
-        #random.shuffle(PLDT_LIST)
-        stim_wordSTR = random.choice(PLDT_LIST)
-        
-        # Show the testing stimulus
-        testing_stimuli = visual.TextStim(win = win, text = stim_wordSTR)  # how to control that every words only
-        testing_stimuli.draw()
-        win.flip()  # always add this after an item was presented
-        
-        #setting up what keypress would allow the experiment to proceed
-        keys = event.waitKeys(maxWait = 2, keyList = ['z', 'slash'])
-        event.getKeys(keyList = ['z', 'slash'])
-        print(keys)
-        
-        # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-        if keys == ["z"]:
-            conditionLIST = ["seen"]
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
-        
-        elif keys == ["slash"]:
-            conditionLIST = ["unseen"]
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
+        # randomly select the wanted pseudoword from the list  
+        random.shuffle(pseudoLIST)
+        for stim_wordSTR in pseudoLIST:
+            # display fixation in the central of the screen
+            display_fix()
+            core.wait(1)
             
-        else:
-            keys = ["Wrong!!"]
-            conditionLIST = ["N/A"]
-            time_duration = 0
-            print(time_duration)
-            clock.reset()
+            start_time = clock.getTime()
+            # Show the testing stimulus
+            testing_stimuli = visual.TextStim(win = win, text = stim_wordSTR)  # how to control that every words only
+            testing_stimuli.draw()
+            win.flip()  # always add this after an item was presented
         
-        # calculate the correctness of the LDT response
-        if stim_wordSTR in targetPseudoLIST:
-            #conditionLIST = ["seen"]
-            if keys == ["z"]:
-                correctLIST = ["True"]
-                
-            #conditionLIST = ["unseen"]
-            elif keys == ["slash"]:
-                correctLIST = ["False"]
+            #setting up what keypress would allow the experiment to proceed
+            keys = event.waitKeys(maxWait = 2, keyList = ['z', 'slash'])
+            event.getKeys(keyList = ['z', 'slash'])
+            print(keys)
         
-        elif stim_wordSTR not in targetPseudoLIST:
-            #conditionLIST = ["seen"]
+            # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
             if keys == ["z"]:
-                correctLIST = ["False"]
-                
-            #conditionLIST = ["unseen"]
+                conditionLIST = ["seen"]
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+        
             elif keys == ["slash"]:
-                correctLIST = ["True"]
-                
-        else:
-            correctLIST = ["N/A"]
+                conditionLIST = ["unseen"]
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+            
+            else:
+                keys = ["Wrong!!"]
+                conditionLIST = ["N/A"]
+                time_duration = 0
+                print(time_duration)
+                clock.reset()
+        
+            # calculate the correctness of the LDT response
+            if stim_wordSTR in targetPseudoLIST:
+                #conditionLIST = ["seen"]
+                if keys == ["z"]:
+                    correctLIST = ["True"]
+                #conditionLIST = ["unseen"]
+                elif keys == ["slash"]:
+                    correctLIST = ["False"]
+                else:
+                    correctLIST = ["N/A"]
+        
+            elif stim_wordSTR not in targetPseudoLIST:
+                #conditionLIST = ["seen"]
+                if keys == ["z"]:
+                    correctLIST = ["False"]
+                #conditionLIST = ["unseen"]
+                elif keys == ["slash"]:
+                    correctLIST = ["True"]
+                else:
+                    correctLIST = ["N/A"]
+            else:
+                pass
             
         
-        # making the wanted info into the List form for future use
-        sub_idLIST.append(sub_id)
-        dateLIST.append(day)
-        stimLIST.append(stim_wordSTR)
-        resultKeyLIST.append(keys)
-        responseLIST.append(conditionLIST)
-        LDT_rtLIST.append(time_duration)
-        correctnessLIST.append(correctLIST)
+            # making the wanted info into the List form for future use
+            sub_idLIST.append(sub_id)
+            dateLIST.append(day)
+            stimLIST.append(stim_wordSTR)
+            resultKeyLIST.append(keys)
+            responseLIST.append(conditionLIST)
+            LDT_rtLIST.append(time_duration)
+            correctnessLIST.append(correctLIST)
         
-        #core.wait(0.5)
+            #core.wait(0.5)
         
-        # close the window  at the end of the experiment
+            # close the window  at the end of the experiment
     win.close()
         
         
@@ -315,10 +311,4 @@ if __name__ == "__main__":
     
     # 按鍵反應 + 按鍵時間（RT）+ (trigger_for 腦波) + 正確與否
     # basic info = trails數（的第幾題）,trai_list(第幾次trial), sub_num, date, duration
-    
-    # added these two
-    # clock.getTime()
-    # clock.reset()
-    
-    # probably need to use dataframe to save all the reaction 
     """
