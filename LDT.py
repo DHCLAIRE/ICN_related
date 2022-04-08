@@ -116,9 +116,7 @@ if __name__ == "__main__":
         pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
         pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
         
-        
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-
         
     pass
 
