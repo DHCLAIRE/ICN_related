@@ -33,13 +33,14 @@ import numpy as np
 from datetime import datetime,date
 import pandas as pd
 
+# need to add feedbacks of scaling and texts records
 
 def display_ins(STR, keyPressLIST = None):
-    """
+    '''
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
     若未指定反應鍵，則任意鍵皆可換下一張刺激
     i.e display("啦啦啦", ['space'])
-    """
+    '''
     instructionsLIST = STR.split("\\\\")
     keyPressLIST = keyPressLIST
         
@@ -51,15 +52,18 @@ def display_ins(STR, keyPressLIST = None):
     win.flip()
 
 def display_fix():
-    """
+    '''
     呈現"+"於螢幕中央
-    """
+    '''
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
 
 
 if __name__ == "__main__":
+    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
+    text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
+    textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     
     # Stimuli Section
     # insert the stim-forming code?? >> or just present the selected texts per paragraphs??
@@ -77,7 +81,8 @@ if __name__ == "__main__":
     sub_id = str(input("Subject: "))
     
     # setting up the display win conditions
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
     #start_time = clock.getTime()
 
@@ -86,9 +91,30 @@ if __name__ == "__main__":
     instructions_2 = """請在紙上評分\n，評分完畢後請按下空白鍵繼續"""
     keypress = ['space']
     
-    # Experiment section  # Two parts >> Comprehension(Learning phase) + LDT(Testing Phase)
+    
+    # Load in the stim_texts
+    
+    textSetsLIST = []
+    stimLIST = []
+    stim_SetLIST = []
+    
+    for sets in range(3):
+        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+1), "r", encoding = "utf-8") as jfile_3:
+            textSetsLIST = json.load(jfile_3)
+            pprint(textSetsLIST)
+            print(len(textSetsLIST))
+            stimLIST = random.sample(textSetsLIST, 5)
+            print(stimLIST)
+            print(len(stimLIST))
+        stim_SetLIST.extend(stimLIST)
+    
+    pprint(stim_SetLIST)
+    print(len(stim_SetLIST))
+    
+    
+    # Experiment section
     # Reading Comprehension Task STARTS
-    for i in range(5):
+    for i in stim_SetLIST:
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypress)
         #win.flip()
@@ -100,7 +126,7 @@ if __name__ == "__main__":
         
         start_time = clock.getTime()
         # display the stimuli, which would be a series of short texts
-        testing_text = "LALALALLALALALALALALALLLAL"
+        testing_text = i
         text = visual.TextStim(win = win, text = testing_text)
         print("text starts")
         text.draw()
@@ -123,7 +149,7 @@ if __name__ == "__main__":
             pass
         
         # making the wanted info into the List form for future use
-        text_noLIST.append(i+1)
+        text_noLIST.append(int(stim_SetLIST.index(i))+1)
         dateLIST.append(day)
         sub_idLIST.append(sub_id)
         resultKeyLIST.append(keys)
@@ -141,8 +167,9 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                        'Date':dateLIST,
-                       'Self-paced RT':self_paced_rtLIST,
-                       'Texts':text_noLIST})
+                       'Texts':text_noLIST,
+                       'Self-paced RT':self_paced_rtLIST})
+    
     print(type(dataDICT))
     
     data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
