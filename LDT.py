@@ -49,6 +49,7 @@ if __name__ == "__main__":
     #pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
     
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/2nd_Stim-results_selfPRT_PLDT/"
     
     # setting up usable dataLIST
     pseudoLIST = []
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     words_high_CD_setLIST = []
     words_low_CD_setLIST = []
     PLDT_LIST = []
-    
+    """
     # 2_Import the pseudoword list (in json file form)
     with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
         pseudoLIST = json.load(jfile)
@@ -90,6 +91,24 @@ if __name__ == "__main__":
         #print("Low-CD_set = ", words_low_CD_setLIST)
 
         random.shuffle(pseudoLIST)
+        """
+    
+    # key in number for notifying which subject it is
+    sub_id = str(input("Subject: "))
+    
+    DICT_name = sub_id + '_pseudowordsDICT.json'
+    Dsave_path = result_data_path + DICT_name
+    
+    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
+        pseudoLIST = json.load(jfile)
+        
+    #剩把pseudoDICT的值叫出來
+    pseudoLIST = []
+    targetPseudoLIST = []
+    controlPseudoLIST = []
+    words_high_CD_setLIST = []
+    words_low_CD_setLIST = []
+        
     pass
 
 
@@ -107,7 +126,7 @@ if __name__ == "__main__":
     correctLIST = []
     
     # key in number for notifying which subject it is
-    sub_id = str(input("Subject: "))
+    #sub_id = str(input("Subject: "))
     
     # Step_1: Show the instructions
     # Setting the presented window
@@ -224,9 +243,9 @@ if __name__ == "__main__":
                            'Correctness':correctnessLIST
                            })
     
-    data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_LDT_results.csv'
-    save_path = data_path + file_name
+    save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
     # close all the possible ongoing commands that could be running in the background
