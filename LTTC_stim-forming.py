@@ -132,7 +132,7 @@ if __name__ == "__main__":
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
 
-    """
+    
     textSetsLIST_High = []
     textSetsLIST_Low = []
     new_High_textSetsLIST = []
@@ -142,6 +142,7 @@ if __name__ == "__main__":
     Low_stimLIST = []
     Low_stim_SetLIST = []
     total_stimSetLIST = []
+    suffledTotalT_LIST = []
     
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
@@ -188,8 +189,11 @@ if __name__ == "__main__":
     total_stimSetLIST.extend(new_Low_textSetsLIST)
     
     print(len(total_stimSetLIST))
-    """
+    random.shuffle(total_stimSetLIST)
     
+    
+    
+    """
     pseudoDICT = {}
     
     sub_id = "001"
@@ -217,7 +221,7 @@ if __name__ == "__main__":
     words_high_CD_setLIST = []
     words_low_CD_setLIST = []
     
-    
+    """
     
     """
                 
