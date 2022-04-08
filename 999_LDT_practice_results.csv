@@ -1,0 +1,11 @@
+Sub_id,Date,Stimuli,Keypress,Response,LDT_RT,Correctness
+999,2022-04-08,blue,['z'],['seen'],470.0,['False']
+999,2022-04-08,red,['slash'],['unseen'],270.0,['True']
+999,2022-04-08,yellow,['z'],['seen'],250.0,['False']
+999,2022-04-08,green,['slash'],['unseen'],154.0,['True']
+999,2022-04-08,orange,['slash'],['unseen'],256.0,['True']
+999,2022-04-08,yellow,['slash'],['unseen'],150.0,['True']
+999,2022-04-08,blue,['z'],['seen'],175.0,['False']
+999,2022-04-08,orange,['slash'],['unseen'],58.0,['True']
+999,2022-04-08,green,['z'],['seen'],171.0,['False']
+999,2022-04-08,red,['z'],['seen'],70.0,['False']
