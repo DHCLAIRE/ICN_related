@@ -94,27 +94,66 @@ if __name__ == "__main__":
     
     # Load in the stim_texts
     
-    textSetsLIST = []
-    stimLIST = []
-    stim_SetLIST = []
+    textSetsLIST_High = []
+    textSetsLIST_Low = []
+    new_High_textSetsLIST = []
+    new_Low_textSetsLIST = []
+    High_stimLIST = []
+    High_stim_SetLIST = []
+    Low_stimLIST = []
+    Low_stim_SetLIST = []
+    total_stimSetLIST = []
     
+    # High_CD Set TEXTS
+    # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
     for sets in range(3):
-        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+1), "r", encoding = "utf-8") as jfile_3:
-            textSetsLIST = json.load(jfile_3)
-            pprint(textSetsLIST)
-            print(len(textSetsLIST))
-            stimLIST = random.sample(textSetsLIST, 5)
-            print(stimLIST)
-            print(len(stimLIST))
-        stim_SetLIST.extend(stimLIST)
+        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+4), "r", encoding = "utf-8") as jfile_3:
+            textSetsLIST_High = json.load(jfile_3)
+            
+            # randomly select 5 texts from the json file
+            High_stimLIST = random.sample(textSetsLIST_High, 5)
+            #pprint(High_stimLIST)
+            #print(len(High_stimLIST))
+
+            # replace {} to the assigned pseudowords by different condition
+            for tSTR in High_stimLIST:
+                new_tSTR = tSTR.replace("{}", words_high_CD_setLIST[sets])
+                #pprint(new_tSTR)
+                new_High_textSetsLIST.extend([new_tSTR])
+                
+    print(new_High_textSetsLIST)
+    print(len(new_High_textSetsLIST))
     
-    pprint(stim_SetLIST)
-    print(len(stim_SetLIST))
+     
+     # Low_CD Set TEXTS
+     # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
+    for sets in range(3):
+        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+8), "r", encoding = "utf-8") as jfile_4:
+            textSetsLIST_Low = json.load(jfile_4)
+            
+            # randomly select 5 texts from the json file
+            Low_stimLIST = random.sample(textSetsLIST_Low, 5)
+            #pprint(Low_stimLIST)
+            #print(len(Low_stimLIST))
+
+            # replace {} to the assigned pseudowords by different condition
+            for tSTR in Low_stimLIST:
+                new_tSTR = tSTR.replace("{}", words_low_CD_setLIST[sets])
+                #pprint(new_tSTR)
+                new_Low_textSetsLIST.extend([new_tSTR])
+                
+    print(new_Low_textSetsLIST)
+    print(len(new_Low_textSetsLIST))
+    
+    total_stimSetLIST.extend(new_High_textSetsLIST)
+    total_stimSetLIST.extend(new_Low_textSetsLIST)
+    
+    random.shuffle(total_stimSetLIST)
     
     
     # Experiment section
     # Reading Comprehension Task STARTS
-    for i in stim_SetLIST:
+    for i in total_stimSetLIST:
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypress)
         #win.flip()
