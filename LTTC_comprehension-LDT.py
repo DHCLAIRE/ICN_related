@@ -62,6 +62,7 @@ def display_fix():
 
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/2nd_Stim-results_selfPRT_PLDT/"
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     
@@ -91,9 +92,52 @@ if __name__ == "__main__":
     instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請在紙上評分\n，評分完畢後請按下空白鍵繼續"""
     keypress = ['space']
     
+    # for pseudoword data
+    tmpLIST = []
+    tmpLIST_2 = []
+    pseudoLIST = []
+    targetPseudoLIST = []
+    controlPseudoLIST = []
+    words_high_CD_setLIST = []
+    words_low_CD_setLIST = []
+    texts_high_CD_setLIST = []
+    texts_low_CD_setLIST = []
+    
+    
+    # 2_Import the pseudoword list (in json file form)
+    with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
+        pseudoLIST = json.load(jfile)
+        print("12 pseudowords = ", pseudoLIST)
+        
+    # 3_Randomly select 6 out of the list of 12 pseudowords as the target words
+        # randomly select 6 target pseudowords from the list
+        targetPseudoLIST = sample(pseudoLIST, 6)
+        
+        # collect other 6 pseudowords as the control group
+        for t in pseudoLIST:
+            if t not in targetPseudoLIST:
+                controlPseudoLIST.extend([t])
+            else:
+                pass
+            
+        print("The TargetPseudo words = ", targetPseudoLIST)
+        print("The ControlPseudo words = ", controlPseudoLIST)
+        
+    # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
+        words_high_CD_setLIST = sample(targetPseudoLIST, 3)
+        
+        for w in targetPseudoLIST:
+            if w not in words_high_CD_setLIST:
+                words_low_CD_setLIST.extend([w])
+            else:
+                pass
+
+        print("High-CD_set = ", words_high_CD_setLIST)
+        print("Low-CD_set = ", words_low_CD_setLIST)
+        
     
     # Load in the stim_texts
-    
+    # for the stim_texts data
     textSetsLIST_High = []
     textSetsLIST_Low = []
     new_High_textSetsLIST = []
@@ -103,6 +147,7 @@ if __name__ == "__main__":
     Low_stimLIST = []
     Low_stim_SetLIST = []
     total_stimSetLIST = []
+    
     
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
@@ -188,7 +233,7 @@ if __name__ == "__main__":
             pass
         
         # making the wanted info into the List form for future use
-        text_noLIST.append(int(stim_SetLIST.index(i))+1)
+        text_noLIST.append(int(total_stimSetLIST.index(i))+1)
         dateLIST.append(day)
         sub_idLIST.append(sub_id)
         resultKeyLIST.append(keys)
@@ -207,14 +252,26 @@ if __name__ == "__main__":
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                        'Date':dateLIST,
                        'Texts':text_noLIST,
-                       'Self-paced RT':self_paced_rtLIST})
+                       'Self-paced RT':self_paced_rtLIST
+                       })
+    
+    pseudoDICT = {"The TargetPseudo group_6":targetPseudoLIST,
+                  "The ControlPseudo group_6": controlPseudoLIST,
+                  "High_CD condition pseudowords_3":words_high_CD_setLIST,
+                  "Low_CD condition pseudowords_3":words_low_CD_setLIST}
+    
     
     print(type(dataDICT))
     
-    data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    #result_data_path = result_data_path
     file_name = sub_id + '_Reading_task.csv'
-    save_path = data_path + file_name
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    fsave_path = result_data_path + file_name
+    dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    
+    DICT_name = sub_id + '_pseudowordsDICT.json'
+    Dsave_path = result_data_path + DICT_name
+    with open(Dsave_path, "w", newline='', encoding="UTF-8") as jsfile:
+        json.dump(pseudoDICT, jsfile, ensure_ascii=False)
 
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
