@@ -38,8 +38,8 @@ if __name__ == "__main__":
     texts_low_CD_setLIST = []
     
     #texts_totalDICT = {}
-    texts_high_CD_setDICT = {}
-    texts_low_CD_setDICT = {}
+    #texts_high_CD_setDICT = {}
+    #texts_low_CD_setDICT = {}
     
     """
     # 1_Create the pseudoword LIST and save it into json file
