@@ -260,8 +260,12 @@ if __name__ == "__main__":
                   "High_CD condition pseudowords_3":words_high_CD_setLIST,
                   "Low_CD condition pseudowords_3":words_low_CD_setLIST}
     
+    textsDICT = {"High_textSetsLIST": new_High_textSetsLIST,
+                 "Low_textSetsLIST":new_Low_textSetsLIST,
+                 "Total_stimSetLIST":total_stimSetLIST}
     
-    print(type(dataDICT))
+    
+    #print(type(dataDICT))
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
     file_name = sub_id + '_Reading_task.csv'
@@ -272,6 +276,12 @@ if __name__ == "__main__":
     Dsave_path = result_data_path + DICT_name
     with open(Dsave_path, "w", newline='', encoding="UTF-8") as jsfile:
         json.dump(pseudoDICT, jsfile, ensure_ascii=False)
+        
+    Text_name = sub_id + '_textsDICT.json'
+    Tsave_path = result_data_path + Text_name
+    with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
+        json.dump(textsDICT, jsfile_2, ensure_ascii=False)
+        
 
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
