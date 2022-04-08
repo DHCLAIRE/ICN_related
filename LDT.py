@@ -48,8 +48,10 @@ if __name__ == "__main__":
     #realwordLIST = ["blue", "green", "yellow", "red", "orange"]
     #pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
     
+    
+    #sub_id = str(input("Subject: "))
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     
     # setting up usable dataLIST
     pseudoLIST = []
@@ -96,18 +98,27 @@ if __name__ == "__main__":
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
     
-    DICT_name = sub_id + '_pseudowordsDICT.json'
-    Dsave_path = result_data_path + DICT_name
-    
-    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
-        pseudoLIST = json.load(jfile)
-        
     #剩把pseudoDICT的值叫出來
     pseudoLIST = []
     targetPseudoLIST = []
     controlPseudoLIST = []
     words_high_CD_setLIST = []
     words_low_CD_setLIST = []
+    
+    
+    DICT_name = sub_id + '_pseudowordsDICT.json'
+    Dsave_path = result_data_path + DICT_name
+    
+    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
+        pseudoDICT = json.load(jfile)
+        pprint(pseudoDICT)
+        #print(pseudoDICT["High_CD condition pseudowords_3"])
+        pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
+        pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+        
+        
+        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+
         
     pass
 
@@ -150,7 +161,7 @@ if __name__ == "__main__":
     
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(2):
+    for i in range(10):
         
         # randomly select the wanted pseudoword from the list  
         random.shuffle(pseudoLIST)
