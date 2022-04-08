@@ -41,7 +41,8 @@ if __name__ == "__main__":
     # Step_0: load in all the stimuli
     # testing stimuli (realwordLIST & pseudowordLIST)
     realwordLIST = ["blue", "green", "yellow", "red", "orange"]
-    #pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
+    pseudowordLIST = ["thorpt", "rairn", "coan", "flatch", "meeg"]
+    totalLIST = ["blue", "green", "yellow", "red", "orange", "thorpt", "rairn", "coan", "flatch", "meeg"]
     
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
     
@@ -129,8 +130,8 @@ if __name__ == "__main__":
     for i in range(2):
         
         # randomly select the wanted pseudoword from the list  
-        random.shuffle(realwordLIST)
-        for stim_wordSTR in realwordLIST:
+        random.shuffle(totalLIST)
+        for stim_wordSTR in totalLIST:
             # display fixation in the central of the screen
             display_fix()
             core.wait(1)
