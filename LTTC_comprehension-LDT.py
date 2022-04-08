@@ -147,6 +147,8 @@ if __name__ == "__main__":
     Low_stimLIST = []
     Low_stim_SetLIST = []
     total_stimSetLIST = []
+    shuffledTotalT_LIST = []
+    rating_LIST = []
     
     
     # High_CD Set TEXTS
@@ -238,6 +240,8 @@ if __name__ == "__main__":
         sub_idLIST.append(sub_id)
         resultKeyLIST.append(keys)
         self_paced_rtLIST.append(time_duration)
+        shuffledTotalT_LIST.append([i])
+        rating_LIST.append([""])
         
         core.wait(0.5)
         
@@ -251,8 +255,10 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                        'Date':dateLIST,
-                       'Texts':text_noLIST,
-                       'Self-paced RT':self_paced_rtLIST
+                       'Texts_no':text_noLIST,
+                       'Self-paced RT':self_paced_rtLIST,
+                       'Rating Scale': rating_LIST,
+                       'Text content': shuffledTotalT_LIST
                        })
     
     pseudoDICT = {"The TargetPseudo group_6":targetPseudoLIST,
