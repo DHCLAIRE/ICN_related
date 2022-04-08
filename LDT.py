@@ -111,7 +111,8 @@ if __name__ == "__main__":
     
     # Step_1: Show the instructions
     # Setting the presented window
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
@@ -120,9 +121,13 @@ if __name__ == "__main__":
     instructions_2 = """看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"""
     keypress = ['space']
     
+    core.wait(3)
+    
     #Display the instructions
     display_ins(instructions_1, keypress)
     display_ins(instructions_2, keypress)
+    
+    core.wait(3)
     
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
