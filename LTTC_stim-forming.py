@@ -108,9 +108,7 @@ if __name__ == "__main__":
         textLIST = json.load(jfile_2)
         #pprint(textLIST[0:10])
         
-    # 6_divided all the pre-selected texts into the High-CD and Low-CD sets
-     # ALL Sets of Texts  >> the following should be able to set it as a loop
-        
+        # divide all the sets into an individual LIST by topic
         # High-CD setsLIST (3/4/5/6/7)
         sets_3_LIST = textLIST[20:30]
         sets_4_LIST = textLIST[30:40]
@@ -126,37 +124,62 @@ if __name__ == "__main__":
         sets_10_LIST = textLIST[90:]
         
         print(sets_3_LIST)
-        """
     
-    """
         # save all the sets into an individual json file
         with open(textSets_data_path + "sets_10_LIST.json", "w", newline='', encoding="UTF-8") as setsfile:
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
 
     
-    textSetsLIST = []
-    new_textSetsLIST = []
-    stimLIST = []
-    stim_SetLIST = []
-        
+    textSetsLIST_High = []
+    textSetsLIST_Low = []
+    new_High_textSetsLIST = []
+    new_Low_textSetsLIST = []
+    High_stimLIST = []
+    High_stim_SetLIST = []
+    Low_stimLIST = []
+    Low_stim_SetLIST = []
+    
+    # High_CD Set TEXTS
+    # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
     for sets in range(3):
         with open (textSets_data_path + "sets_{}_LIST.json".format(sets+4), "r", encoding = "utf-8") as jfile_3:
-            textSetsLIST = json.load(jfile_3)
+            textSetsLIST_High = json.load(jfile_3)
             
-            stimLIST = random.sample(textSetsLIST, 5)
-            #pprint(stimLIST)
-            print(len(stimLIST))
+            # randomly select 5 texts from the json file
+            High_stimLIST = random.sample(textSetsLIST_High, 5)
+            #pprint(High_stimLIST)
+            #print(len(High_stimLIST))
 
-            
-            for tSTR in stimLIST:
+            # replace {} to the assigned pseudowords by different condition
+            for tSTR in High_stimLIST:
                 new_tSTR = tSTR.replace("{}", words_high_CD_setLIST[sets])
-                #pprint(new_t)
-                new_textSetsLIST.extend([new_tSTR])
+                #pprint(new_tSTR)
+                new_High_textSetsLIST.extend([new_tSTR])
                 
-    print(new_textSetsLIST)
-    print(len(new_textSetsLIST))
-    
+    print(new_High_textSetsLIST)
+    print(len(new_High_textSetsLIST))
+     
+     
+     # Low_CD Set TEXTS
+     # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
+    for sets in range(3):
+        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+8), "r", encoding = "utf-8") as jfile_4:
+            textSetsLIST_Low = json.load(jfile_4)
+            
+            # randomly select 5 texts from the json file
+            Low_stimLIST = random.sample(textSetsLIST_Low, 5)
+            #pprint(Low_stimLIST)
+            #print(len(Low_stimLIST))
+
+            # replace {} to the assigned pseudowords by different condition
+            for tSTR in Low_stimLIST:
+                new_tSTR = tSTR.replace("{}", words_low_CD_setLIST[sets])
+                #pprint(new_tSTR)
+                new_Low_textSetsLIST.extend([new_tSTR])
+                
+    print(new_Low_textSetsLIST)
+    print(len(new_Low_textSetsLIST))
     
     
     
@@ -165,21 +188,6 @@ if __name__ == "__main__":
     
     
     """
-        realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
-        tmpLIST_X = []
-        for realwSTR in realwords:
-            tmpLIST_X = [realwSTR]
-            print(tmpLIST_X)
-        
-        for per_textSTR in stim_SetLIST:
-            print(per_textSTR)
-            print(type(per_textSTR))
-            if realwSTR in per_textSTR:
-                per_textSTR.replace(realwSTR, "{}")
-            else:
-                print("error")
-            
-            pprint(per_textSTR)
                 
         # High-CD setsDICT (3/4/5/6/7)
         sets_3_DICT = {'3':textLIST[20:30]}
