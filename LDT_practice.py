@@ -45,6 +45,7 @@ if __name__ == "__main__":
     totalLIST = ["blue", "green", "yellow", "red", "orange", "thorpt", "rairn", "coan", "flatch", "meeg"]
     
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     
     # setting up usable dataLIST
     pseudoLIST = []
@@ -220,9 +221,9 @@ if __name__ == "__main__":
                            'Correctness':correctnessLIST
                            })
     
-    data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_LDT_practice_results.csv'
-    save_path = data_path + file_name
+    save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
     # close all the possible ongoing commands that could be running in the background

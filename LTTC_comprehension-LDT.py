@@ -62,7 +62,7 @@ def display_fix():
 
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     
@@ -263,7 +263,7 @@ if __name__ == "__main__":
     
     print(type(dataDICT))
     
-    #result_data_path = result_data_path
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
     file_name = sub_id + '_Reading_task.csv'
     fsave_path = result_data_path + file_name
     dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
