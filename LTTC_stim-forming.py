@@ -139,6 +139,7 @@ if __name__ == "__main__":
     High_stim_SetLIST = []
     Low_stimLIST = []
     Low_stim_SetLIST = []
+    total_stimSetLIST = []
     
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
@@ -181,9 +182,10 @@ if __name__ == "__main__":
     print(new_Low_textSetsLIST)
     print(len(new_Low_textSetsLIST))
     
+    total_stimSetLIST.extend(new_High_textSetsLIST)
+    total_stimSetLIST.extend(new_Low_textSetsLIST)
     
-    
-    
+    print(len(total_stimSetLIST))
     
     
     
