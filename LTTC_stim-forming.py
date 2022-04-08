@@ -102,7 +102,7 @@ if __name__ == "__main__":
         
     
     # 5_Import all the pre-selected bunch of texts
-    
+    """
     # reload the texts
     with open (text_data_path + "LTTC-modifiedText_OneLIST_present.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
@@ -125,65 +125,62 @@ if __name__ == "__main__":
         sets_9_LIST = textLIST[80:90]
         sets_10_LIST = textLIST[90:]
         
-        
+        print(sets_3_LIST)
         """
+    
+    """
         # save all the sets into an individual json file
         with open(textSets_data_path + "sets_10_LIST.json", "w", newline='', encoding="UTF-8") as setsfile:
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
-        
-        textSetsLIST = []
-        stimLIST = []
-        stim_SetLIST = []
-        
-        for sets in range(3):
-            with open (textSets_data_path + "sets_{}_LIST.json".format(sets+1), "r", encoding = "utf-8") as jfile_3:
-                textSetsLIST = json.load(jfile_3)
-                pprint(textSetsLIST)
-                print(len(textSetsLIST))
-                stimLIST = random.sample(textSetsLIST, 5)
-                print(stimLIST)
-                print(len(stimLIST))
-            stim_SetLIST.extend(stimLIST)
-        
-        pprint(stim_SetLIST)
-        print(len(stim_SetLIST))
-                
-                
-        """
-                for line in textSetsLIST:
-                    lineLIST = line.split(", ")
-                    
-                    print(line)
-                    print(type(line))
-                    print(len(line))
-                    pprint(lineLIST)
-                    print(len(lineLIST))
 
-                realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
-                tmpLIST_X = []
-                #for realw in range(len(stim_345_LIST)):
-                for t in stim_345_LIST:
-                    print(len(t))
-                    if "thesis" in t:
-                        print("There's a word in here!")
-                        t.replace("thesis", "{}")
-                        pprint(t)
-                    elif "gimmick" in t:
-                        print("There's a word in here!")
-                        t.replace("gimmick", "{}")
-                        pprint(t)
-                    elif "yogurt" in t:
-                        print("There's a word in here!")
-                        t.replace("yogurt", "{}")
-                        pprint(t)
-                    else:
-                        print("NONE")
-                        #pass
-                
-                """
+    
+    textSetsLIST = []
+    new_textSetsLIST = []
+    stimLIST = []
+    stim_SetLIST = []
+        
+    for sets in range(3):
+        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+4), "r", encoding = "utf-8") as jfile_3:
+            textSetsLIST = json.load(jfile_3)
             
-        """
+            stimLIST = random.sample(textSetsLIST, 5)
+            #pprint(stimLIST)
+            print(len(stimLIST))
+
+            
+            for tSTR in stimLIST:
+                new_tSTR = tSTR.replace("{}", words_high_CD_setLIST[sets])
+                #pprint(new_t)
+                new_textSetsLIST.extend([new_tSTR])
+                
+    print(new_textSetsLIST)
+    print(len(new_textSetsLIST))
+    
+    
+    
+    
+    
+    
+    
+    
+    """
+        realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
+        tmpLIST_X = []
+        for realwSTR in realwords:
+            tmpLIST_X = [realwSTR]
+            print(tmpLIST_X)
+        
+        for per_textSTR in stim_SetLIST:
+            print(per_textSTR)
+            print(type(per_textSTR))
+            if realwSTR in per_textSTR:
+                per_textSTR.replace(realwSTR, "{}")
+            else:
+                print("error")
+            
+            pprint(per_textSTR)
+                
         # High-CD setsDICT (3/4/5/6/7)
         sets_3_DICT = {'3':textLIST[20:30]}
         sets_4_DICT = {'4':textLIST[30:40]}
