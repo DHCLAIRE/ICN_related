@@ -26,6 +26,7 @@ from random import sample
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
+    textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     tmpLIST = []
     tmpLIST_2 = []
     pseudoLIST = []
@@ -63,10 +64,10 @@ if __name__ == "__main__":
     print(pseudoLIST)
     
     # Save the pseudoword LIST into a json file
-    #with open(stim_data_path + 'LTTC-pseudowordLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
-        #json.d ump(pseudoLIST, jsonfile, ensure_ascii=False)
+    with open(stim_data_path + 'LTTC-pseudowordLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
+        json.dump(pseudoLIST, jsonfile, ensure_ascii=False)
         """
-    
+
     # 2_Import the pseudoword list (in json file form)
     with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
         pseudoLIST = json.load(jfile)
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     # 5_Import all the pre-selected bunch of texts
     
     # reload the texts
-    with open (text_data_path + "LTTC-modifiedText_OneLIST_blank.json", "r", encoding = "utf-8") as jfile_2:
+    with open (text_data_path + "LTTC-modifiedText_OneLIST_present.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
         #pprint(textLIST[0:10])
         
@@ -125,6 +126,63 @@ if __name__ == "__main__":
         sets_10_LIST = textLIST[90:]
         
         
+        """
+        # save all the sets into an individual json file
+        with open(textSets_data_path + "sets_10_LIST.json", "w", newline='', encoding="UTF-8") as setsfile:
+            json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
+        """
+        
+        textSetsLIST = []
+        stimLIST = []
+        stim_SetLIST = []
+        
+        for sets in range(3):
+            with open (textSets_data_path + "sets_{}_LIST.json".format(sets+1), "r", encoding = "utf-8") as jfile_3:
+                textSetsLIST = json.load(jfile_3)
+                pprint(textSetsLIST)
+                print(len(textSetsLIST))
+                stimLIST = random.sample(textSetsLIST, 5)
+                print(stimLIST)
+                print(len(stimLIST))
+            stim_SetLIST.extend(stimLIST)
+        
+        pprint(stim_SetLIST)
+        print(len(stim_SetLIST))
+                
+                
+        """
+                for line in textSetsLIST:
+                    lineLIST = line.split(", ")
+                    
+                    print(line)
+                    print(type(line))
+                    print(len(line))
+                    pprint(lineLIST)
+                    print(len(lineLIST))
+
+                realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
+                tmpLIST_X = []
+                #for realw in range(len(stim_345_LIST)):
+                for t in stim_345_LIST:
+                    print(len(t))
+                    if "thesis" in t:
+                        print("There's a word in here!")
+                        t.replace("thesis", "{}")
+                        pprint(t)
+                    elif "gimmick" in t:
+                        print("There's a word in here!")
+                        t.replace("gimmick", "{}")
+                        pprint(t)
+                    elif "yogurt" in t:
+                        print("There's a word in here!")
+                        t.replace("yogurt", "{}")
+                        pprint(t)
+                    else:
+                        print("NONE")
+                        #pass
+                
+                """
+            
         """
         # High-CD setsDICT (3/4/5/6/7)
         sets_3_DICT = {'3':textLIST[20:30]}
@@ -154,8 +212,7 @@ if __name__ == "__main__":
         texts_low_CD_setDICT.update(sets_10_DICT)
         #pprint(texts_low_CD_setDICT)
         print(len(texts_low_CD_setDICT))
-        """
-        
+
         # texts_high_CD_setLIST = [345, 456, 567, 367, 347] >> we randomly choose one the set from these 5 sets
         tHigh_345LIST = []
         tHigh_345LIST.append(sets_3_LIST)
@@ -173,6 +230,23 @@ if __name__ == "__main__":
         #print(stim_345_LIST)
         #print(len(stim_345_LIST))
         
+        
+        tHigh_345LIST = []
+        tHigh_345LIST.append(sets_3_LIST)
+        tHigh_345LIST.append(sets_4_LIST)
+        tHigh_345LIST.append(sets_5_LIST)
+        #pprint(tHigh_345LIST)
+        
+        stim_345_LIST = []
+        tmpLIST_3 = sample(sets_3_LIST, 5)
+        tmpLIST_4 = sample(sets_4_LIST, 5)
+        tmpLIST_5 = sample(sets_5_LIST, 5)
+        stim_345_LIST.extend(tmpLIST_3)
+        stim_345_LIST.extend(tmpLIST_4)
+        stim_345_LIST.extend(tmpLIST_5)
+        #print(stim_345_LIST)
+        #print(len(stim_345_LIST))
+
         realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
         tmpLIST_X = []
         #for realw in range(len(stim_345_LIST)):
@@ -207,8 +281,7 @@ if __name__ == "__main__":
         #pprint(stim_345_LIST)
         #pprint(len(stim_345_LIST))
         
-        
-        """
+
         tHigh_456LIST = []
         tHigh_567LIST = []
         tHigh_367LIST = []
