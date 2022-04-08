@@ -6,7 +6,7 @@ from psychopy import prefs
 prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 import psychtoolbox as ptb
-from psychopy import sound, core   # if you change the setting, this command must be put after the prefs's command
+from psychopy import sound, core, visual   # if you change the setting, this command must be put after the prefs's command
 #import json
 print(sound.Sound)
 
@@ -25,6 +25,17 @@ def output_duration(length):
 
     return hours, mins, seconds
 """
+"""
+# 想想要如何同時撥出十字和音檔 >> or not
+def display_fix():
+    '''
+    呈現"+"於螢幕中央
+    '''
+    fixation = visual.TextStim(win = win, text = "+")
+    fixation.draw()
+    win.flip()
+"""
+
 if __name__ == "__main__":
     data_path = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
     
@@ -32,7 +43,6 @@ if __name__ == "__main__":
     # in (sample/sec) format
     # data is the numpy array that consists
     # of actual data read from the wav file
-
     
     for i in range(12):
         
