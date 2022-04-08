@@ -25,6 +25,7 @@ from random import sample
 
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     tmpLIST = []
@@ -67,7 +68,7 @@ if __name__ == "__main__":
     with open(stim_data_path + 'LTTC-pseudowordLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
         json.dump(pseudoLIST, jsonfile, ensure_ascii=False)
         """
-
+    """
     # 2_Import the pseudoword list (in json file form)
     with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
         pseudoLIST = json.load(jfile)
@@ -103,6 +104,7 @@ if __name__ == "__main__":
     
     # 5_Import all the pre-selected bunch of texts
     """
+    """
     # reload the texts
     with open (text_data_path + "LTTC-modifiedText_OneLIST_present.json", "r", encoding = "utf-8") as jfile_2:
         textLIST = json.load(jfile_2)
@@ -130,7 +132,7 @@ if __name__ == "__main__":
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
 
-    
+    """
     textSetsLIST_High = []
     textSetsLIST_Low = []
     new_High_textSetsLIST = []
@@ -186,6 +188,34 @@ if __name__ == "__main__":
     total_stimSetLIST.extend(new_Low_textSetsLIST)
     
     print(len(total_stimSetLIST))
+    """
+    
+    pseudoDICT = {}
+    
+    sub_id = "001"
+    
+    DICT_name = sub_id + '_pseudowordsDICT.json'
+    Dsave_path = result_data_path + DICT_name
+    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
+        pseudoDICT = json.load(jfile)
+        
+        pprint(pseudoDICT)
+        print(type(pseudoDICT["High_CD condition pseudowords_3"]))
+        
+        pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
+        pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+        print(pseudoLIST)
+        
+        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+        print(targetPseudoLIST)
+        
+        
+    #剩把pseudoDICT的值叫出來
+    pseudoLIST = []
+    targetPseudoLIST = []
+    controlPseudoLIST = []
+    words_high_CD_setLIST = []
+    words_low_CD_setLIST = []
     
     
     
