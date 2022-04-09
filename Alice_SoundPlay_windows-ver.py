@@ -26,7 +26,7 @@ def output_duration(length):
 
     return hours, mins, seconds
 """
-"""
+
 # 想想要如何同時撥出十字和音檔 >> or not
 def display_fix():
     '''
@@ -35,7 +35,7 @@ def display_fix():
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
-"""
+
 
 # For setting up the Trigger?? >> I guess
 n = 0
@@ -49,6 +49,7 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 
+win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
 
 if __name__ == "__main__":
     data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
@@ -58,9 +59,10 @@ if __name__ == "__main__":
     # data is the numpy array that consists
     # of actual data read from the wav file
 
-    #core.wait(15)
 
-    for i in range(2):
+    display_fix()
+
+    for i in range(12):
 
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
@@ -74,6 +76,7 @@ if __name__ == "__main__":
         Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
         Script_Sound.play()
+        
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
