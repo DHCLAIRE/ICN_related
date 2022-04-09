@@ -146,7 +146,7 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會看到一連串的字詞\n，請依照實驗指示進行按鍵反應\n，當你準備好的時候\n，請按下空白鍵\n"""
+    instructions_1 = """接下來你會看到一連串的字詞，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
     instructions_2 = """看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"""
     keypress = ['space']
     
