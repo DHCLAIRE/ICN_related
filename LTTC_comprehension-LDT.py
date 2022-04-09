@@ -67,10 +67,8 @@ if __name__ == "__main__":
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     
     # Stimuli Section
-    # insert the stim-forming code?? >> or just present the selected texts per paragraphs??
     
-    
-    # Wanted data
+    # For the csv wanted data
     day = date.today()
     dateLIST = []
     sub_idLIST = []
@@ -82,8 +80,8 @@ if __name__ == "__main__":
     sub_id = str(input("Subject: "))
     
     # setting up the display win conditions
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")   # Testing screen_small
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     clock = core.Clock()
     #start_time = clock.getTime()
 
@@ -167,41 +165,41 @@ if __name__ == "__main__":
                 new_tSTR = tSTR.replace("{}", words_high_CD_setLIST[sets])
                 #pprint(new_tSTR)
                 new_High_textSetsLIST.extend([new_tSTR])
-                
-    print(new_High_textSetsLIST)
-    print(len(new_High_textSetsLIST))
-    
-     
-     # Low_CD Set TEXTS
-     # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
-    for sets in range(3):
+        
+        # Low_CD Set TEXTS
+        # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
         with open (textSets_data_path + "sets_{}_LIST.json".format(sets+8), "r", encoding = "utf-8") as jfile_4:
             textSetsLIST_Low = json.load(jfile_4)
-            
+                    
             # randomly select 5 texts from the json file
             Low_stimLIST = random.sample(textSetsLIST_Low, 5)
             #pprint(Low_stimLIST)
             #print(len(Low_stimLIST))
-
+        
             # replace {} to the assigned pseudowords by different condition
             for tSTR in Low_stimLIST:
                 new_tSTR = tSTR.replace("{}", words_low_CD_setLIST[sets])
                 #pprint(new_tSTR)
                 new_Low_textSetsLIST.extend([new_tSTR])
                 
+                
+    print(new_High_textSetsLIST)
+    print(len(new_High_textSetsLIST))
     print(new_Low_textSetsLIST)
     print(len(new_Low_textSetsLIST))
     
+    # Combine the High & Low texts into one LIST
     total_stimSetLIST.extend(new_High_textSetsLIST)
     total_stimSetLIST.extend(new_Low_textSetsLIST)
     
+    # Shuffle the texts so that the texts would be randomized
     random.shuffle(total_stimSetLIST)
     
     
     # Experiment section
     # Reading Comprehension Task STARTS
     for i in total_stimSetLIST:
-        # display instructions for Reading Comprehension phase
+        #display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypress)
         #win.flip()
         core.wait(0.5)
@@ -291,6 +289,4 @@ if __name__ == "__main__":
 
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
-    
-    
-    #### Should I seperate the Comprehension and the LDT task, or should I combine these two tasks together??
+
