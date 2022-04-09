@@ -19,11 +19,11 @@ reaction time: need to be recorded
 # need to add feedbacks of scaling and texts records
 
 def display_ins(STR, keyPressLIST = None):
-    """
+    '''
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
     若未指定反應鍵，則任意鍵皆可換下一張刺激
     i.e display("啦啦啦", ['space'])
-    """
+    '''
     instructionsLIST = STR.split("\\\\")
     keyPressLIST = keyPressLIST
         
@@ -35,9 +35,9 @@ def display_ins(STR, keyPressLIST = None):
     win.flip()
 
 def display_fix():
-    """
+    '''
     呈現"+"於螢幕中央
-    """
+    '''
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
