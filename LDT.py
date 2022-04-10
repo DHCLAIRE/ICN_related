@@ -176,7 +176,7 @@ if __name__ == "__main__":
             win.flip()  # always add this after an item was presented
         
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait = 2, keyList = ['z', 'slash'])
+            keys = event.waitKeys(maxWait = 5, keyList = ['z', 'slash'])
             event.getKeys(keyList = ['z', 'slash'])
             print(keys)
         
