@@ -77,6 +77,19 @@ if __name__ == "__main__":
         Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
         Script_Sound.play()
+        
+        # Adding the esc function for any emergency condition
+        keys = event.waitKeys(maxWait = int(t+1), keyList = ['escape'])
+        event.getKeys(keyList = ['escape'])
+        #print(keys)
+        
+        # Setting up the response for the esc keypress
+        if keys == ["escape"]:
+            win.close()
+            core.quit()
+        else:
+            pass
+        
         core.wait(int(t+1))  # switch this num into the length of each audio files
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
@@ -98,6 +111,11 @@ if __name__ == "__main__":
         # the Gap between each audio files
         core.wait(5)
         print("Continue for the SoundFile{}".format(i+2))
+        
+        
+        
+        
+        
         
         
         # Add ESC could core.quit() function in the middle of the experiments process
