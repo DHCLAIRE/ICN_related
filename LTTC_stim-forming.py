@@ -146,6 +146,14 @@ if __name__ == "__main__":
     
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
+    CallingLIST = [["3", "4", "5"], ["4", "5", "6"], ["5", "6", "7"], ["3", "6", "7"], ["3", "4", "7"]]
+    for i in CallingLIST:
+        print(i[0])
+        print(type(i[0]))
+        
+        
+    
+    """
     for sets in range(3):
         with open (textSets_data_path + "sets_{}_LIST.json".format(sets+4), "r", encoding = "utf-8") as jfile_3:
             textSetsLIST_High = json.load(jfile_3)
@@ -191,7 +199,7 @@ if __name__ == "__main__":
     print(len(total_stimSetLIST))
     random.shuffle(total_stimSetLIST)
     
-    
+    """
     
     """
     pseudoDICT = {}
