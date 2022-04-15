@@ -43,6 +43,34 @@ if __name__ == "__main__":
     resultLIST = []
     tmpLIST = []
     
+    """
+    # key in number for notifying which subject it is
+    sub_id = str(input("Subject: "))
+    
+    #剩把pseudoDICT的值叫出來
+    pseudoLIST = []
+    targetPseudoLIST = []
+    controlPseudoLIST = []
+    words_high_CD_setLIST = []
+    words_low_CD_setLIST = []
+    
+    
+    DICT_name = sub_id + '_pseudowordsDICT.json'
+    Dsave_path = result_data_path + DICT_name
+    
+    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
+        pseudoDICT = json.load(jfile)
+        pprint(pseudoDICT)
+        #print(pseudoDICT["High_CD condition pseudowords_3"])
+        pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
+        pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+        
+        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+        
+    pass    
+    """
+    
+    
     
     with open (result_data_path + "001_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
         resultLIST = csvfile.read().split("\n")
