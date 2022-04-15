@@ -68,7 +68,7 @@ if __name__ == "__main__":
     with open(stim_data_path + 'LTTC-pseudowordLIST.json', "w", newline='', encoding="UTF-8") as jsonfile:
         json.dump(pseudoLIST, jsonfile, ensure_ascii=False)
         """
-    """
+    #"""
     # 2_Import the pseudoword list (in json file form)
     with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
         pseudoLIST = json.load(jfile)
@@ -103,7 +103,7 @@ if __name__ == "__main__":
         
     
     # 5_Import all the pre-selected bunch of texts
-    """
+    #"""
     """
     # reload the texts
     with open (text_data_path + "LTTC-modifiedText_OneLIST_present.json", "r", encoding = "utf-8") as jfile_2:
@@ -144,18 +144,25 @@ if __name__ == "__main__":
     total_stimSetLIST = []
     suffledTotalT_LIST = []
     
+    # for calling out the sets individually
+    HightSetsLIST = []
+    LowtSetsLIST = []
+    
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
-    CallingLIST = [["3", "4", "5"], ["4", "5", "6"], ["5", "6", "7"], ["3", "6", "7"], ["3", "4", "7"]]
-    for i in CallingLIST:
-        print(i[0])
-        print(type(i[0]))
-        
-        
+    HighCD_CallingLIST = [["3", "4", "5"], ["4", "5", "6"], ["5", "6", "7"], ["3", "6", "7"], ["3", "4", "7"]]
+    LowCD_CallingLIST = [["1", "2", "8"], ["2", "8", "9"], ["8", "9", "10"], ["1", "9", "10"], ["1", "2", "10"]]
+    HightSetsLIST = random.sample(HighCD_CallingLIST, 1)
+    LowtSetsLIST = random.sample(LowCD_CallingLIST, 1)
+    print(HightSetsLIST)
+    print(HightSetsLIST[0][0])
+    print(LowtSetsLIST)
+    print(LowtSetsLIST[0][0])
     
-    """
+    
     for sets in range(3):
-        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+4), "r", encoding = "utf-8") as jfile_3:
+        # High_CD Set TEXTS
+        with open (textSets_data_path + "sets_{}_LIST.json".format(HightSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_3:
             textSetsLIST_High = json.load(jfile_3)
             
             # randomly select 5 texts from the json file
@@ -169,28 +176,25 @@ if __name__ == "__main__":
                 #pprint(new_tSTR)
                 new_High_textSetsLIST.extend([new_tSTR])
                 
-    print(new_High_textSetsLIST)
-    print(len(new_High_textSetsLIST))
-     
-     
-     # Low_CD Set TEXTS
-     # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
-    for sets in range(3):
-        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+8), "r", encoding = "utf-8") as jfile_4:
+        # Low_CD Set TEXTS
+        # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
+        with open (textSets_data_path + "sets_{}_LIST.json".format(LowtSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_4:
             textSetsLIST_Low = json.load(jfile_4)
-            
+                    
             # randomly select 5 texts from the json file
             Low_stimLIST = random.sample(textSetsLIST_Low, 5)
             #pprint(Low_stimLIST)
             #print(len(Low_stimLIST))
-
+        
             # replace {} to the assigned pseudowords by different condition
             for tSTR in Low_stimLIST:
                 new_tSTR = tSTR.replace("{}", words_low_CD_setLIST[sets])
                 #pprint(new_tSTR)
                 new_Low_textSetsLIST.extend([new_tSTR])
                 
-    print(new_Low_textSetsLIST)
+    pprint(new_High_textSetsLIST)
+    print(len(new_High_textSetsLIST))
+    pprint(new_Low_textSetsLIST)
     print(len(new_Low_textSetsLIST))
     
     total_stimSetLIST.extend(new_High_textSetsLIST)
@@ -198,150 +202,3 @@ if __name__ == "__main__":
     
     print(len(total_stimSetLIST))
     random.shuffle(total_stimSetLIST)
-    
-    """
-    
-    """
-    pseudoDICT = {}
-    
-    sub_id = "001"
-    
-    DICT_name = sub_id + '_pseudowordsDICT.json'
-    Dsave_path = result_data_path + DICT_name
-    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
-        pseudoDICT = json.load(jfile)
-        
-        pprint(pseudoDICT)
-        print(type(pseudoDICT["High_CD condition pseudowords_3"]))
-        
-        pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
-        pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-        print(pseudoLIST)
-        
-        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-        print(targetPseudoLIST)
-        
-        
-    #剩把pseudoDICT的值叫出來
-    pseudoLIST = []
-    targetPseudoLIST = []
-    controlPseudoLIST = []
-    words_high_CD_setLIST = []
-    words_low_CD_setLIST = []
-    
-    """
-    
-    """
-                
-        # High-CD setsDICT (3/4/5/6/7)
-        sets_3_DICT = {'3':textLIST[20:30]}
-        sets_4_DICT = {'4':textLIST[30:40]}
-        sets_5_DICT = {'5':textLIST[40:50]}
-        sets_6_DICT = {'6':textLIST[50:60]}
-        sets_7_DICT = {'7':textLIST[60:70]}
-        texts_high_CD_setDICT.update(sets_3_DICT)
-        texts_high_CD_setDICT.update(sets_4_DICT)
-        texts_high_CD_setDICT.update(sets_5_DICT)
-        texts_high_CD_setDICT.update(sets_6_DICT)
-        texts_high_CD_setDICT.update(sets_7_DICT)
-        #pprint(texts_high_CD_setDICT)
-        print(len(texts_high_CD_setDICT))
-
-        # Low-CD setsDICT (1/2/8/9/10)
-        sets_1_DICT = {'1':textLIST[0:10]}
-        sets_2_DICT = {'2':textLIST[10:20]}
-        sets_8_DICT = {'8':textLIST[70:80]}
-        sets_9_DICT = {'9':textLIST[80:90]}
-        sets_10_DICT = {'10':textLIST[90:]}
-        
-        texts_low_CD_setDICT.update(sets_1_DICT)
-        texts_low_CD_setDICT.update(sets_2_DICT)
-        texts_low_CD_setDICT.update(sets_8_DICT)
-        texts_low_CD_setDICT.update(sets_9_DICT)
-        texts_low_CD_setDICT.update(sets_10_DICT)
-        #pprint(texts_low_CD_setDICT)
-        print(len(texts_low_CD_setDICT))
-
-        # texts_high_CD_setLIST = [345, 456, 567, 367, 347] >> we randomly choose one the set from these 5 sets
-        tHigh_345LIST = []
-        tHigh_345LIST.append(sets_3_LIST)
-        tHigh_345LIST.append(sets_4_LIST)
-        tHigh_345LIST.append(sets_5_LIST)
-        #pprint(tHigh_345LIST)
-        
-        stim_345_LIST = []
-        tmpLIST_3 = sample(sets_3_LIST, 5)
-        tmpLIST_4 = sample(sets_4_LIST, 5)
-        tmpLIST_5 = sample(sets_5_LIST, 5)
-        stim_345_LIST.extend(tmpLIST_3)
-        stim_345_LIST.extend(tmpLIST_4)
-        stim_345_LIST.extend(tmpLIST_5)
-        #print(stim_345_LIST)
-        #print(len(stim_345_LIST))
-        
-        
-        tHigh_345LIST = []
-        tHigh_345LIST.append(sets_3_LIST)
-        tHigh_345LIST.append(sets_4_LIST)
-        tHigh_345LIST.append(sets_5_LIST)
-        #pprint(tHigh_345LIST)
-        
-        stim_345_LIST = []
-        tmpLIST_3 = sample(sets_3_LIST, 5)
-        tmpLIST_4 = sample(sets_4_LIST, 5)
-        tmpLIST_5 = sample(sets_5_LIST, 5)
-        stim_345_LIST.extend(tmpLIST_3)
-        stim_345_LIST.extend(tmpLIST_4)
-        stim_345_LIST.extend(tmpLIST_5)
-        #print(stim_345_LIST)
-        #print(len(stim_345_LIST))
-
-        realwords = ["premier", "butler" ,"thesis" ,"gimmick" ,"yogurt" , "palette", "eclipse", "marrow", "locust", "cabaret"]
-        tmpLIST_X = []
-        #for realw in range(len(stim_345_LIST)):
-        for t in stim_345_LIST:
-            print(len(t))
-            if "thesis" in t:
-                print("There's a word in here!")
-                t.replace("thesis", "{}")
-                pprint(t)
-            elif "gimmick" in t:
-                print("There's a word in here!")
-                t.replace("gimmick", "{}")
-                pprint(t)
-            elif "yogurt" in t:
-                print("There's a word in here!")
-                t.replace("yogurt", "{}")
-                pprint(t)
-            else:
-                print("NONE")
-                #pass
-            
-            for realw in realwords:
-                if realw in t:
-                    pprint(t)
-                    #t.replace("{}".format(realw), "{}")
-                    #pprint(t)
-                    #tmpSTR = [t]
-                    #tmpLIST_X.extend(tmpSTR)
-                else:
-                    pass
-            #stim_345_LIST = tmpLIST_X
-        #pprint(stim_345_LIST)
-        #pprint(len(stim_345_LIST))
-        
-
-        tHigh_456LIST = []
-        tHigh_567LIST = []
-        tHigh_367LIST = []
-        tHigh_347LIST = []
-        
-        # Low-CD sets
-        # texts_low_CD_setLIST = [128, 289, 890, 190, 120] >> we randomly choose one the set from these 5 sets
-        tlow_128LIST = []
-        tlow_289LIST = []
-        tlow_890LIST = []
-        tlow_190LIST = []
-        tlow_120LIST = []
-        """
-
