@@ -148,11 +148,25 @@ if __name__ == "__main__":
     shuffledTotalT_LIST = []
     rating_LIST = []
     
+    # for calling out the sets individually
+    HightSetsLIST = []
+    LowtSetsLIST = []
     
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
+    HighCD_CallingLIST = [["3", "4", "5"], ["4", "5", "6"], ["5", "6", "7"], ["3", "6", "7"], ["3", "4", "7"]]
+    LowCD_CallingLIST = [["1", "2", "8"], ["2", "8", "9"], ["8", "9", "10"], ["1", "9", "10"], ["1", "2", "10"]]
+    HightSetsLIST = random.sample(HighCD_CallingLIST, 1)
+    LowtSetsLIST = random.sample(LowCD_CallingLIST, 1)
+    print(HightSetsLIST)
+    print(HightSetsLIST[0][0])
+    print(LowtSetsLIST)
+    print(LowtSetsLIST[0][0])
+    
+    
     for sets in range(3):
-        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+4), "r", encoding = "utf-8") as jfile_3:
+        # High_CD Set TEXTS
+        with open (textSets_data_path + "sets_{}_LIST.json".format(HightSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_3:
             textSetsLIST_High = json.load(jfile_3)
             
             # randomly select 5 texts from the json file
@@ -165,10 +179,10 @@ if __name__ == "__main__":
                 new_tSTR = tSTR.replace("{}", words_high_CD_setLIST[sets])
                 #pprint(new_tSTR)
                 new_High_textSetsLIST.extend([new_tSTR])
-        
+                
         # Low_CD Set TEXTS
         # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
-        with open (textSets_data_path + "sets_{}_LIST.json".format(sets+8), "r", encoding = "utf-8") as jfile_4:
+        with open (textSets_data_path + "sets_{}_LIST.json".format(LowtSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_4:
             textSetsLIST_Low = json.load(jfile_4)
                     
             # randomly select 5 texts from the json file
@@ -182,10 +196,9 @@ if __name__ == "__main__":
                 #pprint(new_tSTR)
                 new_Low_textSetsLIST.extend([new_tSTR])
                 
-                
-    print(new_High_textSetsLIST)
+    pprint(new_High_textSetsLIST)
     print(len(new_High_textSetsLIST))
-    print(new_Low_textSetsLIST)
+    pprint(new_Low_textSetsLIST)
     print(len(new_Low_textSetsLIST))
     
     # Combine the High & Low texts into one LIST
