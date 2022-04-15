@@ -35,6 +35,10 @@ if __name__ == "__main__":
     totalposLIST = []
     rawLIST_2 = []
     word_posLIST = []
+    CKIPposLIST = []
+    CKIPwLIST = []
+    ArticutposLIST = []
+    wantedCKIPposLIST = []
     
     
     with open(data_path + "雙字詞_23-33-3231.csv","r", encoding = "utf-8") as csvfile:
@@ -106,32 +110,75 @@ if __name__ == "__main__":
         with open(data_path + "out2.csv","r", encoding = "utf-8") as csvfile_2:
             rawLIST_2 = csvfile_2.read().split("\n")
 
-            for word_posSTR in rawLIST_2[:10]:
-                word_posLIST = word_posSTR.split(",")
-                pprint(word_posLIST)
-                print(type(word_posLIST))
+        for word_posSTR in rawLIST_2:
+            word_posLIST = word_posSTR.split(",")
+            #pprint(word_posLIST)
+            CKIPposLIST.append(word_posLIST)
+        #pprint(CKIPposLIST)
+        #print(CKIPposLIST[0][0])
         
-        """
+        
         # combine the 2 characters together into one string to do Articut Pasrer
-        for w in Tone_2_3LIST[:10]:
+        for w in Tone_3_2LIST:
+            # combining the seperate characters into an item
             input2wordLIST = w[:2]
-            input2wardSTR = ''.join(input2wordLIST)
-            print(input2wardSTR)
-            inputSTR = input2wardSTR
+            input2wordSTR = ''.join(input2wordLIST)
+            #print(input2wordSTR)
+            
+            # for the users to moniter the prograss >> command written by Peter wolf of Droidtown's CEO
+            print("{}%".format(round(Tone_3_2LIST.index(w)/len(Tone_3_2LIST), 4)*100))   #, w[0])
+            
+            # Use Articut Parser to get the pos of the target word
+            inputSTR = input2wordSTR
             #resultDICT_lv1 = articut.parse(inputSTR, level = "lv1")   #msg': 'Each account can only issue 80 requests per minute'
             resultDICT_lv2 = articut.parse(inputSTR, level = "lv2")
             time.sleep(1.4)
             
-            # let the machine(ArticutAPI) rest for 2.6 sec 
-            # >> came from command line 81 >>>how to calculate 2.6 sec ? 
-            # >> 80 requests per minutes >> 80/60 = 1.34  >> but we need to requests for 2 level at the same time
-            # hence >> (80*2)/60 = 2.67 >>resulted in resting for 2.6 sec
+            '''
+             # Notes for how manu time sleep you need for having another round of Articut Parser
+             # let the machine(ArticutAPI) rest for 2.6 sec 
+             # >> came from command line 81 >>>how to calculate 2.6 sec ? 
+             # >> 80 requests per minutes >> 80/60 = 1.34  >> but we need to requests for 2 level at the same time
+             # hence >> (80*2)/60 = 2.67 >>resulted in resting for 2.6 sec
+            '''
+            #print(resultDICT_lv2["result_obj"][0][0]["pos"])   # this is how us get the pos information from the resultDICT of Articut Parser
+            #print(type(resultDICT_lv2["result_obj"][0][0]["pos"]))
             
-            print(resultDICT_lv2["result_obj"][0][0]["pos"])   # this is how us get the pos information from the resultDICT of Articut Parser
-            print(type(resultDICT_lv2["result_obj"][0][0]["pos"]))
+            # setting the wanted form of string and its pos that tag by Articut Parser
+            pos2wordLIST = [input2wordSTR, resultDICT_lv2["result_obj"][0][0]["pos"]]
+            #print(pos2wordLIST)
+            ArticutposLIST.append(pos2wordLIST)
+        
             
-            pos2wordLIST.extend([resultDICT_lv2["result_obj"][0][0]["text"]])  #.extend([resultDICT_lv2["result_obj"][0][0]["pos"]])
-            totalposLIST.append(pos2wordLIST)
-        print(totalposLIST)
+            # Matching the out2.txt, which is the CKIP pos info, which the Tone word set to get more pos, and then save all kinds of different POS at one time
+            for CKIPwLIST in CKIPposLIST:
+                # excluding the one that pos == "#--"
+                if input2wordSTR == CKIPwLIST[0] and "#--" != CKIPwLIST[1]:
+                    #print("It's a Match!", input2wordSTR)
+                    wantedCKIPposLIST.append(CKIPwLIST)
+                else:
+                    pass
+        #pprint(wantedCKIPposLIST)
+        #print(type(wantedCKIPposLIST))
+        #pprint(ArticutposLIST)
+        #print(type(ArticutposLIST))
         
         """
+        # save all the list into the csv file
+        ArticutheaderLIST = ["word", "Articutpos"]
+        CKIPheaderLIST = ["word", "CKIPpos", "text_num"]
+                     
+        with open(data_path + 'ArticutPOS_3-2聲.csv', 'w', encoding = "utf-8-sig") as f_2:   #encoding = "utf-8-sig" >> if 中文字用"utf-8" encode會有亂碼，就用"utf-8-sig", 應該就會沒事了
+            # using csv.writer method from CSV package
+            write = csv.writer(f_2)
+      
+            write.writerow(ArticutheaderLIST)   #(fields)
+            write.writerows(ArticutposLIST)  #(rows)
+        
+        with open(data_path + 'CKIPpos_3-2聲.csv', 'w', encoding = "utf-8-sig") as f_3:   #encoding = "utf-8-sig" >> if 中文字用"utf-8" encode會有亂碼，就用"utf-8-sig", 應該就會沒事了
+            # using csv.writer method from CSV package
+            write = csv.writer(f_3)
+            
+            write.writerow(CKIPheaderLIST)   #(fields)
+            write.writerows(wantedCKIPposLIST)  #(rows)
+"""
