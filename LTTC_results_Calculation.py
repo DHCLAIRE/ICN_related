@@ -43,24 +43,17 @@ if __name__ == "__main__":
     resultLIST = []
     tmpLIST = []
     
-    
-    # key in number for notifying which subject it is
-    sub_id = str(input("Subject: "))
-    
     #剩把pseudoDICT的值叫出來
     pseudoLIST = []
     targetPseudoLIST = []
-    #controlPseudoLIST = []
-    #words_high_CD_setLIST = []
-    #words_low_CD_setLIST = []
     High_CDpwLIST = []
     Low_CDpwLIST = []
     
+    High_CDRT_LIST = []
+    Low_CDRT_LIST = []
     
-    DICT_name = sub_id + '_pseudowordsDICT.json'
-    Dsave_path = result_data_path + DICT_name
     
-    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
+    with open (result_data_path + "001_pseudowordsDICT.json", "r", encoding = "utf-8") as jfile:
         pseudoDICT = json.load(jfile)
         pprint(pseudoDICT)
         
@@ -68,14 +61,12 @@ if __name__ == "__main__":
         High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
         Low_CDpwLIST.extend(pseudoDICT["Low_CD condition pseudowords_3"])
         
-        print(targetPseudoLIST)
-        print(High_CDpwLIST)
-        print(Low_CDpwLIST)
+        print("Target pw : ", targetPseudoLIST)
+        print("High-CD pw : ", High_CDpwLIST)
+        print("Low-CD pw : ", Low_CDpwLIST)
         
     #pass
     
-    
-    """
     with open (result_data_path + "001_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
         resultLIST = csvfile.read().split("\n")
         #print(resultLIST)
@@ -83,11 +74,24 @@ if __name__ == "__main__":
         
         for row in resultLIST:
             tmpLIST = row.split(",")
-            print(tmpLIST)
-            print(tmpLIST[2])
-            print(type(tmpLIST[2]))
-            for target_pw in 
-            if tmpLIST[2] == 
-            """
-
-
+            if tmpLIST[2] in High_CDpwLIST:
+                #print("There's the High-CD result!")
+                High_CDRT_LIST.append(tmpLIST[5])
+            elif tmpLIST[2] in Low_CDpwLIST:
+                #print("There's the Low-CD result!")
+                Low_CDRT_LIST.append(tmpLIST[5])
+            else:
+                pass
+                #print("N/A")
+                
+        print("High-CD RT LIST = ", High_CDRT_LIST)
+        print(len(High_CDRT_LIST))
+        print("Low-CD RT LIST = ", Low_CDRT_LIST)
+        print(len(Low_CDRT_LIST))
+        
+        for High_RT in High_CDRT_LIST:
+            High_RTInt = int(High_RT)
+            Start_HighRT = index(High_RTInt, 1)
+            High_RTInt += in
+            print(High_RTInt)
+            print(type(High_RTInt))
