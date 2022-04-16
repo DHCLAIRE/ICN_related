@@ -33,6 +33,22 @@ SelfPRT_Rate7_count
 """
 np.mean => only accept np.array
 """
+def Sum(RT_LIST):
+    '''
+    將LIST裡的值累加起來
+    '''
+    count = 0
+    for i in RT_LIST:
+        count+= int(i)
+    return count
+
+def RT_Mean(RT_LIST):
+    '''
+    取得LIST裡所有值的平均值，並取到小數點第四位
+    '''
+    RT_MeanFloat = round(Sum(RT_LIST)/len(RT_LIST), 4)
+    return RT_MeanFloat
+
 
 
 if __name__ == "__main__":
@@ -67,6 +83,7 @@ if __name__ == "__main__":
         
     #pass
     
+    # For LDT results calculation  >> should I add True/False calculation???
     with open (result_data_path + "001_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
         resultLIST = csvfile.read().split("\n")
         #print(resultLIST)
@@ -75,23 +92,53 @@ if __name__ == "__main__":
         for row in resultLIST:
             tmpLIST = row.split(",")
             if tmpLIST[2] in High_CDpwLIST:
-                #print("There's the High-CD result!")
                 High_CDRT_LIST.append(tmpLIST[5])
             elif tmpLIST[2] in Low_CDpwLIST:
-                #print("There's the Low-CD result!")
                 Low_CDRT_LIST.append(tmpLIST[5])
             else:
                 pass
-                #print("N/A")
+            
+            print(tmpLIST)
                 
         print("High-CD RT LIST = ", High_CDRT_LIST)
         print(len(High_CDRT_LIST))
         print("Low-CD RT LIST = ", Low_CDRT_LIST)
         print(len(Low_CDRT_LIST))
         
-        for High_RT in High_CDRT_LIST:
-            High_RTInt = int(High_RT)
-            Start_HighRT = index(High_RTInt, 1)
-            High_RTInt += in
-            print(High_RTInt)
-            print(type(High_RTInt))
+        for HighRT_STR in High_CDRT_LIST:
+            if "0" == HighRT_STR:
+                High_CDRT_LIST.remove(HighRT_STR)
+                final_High_RT_LIST = High_CDRT_LIST
+            if len(HighRT_STR) == 1 and HighRT_STR != "0":
+                High_CDRT_LIST.remove(HighRT_STR)
+                final_High_RT_LIST = High_CDRT_LIST
+            else:
+                final_High_RT_LIST = High_CDRT_LIST
+        print(final_High_RT_LIST)
+        print(len(final_High_RT_LIST))
+        
+        
+        for LowRT_STR in Low_CDRT_LIST:
+            if "0" == LowRT_STR:
+                Low_CDRT_LIST.remove(LowRT_STR)
+                final_Low_RT_LIST = Low_CDRT_LIST
+            if len(LowRT_STR) == 1 and LowRT_STR != "0":
+                Low_CDRT_LIST.remove(LowRT_STR)
+                final_Low_RT_LIST = Low_CDRT_LIST
+            else:
+                final_Low_RT_LIST = Low_CDRT_LIST
+        print(final_Low_RT_LIST)
+        print(len(final_Low_RT_LIST))
+        
+        
+        High_Mean = RT_Mean(final_High_RT_LIST)  #round(Sum(final_High_RT_LIST)/len(final_High_RT_LIST), 4)
+        Low_Mean = RT_Mean(final_Low_RT_LIST)
+        
+        print(High_Mean)
+        print(type(High_Mean))
+        print(Low_Mean)
+        print(type(Low_Mean))
+        
+        
+    # For SelfPRT_Mean
+    with
