@@ -106,10 +106,7 @@ if __name__ == "__main__":
         print(len(Low_CDRT_LIST))
         
         for HighRT_STR in High_CDRT_LIST:
-            if "0" == HighRT_STR:
-                High_CDRT_LIST.remove(HighRT_STR)
-                final_High_RT_LIST = High_CDRT_LIST
-            if len(HighRT_STR) == 1 and HighRT_STR != "0":
+            if len(HighRT_STR) == 1:
                 High_CDRT_LIST.remove(HighRT_STR)
                 final_High_RT_LIST = High_CDRT_LIST
             else:
@@ -117,47 +114,40 @@ if __name__ == "__main__":
         print(final_High_RT_LIST)
         print(len(final_High_RT_LIST))
         
-        """
         for LowRT_STR in Low_CDRT_LIST:
-            if "0" == LowRT_STR:
+            if len(LowRT_STR) == 1:
                 Low_CDRT_LIST.remove(LowRT_STR)
-                for blank in Low_CDRT_LIST:
-                    if len(blank) == 1 and blank != "0":
-                        Low_CDRT_LIST.remove(blank)
-                    else:
-                        print("There's something you need to see.", blank)
+                final_Low_RT_LIST = Low_CDRT_LIST
             else:
-                pass
-        print(Low_CDRT_LIST)
-        print(len(Low_CDRT_LIST))
-        """
+                final_Low_RT_LIST = Low_CDRT_LIST
+                
+        print(final_Low_RT_LIST)
+        print(len(final_Low_RT_LIST))
         
         High_Mean = RT_Mean(final_High_RT_LIST)  #round(Sum(final_High_RT_LIST)/len(final_High_RT_LIST), 4)
-        #Low_Mean = RT_Mean(Low_CDRT_LIST)
+        Low_Mean = RT_Mean(Low_CDRT_LIST)
         
         print(High_Mean)
         print(type(High_Mean))
-        #print(Low_Mean)
-        #print(type(Low_Mean))
+        print(Low_Mean)
+        print(type(Low_Mean))
         
-        RT_LIST = ['1481', '948', '821', '1186', ' ']
+        RT_LIST = ['1481', '948', '821', '1186', ' ', '0']
         
         
         for STR in RT_LIST:
-            if "0" == STR:
-                RT_LIST.remove(STR)
-                for blank in RT_LIST:
-                    if len(blank) == 1 and blank != "0":
-                        RT_LIST.remove(blank)
-                    else:
-                        print("There's something you need to see.", blank)
+            if len(STR) == 1:
+                if STR == '0' or STR != '0':
+                    print("Ya")
+                    RT_LIST.remove(STR)
+                    final_RT_LIST = RT_LIST
+                else:
+                    pass
             else:
-                #final_RT_LIST = RT_LIST
-                pass
-            
-                                
-        print(RT_LIST)
-        print(len(RT_LIST))
+                final_RT_LIST = RT_LIST
+                
+        print(final_RT_LIST)
+        print(len(final_RT_LIST))
         
         
     # For SelfPRT_Mean
