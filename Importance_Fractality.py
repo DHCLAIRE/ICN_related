@@ -50,3 +50,8 @@ import json
 
 if __name__ == "__main__":
     
+    """
+    Number of shuffled box count(Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
+    N = the number of word in a text
+    s = the box size = how many words were count as one box
+    """
