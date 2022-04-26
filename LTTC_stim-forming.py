@@ -147,6 +147,7 @@ if __name__ == "__main__":
     # for calling out the sets individually
     HightSetsLIST = []
     LowtSetsLIST = []
+    Setsinfo_LIST = []
     
     # High_CD Set TEXTS
     # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
@@ -158,6 +159,13 @@ if __name__ == "__main__":
     print(HightSetsLIST[0][0])
     print(LowtSetsLIST)
     print(LowtSetsLIST[0][0])
+    
+    
+    Setsinfo_LIST.extend(HightSetsLIST)
+    Setsinfo_LIST.extend(LowtSetsLIST)
+    
+    print(Setsinfo_LIST)
+    
     
     
     for sets in range(3):
