@@ -104,7 +104,11 @@ if __name__ == "__main__":
             username = accountDICT["username"] #這裡填入您在 https://api.droidtown.co 使用的帳號 email。若使用空字串，則預設使用每小時 2000 字的公用額度。
             apikey   = accountDICT["apikey"]   #這裡填入您在 https://api.droidtown.co 登入後取得的 api Key。若使用空字串，則預設使用每小時 2000 字的公用額度。
             articut = Articut(username, apikey)
-        
+            
+            
+            resultDICT = articut.versions()
+            pprint(resultDICT)
+        #"""
         
         # load in the CKIP's POS and also the Articut POS
         with open(data_path + "out2.csv","r", encoding = "utf-8") as csvfile_2:
@@ -133,6 +137,7 @@ if __name__ == "__main__":
             #resultDICT_lv1 = articut.parse(inputSTR, level = "lv1")   #msg': 'Each account can only issue 80 requests per minute'
             resultDICT_lv2 = articut.parse(inputSTR, level = "lv2")
             time.sleep(1.4)
+            #pprint(resultDICT_lv2)
             
             '''
              # Notes for how manu time sleep you need for having another round of Articut Parser
