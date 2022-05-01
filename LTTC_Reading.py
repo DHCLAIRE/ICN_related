@@ -80,8 +80,8 @@ if __name__ == "__main__":
     sub_id = str(input("Subject: "))
     
     # setting up the display win conditions
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")   # Testing screen_small
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")   # Testing screen_small
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     clock = core.Clock()
     #start_time = clock.getTime()
 
@@ -216,7 +216,7 @@ if __name__ == "__main__":
     
     # Experiment section
     # Reading Comprehension Task STARTS
-    for i in total_stimSetLIST:
+    for i in total_stimSetLIST[:3]:
         #display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypress)
         #win.flip()
@@ -247,6 +247,8 @@ if __name__ == "__main__":
             print(time_duration)
             print(type(time_duration))
             clock.reset()
+        elif keys == ["e"]:
+            break
         else:
             pass
         
