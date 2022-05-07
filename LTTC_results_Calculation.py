@@ -109,7 +109,7 @@ if __name__ == "__main__":
             pass
     print(len(resultLIST))
         
-    # finding the wanted H & L CD response
+    # Finding the wanted H & L CD response, and then calculate the Mean of H & L pwRT
     for row in resultLIST:
         rawLIST = row.split(",")
         if rawLIST[2] in High_CDpwLIST:
@@ -146,3 +146,13 @@ if __name__ == "__main__":
     print(len(L_rtLIST))
     L_PLDTmean_subFLOAT = round(np.mean(np.array(L_rtLIST)),3)
     print("L pwRT Mean :", L_PLDTmean_subFLOAT)
+    
+    
+    # Calculate the Correctness of all, and H & L PLDT, there's three in total
+    
+    for row in resultLIST:
+        rawLIST = row.split(",")
+        if rawLIST[6] == "['True']":
+            print(rawLIST)
+            correctBOOL = 1
+            
