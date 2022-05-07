@@ -13,24 +13,6 @@ from datetime import datetime,date
 import pandas as pd
 
 """
-# What should we calculate??
-PLDT_High-CDRT_Mean
-Low-CDRT_Mean
-PLDT-Correctness
-SelfPRT_Mean
-
-# Should this be calculate as well??
-  >> Calculate the mean of RT in each level of rating >>??  But it would be blank if the subject left our some rating...
-SelfPRT_Rate1_count
-SelfPRT_Rate2_count
-SelfPRT_Rate3_count
-SelfPRT_Rate4_count
-SelfPRT_Rate5_count
-SelfPRT_Rate6_count
-SelfPRT_Rate7_count
-"""
-
-"""
 np.mean => only accept np.array
 """
 def Sum(RT_LIST):
@@ -65,41 +47,128 @@ if __name__ == "__main__":
     High_CDpwLIST = []
     Low_CDpwLIST = []
     
-    High_CDRT_LIST = []
-    Low_CDRT_LIST = []
+    sub_num = "003"
     
-    
-    with open (result_data_path + "001_pseudowordsDICT.json", "r", encoding = "utf-8") as jfile:
+    with open (result_data_path + "003_pseudowordsDICT.json", "r", encoding = "utf-8") as jfile:
         pseudoDICT = json.load(jfile)
         pprint(pseudoDICT)
+        
+        print(sub_num)
         
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
         High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
         Low_CDpwLIST.extend(pseudoDICT["Low_CD condition pseudowords_3"])
         
-        print("Target pw : ", targetPseudoLIST)
-        print("High-CD pw : ", High_CDpwLIST)
-        print("Low-CD pw : ", Low_CDpwLIST)
+        print(sub_num, "Target pw : ", targetPseudoLIST)
+        print(sub_num, "High-CD pw : ", High_CDpwLIST)
+        print(sub_num, "Low-CD pw : ", Low_CDpwLIST)
         
     #pass
+    # raw data
+    rawLIST = []
+    H_CD_rawLIST = []
+    L_CD_rawLIST = []
+    H_rtLIST = []
+    L_rtLIST = []
+        
+    ## PER PERSON ##
+    # Mean
+    H_PLDTmean_subLIST = []
+    L_PLDTmean_subLIST = []
+    # Correctness (True & False)
+    PLDT_correct_subLIST = []
+    H_PLDT_correct_subLIST = []
+    L_PLDT_correct_subLIST = []
+    # Self_rating
+    rating_Mean_LIST = []
+    H_CD_ratingMean_subLIST = []
+    L_CD_ratingMean_subLIST = []
+    
+    
+    ## WHOLE GROUP ##
+    # Mean
+    H_PLDTmean_allLIST = []
+    L_PLDTmean_allLIST = []
+    # SD
+    H_PLDTsd_allLIST = []
+    L_PLDTsd_allLIST = []
+    
     
     # For LDT results calculation  >> should I add True/False calculation???
-    with open (result_data_path + "001_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
+    with open (result_data_path + "003_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
         resultLIST = csvfile.read().split("\n")
-        #print(resultLIST)
-        #print(len(resultLIST))
+        print(len(resultLIST))
+        resultLIST.pop(0)   # exclude the headers
+        print(len(resultLIST))
         
+        # exclude the blank row
         for row in resultLIST:
-            tmpLIST = row.split(",")
-            if tmpLIST[2] in High_CDpwLIST:
-                High_CDRT_LIST.append(tmpLIST[5])
-            elif tmpLIST[2] in Low_CDpwLIST:
-                Low_CDRT_LIST.append(tmpLIST[5])
+            if len(row) == 0:
+                resultLIST.pop(resultLIST.index(row))
             else:
                 pass
-            
-            print(tmpLIST)
-                
+        print(len(resultLIST))
+        
+        # finding the wanted H & L CD response
+        for row in resultLIST:
+            rawLIST = row.split(",")
+            if rawLIST[2] in High_CDpwLIST:
+                print("High CD pw: ", rawLIST)
+                H_CD_rawLIST.append(rawLIST)
+            elif rawLIST[2] in Low_CDpwLIST:
+                print("Low CD pw: ", rawLIST)
+                L_CD_rawLIST.append(rawLIST)
+            else:
+                pass
+        print(H_CD_rawLIST)
+        print(len(H_CD_rawLIST))
+        print(L_CD_rawLIST)
+        print(len(L_CD_rawLIST))
+        
+        for row in H_CD_rawLIST:
+            H_rtLIST.append(float(row[5]))
+            if 0. in H_rtLIST:
+                H_rtLIST.remove(0.0)
+            else:
+                pass
+        print(H_rtLIST)
+        print(len(H_rtLIST))
+        print(sum(np.array(H_rtLIST)))
+        print(round(np.mean(np.array(H_rtLIST)),3))
+        
+        for row in L_CD_rawLIST:
+            L_rtLIST.append(float(row[5]))
+            if 0. in L_rtLIST:
+                L_rtLIST.remove(0.0)
+            else:
+                pass
+        print(L_rtLIST)
+        print(len(L_rtLIST))
+        print(sum(np.array(L_rtLIST)))
+        print(round(np.mean(np.array(L_rtLIST)),3))
+        
+        
+        """
+            # calculate PLDT_mean (H & L) per sub
+            rtLIST.append(float(rawLIST[5]))
+        print(rtLIST)
+        print(len(rtLIST))
+        
+        # exclude the N/A response
+        for rt in rtLIST:
+            if 0. in rtLIST:
+                rtLIST.remove(0.0)
+            else:
+                pass
+        print(rtLIST)
+        print(len(rtLIST))
+        
+        #print(np.array(rtLIST))
+        #print(len(np.array(rtLIST)))
+        #print(type(np.array(rtLIST)))
+        ##rtARRAY = np.array(rtLIST)
+        """
+        """
         print("High-CD RT LIST = ", High_CDRT_LIST)
         print(len(High_CDRT_LIST))
         print("Low-CD RT LIST = ", Low_CDRT_LIST)
@@ -152,3 +221,4 @@ if __name__ == "__main__":
         
     # For SelfPRT_Mean
     #with
+    """
