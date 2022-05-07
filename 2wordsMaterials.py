@@ -102,7 +102,7 @@ if __name__ == "__main__":
             accountDICT = json.loads(accountFILE.read())   # which also means that you have to put the account info file together with every script that  have this line.
         
             username = accountDICT["username"] #這裡填入您在 https://api.droidtown.co 使用的帳號 email。若使用空字串，則預設使用每小時 2000 字的公用額度。
-            apikey   = accountDICT["apikey"]   #這裡填入您在 https://api.droidtown.co 登入後取得的 api Key。若使用空字串，則預設使用每小時 2000 字的公用額度。
+            apikey   = accountDICT["Articut_apikey"]   #這裡填入您在 https://api.droidtown.co 登入後取得的 api Key。若使用空字串，則預設使用每小時 2000 字的公用額度。
             articut = Articut(username, apikey)
             
             

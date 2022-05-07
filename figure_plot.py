@@ -37,6 +37,7 @@ if __name__ == "__main__":
     plt.plot(x2_Low_Correctness,y3_High_CD_RT_Mean_LowC, label = "LC High-CD RT")
     plt.plot(x2_Low_Correctness,y4_Low_CD_RT_Mean_LowC, label = "LC Low-CD RT")
     
+    #word_freq_emotion.plot(x = "Valence_Mean", y = "Arousal_Mean", kind = "scatter", xlim=(1,9), ylim=(1,9))
     
     plt.title("High/Low Correctness v.s High/Low_CD RT") # title
     plt.ylabel("PLDT RT") # y label
