@@ -157,21 +157,26 @@ if __name__ == "__main__":
     
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
     
+    # count the total correctness
+    count_True = 0 #dict()
+    count_False = 0
+    count_NA = 0
     for row in resultLIST:
         rawLIST = row.split(",")
-        count_True = 0
-        count_False = 0
-        count_NA = 0
-        
         if rawLIST[6] == "['True']":
-            #count_True += 1
+            count_True += 1
+            correctBOOL = 1
         elif rawLIST[6] == "['False']":
-            #count_False += 1
+            count_False += 1
+            correctBOOL = 0
         else:
-            #count_NA += 1
-        print(count_True)
-        print(count_False)
-        print(count_NA)
-        print(type(count_False))
-            #print(rawLIST)
-            #correctBOOL = 1
+            count_NA += 1
+            
+    print(count_True)
+    print(count_False)
+    print(count_NA)
+    # Total correctness section
+    total_correctFLOAT = round(count_True/(count_True + count_False)*100,2)
+    print(total_correctFLOAT)
+    #print(rawLIST)
+    
