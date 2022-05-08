@@ -71,7 +71,7 @@ if __name__ == "__main__":
         
         print(sub_num, "Target pw : ", targetPseudoLIST)
         print(sub_num, "High-CD pw : ", High_CDpwLIST)
-        print(sub_num, "Low-CD pw : ", Low_CDpwLIST)
+        print(sub_num, "Low-CD pw : ", Low_CDpwLIST) # output: 003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
         
     #pass
     # raw data
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     for row in resultLIST:
         rawLIST = row.split(",")
         if rawLIST[2] in High_CDpwLIST:
-            print("High CD pw: ", rawLIST)
+            print("High CD pw: ", rawLIST) 
             H_CD_rawLIST.append(rawLIST)
         elif rawLIST[2] in Low_CDpwLIST:
             print("Low CD pw: ", rawLIST)
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     #print(H_rtLIST)
     print(len(H_rtLIST))
     H_PLDTmean_subFLOAT = round(np.mean(np.array(H_rtLIST)),3)
-    print("H pwRT Mean :", H_PLDTmean_subFLOAT)
+    print("H pwRT Mean :", H_PLDTmean_subFLOAT)   #ouput: H pwRT Mean : 783.167
     
     for row in L_CD_rawLIST:
         L_rtLIST.append(float(row[5]))
@@ -167,3 +167,40 @@ if __name__ == "__main__":
     print(H_PLDTmean_subLIST)
     print(L_PLDTmean_subLIST)
     print(type(H_PLDTmean_subLIST))
+    
+    
+    # Self_rating section
+    readingLIST = []
+    
+    with open (result_data_path + "003_Reading_task.csv", "r", encoding= 'unicode_escape') as csvfile_reading:  #, "r", encoding = "utf-8")
+        readingLIST = csvfile_reading.read().split("\n")
+        pprint(readingLIST)
+        print(type(readingLIST))
+        print(len(readingLIST))
+        readingLIST.pop(0)   # exclude the headers
+        print(len(readingLIST))
+        
+        # exclude the blank row
+    for row in readingLIST:
+        if len(row) == 0:
+            readingLIST.pop(readingLIST.index(row))
+        else:
+            pass
+    print(len(readingLIST))
+    
+    ratingLIST = []
+    
+    # Calculate the Self_rating mean of 30 short texts
+    for row in readingLIST:
+        rawLIST = row.split(",")
+        print(rawLIST)
+        print(type(rawLIST))
+        ratingLIST.append(float(rawLIST[4]))
+    print(ratingLIST)
+    
+    rating_meanFLOAT = round(np.mean(np.array(ratingLIST)),2)
+    print(rating_meanFLOAT)
+    print(type(rating_meanFLOAT))
+    
+    
+    
