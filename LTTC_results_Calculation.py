@@ -11,6 +11,7 @@ from random import sample
 import numpy as np
 from datetime import datetime,date
 import pandas as pd
+from collections import Counter
 
 """
 np.mean => only accept np.array
@@ -30,6 +31,12 @@ def RT_Mean(RT_LIST):
     '''
     RT_MeanFloat = round(Sum(RT_LIST)/len(RT_LIST), 4)
     return RT_MeanFloat
+
+def total_elements(list):
+    count = 0
+    for element in list:
+        count += 1
+    return count
 
 
 
@@ -152,7 +159,19 @@ if __name__ == "__main__":
     
     for row in resultLIST:
         rawLIST = row.split(",")
+        count_True = 0
+        count_False = 0
+        count_NA = 0
+        
         if rawLIST[6] == "['True']":
-            print(rawLIST)
-            correctBOOL = 1
-            
+            #count_True += 1
+        elif rawLIST[6] == "['False']":
+            #count_False += 1
+        else:
+            #count_NA += 1
+        print(count_True)
+        print(count_False)
+        print(count_NA)
+        print(type(count_False))
+            #print(rawLIST)
+            #correctBOOL = 1
