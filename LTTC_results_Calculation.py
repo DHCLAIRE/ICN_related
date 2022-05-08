@@ -202,5 +202,36 @@ if __name__ == "__main__":
     print(rating_meanFLOAT)
     print(type(rating_meanFLOAT))
     
+    H_ratingLIST = []
+    L_ratingLIST = []
     
+    """
+    #003 High-CD pw :  ['aegliy', 'baydiy', 'chaeviy']
+    #003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
+    """
     
+    # Calculate the Self_rating mean of H-CD & L-CD short texts
+    for row in readingLIST:
+        rawLIST = row.split(",")
+        for Hpw in High_CDpwLIST:
+            if Hpw in rawLIST[5]:
+                print("H-CD stim: ", rawLIST[5])
+            else:
+                pass
+        for Lpw in Low_CDpwLIST:
+            if Lpw in rawLIST[5]:
+                print("L-CD stim: ", rawLIST[5])
+            else:
+                pass
+        
+        #if Low_CDpwLIST in rawLIST[5]:
+            #print("L-CD stim: ", rawLIST)
+        #else:
+            #print("ERROR!!")
+        
+        #ratingLIST.append(float(rawLIST[4]))
+    #print(ratingLIST)
+    
+    #rating_meanFLOAT = round(np.mean(np.array(ratingLIST)),2)
+    #print(rating_meanFLOAT)
+    #print(type(rating_meanFLOAT))    
