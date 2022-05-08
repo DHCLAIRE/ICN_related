@@ -13,30 +13,33 @@ from datetime import datetime,date
 import pandas as pd
 from collections import Counter
 
-"""
-np.mean => only accept np.array
-"""
-def Sum(RT_LIST):
-    '''
-    將LIST裡的值累加起來
-    '''
-    count = 0
-    for i in RT_LIST:
-        count+= int(i)
-    return count
 
-def RT_Mean(RT_LIST):
-    '''
-    取得LIST裡所有值的平均值，並取到小數點第四位
-    '''
-    RT_MeanFloat = round(Sum(RT_LIST)/len(RT_LIST), 4)
-    return RT_MeanFloat
-
-def total_elements(list):
-    count = 0
-    for element in list:
-        count += 1
-    return count
+def correctness(resultLIST):
+    correctnessLIST = []
+    count_True = 0 
+    count_False = 0
+    count_NA = 0
+    
+    for row in resultLIST:
+        if type(row) == list:
+            rawLIST = row
+        else:
+            rawLIST = row.split(",")
+            
+        if rawLIST[6] == "['True']":
+            count_True += 1
+            correctBOOL = 1
+        elif rawLIST[6] == "['False']":
+            count_False += 1
+            correctBOOL = 0
+        else:
+            count_NA += 1
+            
+    total_correctFLOAT = round(count_True/(count_True + count_False)*100,2)
+    correctnessDICT = {"Correct :": count_True, "False :": count_False, "N/A :": count_NA, "Correctness": total_correctFLOAT}
+    correctnessLIST = [count_True, count_False, count_NA, total_correctFLOAT]
+    
+    return correctnessLIST, correctnessDICT #count_True, count_False, count_NA, total_correctFLOAT
 
 
 
@@ -156,27 +159,11 @@ if __name__ == "__main__":
     
     
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
+    PLDT_correct_subLIST = correctness(resultLIST)
+    H_PLDTmean_subLIST = correctness(H_CD_rawLIST)
+    L_PLDTmean_subLIST = correctness(L_CD_rawLIST)  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
     
-    # count the total correctness
-    count_True = 0 #dict()
-    count_False = 0
-    count_NA = 0
-    for row in resultLIST:
-        rawLIST = row.split(",")
-        if rawLIST[6] == "['True']":
-            count_True += 1
-            correctBOOL = 1
-        elif rawLIST[6] == "['False']":
-            count_False += 1
-            correctBOOL = 0
-        else:
-            count_NA += 1
-            
-    print(count_True)
-    print(count_False)
-    print(count_NA)
-    # Total correctness section
-    total_correctFLOAT = round(count_True/(count_True + count_False)*100,2)
-    print(total_correctFLOAT)
-    #print(rawLIST)
-    
+    print(PLDT_correct_subLIST)
+    print(H_PLDTmean_subLIST)
+    print(L_PLDTmean_subLIST)
+    print(type(H_PLDTmean_subLIST))
