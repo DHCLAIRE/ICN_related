@@ -14,6 +14,21 @@ import pandas as pd
 from collections import Counter
 
 
+def rtMean(RTrawLIST,typeSTR = None):
+    rtLIST = []
+    for row in RTrawLIST:
+        rtLIST.append(float(row[5]))
+        if 0. in rtLIST:
+            rtLIST.remove(0.0)
+        else:
+            pass
+        #print(rtLIST)
+        #print(len(rtLIST))
+    PLDTmean_subFLOAT = round(np.mean(np.array(rtLIST)),3)
+    MeanDICT = {"{} RT count".format(typeSTR):len(rtLIST),"{} RT Mean".format(typeSTR):PLDTmean_subFLOAT}  #ouput: H pwRT Mean : 783.167
+    #MeanDICT = {"%s RT count"%typeSTR:len(rtLIST),"{%s RT Mean"%typeSTR:PLDTmean_subFLOAT}  #ouput: H pwRT Mean : 783.167
+    return MeanDICT
+
 def correctness(resultLIST):
     correctnessLIST = []
     count_True = 0 
@@ -134,30 +149,12 @@ if __name__ == "__main__":
     print(len(H_CD_rawLIST))
     print(L_CD_rawLIST)
     print(len(L_CD_rawLIST))
-        
-    for row in H_CD_rawLIST:
-        H_rtLIST.append(float(row[5]))
-        if 0. in H_rtLIST:
-            H_rtLIST.remove(0.0)
-        else:
-            pass
-    #print(H_rtLIST)
-    print(len(H_rtLIST))
-    H_PLDTmean_subFLOAT = round(np.mean(np.array(H_rtLIST)),3)
-    print("H pwRT Mean :", H_PLDTmean_subFLOAT)   #ouput: H pwRT Mean : 783.167
     
-    for row in L_CD_rawLIST:
-        L_rtLIST.append(float(row[5]))
-        if 0. in L_rtLIST:
-            L_rtLIST.remove(0.0)
-        else:
-            pass
-    #print(L_rtLIST)
-    print(len(L_rtLIST))
-    L_PLDTmean_subFLOAT = round(np.mean(np.array(L_rtLIST)),3)
-    print("L pwRT Mean :", L_PLDTmean_subFLOAT)
-    
-    
+    H_pwRT_DICT = rtMean(H_CD_rawLIST, "High-CD")
+    L_pwRT_DICT = rtMean(L_CD_rawLIST, "Low-CD")
+    print(H_pwRT_DICT)
+    print(L_pwRT_DICT)
+
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
     PLDT_correct_subLIST = correctness(resultLIST)
     H_PLDTmean_subLIST = correctness(H_CD_rawLIST)
@@ -168,7 +165,7 @@ if __name__ == "__main__":
     print(L_PLDTmean_subLIST)
     print(type(H_PLDTmean_subLIST))
     
-    
+    """
     # Self_rating section
     readingLIST = []
     
@@ -234,4 +231,5 @@ if __name__ == "__main__":
     
     #rating_meanFLOAT = round(np.mean(np.array(ratingLIST)),2)
     #print(rating_meanFLOAT)
-    #print(type(rating_meanFLOAT))    
+    #print(type(rating_meanFLOAT))
+    """
