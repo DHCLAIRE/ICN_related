@@ -13,20 +13,40 @@ from datetime import datetime,date
 import pandas as pd
 from collections import Counter
 
-
-def rtMean(RTrawLIST,typeSTR = None):
-    rtLIST = []
-    for row in RTrawLIST:
-        rtLIST.append(float(row[5]))
-        if 0. in rtLIST:
-            rtLIST.remove(0.0)
+def LISTblankEraser(rawLIST):
+    newrawLIST = []
+    for row in rawLIST:
+        if len(row) == 0:
+            rawLIST.pop(rawLIST.index(row))
         else:
             pass
-        #print(rtLIST)
-        #print(len(rtLIST))
-    PLDTmean_subFLOAT = round(np.mean(np.array(rtLIST)),3)
-    MeanDICT = {"{} RT count".format(typeSTR):len(rtLIST),"{} RT Mean".format(typeSTR):PLDTmean_subFLOAT}  #ouput: H pwRT Mean : 783.167
-    #MeanDICT = {"%s RT count"%typeSTR:len(rtLIST),"{%s RT Mean"%typeSTR:PLDTmean_subFLOAT}  #ouput: H pwRT Mean : 783.167
+    newrawLIST = rawLIST
+    return newrawLIST
+
+def ListDetector(resultLIST):
+    n_resultLIST = []
+    for row in resultLIST:
+        if type(row) == list:
+            rawLIST = row
+            n_resultLIST.extend
+        else:
+            rawLIST = row.split(",")
+            n_resultLIST.append(rawLIST)
+    return n_resultLIST
+
+
+def Mean(i, rawLIST, typeSTR = None):
+    contentLIST = []
+    for row in rawLIST:
+        contentLIST.append(float(row[i]))
+        if 0. in contentLIST:
+            contentLIST.remove(0.0)
+        else:
+            pass
+    print(contentLIST)
+    PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
+    MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT}
+    #MeanDICT = {"%s RT count"%typeSTR:len(rtLIST),"{%s RT Mean"%typeSTR:PLDTmean_subFLOAT}
     return MeanDICT
 
 def correctness(resultLIST):
@@ -36,6 +56,7 @@ def correctness(resultLIST):
     count_NA = 0
     
     for row in resultLIST:
+        #rawLIST = ListDetector(row)
         if type(row) == list:
             rawLIST = row
         else:
@@ -127,13 +148,8 @@ if __name__ == "__main__":
         print(len(resultLIST))
         
         # exclude the blank row
-    for row in resultLIST:
-        if len(row) == 0:
-            resultLIST.pop(resultLIST.index(row))
-        else:
-            pass
-    print(len(resultLIST))
-        
+        resultLIST = LISTblankEraser(resultLIST)
+
     # Finding the wanted H & L CD response, and then calculate the Mean of H & L pwRT
     for row in resultLIST:
         rawLIST = row.split(",")
@@ -150,8 +166,9 @@ if __name__ == "__main__":
     print(L_CD_rawLIST)
     print(len(L_CD_rawLIST))
     
-    H_pwRT_DICT = rtMean(H_CD_rawLIST, "High-CD")
-    L_pwRT_DICT = rtMean(L_CD_rawLIST, "Low-CD")
+    # Calculate the RT Mean of the H & L PLDT
+    H_pwRT_DICT = Mean(5, H_CD_rawLIST, "High-CD RT")
+    L_pwRT_DICT = Mean(5, L_CD_rawLIST, "Low-CD RT")  # output = {'Low-CD RT count': 29, 'Low-CD RT Mean': 797.069} # type = DICT
     print(H_pwRT_DICT)
     print(L_pwRT_DICT)
 
@@ -165,28 +182,31 @@ if __name__ == "__main__":
     print(L_PLDTmean_subLIST)
     print(type(H_PLDTmean_subLIST))
     
-    """
+
     # Self_rating section
     readingLIST = []
     
     with open (result_data_path + "003_Reading_task.csv", "r", encoding= 'unicode_escape') as csvfile_reading:  #, "r", encoding = "utf-8")
         readingLIST = csvfile_reading.read().split("\n")
-        pprint(readingLIST)
+        #pprint(readingLIST)
         print(type(readingLIST))
         print(len(readingLIST))
         readingLIST.pop(0)   # exclude the headers
         print(len(readingLIST))
         
         # exclude the blank row
-    for row in readingLIST:
-        if len(row) == 0:
-            readingLIST.pop(readingLIST.index(row))
-        else:
-            pass
-    print(len(readingLIST))
-    
+        readingLIST = LISTblankEraser(readingLIST)
+        print(len(readingLIST))
+        
     ratingLIST = []
     
+    #pprint(readingLIST)
+    
+    for row in readingLIST:
+        rawLIST = row.split(",")
+        rating_Mean = Mean(4, rawLIST, "Self-Rating")
+    pprint(rating_Mean)
+    """
     # Calculate the Self_rating mean of 30 short texts
     for row in readingLIST:
         rawLIST = row.split(",")
@@ -195,18 +215,19 @@ if __name__ == "__main__":
         ratingLIST.append(float(rawLIST[4]))
     print(ratingLIST)
     
+    
     rating_meanFLOAT = round(np.mean(np.array(ratingLIST)),2)
     print(rating_meanFLOAT)
     print(type(rating_meanFLOAT))
     
     H_ratingLIST = []
     L_ratingLIST = []
-    
+    """
     """
     #003 High-CD pw :  ['aegliy', 'baydiy', 'chaeviy']
     #003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
     """
-    
+    """
     # Calculate the Self_rating mean of H-CD & L-CD short texts
     for row in readingLIST:
         rawLIST = row.split(",")
