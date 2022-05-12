@@ -24,21 +24,34 @@ def LISTblankEraser(rawLIST):
     print(len(newrawLIST))
     return newrawLIST
 
-"""
-def Mean(i, rawLIST, typeSTR = None):
+def Mean(resultLIST, i, typeSTR = None):
     contentLIST = []
-    for row in rawLIST:
-        contentLIST.append(float(row[i]))
+    for row in resultLIST:
+        if type(row) == list:
+            rawLIST = row
+            contentLIST.append(float(rawLIST[i]))
+        else:
+            rawLIST = row.split(",")
+            contentLIST.append(float(rawLIST[i]))
+    print("Raw data:", contentLIST)
+    old_count = len(contentLIST)
+    print(old_count)
+
+    for RT_Int in contentLIST:
         if 0. in contentLIST:
             contentLIST.remove(0.0)
         else:
             pass
-    print(contentLIST)
+    print("Exclude 0.0 data:", contentLIST)
+    new_count = len(contentLIST)
+    print(new_count)
+    
+    exclude_countINT = old_count - new_count
     PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
-    MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT}
-    #MeanDICT = {"%s RT count"%typeSTR:len(rtLIST),"{%s RT Mean"%typeSTR:PLDTmean_subFLOAT}
+    MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT, "Exclude 0.0 count": exclude_countINT}
+    
     return MeanDICT
-"""
+
 
 def correctness(resultLIST):
     correctnessLIST = []
@@ -64,9 +77,9 @@ def correctness(resultLIST):
             
     total_correctFLOAT = round(count_True/(count_True + count_False)*100,2)
     correctnessDICT = {"Correct :": count_True, "False :": count_False, "N/A :": count_NA, "Correctness": total_correctFLOAT}
-    correctnessLIST = [count_True, count_False, count_NA, total_correctFLOAT]
+    #correctnessLIST = [count_True, count_False, count_NA, total_correctFLOAT]
     
-    return correctnessLIST, correctnessDICT #count_True, count_False, count_NA, total_correctFLOAT
+    return correctnessDICT  #correctnessLIST,   ###count_True, count_False, count_NA, total_correctFLOAT
 
 
 
@@ -160,22 +173,10 @@ if __name__ == "__main__":
     print(len(L_CD_rawLIST))
     
     # Calculate the RT Mean of the H & L PLDT
-    """
-    for row in H_CD_rawLIST:
-        contentLIST.append(float(row[i]))
-        if 0. in contentLIST:
-            contentLIST.remove(0.0)
-        else:
-            pass
-    print(contentLIST)
-    PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
-    #MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT}
-    """
-    
-    #H_pwRT_DICT = Mean(5, H_CD_rawLIST, "High-CD RT")
-    #L_pwRT_DICT = Mean(5, L_CD_rawLIST, "Low-CD RT")  # output = {'Low-CD RT count': 29, 'Low-CD RT Mean': 797.069} # type = DICT
-    #print(H_pwRT_DICT)
-    #print(L_pwRT_DICT)
+    H_pwRT_DICT = Mean(H_CD_rawLIST,5 , "High-CD RT")  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
+    L_pwRT_DICT = Mean(L_CD_rawLIST,5 , "Low-CD RT")
+    print(H_pwRT_DICT)
+    print(L_pwRT_DICT)
 
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
     PLDT_correct_subLIST = correctness(resultLIST)
@@ -186,6 +187,7 @@ if __name__ == "__main__":
     print(H_PLDTmean_subLIST)
     print(L_PLDTmean_subLIST)
     print(type(H_PLDTmean_subLIST))
+    
     
     """
     # Self_rating section
