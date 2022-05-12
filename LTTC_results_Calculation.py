@@ -53,7 +53,7 @@ def Mean(resultLIST, i, typeSTR = None):
     return MeanDICT
 
 
-def correctness(resultLIST):
+def correctness(resultLIST, typeSTR = None):
     correctnessLIST = []
     count_True = 0 
     count_False = 0
@@ -76,7 +76,7 @@ def correctness(resultLIST):
             count_NA += 1
             
     total_correctFLOAT = round(count_True/(count_True + count_False)*100,2)
-    correctnessDICT = {"Correct :": count_True, "False :": count_False, "N/A :": count_NA, "Correctness": total_correctFLOAT}
+    correctnessDICT = {"{} Correctness".format(typeSTR): total_correctFLOAT, "{} True:".format(typeSTR): count_True, "{} False:".format(typeSTR): count_False, "{} N/A:".format(typeSTR): count_NA}
     #correctnessLIST = [count_True, count_False, count_NA, total_correctFLOAT]
     
     return correctnessDICT  #correctnessLIST,   ###count_True, count_False, count_NA, total_correctFLOAT
@@ -179,14 +179,18 @@ if __name__ == "__main__":
     print(L_pwRT_DICT)
 
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
-    PLDT_correct_subLIST = correctness(resultLIST)
-    H_PLDTmean_subLIST = correctness(H_CD_rawLIST)
-    L_PLDTmean_subLIST = correctness(L_CD_rawLIST)  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
+    PLDT_correct_subLIST = correctness(resultLIST, "PLDT-total")
+    H_PLDTmean_subLIST = correctness(H_CD_rawLIST, "H-CD PLDT")
+    L_PLDTmean_subLIST = correctness(L_CD_rawLIST, "L-CD PLDT")  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
     
     print(PLDT_correct_subLIST)
     print(H_PLDTmean_subLIST)
     print(L_PLDTmean_subLIST)
     print(type(H_PLDTmean_subLIST))
+    
+    
+    
+    
     
     
     """
