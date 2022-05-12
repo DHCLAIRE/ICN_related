@@ -118,13 +118,11 @@ if __name__ == "__main__":
     rawLIST = []
     H_CD_rawLIST = []
     L_CD_rawLIST = []
-    H_rtLIST = []
-    L_rtLIST = []
-        
+    
     ## PER PERSON ##
     # Mean
-    H_PLDTmean_subLIST = []
-    L_PLDTmean_subLIST = []
+    H_pwRT_DICT = {}
+    L_pwRT_DICT = {}
     # Correctness (True & False)
     PLDT_correct_subLIST = []
     H_PLDT_correct_subLIST = []
@@ -134,7 +132,7 @@ if __name__ == "__main__":
     H_CD_ratingMean_subLIST = []
     L_CD_ratingMean_subLIST = []
     
-    
+    """
     ## WHOLE GROUP ##
     # Mean
     H_PLDTmean_allLIST = []
@@ -142,7 +140,7 @@ if __name__ == "__main__":
     # SD
     H_PLDTsd_allLIST = []
     L_PLDTsd_allLIST = []
-    
+    """
     
     # For LDT results calculation  >> should I add True/False calculation???
     with open (result_data_path + "003_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
@@ -180,12 +178,12 @@ if __name__ == "__main__":
 
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
     PLDT_correct_subLIST = correctness(resultLIST, "PLDT-total")
-    H_PLDTmean_subLIST = correctness(H_CD_rawLIST, "H-CD PLDT")
-    L_PLDTmean_subLIST = correctness(L_CD_rawLIST, "L-CD PLDT")  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
+    H_PLDT_correct_subLIST = correctness(H_CD_rawLIST, "H-CD PLDT")
+    L_PLDT_correct_subLIST = correctness(L_CD_rawLIST, "L-CD PLDT")  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
     
     print(PLDT_correct_subLIST)
-    print(H_PLDTmean_subLIST)
-    print(L_PLDTmean_subLIST)
+    print(H_PLDT_correct_subLIST)
+    print(L_PLDT_correct_subLIST)
     print(type(H_PLDTmean_subLIST))
     
     
