@@ -33,7 +33,7 @@ def Mean(resultLIST, i, typeSTR = None):
         else:
             rawLIST = row.split(",")
             contentLIST.append(float(rawLIST[i]))
-    #print("Raw data:", contentLIST)
+    #print("{} Raw data:".format(typeSTR), contentLIST)
     old_count = len(contentLIST)
     #print(old_count)
 
@@ -42,7 +42,7 @@ def Mean(resultLIST, i, typeSTR = None):
             contentLIST.remove(0.0)
         else:
             pass
-    #print("Exclude 0.0 data:", contentLIST)
+    #print("{} Exclude 0.0 data:".format(typeSTR), contentLIST)
     new_count = len(contentLIST)
     #print(new_count)
     
@@ -85,21 +85,21 @@ def correctness(resultLIST, typeSTR = None):
 
 if __name__ == "__main__":
     
-    # Setting up the data_path
-    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
-    resultLIST = []
-    tmpLIST = []
+    for z in range(9):
+        # Setting up the data_path
+        result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
-    #剩把pseudoDICT的值叫出來
-    pseudoLIST = []
-    targetPseudoLIST = []
-    High_CDpwLIST = []
-    Low_CDpwLIST = []
+        resultLIST = []
+        tmpLIST = []
     
-    
-    for z in range(5):
-        sub_num = "00{}".format(z+5)
+        #剩把pseudoDICT的值叫出來
+        pseudoLIST = []
+        targetPseudoLIST = []
+        High_CDpwLIST = []
+        Low_CDpwLIST = []
+
+        sub_num = "0{}".format(z+10)
     
         with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
             pseudoDICT = json.load(jfile)
@@ -189,7 +189,7 @@ if __name__ == "__main__":
         
     
         print("{}:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
-    
+        #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
     
     
     """
