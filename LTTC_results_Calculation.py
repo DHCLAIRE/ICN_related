@@ -21,20 +21,10 @@ def LISTblankEraser(rawLIST):
         else:
             pass
     newrawLIST = rawLIST
+    print(len(newrawLIST))
     return newrawLIST
 
-def ListDetector(resultLIST):
-    n_resultLIST = []
-    for row in resultLIST:
-        if type(row) == list:
-            rawLIST = row
-            n_resultLIST.extend
-        else:
-            rawLIST = row.split(",")
-            n_resultLIST.append(rawLIST)
-    return n_resultLIST
-
-
+"""
 def Mean(i, rawLIST, typeSTR = None):
     contentLIST = []
     for row in rawLIST:
@@ -48,6 +38,7 @@ def Mean(i, rawLIST, typeSTR = None):
     MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT}
     #MeanDICT = {"%s RT count"%typeSTR:len(rtLIST),"{%s RT Mean"%typeSTR:PLDTmean_subFLOAT}
     return MeanDICT
+"""
 
 def correctness(resultLIST):
     correctnessLIST = []
@@ -99,7 +90,7 @@ if __name__ == "__main__":
         pseudoDICT = json.load(jfile)
         pprint(pseudoDICT)
         
-        print(sub_num)
+        #print(sub_num)
         
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
         High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
@@ -143,6 +134,8 @@ if __name__ == "__main__":
     # For LDT results calculation  >> should I add True/False calculation???
     with open (result_data_path + "003_LDT_results.csv", "r", encoding = "utf-8") as csvfile:
         resultLIST = csvfile.read().split("\n")
+        print(resultLIST)
+        print()
         print(len(resultLIST))
         resultLIST.pop(0)   # exclude the headers
         print(len(resultLIST))
@@ -154,10 +147,10 @@ if __name__ == "__main__":
     for row in resultLIST:
         rawLIST = row.split(",")
         if rawLIST[2] in High_CDpwLIST:
-            print("High CD pw: ", rawLIST) 
+            #print("High CD pw: ", rawLIST)
             H_CD_rawLIST.append(rawLIST)
         elif rawLIST[2] in Low_CDpwLIST:
-            print("Low CD pw: ", rawLIST)
+            #print("Low CD pw: ", rawLIST)
             L_CD_rawLIST.append(rawLIST)
         else:
             pass
@@ -167,10 +160,22 @@ if __name__ == "__main__":
     print(len(L_CD_rawLIST))
     
     # Calculate the RT Mean of the H & L PLDT
-    H_pwRT_DICT = Mean(5, H_CD_rawLIST, "High-CD RT")
-    L_pwRT_DICT = Mean(5, L_CD_rawLIST, "Low-CD RT")  # output = {'Low-CD RT count': 29, 'Low-CD RT Mean': 797.069} # type = DICT
-    print(H_pwRT_DICT)
-    print(L_pwRT_DICT)
+    """
+    for row in H_CD_rawLIST:
+        contentLIST.append(float(row[i]))
+        if 0. in contentLIST:
+            contentLIST.remove(0.0)
+        else:
+            pass
+    print(contentLIST)
+    PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
+    #MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT}
+    """
+    
+    #H_pwRT_DICT = Mean(5, H_CD_rawLIST, "High-CD RT")
+    #L_pwRT_DICT = Mean(5, L_CD_rawLIST, "Low-CD RT")  # output = {'Low-CD RT count': 29, 'Low-CD RT Mean': 797.069} # type = DICT
+    #print(H_pwRT_DICT)
+    #print(L_pwRT_DICT)
 
     # Calculate the Correctness of all, and H & L PLDT, there's three in total
     PLDT_correct_subLIST = correctness(resultLIST)
@@ -182,7 +187,7 @@ if __name__ == "__main__":
     print(L_PLDTmean_subLIST)
     print(type(H_PLDTmean_subLIST))
     
-
+    """
     # Self_rating section
     readingLIST = []
     
@@ -206,6 +211,7 @@ if __name__ == "__main__":
         rawLIST = row.split(",")
         rating_Mean = Mean(4, rawLIST, "Self-Rating")
     pprint(rating_Mean)
+    """
     """
     # Calculate the Self_rating mean of 30 short texts
     for row in readingLIST:
