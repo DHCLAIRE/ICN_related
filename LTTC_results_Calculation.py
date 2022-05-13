@@ -193,6 +193,32 @@ if __name__ == "__main__":
     
     """
     
+    resultLIST = []
+    tmpLIST = []
+
+    #剩把pseudoDICT的值叫出來
+    pseudoLIST = []
+    targetPseudoLIST = []
+    High_CDpwLIST = []
+    Low_CDpwLIST = []    
+    sub_num = "003"
+    
+    with open (result_data_path + "003_pseudowordsDICT.json", "r", encoding = "utf-8") as jfile:
+        pseudoDICT = json.load(jfile)
+        pprint(pseudoDICT)
+    
+        #print(sub_num)
+    
+        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+        High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
+        Low_CDpwLIST.extend(pseudoDICT["Low_CD condition pseudowords_3"])
+    
+        print(sub_num, "Target pw : ", targetPseudoLIST)
+        print(sub_num, "High-CD pw : ", High_CDpwLIST)
+        print(sub_num, "Low-CD pw : ", Low_CDpwLIST) # output: 003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
+    
+    
+    
     # Self_rating section
     readingLIST = []
     ratingDICT = {}
@@ -202,7 +228,7 @@ if __name__ == "__main__":
     
     with open (result_data_path + "003_Reading_task.csv", "r", encoding= 'unicode_escape') as csvfile_reading:  #, "r", encoding = "utf-8")
         readingLIST = csvfile_reading.read().split("\n")
-        pprint(readingLIST)
+        #pprint(readingLIST)
         #print(type(readingLIST))
         print(len(readingLIST))
         readingLIST.pop(0)   # exclude the headers
@@ -230,18 +256,23 @@ if __name__ == "__main__":
             cleaned_LIST.append(rawLIST)
 
         print(count)
-        pprint(cleaned_LIST)
+        #pprint(cleaned_LIST)
         print(len(cleaned_LIST))
-        """
+        
         for row in cleaned_LIST:
             textLIST = row[1].lower().split(" ")
-            print(textLIST)
-            print(len(textLIST))
+            #print(textLIST)
+            #print(len(textLIST))
             for word in textLIST:
-                print(word)
+                if word in High_CDpwLIST:
+                    print("High-CD", word)
+                if word in Low_CDpwLIST:
+                    print("Low-CD", word)
+                else:
+                    pass
+                
 
 
     
-    ratingDICT = Mean(readingLIST, 4, "Self-Rating")
-    pprint(ratingDICT)
-    """
+    #ratingDICT = Mean(readingLIST, 4, "Self-Rating")
+    #pprint(ratingDICT)
