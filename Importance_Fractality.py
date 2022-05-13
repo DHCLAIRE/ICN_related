@@ -200,7 +200,7 @@ if __name__ == "__main__":
     targetPseudoLIST = []
     High_CDpwLIST = []
     Low_CDpwLIST = []
-
+    sub_num = "003"
     with open (result_data_path + "003_pseudowordsDICT.json", "r", encoding = "utf-8") as jfile:
         pseudoDICT = json.load(jfile)
         pprint(pseudoDICT)
@@ -250,14 +250,40 @@ if __name__ == "__main__":
             cleaned_LIST.append(rawLIST)
 
         print(count)
-        pprint(cleaned_LIST)
+        #pprint(cleaned_LIST)
         print(len(cleaned_LIST))
+        
+        count_H = 0
+        count_L = 0
+        
+        text_H_LIST = []
+        text_L_LIST = []
         
         for row in cleaned_LIST:
             textLIST = row[1].lower().split(" ")
-            print(textLIST)
-            print(len(textLIST))
-            for word in textLIST:
-                print(word)
-                
+            #print(textLIST)
+            #print(len(textLIST))
+            for H_pw in High_CDpwLIST:
+                for word in textLIST:
+                    if H_pw in word:
+                        print("High-CD", word)
+                        count_H += 1
+                        text_H_LIST.append(row)
+                    else:
+                        pass
+            for L_pw in Low_CDpwLIST:
+                for word in textLIST:
+                    if L_pw in word:
+                        print("Low-CD", word)
+                        count_L += 1
+                        text_L_LIST.append(row)
+                    else:
+                        pass
+        
+        print("count_H", count_H)
+        print("count_L", count_L)
+        print("Text_Hs", text_H_LIST)
+        print(len(text_H_LIST))
+        print("Text_Ls", text_L_LIST)
+        print(len(text_L_LIST))
         #print(len(readingLIST[0]))
