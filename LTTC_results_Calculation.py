@@ -261,13 +261,14 @@ if __name__ == "__main__":
         
         for row in cleaned_LIST:
             textLIST = row[1].lower().split(" ")
-            #print(textLIST)
-            #print(len(textLIST))
+            print(textLIST)
+            print(len(textLIST))
             for word in textLIST:
+                print(word)
                 if word in High_CDpwLIST:
-                    print("High-CD", word)
+                    print(cleaned_LIST.index(row), "High-CD", word)
                 if word in Low_CDpwLIST:
-                    print("Low-CD", word)
+                    print(cleaned_LIST.index(row), "Low-CD", word)
                 else:
                     pass
                 
