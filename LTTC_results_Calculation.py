@@ -84,8 +84,8 @@ def correctness(resultLIST, typeSTR = None):
 
 
 if __name__ == "__main__":
-    
-    
+    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    """
     for z in range(9):
         # Setting up the data_path
         result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
@@ -137,12 +137,12 @@ if __name__ == "__main__":
         """
         ## WHOLE GROUP ##
         # Mean
-        H_PLDTmean_allLIST = []
-        L_PLDTmean_allLIST = []
-        # SD
-        H_PLDTsd_allLIST = []
-        L_PLDTsd_allLIST = []
-        """
+        #H_PLDTmean_allLIST = []
+        #L_PLDTmean_allLIST = []
+        ## SD
+        #H_PLDTsd_allLIST = []
+        #L_PLDTsd_allLIST = []
+    """
     
         # For LDT results calculation  >> should I add True/False calculation???
         with open (result_data_path + "{}_LDT_results.csv".format(sub_num), "r", encoding = "utf-8") as csvfile:
@@ -191,15 +191,16 @@ if __name__ == "__main__":
         print("{}:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
     
-    
     """
+    
     # Self_rating section
     readingLIST = []
+    ratingDICT = {}
     
     with open (result_data_path + "003_Reading_task.csv", "r", encoding= 'unicode_escape') as csvfile_reading:  #, "r", encoding = "utf-8")
         readingLIST = csvfile_reading.read().split("\n")
-        #pprint(readingLIST)
-        print(type(readingLIST))
+        pprint(readingLIST)
+        #print(type(readingLIST))
         print(len(readingLIST))
         readingLIST.pop(0)   # exclude the headers
         print(len(readingLIST))
@@ -207,16 +208,18 @@ if __name__ == "__main__":
         # exclude the blank row
         readingLIST = LISTblankEraser(readingLIST)
         print(len(readingLIST))
-        
-    ratingLIST = []
-    
-    #pprint(readingLIST)
     
     for row in readingLIST:
-        rawLIST = row.split(",")
-        rating_Mean = Mean(4, rawLIST, "Self-Rating")
-    pprint(rating_Mean)
-    """
+        #print(row)
+        rawLIST = row.split(',"')
+        #print(rawLIST)
+        print(len(rawLIST))
+        
+        #pprint(rawLIST[5])
+    
+    ratingDICT = Mean(readingLIST, 4, "Self-Rating")
+    pprint(ratingDICT)
+    
     """
     # Calculate the Self_rating mean of 30 short texts
     for row in readingLIST:
