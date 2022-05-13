@@ -196,6 +196,9 @@ if __name__ == "__main__":
     # Self_rating section
     readingLIST = []
     ratingDICT = {}
+    count = 0
+    cleaned_LIST = []
+    textLIST = []
     
     with open (result_data_path + "003_Reading_task.csv", "r", encoding= 'unicode_escape') as csvfile_reading:  #, "r", encoding = "utf-8")
         readingLIST = csvfile_reading.read().split("\n")
@@ -209,62 +212,36 @@ if __name__ == "__main__":
         readingLIST = LISTblankEraser(readingLIST)
         print(len(readingLIST))
     
-    for row in readingLIST:
-        #print(row)
-        rawLIST = row.split(',"')
-        #print(rawLIST)
-        print(len(rawLIST))
-        
-        #pprint(rawLIST[5])
+        for row in readingLIST:
+            #print(row)
+            if ',"[""' in row:
+                rawLIST = row.split(',"[""')
+            elif ',"[\'' in row:
+                rawLIST = row.split(',"[\'')
+            else:
+                print("Wrong!!!!!!!!!!!!!!!!!! >>>>>",rawLIST)
+                print("Wrong_count >>>>>", len(rawLIST))
+                
+            if len(rawLIST) ==2:
+                count +=1
+            else:
+                print("Wrong!!!!!!!!!!!!!!!!!! >>>>>",rawLIST)
+                print("Wrong_count >>>>>", len(rawLIST))
+            cleaned_LIST.append(rawLIST)
+
+        print(count)
+        pprint(cleaned_LIST)
+        print(len(cleaned_LIST))
+        """
+        for row in cleaned_LIST:
+            textLIST = row[1].lower().split(" ")
+            print(textLIST)
+            print(len(textLIST))
+            for word in textLIST:
+                print(word)
+
+
     
     ratingDICT = Mean(readingLIST, 4, "Self-Rating")
     pprint(ratingDICT)
-    
-    """
-    # Calculate the Self_rating mean of 30 short texts
-    for row in readingLIST:
-        rawLIST = row.split(",")
-        print(rawLIST)
-        print(type(rawLIST))
-        ratingLIST.append(float(rawLIST[4]))
-    print(ratingLIST)
-    
-    
-    rating_meanFLOAT = round(np.mean(np.array(ratingLIST)),2)
-    print(rating_meanFLOAT)
-    print(type(rating_meanFLOAT))
-    
-    H_ratingLIST = []
-    L_ratingLIST = []
-    """
-    """
-    #003 High-CD pw :  ['aegliy', 'baydiy', 'chaeviy']
-    #003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
-    """
-    """
-    # Calculate the Self_rating mean of H-CD & L-CD short texts
-    for row in readingLIST:
-        rawLIST = row.split(",")
-        for Hpw in High_CDpwLIST:
-            if Hpw in rawLIST[5]:
-                print("H-CD stim: ", rawLIST[5])
-            else:
-                pass
-        for Lpw in Low_CDpwLIST:
-            if Lpw in rawLIST[5]:
-                print("L-CD stim: ", rawLIST[5])
-            else:
-                pass
-        
-        #if Low_CDpwLIST in rawLIST[5]:
-            #print("L-CD stim: ", rawLIST)
-        #else:
-            #print("ERROR!!")
-        
-        #ratingLIST.append(float(rawLIST[4]))
-    #print(ratingLIST)
-    
-    #rating_meanFLOAT = round(np.mean(np.array(ratingLIST)),2)
-    #print(rating_meanFLOAT)
-    #print(type(rating_meanFLOAT))
     """
