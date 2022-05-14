@@ -71,14 +71,15 @@ if __name__ == "__main__":
     
     
     ========Formula__2 <--> Section__2========
-    The shuffling process cannot change the pattern of the words that are uniformly distributed throughout the text, although mean- ing of the text gets lost.
-    Therefore, such words have less impor- tance in the semantic structure of the text.
+    The shuffling process cannot change the pattern of the words that are uniformly distributed throughout the text, although meaning of the text gets lost.
+    Therefore, such words have less importance in the semantic structure of the text.
     The distributions of the more important words change remarkably in the shuffled text.
     Accordingly, for an important word, the number of filled boxes in an original text differs from the case of the shuffled text.
     Difference between the number of filled boxes for a given word in the orig- inal and shuffled text could be considered as a measure of word importance [6] .
     To measure these differences the degree of fractal- ity is defined as:
     
     d f (w ) =   s log ( N sh. b (w, s ) N b (w, s ) ) (2)
+    >>> df(w) = sum(log(Nsh(w,s)/Nb(w,s)))
     
     where d f ( w ) is the degree of fractality (or simply fractality) and N sh. b (w, s ) is the number of filled boxes with size s for the particular word w , in the shuffled text.
     To take into account the frequency of each word in a text, the fractality could be multiplied by log ( M ), where M is word frequency, as is explained in the reference [6] .
@@ -86,9 +87,6 @@ if __name__ == "__main__":
     =======
     # NOTES_Section__2
     =======
-    Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
-    N = the number of word in a text
-    s = the box size = how many words were count as one box
     
     
     
