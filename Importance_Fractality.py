@@ -1,46 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-
-"""
-Citation: Najafi, E., & Darooneh, A. H. (2017). Long range dependence in texts: A method for quantifying coherence of text. Knowledge-Based Systems, 133, 33-42.
-COPIED CONTENT FROM THE ARTICLE:
-
-The fractal dimension of words in this one-dimensional space is a number between 0 and 1.
-The important words have dimensions that are significantly different from one, while the less important words are distributed 
-uniformly and their dimensions are close to one [6].
-Box counting is a practical method for computing the fractal dimension of words.
-To perform this calculation, the text should be divided into boxes of size s.
-It means that any box contains s successive words.
-The number of such boxes that contains at least one occurrence of a given word w,
-
-i.e. the number of filled boxes, is Nb(w, s) and the self-similarity
-property is expressed as,
-
-Nb(w, s) ∼ s−Dw . (1)
-
-where Dw stands for the fractal dimension of word w.
-It is obtained by finding the slope of log-log plot of Nb(w, s) versus s for large enough s.
-
-"""
-
 '''
-The importance of Fractality:
-Calculation process:
-Box counting: t
+# There's no need to add this first, cause we all ready got the file in word unit
 
-Box = the length of the text
+String preprocessing (Things that need to do first)
+1. converting all letters to lower or upper case
+2. converting numbers into words or removing numbers
+3. removing punctuations, accent marks and other diacritics
+4. removing white spaces
+5. expanding abbreviations
+6. removing stop words, sparse terms, and particular words
+7. text canonicalization
+'''
 
-s = the size of the boxes = s words that contains in this box
-w = the target word  (??) I guess
-
-'''
-'''
-Steps:
-1. split the text into different lengths = create s??
-2. shuffle the texts??
-3. calculate the texts
-'''
 
 from pprint import pprint
 import csv
@@ -51,7 +24,6 @@ import numpy as np
 from datetime import datetime,date
 import pandas as pd
 from collections import Counter
-
 
 
 def LISTblankEraser(rawLIST):
@@ -65,86 +37,83 @@ def LISTblankEraser(rawLIST):
     #print(len(newrawLIST))
     return newrawLIST
 
-def Mean(resultLIST, i, typeSTR = None):
-    contentLIST = []
-    for row in resultLIST:
-        if type(row) == list:
-            rawLIST = row
-            contentLIST.append(float(rawLIST[i]))
-        else:
-            rawLIST = row.split(",")
-            contentLIST.append(float(rawLIST[i]))
-    #print("{} Raw data:".format(typeSTR), contentLIST)
-    old_count = len(contentLIST)
-    #print(old_count)
-
-    for RT_Int in contentLIST:
-        if 0. in contentLIST:
-            contentLIST.remove(0.0)
-        else:
-            pass
-    #print("{} Exclude 0.0 data:".format(typeSTR), contentLIST)
-    new_count = len(contentLIST)
-    #print(new_count)
-    
-    exclude_countINT = old_count - new_count
-    PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
-    MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT, "Exclude 0.0 count": exclude_countINT}
-    
-    return MeanDICT
-
-
-def correctness(resultLIST, typeSTR = None):
-    correctnessLIST = []
-    count_True = 0 
-    count_False = 0
-    count_NA = 0
-    
-    for row in resultLIST:
-        #rawLIST = ListDetector(row)
-        if type(row) == list:
-            rawLIST = row
-        else:
-            rawLIST = row.split(",")
-            
-        if rawLIST[6] == "['True']":
-            count_True += 1
-            correctBOOL = 1
-        elif rawLIST[6] == "['False']":
-            count_False += 1
-            correctBOOL = 0
-        else:
-            count_NA += 1
-            
-    total_correctFLOAT = round(count_True/(count_True + count_False)*100,2)
-    correctnessDICT = {"{} Correctness".format(typeSTR): total_correctFLOAT, "{} True:".format(typeSTR): count_True, "{} False:".format(typeSTR): count_False, "{} N/A:".format(typeSTR): count_NA}
-    #correctnessLIST = [count_True, count_False, count_NA, total_correctFLOAT]
-    
-    return correctnessDICT  #correctnessLIST,   ###count_True, count_False, count_NA, total_correctFLOAT
-
-
 
 if __name__ == "__main__":
     
     """
+    Citation: Najafi, E., & Darooneh, A. H. (2017). Long range dependence in texts: A method for quantifying coherence of text. Knowledge-Based Systems, 133, 33-42.
+    COPIED CONTENT FROM THE ARTICLE:
     
-    % directly from the paper>>
+    ========Formula__1 <--> Section__1========
+    The fractal dimension of words in this one-dimensional space is a number between 0 and 1.
+    The important words have dimensions that are significantly different from one, while the less important words are distributed 
+    uniformly and their dimensions are close to one [6].
+    Box counting is a practical method for computing the fractal dimension of words.
+    To perform this calculation, the text should be divided into boxes of size s.
+    It means that any box contains s successive words.
+    The number of such boxes that contains at least one occurrence of a given word w,
     
-    Box counting is a practical method for computing the fractal dimension of words. 
-    To perform this calculation, the text should be divided into boxes of size s. 
-    It means that any box contains s successive words. 
-    The number of such boxes that contains at least one occurrence of a given word w
-    , i.e. the number of filled boxes, is N b ( w, s ) and the self-similarity property 
-    is expressed as, N b (w, s ) ∼s −D w . (1) where D w stands for the fractal dimension of word w.
-    It is obtained by finding the slope of log-log plot of N b ( w, s ) versus s for large enough s .
+    i.e. the number of filled boxes, is Nb(w, s) and the self-similarity property is expressed as,
     
+    Nb(w, s) ∼ s−Dw . (1)
+    
+    where Dw stands for the fractal dimension of word w.
+    It is obtained by finding the slope of log-log plot of Nb(w, s) versus s for large enough s.
     
     =======
-    Number of shuffled box count(Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
+    # NOTES_Section__1
+    =======
+    Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
     N = the number of word in a text
     s = the box size = how many words were count as one box
     
-    =====
+    
+    
+    
+    ========Formula__2 <--> Section__2========
+    The shuffling process cannot change the pattern of the words that are uniformly distributed throughout the text, although mean- ing of the text gets lost.
+    Therefore, such words have less impor- tance in the semantic structure of the text.
+    The distributions of the more important words change remarkably in the shuffled text.
+    Accordingly, for an important word, the number of filled boxes in an original text differs from the case of the shuffled text.
+    Difference between the number of filled boxes for a given word in the orig- inal and shuffled text could be considered as a measure of word importance [6] .
+    To measure these differences the degree of fractal- ity is defined as:
+    
+    d f (w ) =   s log ( N sh. b (w, s ) N b (w, s ) ) (2)
+    
+    where d f ( w ) is the degree of fractality (or simply fractality) and N sh. b (w, s ) is the number of filled boxes with size s for the particular word w , in the shuffled text.
+    To take into account the frequency of each word in a text, the fractality could be multiplied by log ( M ), where M is word frequency, as is explained in the reference [6] .
+    
+    =======
+    # NOTES_Section__2
+    =======
+    Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
+    N = the number of word in a text
+    s = the box size = how many words were count as one box
+    
+    
+    
+    ========Formula__3 <--> Section__3========
+    To calculate the number of filled boxes in a shuffled text, we have to perform one shuffling process for each particular word.
+    It means that we need to perform a large number of shuffling processes (equal to the number of word-types in a text) to rank the words due to their importance.
+    To overcome this difficulty we use our conjecture about the number of filled boxes in a shuffled text [6] :
+    
+    N sh. b (s, ω) = M 1 + ( M−1 N−1 )(s −1)
+    >>> Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
+    
+    where M is frequency of the word ω. This equation shows good conformity with the number of filled boxes in a shuffled text [6] .
+    Higher value of degree of fractality means that the distribution pattern of the word is more different from the uniform distribution; So the word is more important.
+    
+    =======
+    # NOTES_Section__3
+    =======
+    Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
+    N = the number of word in a text
+    s = the box size = how many words were count as one box
+    
+    
+    
+    
+    #=====
     THE STEPS:
     *For the values that based on SHUFFLED position*
     1. Segment the words: Cut the word into different box sizes
@@ -157,26 +126,9 @@ if __name__ == "__main__":
     3. Count the filled boxes: Count how many times of the target word that appeared in the divided boxes
     
     
-    Calculate the Fractality: 
-    
-    
-    
-    
-    """
-    
-    """
-    String preprocessing (Things that need to do first)
-    1. converting all letters to lower or upper case
-    2. converting numbers into words or removing numbers
-    3. removing punctuations, accent marks and other diacritics
-    4. removing white spaces
-    5. expanding abbreviations
-    6. removing stop words, sparse terms, and particular words
-    7. text canonicalization
-    """
-    
-    """
+    ======Question======
     What is the base of the calculation?? >> the whole chapter?  Or each sentence?? 
+    
     """
     
     tmpLIST = []
@@ -188,10 +140,10 @@ if __name__ == "__main__":
     
     tmpLIST = testing_text.lower().split(" ")
     
-    #pprint(tmpLIST)
-    #print(len(tmpLIST))
+    pprint(tmpLIST)
+    print(len(tmpLIST))
     
     #for strROW in tmpLIST:
         #print(strROW)
         #print(type(strROW))
-        
+
