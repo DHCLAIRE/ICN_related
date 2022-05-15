@@ -24,6 +24,8 @@ import numpy as np
 from datetime import datetime,date
 import pandas as pd
 from collections import Counter
+import string   # import string library function
+#from string import maketrans # for text preprocessing
 
 
 def LISTblankEraser(rawLIST):
@@ -141,7 +143,30 @@ if __name__ == "__main__":
     pprint(tmpLIST)
     print(len(tmpLIST))
     
-    #for strROW in tmpLIST:
-        #print(strROW)
+    
+    
+    # Storing the sets of punctuation in variable result 
+    puncSTR = string.punctuation
+    
+    puncLIST = []
+    for punc in puncSTR:
+        puncLIST.append(punc)
+    print(puncLIST)
+    print(type(puncLIST))
+    
+    n_tmpLIST = []
+    for wordSTR in tmpLIST:
+        for punc in puncLIST:
+            if punc in wordSTR:
+                print(wordSTR)
+                wordSTR.translate(wordSTR.maketrans('', '', punc))
+                print("New word:", wordSTR)
+       # print(wordSTR)
+                #n_tmpLIST.append(wordSTR)
+            #else:
+                #n_tmpLIST.append(wordSTR)
+                #pass
+    #pprint(n_tmpLIST)
+        #print(wordSTR)
         #print(type(strROW))
 
