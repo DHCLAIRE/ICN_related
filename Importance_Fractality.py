@@ -1,19 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-'''
-# There's no need to add this first, cause we all ready got the file in word unit
-
-String preprocessing (Things that need to do first)
-1. converting all letters to lower or upper case
-2. converting numbers into words or removing numbers
-3. removing punctuations, accent marks and other diacritics
-4. removing white spaces
-5. expanding abbreviations
-6. removing stop words, sparse terms, and particular words
-7. text canonicalization
-'''
-
 
 from pprint import pprint
 import csv
@@ -128,6 +115,20 @@ if __name__ == "__main__":
     
     ======Question======
     What is the base of the calculation?? >> the whole chapter?  Or each sentence?? 
+    
+    '''
+    # There's no need to add this first, cause we all ready got the file in word unit
+
+    String preprocessing (Things that need to do first)
+    1. converting all letters to lower or upper case
+    2. converting numbers into words or removing numbers
+    3. removing punctuations, accent marks and other diacritics
+    4. removing white spaces
+    5. expanding abbreviations
+    6. removing stop words, sparse terms, and particular words
+    7. text canonicalization
+    '''
+    
     
     """
     
