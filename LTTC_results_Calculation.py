@@ -114,7 +114,7 @@ if __name__ == "__main__":
             #print(sub_num, "Target pw : ", targetPseudoLIST)
             #print(sub_num, "High-CD pw : ", High_CDpwLIST)
             #print(sub_num, "Low-CD pw : ", Low_CDpwLIST) # output: 003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
-            
+        
         #pass
         # raw data
         rawLIST = []
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         H_CD_ratingMean_subLIST = []
         L_CD_ratingMean_subLIST = []
     
-        """
+        '''
         ## WHOLE GROUP ##
         # Mean
         #H_PLDTmean_allLIST = []
@@ -142,7 +142,7 @@ if __name__ == "__main__":
         ## SD
         #H_PLDTsd_allLIST = []
         #L_PLDTsd_allLIST = []
-    """
+    '''
     
         # For LDT results calculation  >> should I add True/False calculation???
         with open (result_data_path + "{}_LDT_results.csv".format(sub_num), "r", encoding = "utf-8") as csvfile:
@@ -182,42 +182,12 @@ if __name__ == "__main__":
         H_PLDT_correct_subDICT = correctness(H_CD_rawLIST, "H-CD PLDT")
         L_PLDT_correct_subDICT = correctness(L_CD_rawLIST, "L-CD PLDT")  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
     
-        print(PLDT_correct_subDICT)
-        #print(H_PLDT_correct_subDICT)
-        #print(L_PLDT_correct_subDICT)
-        #print(type(H_PLDT_correct_subDICT))
+        print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
+        print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
         
-    
-        print("{}:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
+        print("{} just PLDT figures:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
-    
-    
-        """
-    resultLIST = []
-    tmpLIST = []
-
-    #剩把pseudoDICT的值叫出來
-    pseudoLIST = []
-    targetPseudoLIST = []
-    High_CDpwLIST = []
-    Low_CDpwLIST = []
-    sub_num = "003"
-    
-    with open (result_data_path + "003_pseudowordsDICT.json", "r", encoding = "utf-8") as jfile:
-        pseudoDICT = json.load(jfile)
-        pprint(pseudoDICT)
-    
-        #print(sub_num)
-    
-        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-        High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
-        Low_CDpwLIST.extend(pseudoDICT["Low_CD condition pseudowords_3"])
-    
-        print(sub_num, "Target pw : ", targetPseudoLIST)
-        print(sub_num, "High-CD pw : ", High_CDpwLIST)
-        print(sub_num, "Low-CD pw : ", Low_CDpwLIST) # output: 003 Low-CD pw :  ['vaesow', 'payliy', 'paenliy']
-        """
-    
+        
     
         # Self_rating section
         readingLIST = []
@@ -259,27 +229,10 @@ if __name__ == "__main__":
                     print("Wrong_count >>>>>", len(rawLIST))
                 cleaned_LIST.append(rawLIST)
             
-            print(count)
+            #print(count)
             #pprint(cleaned_LIST)
-            print(len(cleaned_LIST))
-        
-            # to check the PWs that are in each text
-            for row in cleaned_LIST:
-                # lowercase all the words, split them into each word per unit
-                textLIST = row[1].lower().split(" ")
-                #print(textLIST)
-                #print(len(textLIST))
-            
-                # print out the PWs according to the squence of the text and their CD condition
-                for word in textLIST:
-                    #print(word)
-                    if word in High_CDpwLIST:
-                        print(cleaned_LIST.index(row), "High-CD", word)
-                    if word in Low_CDpwLIST:
-                        print(cleaned_LIST.index(row), "Low-CD", word)
-                    else:
-                        pass
-                
+            #print(len(cleaned_LIST))
+
             # set out the count and blank LIST for further use
             count_H = 0
             count_L = 0
@@ -287,6 +240,7 @@ if __name__ == "__main__":
             L_textLIST = []
             new_H_textLIST = []
             new_L_textLIST = []
+            ALL_ratingDICT = {}
             H_ratingDICT = {}
             L_ratingDICT = {}
         
@@ -299,7 +253,7 @@ if __name__ == "__main__":
                     # if the pw is one of the H-CD pw, then we would put this trial as the H_textLIST, also ignor other words that inside the same text
                     for H_pw in High_CDpwLIST:
                         if H_pw in word:
-                            #print("High-CD", word)
+                            #print(cleaned_LIST.index(row), "High-CD", word)
                             count_H += 1
                             H_textLIST.append(row)
                         else:
@@ -308,7 +262,7 @@ if __name__ == "__main__":
                     # if the pw is one of the H-CD pw, then we would put this trial as the H_textLIST, also ignor other words that inside the same text
                     for L_pw in Low_CDpwLIST:
                         if L_pw in word:
-                            #print("Low-CD", word)
+                            #print(cleaned_LIST.index(row), "Low-CD", word)
                             count_L += 1
                             L_textLIST.append(row)
                         else:
@@ -320,8 +274,7 @@ if __name__ == "__main__":
             #print(len(H_textLIST))
             #print("Text_Ls", L_textLIST)
             #print(len(L_textLIST))
-            ##print(len(readingLIST[0]))
-        
+            
             # to accumulate the rating score according to the CD types
             for row in H_textLIST:
                 rawLIST = row[0].split(",")
@@ -338,8 +291,10 @@ if __name__ == "__main__":
             #print(len(new_L_textLIST))
         
             # calculate the self-rating mean of H & L CD texts
+            ALL_ratingDICT = Mean(readingLIST, 4, "Total self-rating")
             H_ratingDICT = Mean(new_H_textLIST, 4, "H-CD self-rating")
             L_ratingDICT = Mean(new_L_textLIST, 4, "L-CD self-rating")
         
-            print(H_ratingDICT)
-            print(L_ratingDICT)
+            print("{} self-rating :".format(sub_num), ALL_ratingDICT, ";",  H_ratingDICT, ";", L_ratingDICT)
+            
+            print('')
