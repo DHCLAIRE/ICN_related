@@ -12,6 +12,7 @@ import numpy as np
 from datetime import datetime,date
 import pandas as pd
 from collections import Counter
+import statistics
 
 def LISTblankEraser(rawLIST):
     newrawLIST = []
@@ -21,7 +22,6 @@ def LISTblankEraser(rawLIST):
         else:
             pass
     newrawLIST = rawLIST
-    #print(len(newrawLIST))
     return newrawLIST
 
 def Mean(resultLIST, i, typeSTR = None):
@@ -33,24 +33,49 @@ def Mean(resultLIST, i, typeSTR = None):
         else:
             rawLIST = row.split(",")
             contentLIST.append(float(rawLIST[i]))
-    #print("{} Raw data:".format(typeSTR), contentLIST)
     old_count = len(contentLIST)
-    #print(old_count)
 
     for RT_Int in contentLIST:
         if 0. in contentLIST:
             contentLIST.remove(0.0)
         else:
             pass
-    #print("{} Exclude 0.0 data:".format(typeSTR), contentLIST)
     new_count = len(contentLIST)
-    #print(new_count)
+    
+    #print("{}".format(typeSTR), contentLIST)
     
     exclude_countINT = old_count - new_count
     PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
     MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT, "Exclude 0.0 count": exclude_countINT}
     
     return MeanDICT
+
+
+def STD(resultLIST, i, df, typeSTR = None):
+    contentLIST = []
+    for row in resultLIST:
+        if type(row) == list:
+            rawLIST = row
+            contentLIST.append(float(rawLIST[i]))
+        else:
+            rawLIST = row.split(",")
+            contentLIST.append(float(rawLIST[i]))
+    old_count = len(contentLIST)
+
+    for RT_Int in contentLIST:
+        if 0. in contentLIST:
+            contentLIST.remove(0.0)
+        else:
+            pass
+    new_count = len(contentLIST)
+    
+    #print("{}".format(typeSTR), contentLIST)
+    
+    exclude_countINT = old_count - new_count
+    PLDTstd_subFLOAT = round(np.std(np.array(contentLIST), ddof = df),3) #ouput: H pwRT Mean : 783.167
+    StdDICT = {"{} count".format(typeSTR):len(contentLIST),"{} STD".format(typeSTR):PLDTstd_subFLOAT, "Exclude 0.0 count": exclude_countINT}
+    
+    return StdDICT
 
 
 def correctness(resultLIST, typeSTR = None):
@@ -86,9 +111,9 @@ def correctness(resultLIST, typeSTR = None):
 if __name__ == "__main__":
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
-    for z in range(3):
+    for z in range(5):
         # Setting up the data_path
-        result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+        #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
         resultLIST = []
         tmpLIST = []
@@ -99,8 +124,8 @@ if __name__ == "__main__":
         High_CDpwLIST = []
         Low_CDpwLIST = []
 
-        sub_num = "0{}".format(z+19)
-    
+        sub_num = "0{}".format(z+22)
+        # Open the pseudowordDICT for the further indications
         with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
             pseudoDICT = json.load(jfile)
             #pprint(pseudoDICT)
@@ -166,29 +191,36 @@ if __name__ == "__main__":
                 L_CD_rawLIST.append(rawLIST)
             else:   
                 pass
-        #print(H_CD_rawLIST)
+        #print("H_CD_rawLIST", H_CD_rawLIST)  # [['022', '2022-05-14', 'aegliy', "['z']", "['seen']", '1982.0', "['True']"], ['022', '2022-05-14', 'vaesow', "['z']", "['seen']", '726.0', "['True']"],.....]]
         #print(len(H_CD_rawLIST))
-        #print(L_CD_rawLIST)
+        #print("L_CD_rawLIST", L_CD_rawLIST)  # same as "H_CD_rawLIST"
         #print(len(L_CD_rawLIST))
-    
+        
+        
         # Calculate the RT Mean of the H & L PLDT
         H_pwRT_DICT = Mean(H_CD_rawLIST,5 , "High-CD RT")  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
         L_pwRT_DICT = Mean(L_CD_rawLIST,5 , "Low-CD RT")
-        #print(H_pwRT_DICT)
-        #print(L_pwRT_DICT)
+        print(H_pwRT_DICT)
+        print(L_pwRT_DICT)
+        
+        # Calculate the RT STD of the H & L PLDT
+        H_pwRT_STD_DICT = STD(H_CD_rawLIST,5 , 1, "High-CD RT")
+        L_pwRT_STD_DICT = STD(L_CD_rawLIST,5 , 1, "Low-CD RT")
+        print(H_pwRT_STD_DICT)
+        print(L_pwRT_STD_DICT)
 
         # Calculate the Correctness of all, and H & L PLDT, there's three in total
         PLDT_correct_subDICT = correctness(resultLIST, "PLDT-total")
         H_PLDT_correct_subDICT = correctness(H_CD_rawLIST, "H-CD PLDT")
         L_PLDT_correct_subDICT = correctness(L_CD_rawLIST, "L-CD PLDT")  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
     
-        print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
-        print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
+        #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
+        #print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
         
-        print("{} just PLDT figures:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
+        #print("{} just PLDT figures:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         
-    
+        """
         # Self_rating section
         readingLIST = []
         ratingDICT = {}
@@ -296,5 +328,11 @@ if __name__ == "__main__":
             L_ratingDICT = Mean(new_L_textLIST, 4, "L-CD self-rating")
         
             print("{} self-rating :".format(sub_num), ALL_ratingDICT, ";",  H_ratingDICT, ";", L_ratingDICT)
+            print("{} self-rating nums:".format(sub_num), ALL_ratingDICT["Total self-rating Mean"], H_ratingDICT["H-CD self-rating Mean"], L_ratingDICT["L-CD self-rating Mean"])
+
+        with open (result_data_path + "{}_textsDICT.json".format(sub_num), "r", encoding = "utf-8") as jjfile:
+            textsetsDICT = json.load(jjfile)
+            print("{} H & L text set:".format(sub_num), textsetsDICT["The High-Low Set Group"])
             
             print('')
+            """
