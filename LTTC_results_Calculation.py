@@ -15,6 +15,9 @@ from collections import Counter
 import statistics
 
 def LISTblankEraser(rawLIST):
+    '''
+    Remove the blank item inside the list
+    '''
     newrawLIST = []
     for row in rawLIST:
         if len(row) == 0:
@@ -24,7 +27,10 @@ def LISTblankEraser(rawLIST):
     newrawLIST = rawLIST
     return newrawLIST
 
-def Mean(resultLIST, i, typeSTR = None):
+def get_List(resultLIST, i):
+    '''
+    Extract the wanted data from the raw data LIST
+    '''
     contentLIST = []
     for row in resultLIST:
         if type(row) == list:
@@ -33,50 +39,51 @@ def Mean(resultLIST, i, typeSTR = None):
         else:
             rawLIST = row.split(",")
             contentLIST.append(float(rawLIST[i]))
-    old_count = len(contentLIST)
+    return contentLIST
 
-    for RT_Int in contentLIST:
-        if 0. in contentLIST:
-            contentLIST.remove(0.0)
+def remove_value(contentLIST, value):
+    '''
+    Exclude the missing_value
+    '''
+    for k in contentLIST:
+        if float(value) in contentLIST:
+            contentLIST.remove(float(value))
         else:
             pass
-    new_count = len(contentLIST)
-    
-    #print("{}".format(typeSTR), contentLIST)
-    
-    exclude_countINT = old_count - new_count
-    PLDTmean_subFLOAT = round(np.mean(np.array(contentLIST)),3) #ouput: H pwRT Mean : 783.167
-    MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):PLDTmean_subFLOAT, "Exclude 0.0 count": exclude_countINT}
+    return contentLIST
+
+def get_NA_count(A_LIST, countINT):
+    '''
+    Get the excluded N/A count
+    '''
+    raw_count = len(A_LIST)
+    if raw_count != countINT:
+        exclude_countINT = countINT - raw_count
+    else:
+        exclude_countINT = 0
+        
+    return exclude_countINT
+
+"""
+def Mean(resultLIST, item_index, missing_value, total_count, typeSTR = None):
+    '''
+    Get the mean of the cleaned data list
+    '''
+    contentLIST = get_List(resultLIST, item_index)
+    contentLIST = remove_value(contentLIST, missing_value)
+    NA_count = get_NA_count(contentLIST, total_count)
+    meanFLOAT = round(np.mean(np.array(contentLIST)), 3) #ouput: H pwRT Mean : 783.167
+    MeanDICT = {"{} count".format(typeSTR):len(contentLIST),"{} Mean".format(typeSTR):meanFLOAT , "Exclude 0.0 count": NA_count}
     
     return MeanDICT
 
-
 def STD(resultLIST, i, df, typeSTR = None):
-    contentLIST = []
-    for row in resultLIST:
-        if type(row) == list:
-            rawLIST = row
-            contentLIST.append(float(rawLIST[i]))
-        else:
-            rawLIST = row.split(",")
-            contentLIST.append(float(rawLIST[i]))
-    old_count = len(contentLIST)
 
-    for RT_Int in contentLIST:
-        if 0. in contentLIST:
-            contentLIST.remove(0.0)
-        else:
-            pass
-    new_count = len(contentLIST)
-    
-    #print("{}".format(typeSTR), contentLIST)
-    
-    exclude_countINT = old_count - new_count
     PLDTstd_subFLOAT = round(np.std(np.array(contentLIST), ddof = df),3) #ouput: H pwRT Mean : 783.167
     StdDICT = {"{} count".format(typeSTR):len(contentLIST),"{} STD".format(typeSTR):PLDTstd_subFLOAT, "Exclude 0.0 count": exclude_countINT}
     
     return StdDICT
-
+"""
 
 def correctness(resultLIST, typeSTR = None):
     correctnessLIST = []
@@ -111,7 +118,7 @@ def correctness(resultLIST, typeSTR = None):
 if __name__ == "__main__":
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
-    for z in range(5):
+    for z in range(2):
         # Setting up the data_path
         #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
@@ -124,7 +131,7 @@ if __name__ == "__main__":
         High_CDpwLIST = []
         Low_CDpwLIST = []
 
-        sub_num = "0{}".format(z+22)
+        sub_num = "0{}".format(z+24)
         # Open the pseudowordDICT for the further indications
         with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
             pseudoDICT = json.load(jfile)
@@ -198,16 +205,40 @@ if __name__ == "__main__":
         
         
         # Calculate the RT Mean of the H & L PLDT
-        H_pwRT_DICT = Mean(H_CD_rawLIST,5 , "High-CD RT")  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
-        L_pwRT_DICT = Mean(L_CD_rawLIST,5 , "Low-CD RT")
-        print(H_pwRT_DICT)
-        print(L_pwRT_DICT)
+        H_RT_LIST = get_List(H_CD_rawLIST, 5)  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
+        H_RT_LIST = remove_value(H_RT_LIST, 0.0)
+        H_RT_NA_count = get_NA_count(H_RT_LIST, 30)
+        H_mean_subFLOAT = round(np.mean(np.array(H_RT_LIST)), 3)
+        H_std_subFLOAT = round(np.std(np.array(H_RT_LIST), ddof = 1), 3)
         
-        # Calculate the RT STD of the H & L PLDT
-        H_pwRT_STD_DICT = STD(H_CD_rawLIST,5 , 1, "High-CD RT")
-        L_pwRT_STD_DICT = STD(L_CD_rawLIST,5 , 1, "Low-CD RT")
-        print(H_pwRT_STD_DICT)
-        print(L_pwRT_STD_DICT)
+        two_stdFLOAT = H_std_subFLOAT*2
+        up_RT_range = H_mean_subFLOAT + two_stdFLOAT
+        low_RT_range = H_mean_subFLOAT - two_stdFLOAT
+        
+        for RT_FLOAT in H_RT_LIST:
+            if RT_FLOAT > up_RT_range:
+                H_RT_LIST.remove(RT_FLOAT)
+                print("It is bigger!!!", RT_FLOAT)
+            if RT_FLOAT < low_RT_range:
+                H_RT_LIST.remove(RT_FLOAT)
+                print("It is smaller!!!", RT_FLOAT)
+            else:
+                pass
+        print(H_RT_LIST)
+        print(len(H_RT_LIST))
+            
+            
+        #print(H_RT_LIST)
+        #print(H_RT_NA_count)
+        #print("{} H RT Mean:".format(sub_num), H_mean_subFLOAT)
+        #print("{} H RT SD:".format(sub_num), H_std_subFLOAT)
+        
+        
+        L_RT_LIST = get_List(L_CD_rawLIST, 5)
+        L_RT_LIST = remove_value(L_RT_LIST, 0.0)
+        L_RT_NA_count = get_NA_count(L_RT_LIST, 30)
+
+        
 
         # Calculate the Correctness of all, and H & L PLDT, there's three in total
         PLDT_correct_subDICT = correctness(resultLIST, "PLDT-total")
