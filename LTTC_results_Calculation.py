@@ -128,8 +128,8 @@ def correctness(resultLIST, typeSTR = None):
 
 
 if __name__ == "__main__":
-    #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    #result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     sub_idLIST = []
     
     # RT data section
@@ -356,12 +356,6 @@ if __name__ == "__main__":
         
         #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
         print("{} New PLDT H & Lcorrect:".format(sub_num), n_H_PLDT_correct_subDICT, ";", n_L_PLDT_correct_subDICT)
-        
-        #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
-        #print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
-        
-        #print("{} just PLDT figures:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
-        #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
 
         # Self_rating section
         readingLIST = []
@@ -501,7 +495,19 @@ if __name__ == "__main__":
             print(ALL_readingT_minFLOAT)
             print(H_readingT_minFLOAT)
             print(L_readingT_minFLOAT)
+            
 
+            
+            # collect the rating-count text based on the ratings for calculate the reading time
+            for row in cleaned_LIST:
+                rawLIST = row[0].split(",")
+                print(rawLIST)
+                #print(row)
+                
+                
+                
+                
+                
             '''
         with open (result_data_path + "{}_textsDICT.json".format(sub_num), "r", encoding = "utf-8") as jjfile:
             textsetsDICT = json.load(jjfile)
