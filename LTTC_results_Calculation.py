@@ -64,6 +64,14 @@ def get_NA_count(A_LIST, countINT):
         
     return exclude_countINT
 
+def Mean(resultLIST):
+    meanFLOAT = round(np.mean(np.array(resultLIST)), 3)
+    return meanFLOAT
+
+def STD(resultLIST, df):
+    stdFLOAT = round(np.std(np.array(resultLIST), ddof = df),3)
+    return stdFLOAT
+
 """
 def Mean(resultLIST, item_index, missing_value, total_count, typeSTR = None):
     '''
@@ -205,40 +213,72 @@ if __name__ == "__main__":
         
         
         # Calculate the RT Mean of the H & L PLDT
+        
+        # High CD condition
         H_RT_LIST = get_List(H_CD_rawLIST, 5)  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
         H_RT_LIST = remove_value(H_RT_LIST, 0.0)
-        H_RT_NA_count = get_NA_count(H_RT_LIST, 30)
-        H_mean_subFLOAT = round(np.mean(np.array(H_RT_LIST)), 3)
-        H_std_subFLOAT = round(np.std(np.array(H_RT_LIST), ddof = 1), 3)
+        H_RT_NA_count = get_NA_count(H_RT_LIST, len(H_CD_rawLIST))
+        H_mean_subFLOAT = Mean(H_RT_LIST)   #round(np.mean(np.array(H_RT_LIST)), 3)
+        H_std_subFLOAT = STD(H_RT_LIST, 1)  #round(np.std(np.array(H_RT_LIST), ddof = 1), 3)
         
-        two_stdFLOAT = H_std_subFLOAT*2
-        up_RT_range = H_mean_subFLOAT + two_stdFLOAT
-        low_RT_range = H_mean_subFLOAT - two_stdFLOAT
+        H_two_stdFLOAT = H_std_subFLOAT*2
+        H_up_RT_range = H_mean_subFLOAT + H_two_stdFLOAT
+        H_low_RT_range = H_mean_subFLOAT - H_two_stdFLOAT
         
+        # remove values that outside 2 STD 
         for RT_FLOAT in H_RT_LIST:
-            if RT_FLOAT > up_RT_range:
-                H_RT_LIST.remove(RT_FLOAT)
-                print("It is bigger!!!", RT_FLOAT)
-            if RT_FLOAT < low_RT_range:
-                H_RT_LIST.remove(RT_FLOAT)
-                print("It is smaller!!!", RT_FLOAT)
+            if RT_FLOAT > H_up_RT_range:
+                H_RT_LIST = remove_value(H_RT_LIST, RT_FLOAT)
+            if RT_FLOAT < H_low_RT_range:
+                H_RT_LIST = remove_value(H_RT_LIST, RT_FLOAT)
             else:
                 pass
-        print(H_RT_LIST)
-        print(len(H_RT_LIST))
-            
-            
+        
+        H_final_RT_NA_count = get_NA_count(H_RT_LIST, len(H_CD_rawLIST))
+        H_final_mean_subFLOAT = Mean(H_RT_LIST)
+        H_final_std_subFLOAT = STD(H_RT_LIST, 1)
+        
         #print(H_RT_LIST)
         #print(H_RT_NA_count)
+        #print(H_final_RT_NA_count)
         #print("{} H RT Mean:".format(sub_num), H_mean_subFLOAT)
+        #print("{} H new RT Mean:".format(sub_num), H_final_mean_subFLOAT)
         #print("{} H RT SD:".format(sub_num), H_std_subFLOAT)
+        #print("{} H new RT SD:".format(sub_num), H_final_std_subFLOAT)
         
-        
+        # Low CD condition
         L_RT_LIST = get_List(L_CD_rawLIST, 5)
         L_RT_LIST = remove_value(L_RT_LIST, 0.0)
-        L_RT_NA_count = get_NA_count(L_RT_LIST, 30)
-
+        L_RT_NA_count = get_NA_count(L_RT_LIST, len(L_CD_rawLIST))
+        L_mean_subFLOAT = Mean(L_RT_LIST)   #round(np.mean(np.array(H_RT_LIST)), 3)
+        L_std_subFLOAT = STD(L_RT_LIST, 1)
         
+        L_two_stdFLOAT = L_std_subFLOAT*2
+        L_up_RT_range = L_mean_subFLOAT + L_two_stdFLOAT
+        L_low_RT_range = L_mean_subFLOAT - L_two_stdFLOAT
+    
+        # remove values that outside 2 STD 
+        for RT_FLOAT in L_RT_LIST:
+            if RT_FLOAT > L_up_RT_range:
+                L_RT_LIST = remove_value(L_RT_LIST, RT_FLOAT)
+                print("It's bigger!!!", RT_FLOAT)
+            if RT_FLOAT < L_low_RT_range:
+                L_RT_LIST = remove_value(L_RT_LIST, RT_FLOAT)
+                print("It's smaller!!!", RT_FLOAT)
+            else:
+                pass
+    
+        L_final_RT_NA_count = get_NA_count(L_RT_LIST, len(L_CD_rawLIST))
+        L_final_mean_subFLOAT = Mean(L_RT_LIST)
+        L_final_std_subFLOAT = STD(L_RT_LIST, 1)
+        
+        #print(L_RT_LIST)
+        #print(L_RT_NA_count)
+        #print(L_final_RT_NA_count)
+        #print("{} L RT Mean:".format(sub_num), L_mean_subFLOAT)
+        #print("{} L new RT Mean:".format(sub_num), L_final_mean_subFLOAT)
+        #print("{} L RT SD:".format(sub_num), L_std_subFLOAT)
+        #print("{} L new RT SD:".format(sub_num), L_final_std_subFLOAT)
 
         # Calculate the Correctness of all, and H & L PLDT, there's three in total
         PLDT_correct_subDICT = correctness(resultLIST, "PLDT-total")
