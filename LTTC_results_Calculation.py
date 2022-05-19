@@ -126,7 +126,19 @@ def correctness(resultLIST, typeSTR = None):
 if __name__ == "__main__":
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
-    for z in range(2):
+    sub_idLIST = []
+    H_total_rawRT_LIST = []
+    L_total_rawRT_LIST = []
+    H_total_finalRT_LIST = []
+    L_total_finalRT_LIST = []
+    
+    sub_AllrawCorrect_LIST = []
+    H_total_rawCorrect_LIST = []
+    L_total_rawCorrect_LIST = []
+    H_total_finalCorrect_LIST = []
+    L_total_finalCorrect_LIST = []    
+    
+    for z in range(3):
         # Setting up the data_path
         #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
@@ -216,29 +228,31 @@ if __name__ == "__main__":
         
         # High CD condition
         H_RT_LIST = get_List(H_CD_rawLIST, 5)  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
-        H_RT_LIST = remove_value(H_RT_LIST, 0.0)
-        H_RT_NA_count = get_NA_count(H_RT_LIST, len(H_CD_rawLIST))
-        H_mean_subFLOAT = Mean(H_RT_LIST)   #round(np.mean(np.array(H_RT_LIST)), 3)
-        H_std_subFLOAT = STD(H_RT_LIST, 1)  #round(np.std(np.array(H_RT_LIST), ddof = 1), 3)
+        n_H_RT_LIST = H_RT_LIST.copy()
+        n_H_RT_LIST = remove_value(n_H_RT_LIST, 0.0)
+        H_RT_NA_count = get_NA_count(n_H_RT_LIST, len(H_CD_rawLIST))
+        H_mean_subFLOAT = Mean(n_H_RT_LIST)   #round(np.mean(np.array(H_RT_LIST)), 3)
+        H_std_subFLOAT = STD(n_H_RT_LIST, 1)  #round(np.std(np.array(H_RT_LIST), ddof = 1), 3)
         
         H_two_stdFLOAT = H_std_subFLOAT*2
         H_up_RT_range = H_mean_subFLOAT + H_two_stdFLOAT
         H_low_RT_range = H_mean_subFLOAT - H_two_stdFLOAT
         
         # remove values that outside 2 STD 
-        for RT_FLOAT in H_RT_LIST:
+        for RT_FLOAT in n_H_RT_LIST:
             if RT_FLOAT > H_up_RT_range:
-                H_RT_LIST = remove_value(H_RT_LIST, RT_FLOAT)
+                n_H_RT_LIST = remove_value(n_H_RT_LIST, RT_FLOAT)
             if RT_FLOAT < H_low_RT_range:
-                H_RT_LIST = remove_value(H_RT_LIST, RT_FLOAT)
+                n_H_RT_LIST = remove_value(n_H_RT_LIST, RT_FLOAT)
             else:
                 pass
         
-        H_final_RT_NA_count = get_NA_count(H_RT_LIST, len(H_CD_rawLIST))
-        H_final_mean_subFLOAT = Mean(H_RT_LIST)
-        H_final_std_subFLOAT = STD(H_RT_LIST, 1)
+        H_final_RT_NA_count = get_NA_count(n_H_RT_LIST, len(H_CD_rawLIST))
+        H_final_mean_subFLOAT = Mean(n_H_RT_LIST)
+        H_final_std_subFLOAT = STD(n_H_RT_LIST, 1)
         
-        #print(H_RT_LIST)
+        #print(len(H_RT_LIST))
+        #print(len(n_H_RT_LIST))
         #print(H_RT_NA_count)
         #print(H_final_RT_NA_count)
         #print("{} H RT Mean:".format(sub_num), H_mean_subFLOAT)
@@ -256,18 +270,18 @@ if __name__ == "__main__":
         L_two_stdFLOAT = L_std_subFLOAT*2
         L_up_RT_range = L_mean_subFLOAT + L_two_stdFLOAT
         L_low_RT_range = L_mean_subFLOAT - L_two_stdFLOAT
-    
+        
         # remove values that outside 2 STD 
         for RT_FLOAT in L_RT_LIST:
             if RT_FLOAT > L_up_RT_range:
                 L_RT_LIST = remove_value(L_RT_LIST, RT_FLOAT)
-                print("It's bigger!!!", RT_FLOAT)
+                #print("It's bigger!!!", RT_FLOAT)
             if RT_FLOAT < L_low_RT_range:
                 L_RT_LIST = remove_value(L_RT_LIST, RT_FLOAT)
-                print("It's smaller!!!", RT_FLOAT)
+                #print("It's smaller!!!", RT_FLOAT)
             else:
                 pass
-    
+            
         L_final_RT_NA_count = get_NA_count(L_RT_LIST, len(L_CD_rawLIST))
         L_final_mean_subFLOAT = Mean(L_RT_LIST)
         L_final_std_subFLOAT = STD(L_RT_LIST, 1)
@@ -280,10 +294,76 @@ if __name__ == "__main__":
         #print("{} L RT SD:".format(sub_num), L_std_subFLOAT)
         #print("{} L new RT SD:".format(sub_num), L_final_std_subFLOAT)
 
-        # Calculate the Correctness of all, and H & L PLDT, there's three in total
+        # Calculate the Correctness of all, and H & L PLDT, there's three in total 
         PLDT_correct_subDICT = correctness(resultLIST, "PLDT-total")
         H_PLDT_correct_subDICT = correctness(H_CD_rawLIST, "H-CD PLDT")
-        L_PLDT_correct_subDICT = correctness(L_CD_rawLIST, "L-CD PLDT")  # ouput = ([27, 2, 1, 93.1], {'Correct :': 27, 'False :': 2, 'N/A :': 1, 'Correctness': 93.1}) # type = <class 'tuple'>
+        L_PLDT_correct_subDICT = correctness(L_CD_rawLIST, "L-CD PLDT")
+        
+        
+        print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
+        n_H_CD_rawLIST = H_CD_rawLIST.copy()
+        n_L_CD_rawLIST = L_CD_rawLIST.copy()
+        
+        # Excluding the 2STD in H condition
+        for outsiderLIST in n_H_CD_rawLIST:
+            if float(outsiderLIST[5]) > H_up_RT_range:
+                print(n_H_CD_rawLIST.index(outsiderLIST))
+                n_H_CD_rawLIST.pop(n_H_CD_rawLIST.index(outsiderLIST))
+                
+            if float(outsiderLIST[5]) < H_low_RT_range:
+                print(n_H_CD_rawLIST.index(outsiderLIST))
+                n_H_CD_rawLIST.pop(n_H_CD_rawLIST.index(outsiderLIST))
+            else:
+                pass
+            
+            
+        # Excluding the 2STD in L condition
+        for outsiderLIST in n_L_CD_rawLIST:
+            if float(outsiderLIST[5]) > L_up_RT_range:
+                print(n_L_CD_rawLIST.index(outsiderLIST))
+                n_L_CD_rawLIST.pop(n_L_CD_rawLIST.index(outsiderLIST))
+                
+            if float(outsiderLIST[5]) < L_low_RT_range:
+                print(n_L_CD_rawLIST.index(outsiderLIST))
+                n_L_CD_rawLIST.pop(n_L_CD_rawLIST.index(outsiderLIST))
+            else:
+                pass
+        
+        n_H_PLDT_correct_subDICT = correctness(n_H_CD_rawLIST, "New H-CD PLDT")
+        n_L_PLDT_correct_subDICT = correctness(n_L_CD_rawLIST, "New L-CD PLDT")
+        
+        #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
+        print("{} New PLDT H & Lcorrect:".format(sub_num), n_H_PLDT_correct_subDICT, ";", n_L_PLDT_correct_subDICT)
+        
+        # making the wanted info into the List form for future use
+        sub_idLIST.append(sub_num)
+        H_total_rawRT_LIST.append(H_mean_subFLOAT)
+        L_total_rawRT_LIST.append(L_mean_subFLOAT)
+        H_total_finalRT_LIST.append(H_final_mean_subFLOAT)
+        L_total_finalRT_LIST.append(L_final_mean_subFLOAT)
+        
+        sub_AllrawCorrect_LIST.append(PLDT_correct_subDICT["PLDT-total Correctness"])
+        H_total_rawCorrect_LIST.append(H_PLDT_correct_subDICT["H-CD PLDT Correctness"])
+        L_total_rawCorrect_LIST.append(L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
+        H_total_finalCorrect_LIST.append(n_H_PLDT_correct_subDICT["New H-CD PLDT Correctness"])
+        L_total_finalCorrect_LIST.append(n_L_PLDT_correct_subDICT["New L-CD PLDT Correctness"])
+    
+        # Saving the self_paced_rt result into csv file
+        dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                                 'H_raw_RTMean':H_total_rawRT_LIST,
+                                 'L_raw_RTMean':L_total_rawRT_LIST,
+                                 'H_final_RTMean':H_total_finalRT_LIST,
+                                 'L_final_RTMean':L_total_finalRT_LIST,
+                                 'ALL_Correctness':sub_AllrawCorrect_LIST,
+                                 'H_raw_Correctness':H_total_rawCorrect_LIST, 
+                                 'L_raw_Correctness':L_total_rawCorrect_LIST, 
+                                 'H_final_Correctness':H_total_finalCorrect_LIST, 
+                                 'L_final_Correctness':L_total_finalCorrect_LIST
+                                 })
+    
+    file_name = 'PLDT_analyzed_results.csv'
+    save_path = result_data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
         #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
         #print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
@@ -291,7 +371,7 @@ if __name__ == "__main__":
         #print("{} just PLDT figures:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         
-        """
+    """
         # Self_rating section
         readingLIST = []
         ratingDICT = {}
@@ -407,3 +487,7 @@ if __name__ == "__main__":
             
             print('')
             """
+        
+        
+
+    
