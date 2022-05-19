@@ -502,11 +502,6 @@ if __name__ == "__main__":
             print(H_readingT_minFLOAT)
             print(L_readingT_minFLOAT)
 
-            
-        
-            #print("{} self-rating :".format(sub_num), ALL_ratingDICT, ";",  H_ratingDICT, ";", L_ratingDICT)
-            #print("{} self-rating nums:".format(sub_num), ALL_ratingDICT["Total self-rating Mean"], H_ratingDICT["H-CD self-rating Mean"], L_ratingDICT["L-CD self-rating Mean"])
-            
             '''
         with open (result_data_path + "{}_textsDICT.json".format(sub_num), "r", encoding = "utf-8") as jjfile:
             textsetsDICT = json.load(jjfile)
