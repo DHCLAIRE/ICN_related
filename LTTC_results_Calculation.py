@@ -483,9 +483,9 @@ if __name__ == "__main__":
             ALL_readingT_LIST = get_List(readingLIST, 3)
             H_readingTLIST = get_List(new_H_textLIST, 3)
             L_readingTLIST = get_List(new_L_textLIST, 3)
-            print(ALL_readingT_LIST)
-            print(H_readingTLIST)
-            print(L_readingTLIST)
+            #print(ALL_readingT_LIST)
+            #print(H_readingTLIST)
+            #print(L_readingTLIST)
             
             ALL_readingT_msINT = Mean(ALL_readingT_LIST)
             H_readingT_msINT = Mean(H_readingTLIST)
@@ -537,29 +537,37 @@ if __name__ == "__main__":
             L_ratingINT_LIST.append(L_ratingMeanINT)
             
             # For self-paced reading data
-            ALL_readingT_msINT_LIST = []
-            H_readingT_msINT_LIST = []
-            L_readingT_msINT_LIST = []
-            ALL_readingT_minINT_LIST = []
-            H_readingT_minINT_LIST = []
-            L_readingT_minINT_LIST = []
+            ALL_readingT_msINT_LIST.append(ALL_readingT_msINT)
+            H_readingT_msINT_LIST.append(H_readingT_msINT)
+            L_readingT_msINT_LIST.append(L_readingT_msINT)
+            ALL_readingT_minINT_LIST.append(ALL_readingT_minFLOAT)
+            H_readingT_minINT_LIST.append(H_readingT_minFLOAT)
+            L_readingT_minINT_LIST.append(L_readingT_minFLOAT)
             
             
             # Saving the analyzed results into csv file
             dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                                     'H_raw_RTMean':H_total_rawRT_LIST,
-                                     'H_final_RTMean':H_total_finalRT_LIST,
-                                     'L_raw_RTMean':L_total_rawRT_LIST,
-                                     'L_final_RTMean':L_total_finalRT_LIST,
-                                     'ALL_Correctness':sub_AllrawCorrect_LIST,
-                                     'H_raw_Correctness':H_total_rawCorrect_LIST,
-                                     'H_final_Correctness':H_total_finalCorrect_LIST,
-                                     'L_raw_Correctness':L_total_rawCorrect_LIST,
-                                     'L_final_Correctness':L_total_finalCorrect_LIST,
+                                     '(ms)H_raw_RTMean':H_total_rawRT_LIST,
+                                     '(ms)H_final_RTMean':H_total_finalRT_LIST,
+                                     '(ms)L_raw_RTMean':L_total_rawRT_LIST,
+                                     '(ms)L_final_RTMean':L_total_finalRT_LIST,
+                                     
+                                     '(%)ALL_Correctness':sub_AllrawCorrect_LIST,
+                                     '(%)H_raw_Correctness':H_total_rawCorrect_LIST,
+                                     '(%)H_final_Correctness':H_total_finalCorrect_LIST,
+                                     '(%)L_raw_Correctness':L_total_rawCorrect_LIST,
+                                     '(%)L_final_Correctness':L_total_finalCorrect_LIST,
+                                     
                                      'Self_rating_Mean':ALL_ratingINT_LIST,
                                      'H_Self_rating_Mean':H_ratingINT_LIST,
                                      'L_Self_rating_Mean':L_ratingINT_LIST,
-                                     #'Self-paced_reading_Time':,
+                                     
+                                     '(ms)Self_readingT_msMean':ALL_readingT_msINT_LIST,
+                                     '(ms)H_Self_readingT_msMean':H_readingT_msINT_LIST,
+                                     '(ms)L_Self_readingT_msMean':L_readingT_msINT_LIST,
+                                     '(min)Self_readingT_minMean':ALL_readingT_minINT_LIST,
+                                     '(min)H_Self_readingT_minMean':H_readingT_minINT_LIST,
+                                     '(min)L_Self_readingT_minMean':L_readingT_minINT_LIST,
                                      
                                      })
         
