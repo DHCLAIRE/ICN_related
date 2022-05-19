@@ -72,6 +72,10 @@ def STD(resultLIST, df):
     stdFLOAT = round(np.std(np.array(resultLIST), ddof = df),3)
     return stdFLOAT
 
+def ms_to_min(INT):
+    minFLOAT = round(INT/1000/60, 3)
+    return minFLOAT
+
 """
 def Mean(resultLIST, item_index, missing_value, total_count, typeSTR = None):
     '''
@@ -127,16 +131,34 @@ if __name__ == "__main__":
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
     sub_idLIST = []
+    
+    # RT data section
     H_total_rawRT_LIST = []
     L_total_rawRT_LIST = []
     H_total_finalRT_LIST = []
     L_total_finalRT_LIST = []
     
+    # Correctness data section
     sub_AllrawCorrect_LIST = []
     H_total_rawCorrect_LIST = []
     L_total_rawCorrect_LIST = []
     H_total_finalCorrect_LIST = []
-    L_total_finalCorrect_LIST = []    
+    L_total_finalCorrect_LIST = []
+    
+    # Self-rating section
+    ALL_ratingINT_LIST = []
+    H_ratingINT_LIST = []
+    L_ratingINT_LIST = []
+    
+    # Self-paced reading section
+    ALL_readingT_msINT_LIST = []
+    H_readingT_msINT_LIST = []
+    L_readingT_msINT_LIST = []
+    ALL_readingT_minINT_LIST = []
+    H_readingT_minINT_LIST = []
+    L_readingT_minINT_LIST = []
+        
+        
     
     for z in range(3):
         # Setting up the data_path
@@ -335,43 +357,12 @@ if __name__ == "__main__":
         #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
         print("{} New PLDT H & Lcorrect:".format(sub_num), n_H_PLDT_correct_subDICT, ";", n_L_PLDT_correct_subDICT)
         
-        # making the wanted info into the List form for future use
-        sub_idLIST.append(sub_num)
-        H_total_rawRT_LIST.append(H_mean_subFLOAT)
-        L_total_rawRT_LIST.append(L_mean_subFLOAT)
-        H_total_finalRT_LIST.append(H_final_mean_subFLOAT)
-        L_total_finalRT_LIST.append(L_final_mean_subFLOAT)
-        
-        sub_AllrawCorrect_LIST.append(PLDT_correct_subDICT["PLDT-total Correctness"])
-        H_total_rawCorrect_LIST.append(H_PLDT_correct_subDICT["H-CD PLDT Correctness"])
-        L_total_rawCorrect_LIST.append(L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
-        H_total_finalCorrect_LIST.append(n_H_PLDT_correct_subDICT["New H-CD PLDT Correctness"])
-        L_total_finalCorrect_LIST.append(n_L_PLDT_correct_subDICT["New L-CD PLDT Correctness"])
-    
-        # Saving the self_paced_rt result into csv file
-        dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                                 'H_raw_RTMean':H_total_rawRT_LIST,
-                                 'L_raw_RTMean':L_total_rawRT_LIST,
-                                 'H_final_RTMean':H_total_finalRT_LIST,
-                                 'L_final_RTMean':L_total_finalRT_LIST,
-                                 'ALL_Correctness':sub_AllrawCorrect_LIST,
-                                 'H_raw_Correctness':H_total_rawCorrect_LIST, 
-                                 'L_raw_Correctness':L_total_rawCorrect_LIST, 
-                                 'H_final_Correctness':H_total_finalCorrect_LIST, 
-                                 'L_final_Correctness':L_total_finalCorrect_LIST
-                                 })
-    
-    file_name = 'PLDT_analyzed_results.csv'
-    save_path = result_data_path + file_name
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    
         #print("{} PLDT TOTAL_correct:".format(sub_num), PLDT_correct_subDICT)
         #print("{} PLDT H & Lcorrect:".format(sub_num), H_PLDT_correct_subDICT, ";", L_PLDT_correct_subDICT)
         
         #print("{} just PLDT figures:".format(sub_num), H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
         #print(H_pwRT_DICT["High-CD RT Mean"], L_pwRT_DICT["Low-CD RT Mean"],PLDT_correct_subDICT["PLDT-total Correctness"],H_PLDT_correct_subDICT["H-CD PLDT Correctness"],L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
-        
-    """
+
         # Self_rating section
         readingLIST = []
         ratingDICT = {}
@@ -463,8 +454,8 @@ if __name__ == "__main__":
                 rawLIST = row[0].split(",")
                 rawLIST.append(row[1])
                 new_H_textLIST.append(rawLIST)
-                #print(new_H_textLIST)
-                #print(len(new_H_textLIST))
+            #print(new_H_textLIST)
+            #print(len(new_H_textLIST))
         
             for row in L_textLIST:
                 rawLIST = row[0].split(",")
@@ -474,20 +465,104 @@ if __name__ == "__main__":
             #print(len(new_L_textLIST))
         
             # calculate the self-rating mean of H & L CD texts
-            ALL_ratingDICT = Mean(readingLIST, 4, "Total self-rating")
-            H_ratingDICT = Mean(new_H_textLIST, 4, "H-CD self-rating")
-            L_ratingDICT = Mean(new_L_textLIST, 4, "L-CD self-rating")
-        
-            print("{} self-rating :".format(sub_num), ALL_ratingDICT, ";",  H_ratingDICT, ";", L_ratingDICT)
-            print("{} self-rating nums:".format(sub_num), ALL_ratingDICT["Total self-rating Mean"], H_ratingDICT["H-CD self-rating Mean"], L_ratingDICT["L-CD self-rating Mean"])
+            ALL_ratingLIST = get_List(readingLIST, 4)
+            H_ratingLIST = get_List(new_H_textLIST, 4)
+            L_ratingLIST = get_List(new_L_textLIST, 4)
+            #print(ALL_ratingLIST)
+            #print(H_ratingLIST)
+            #print(L_ratingLIST)
+            
+            ALL_ratingMeanINT = Mean(ALL_ratingLIST)
+            H_ratingMeanINT = Mean(H_ratingLIST)
+            L_ratingMeanINT = Mean(L_ratingLIST)
+            #print(ALL_ratingMeanINT)
+            #print(H_ratingMeanINT)
+            #print(L_ratingMeanINT)
+            
+            # calculate the self-paced reading duration
+            ALL_readingT_LIST = get_List(readingLIST, 3)
+            H_readingTLIST = get_List(new_H_textLIST, 3)
+            L_readingTLIST = get_List(new_L_textLIST, 3)
+            print(ALL_readingT_LIST)
+            print(H_readingTLIST)
+            print(L_readingTLIST)
+            
+            ALL_readingT_msINT = Mean(ALL_readingT_LIST)
+            H_readingT_msINT = Mean(H_readingTLIST)
+            L_readingT_msINT = Mean(L_readingTLIST)
+            print(ALL_readingT_msINT)
+            print(H_readingT_msINT)
+            print(L_readingT_msINT)
+            
+            # Turn miliseconds into minutes
+            ALL_readingT_minFLOAT = ms_to_min(ALL_readingT_msINT)
+            H_readingT_minFLOAT = ms_to_min(H_readingT_msINT)
+            L_readingT_minFLOAT = ms_to_min(L_readingT_msINT)
+            print(ALL_readingT_minFLOAT)
+            print(H_readingT_minFLOAT)
+            print(L_readingT_minFLOAT)
 
+            
+        
+            #print("{} self-rating :".format(sub_num), ALL_ratingDICT, ";",  H_ratingDICT, ";", L_ratingDICT)
+            #print("{} self-rating nums:".format(sub_num), ALL_ratingDICT["Total self-rating Mean"], H_ratingDICT["H-CD self-rating Mean"], L_ratingDICT["L-CD self-rating Mean"])
+            
+            '''
         with open (result_data_path + "{}_textsDICT.json".format(sub_num), "r", encoding = "utf-8") as jjfile:
             textsetsDICT = json.load(jjfile)
             print("{} H & L text set:".format(sub_num), textsetsDICT["The High-Low Set Group"])
             
             print('')
-            """
+            '''
+            
+            # making the wanted info into the List form for future use
+            sub_idLIST.append(sub_num)
+            
+            # For Mean data
+            H_total_rawRT_LIST.append(H_mean_subFLOAT)
+            L_total_rawRT_LIST.append(L_mean_subFLOAT)
+            H_total_finalRT_LIST.append(H_final_mean_subFLOAT)
+            L_total_finalRT_LIST.append(L_final_mean_subFLOAT)
+            
+            # For Correctness data
+            sub_AllrawCorrect_LIST.append(PLDT_correct_subDICT["PLDT-total Correctness"])
+            H_total_rawCorrect_LIST.append(H_PLDT_correct_subDICT["H-CD PLDT Correctness"])
+            L_total_rawCorrect_LIST.append(L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
+            H_total_finalCorrect_LIST.append(n_H_PLDT_correct_subDICT["New H-CD PLDT Correctness"])
+            L_total_finalCorrect_LIST.append(n_L_PLDT_correct_subDICT["New L-CD PLDT Correctness"])
+            
+            # For Self-rating data
+            ALL_ratingINT_LIST.append(ALL_ratingMeanINT)
+            H_ratingINT_LIST.append(H_ratingMeanINT)
+            L_ratingINT_LIST.append(L_ratingMeanINT)
+            
+            # For self-paced reading data
+            ALL_readingT_msINT_LIST = []
+            H_readingT_msINT_LIST = []
+            L_readingT_msINT_LIST = []
+            ALL_readingT_minINT_LIST = []
+            H_readingT_minINT_LIST = []
+            L_readingT_minINT_LIST = []
+            
+            
+            # Saving the analyzed results into csv file
+            dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                                     'H_raw_RTMean':H_total_rawRT_LIST,
+                                     'H_final_RTMean':H_total_finalRT_LIST,
+                                     'L_raw_RTMean':L_total_rawRT_LIST,
+                                     'L_final_RTMean':L_total_finalRT_LIST,
+                                     'ALL_Correctness':sub_AllrawCorrect_LIST,
+                                     'H_raw_Correctness':H_total_rawCorrect_LIST,
+                                     'H_final_Correctness':H_total_finalCorrect_LIST,
+                                     'L_raw_Correctness':L_total_rawCorrect_LIST,
+                                     'L_final_Correctness':L_total_finalCorrect_LIST,
+                                     'Self_rating_Mean':ALL_ratingINT_LIST,
+                                     'H_Self_rating_Mean':H_ratingINT_LIST,
+                                     'L_Self_rating_Mean':L_ratingINT_LIST,
+                                     #'Self-paced_reading_Time':,
+                                     
+                                     })
         
-        
-
-    
+        file_name = 'PLDT_analyzed_results.csv'
+        save_path = result_data_path + file_name
+        dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
