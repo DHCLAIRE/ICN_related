@@ -65,14 +65,23 @@ def get_NA_count(A_LIST, countINT):
     return exclude_countINT
 
 def Mean(resultLIST):
+    '''
+    Get the mean of the target data LIST
+    '''
     meanFLOAT = round(np.mean(np.array(resultLIST)), 3)
     return meanFLOAT
 
 def STD(resultLIST, df):
+    '''
+    Get the STD of the target data LIST
+    '''
     stdFLOAT = round(np.std(np.array(resultLIST), ddof = df),3)
     return stdFLOAT
 
 def ms_to_min(INT):
+    '''
+    Turn the miliseconds into minutes
+    '''
     minFLOAT = round(INT/1000/60, 3)
     return minFLOAT
 
