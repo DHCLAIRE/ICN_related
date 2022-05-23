@@ -12,9 +12,8 @@ from datetime import datetime,date
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 if __name__ == "__main__":
-    result_data_path = "/Users/ting-hsin/Downloads/"
+    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
     #"""
     # High Correctness group's RT
@@ -43,8 +42,9 @@ if __name__ == "__main__":
     plt.ylabel("PLDT RT") # y label
     plt.xlabel("PLDT Correctness") # x label
     plt.legend()
+    plt.show()
     
-    plt.savefig(result_data_path + "LTTC_HLCo_RT_plt(without Pilots).jpg")
+    #plt.savefig(result_data_path + "LTTC_HLCo_RT_plt(without Pilots).jpg")
     #"""
     
     """
