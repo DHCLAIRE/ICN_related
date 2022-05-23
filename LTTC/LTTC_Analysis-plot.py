@@ -57,30 +57,8 @@ if __name__ == "__main__":
     H_Self_readingT_minMean_LIST = []
     L_Self_readingT_minMean_LIST = []
     
-    
-    with open (result_data_path + "PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
-        """
-        resultLIST = csvfile.read().split("\n")
-        resultLIST.pop(0)
-        resultLIST = LISTblankEraser(resultLIST)
-        print(len(resultLIST))
-        """
-        
-        data = pd.read_csv(csvfile, index_col=0)
-        data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_raw_RTMean", alpha = 0.5)
-        data.plot()
-        
     """
-    for row in resultLIST:
-        rawLIST = row.split(",")
-        rawLIST = np.array(rawLIST)
-        n_resultLIST.append(rawLIST)
-        
-    print(n_resultLIST)
-    print(type(n_resultLIST))
-        # Setting the wanted X & Y axis
-    
-    data = pd.DataFrame(np.array(n_resultLIST), columns=['Sub_id',
+                                              columns=['Sub_id',
                                                        '(ms)H_raw_RTMean',
                                                        '(ms)H_final_RTMean',
                                                        '(ms)L_raw_RTMean',
@@ -100,23 +78,20 @@ if __name__ == "__main__":
                                                        '(min)H_Self_readingT_minMean',
                                                        '(min)L_Self_readingT_minMean'])
     """
-
-    #plt.plot(data)
-    #plot(x = '(%)ALL_Correctness', y = )
     
-    """
-    for row in resultLIST:
-            rawLIST = row.split(",")
-            
-            ALL_Correctness_LIST.append(rawLIST[5])   # correctness
-            H_rawRT_LIST.append(rawLIST[1])   # RT(High & Low)
-            L_rawRT_LIST.append(rawLIST[3])
+    
+    with open (result_data_path + "PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
+        data = pd.read_csv(csvfile, index_col=0)
         
+        # RT & Correctness
+        ax1 = data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_raw_RTMean", alpha = 0.5, color='Blue',label='H_rawRT')
+        data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)L_raw_RTMean", alpha = 0.5, color='Red',label='L_rawRT', ax = ax1)
+        m_rawH, c_rawH = np.polyfit(data['(%)ALL_Correctness'], data['(ms)H_raw_RTMean'], 1) # 使用 Numpy 的 polyfit，參數 1 代表一維，算出 fit 直線斜率
+        m_rawL, c_rawL = np.polyfit(data['(%)ALL_Correctness'], data['(ms)L_raw_RTMean'], 1)
+        ax1.plot(data['(%)ALL_Correctness'], m_rawH * data['(%)ALL_Correctness'] + c_rawH)
+        ax1.plot(data['(%)ALL_Correctness'], m_rawL * data['(%)ALL_Correctness'] + c_rawL)
         
-        # Plotting section
-        
-        # ploting the RT & Correctness
-        plt_1.scatter(ALL_Correctness_LIST, H_rawRT_LIST)
-        plt_2.scatter(ALL_Correctness_LIST, L_rawRT_LIST)
-        plt.show()
-        """ 
+        ax2 = data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_final_RTMean", alpha = 0.5, color='Green',label='H_finalRT')
+        data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)L_final_RTMean", alpha = 0.5, color='Orange',label='L_finalRT', ax = ax2)
+        #data.plot()
+    
