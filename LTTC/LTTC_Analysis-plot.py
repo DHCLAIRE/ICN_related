@@ -153,5 +153,16 @@ if __name__ == "__main__":
         ax5.plot(data['(%)ALL_Correctness'], m_HR * data['(%)ALL_Correctness'] + c_HR, color = 'Navy')
         ax5.plot(data['(%)ALL_Correctness'], m_LR * data['(%)ALL_Correctness'] + c_LR, color = 'Lightgray')
         
+        # Self-rating to Reading time
+        ax6 = data.plot.scatter(x = "Self_rating_Mean", y = "(min)Self_readingT_minMean", alpha = 0.5, color='Black',label='Reading-Rating_All')
+        data.plot.scatter(x = "H_Self_rating_Mean", y = "(min)H_Self_readingT_minMean", alpha = 0.5, color='Red',label='Reading-Rating_H', ax = ax6)
+        data.plot.scatter(x = "L_Self_rating_Mean", y = "(min)L_Self_readingT_minMean", alpha = 0.5, color='Blue',label='Reading-Rating_L', ax = ax6)
+        
+        m_allRtoR, c_allRtoR = np.polyfit(data['Self_rating_Mean'], data['(min)Self_readingT_minMean'], 1)
+        m_HRtoR, c_HRtoR = np.polyfit(data['H_Self_rating_Mean'], data['(min)H_Self_readingT_minMean'], 1)
+        m_LRtoR, c_LRtoR = np.polyfit(data['L_Self_rating_Mean'], data['(min)L_Self_readingT_minMean'], 1)
+        ax6.plot(data['Self_rating_Mean'], m_allRtoR * data['Self_rating_Mean'] + c_allRtoR, color = 'Black')
+        ax6.plot(data['H_Self_rating_Mean'], m_HRtoR * data['H_Self_rating_Mean'] + c_HRtoR, color = 'Red')
+        ax6.plot(data['L_Self_rating_Mean'], m_LRtoR * data['L_Self_rating_Mean'] + c_LRtoR, color = 'Blue')
         
         
