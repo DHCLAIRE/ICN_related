@@ -88,14 +88,62 @@ if __name__ == "__main__":
         #testValue_pValue = stats.shapiro(data['(%)ALL_Correctness'])
         #print(testValue_pValue)
         
+        
+        
         x_correctness = data['(%)ALL_Correctness']
+        x_Hcorrectness = data['(%)H_final_Correctness']
+        x_Lcorrectness = data['(%)L_final_Correctness']
+        
         y_H_RT = data['(ms)H_final_RTMean']
         y_L_RT = data['(ms)L_final_RTMean']
         
+        y_rating_all = data['Self_rating_Mean']
+        y_rating_H = data['H_Self_rating_Mean']
+        y_rating_L = data['H_Self_rating_Mean']
+        
+        y_reading_allT = data['(min)Self_readingT_minMean']
+        y_reading_HT = data['(min)H_Self_readingT_minMean']
+        y_reading_LT = data['(min)L_Self_readingT_minMean']
+        #print(y_H_RT)
+        
+        
+        # C to RT
         Cto_H_RT_corr = x_correctness.corr(y_H_RT)
         Cto_L_RT_corr = x_correctness.corr(y_L_RT)
         print(Cto_H_RT_corr)
         print(Cto_L_RT_corr)
+        
+        """
+        # C to rating
+        Cto_ratingALL_corr = x_correctness.corr(y_rating_all)
+        Cto_ratingH_corr = x_correctness.corr(y_rating_H)
+        Cto_ratingL_corr = x_correctness.corr(y_rating_L)
+        
+        print(Cto_ratingALL_corr)
+        print(Cto_ratingH_corr)
+        print(Cto_ratingL_corr)
+        
+        
+        # C to reading time
+        Cto_readingALL_corr = x_correctness.corr(y_reading_allT)
+        Cto_readingH_corr = x_correctness.corr(y_reading_HT)
+        Cto_readingL_corr = x_correctness.corr(y_reading_LT)
+        
+        print(Cto_readingALL_corr)
+        print(Cto_readingH_corr)
+        print(Cto_readingL_corr)
+        """
+        # T test section #  WEIRD!!!!
+        t_testCtoHRT_R = stats.ttest_rel(x_correctness, y_H_RT)
+        t_testCtoLRT_R = stats.ttest_rel(x_correctness, y_L_RT)
+        print("C to H-RT: ", t_testCtoHRT_R)  # sig. >> e-15
+        print("C to L-RT: ", t_testCtoLRT_R)  # sig. >> e-17
+        
+        t_testLRTtoHRT_R = stats.ttest_rel(y_L_RT, y_H_RT)
+        print("L-RT to H-RT: ", t_testLRTtoHRT_R) # n.s.
+        
+        t_testRATEtoLREAD_R = stats.ttest_rel(y_rating_all, y_reading_allT)
+        print("Rating to Reading: ", t_testRATEtoLREAD_R)
         
         
         """
