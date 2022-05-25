@@ -13,6 +13,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 import statistics
+from scipy import stats
 
 def LISTblankEraser(rawLIST):
     '''
@@ -30,7 +31,7 @@ def LISTblankEraser(rawLIST):
 if __name__ == "__main__":
     
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
-    
+    """
     resultLIST = []
     n_resultLIST = []
     
@@ -57,12 +58,12 @@ if __name__ == "__main__":
     H_Self_readingT_minMean_LIST = []
     L_Self_readingT_minMean_LIST = []
     
-    """
+    
                                               columns=['Sub_id',
                                                        '(ms)H_raw_RTMean',
                                                        '(ms)H_final_RTMean',
                                                        '(ms)L_raw_RTMean',
-                                                       '(ALL_Correctnessms)L_final_RTMean',
+                                                       '(ms)L_final_RTMean',
                                                        '(%)ALL_Correctness',
                                                        '(%)H_raw_Correctness',
                                                        '(%)H_final_Correctness',
@@ -80,8 +81,22 @@ if __name__ == "__main__":
     """
     
     
-    with open (result_data_path + "PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
+    with open (result_data_path + "000_007-035_PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
         data = pd.read_csv(csvfile, index_col=0)
+        
+        # To check whether the data is considered as normal distributed or not
+        #testValue_pValue = stats.shapiro(data['(%)ALL_Correctness'])
+        #print(testValue_pValue)
+        
+        x_correctness = data['(%)ALL_Correctness']
+        y_H_RT = data['(ms)H_final_RTMean']
+        y_L_RT = data['(ms)L_final_RTMean']
+        
+        Cto_H_RT_corr = x_correctness.corr(y_H_RT)
+        Cto_L_RT_corr = x_correctness.corr(y_L_RT)
+        print(Cto_H_RT_corr)
+        print(Cto_L_RT_corr)
+        
         
         """
         # H & L RT & ALL_Correctness(Scatter & Regression line)
@@ -94,8 +109,8 @@ if __name__ == "__main__":
         m_rawL, c_rawL = np.polyfit(data['(%)ALL_Correctness'], data['(ms)L_raw_RTMean'], 1)
         ax1.plot(data['(%)ALL_Correctness'], m_rawH * data['(%)ALL_Correctness'] + c_rawH, color = 'Blue')
         ax1.plot(data['(%)ALL_Correctness'], m_rawL * data['(%)ALL_Correctness'] + c_rawL, color = 'Red')
-        print(m_rawH, c_rawH)
-        print(m_rawL, c_rawL)
+        #print(m_rawH, c_rawH)
+        #print(m_rawL, c_rawL)
         
         # Setting the ax and the plot content of H & L final RT with Correctness
         data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_final_RTMean", alpha = 0.5, color='Green',label='H_finalRT', ax = ax1)
@@ -106,8 +121,8 @@ if __name__ == "__main__":
         m_finalL, c_finalL = np.polyfit(data['(%)ALL_Correctness'], data['(ms)L_final_RTMean'], 1)
         ax1.plot(data['(%)ALL_Correctness'], m_finalH * data['(%)ALL_Correctness'] + c_finalH, color = 'Green')
         ax1.plot(data['(%)ALL_Correctness'], m_finalL * data['(%)ALL_Correctness'] + c_finalL, color = 'Orange')
-        print(m_finalH, c_finalH)
-        print(m_finalL, c_finalL)
+        #print(m_finalH, c_finalH)
+        #print(m_finalL, c_finalL)
         
         
         # H & L RT & H & L_Correctness(Scatter & Regression line)
@@ -128,7 +143,7 @@ if __name__ == "__main__":
         ax3.plot(data['(%)L_raw_Correctness'], m_rawL * data['(%)L_raw_Correctness'] + c_rawL, color = 'Navy')
         ax3.plot(data['(%)L_final_Correctness'], m_finalL * data['(%)L_final_Correctness'] + c_finalL, color = 'Orange')
         
-        """
+        
         # Self-rating
         ax4 = data.plot.scatter(x = "(%)ALL_Correctness", y = "Self_rating_Mean", alpha = 0.5, color='Black',label='Self_rating_All')
         data.plot.scatter(x = "(%)ALL_Correctness", y = "H_Self_rating_Mean", alpha = 0.5, color='Green',label='Self_rating_H', ax = ax4)
@@ -164,5 +179,7 @@ if __name__ == "__main__":
         ax6.plot(data['Self_rating_Mean'], m_allRtoR * data['Self_rating_Mean'] + c_allRtoR, color = 'Black')
         ax6.plot(data['H_Self_rating_Mean'], m_HRtoR * data['H_Self_rating_Mean'] + c_HRtoR, color = 'Red')
         ax6.plot(data['L_Self_rating_Mean'], m_LRtoR * data['L_Self_rating_Mean'] + c_LRtoR, color = 'Blue')
+        """
+        
         
         
