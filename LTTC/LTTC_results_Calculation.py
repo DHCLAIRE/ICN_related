@@ -169,7 +169,7 @@ if __name__ == "__main__":
         
         
     
-    for z in range(22):
+    for z in range(32):
         # Setting up the data_path
         #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
@@ -182,7 +182,7 @@ if __name__ == "__main__":
         High_CDpwLIST = []
         Low_CDpwLIST = []
 
-        sub_num = "0{}".format(z+14)
+        sub_num = "0{0:02d}".format(z+4)
         # Open the pseudowordDICT for the further indications
         with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
             pseudoDICT = json.load(jfile)
@@ -230,7 +230,7 @@ if __name__ == "__main__":
         # For LDT results calculation  >> should I add True/False calculation???
         with open (result_data_path + "{}_LDT_results.csv".format(sub_num), "r", encoding = "utf-8") as csvfile:
             resultLIST = csvfile.read().split("\n")
-            #print(resultLIST)
+            #pprint(resultLIST)
             #print(len(resultLIST))
             resultLIST.pop(0)   # exclude the headers
             #print(len(resultLIST))
@@ -238,9 +238,11 @@ if __name__ == "__main__":
             # exclude the blank row
             resultLIST = LISTblankEraser(resultLIST)
 
+        
         # Finding the wanted H & L CD response, and then calculate the Mean of H & L pwRT
         for row in resultLIST:
             rawLIST = row.split(",")
+            
             if rawLIST[2] in High_CDpwLIST:
                 #print("High CD pw: ", rawLIST)
                 H_CD_rawLIST.append(rawLIST)
@@ -581,6 +583,7 @@ if __name__ == "__main__":
                                      
                                      })
         
-        file_name = 'PLDT_analyzed_results.csv'
+        file_name = '000_004-035_PLDT_analyzed_results.csv'
         save_path = result_data_path + file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+
