@@ -28,67 +28,57 @@ def LISTblankEraser(rawLIST):
     newrawLIST = rawLIST
     return newrawLIST
 
+def Corr(x, y):
+    '''
+    To get the correlation of the target x and y
+    '''
+    XtoY_corr = x.corr(y)
+    #print(XtoY_corr)
+    return XtoY_corr
+
+def get_List(resultLIST, i):
+    '''
+    Extract the wanted data from the raw data LIST
+    '''
+    contentLIST = []
+    for row in resultLIST:
+        if type(row) == list:
+            rawLIST = row
+            contentLIST.append(float(rawLIST[i]))
+        else:
+            rawLIST = row.split(",")
+            contentLIST.append(float(rawLIST[i]))
+    return contentLIST
+    
+
 if __name__ == "__main__":
     
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     """
-    resultLIST = []
-    n_resultLIST = []
-    
-    # RT
-    H_rawRT_LIST = []
-    L_rawRT_LIST = []
-    H_finalRT_LIST = []
-    L_finalRT_LIST = []
-    
-    # Correctness
-    ALL_Correctness_LIST = []
-    H_raw_Correctness_LIST = []
-    L_raw_Correctness_LIST = []
-    H_final_Correctness_LIST = []
-    L_final_Correctness_LIST = []
-    
-    # Self-rating 
-    Self_rating_Mean_LIST = []
-    H_Self_rating_Mean_LIST = []
-    L_Self_rating_Mean_LIST = []
-    
-    # Self-reading
-    Self_readingT_minMean_LIST = []
-    H_Self_readingT_minMean_LIST = []
-    L_Self_readingT_minMean_LIST = []
-    
-    
-                                              columns=['Sub_id',
-                                                       '(ms)H_raw_RTMean',
-                                                       '(ms)H_final_RTMean',
-                                                       '(ms)L_raw_RTMean',
-                                                       '(ms)L_final_RTMean',
-                                                       '(%)ALL_Correctness',
-                                                       '(%)H_raw_Correctness',
-                                                       '(%)H_final_Correctness',
-                                                       '(%)L_raw_Correctness',
-                                                       '(%)L_final_Correctness',
-                                                       'Self_rating_Mean',
-                                                       'H_Self_rating_Mean',
-                                                       'L_Self_rating_Mean',
-                                                       '(ms)Self_readingT_msMean',
-                                                       '(ms)H_Self_readingT_msMean',
-                                                       '(ms)L_Self_readingT_msMean',
-                                                       '(min)Self_readingT_minMean',
-                                                       '(min)H_Self_readingT_minMean',
-                                                       '(min)L_Self_readingT_minMean'])
+    columns=['Sub_id',
+    '(ms)H_raw_RTMean',
+    '(ms)H_final_RTMean',
+    '(ms)L_raw_RTMean',
+    '(ms)L_final_RTMean',
+    '(%)ALL_Correctness',
+    '(%)H_raw_Correctness',
+    '(%)H_final_Correctness',
+    '(%)L_raw_Correctness',
+    '(%)L_final_Correctness',
+    'Self_rating_Mean',
+    'H_Self_rating_Mean',
+    'L_Self_rating_Mean',
+    '(ms)Self_readingT_msMean',
+    '(ms)H_Self_readingT_msMean',
+    '(ms)L_Self_readingT_msMean',
+    '(min)Self_readingT_minMean',
+    '(min)H_Self_readingT_minMean',
+    '(min)L_Self_readingT_minMean'])
     """
     
     
-    with open (result_data_path + "000_007-035_PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
+    with open (result_data_path + "000_004-035_PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
         data = pd.read_csv(csvfile, index_col=0)
-        
-        # To check whether the data is considered as normal distributed or not
-        #testValue_pValue = stats.shapiro(data['(%)ALL_Correctness'])
-        #print(testValue_pValue)
-        
-        
         
         x_correctness = data['(%)ALL_Correctness']
         x_Hcorrectness = data['(%)H_final_Correctness']
@@ -99,40 +89,44 @@ if __name__ == "__main__":
         
         y_rating_all = data['Self_rating_Mean']
         y_rating_H = data['H_Self_rating_Mean']
-        y_rating_L = data['H_Self_rating_Mean']
+        y_rating_L = data['L_Self_rating_Mean']
         
         y_reading_allT = data['(min)Self_readingT_minMean']
         y_reading_HT = data['(min)H_Self_readingT_minMean']
         y_reading_LT = data['(min)L_Self_readingT_minMean']
         #print(y_H_RT)
         
+        # To check whether the data is considered as normal distributed or not
+        sub_normality = stats.shapiro(data['(%)ALL_Correctness'])  # because the num of subjects is < 50
+        print(sub_normality)  # (0.9736784100532532, 0.6064378619194031)  p-value > .05 , therefore the subjects are normal distributed.
+        # https://quantifyinghealth.com/report-shapiro-wilk-test/  >> How to interpret the test result
         
-        # C to RT
-        Cto_H_RT_corr = x_correctness.corr(y_H_RT)
-        Cto_L_RT_corr = x_correctness.corr(y_L_RT)
-        print(Cto_H_RT_corr)
-        print(Cto_L_RT_corr)
+        # correlation: C to RT
+        H_C = Corr(x_correctness, y_H_RT)
+        L_C = Corr(x_correctness, y_L_RT)
+        H_HC = Corr(x_Hcorrectness, y_H_RT)
+        L_LC = Corr(x_Lcorrectness, y_L_RT)
+        print("H to ALL-C: ", H_C)
+        print("L to ALL-C: ", L_C)
+        print("H to H-C: ", H_HC)
+        print("L to L-C: ", L_LC)
         
-        """
-        # C to rating
-        Cto_ratingALL_corr = x_correctness.corr(y_rating_all)
-        Cto_ratingH_corr = x_correctness.corr(y_rating_H)
-        Cto_ratingL_corr = x_correctness.corr(y_rating_L)
+        # correlation: C to rating
+        Cto_ratingALL_corr = Corr(x_correctness, y_rating_all)
+        Cto_ratingH_corr = Corr(x_Hcorrectness, y_rating_H)
+        Cto_ratingL_corr = Corr(x_Lcorrectness, y_rating_L)
+        print("ratingALL to C: ", Cto_ratingALL_corr)
+        print("rating-H to C: ", Cto_ratingH_corr)
+        print("rating-L to C: ", Cto_ratingL_corr)
         
-        print(Cto_ratingALL_corr)
-        print(Cto_ratingH_corr)
-        print(Cto_ratingL_corr)
+        # correlation: C to reading time
+        Cto_readingALL_corr = Corr(x_correctness, y_reading_allT)
+        Cto_readingH_corr = Corr(x_Hcorrectness, y_reading_HT)
+        Cto_readingL_corr = Corr(x_Lcorrectness, y_reading_LT)
+        print("readingALL to C: ", Cto_readingALL_corr)
+        print("reading-H to C: ", Cto_readingH_corr)
+        print("reading-L to C: ", Cto_readingL_corr)
         
-        
-        # C to reading time
-        Cto_readingALL_corr = x_correctness.corr(y_reading_allT)
-        Cto_readingH_corr = x_correctness.corr(y_reading_HT)
-        Cto_readingL_corr = x_correctness.corr(y_reading_LT)
-        
-        print(Cto_readingALL_corr)
-        print(Cto_readingH_corr)
-        print(Cto_readingL_corr)
-        """
         # T test section #  WEIRD!!!!
         t_testCtoHRT_R = stats.ttest_rel(x_correctness, y_H_RT)
         t_testCtoLRT_R = stats.ttest_rel(x_correctness, y_L_RT)
@@ -142,9 +136,12 @@ if __name__ == "__main__":
         t_testLRTtoHRT_R = stats.ttest_rel(y_L_RT, y_H_RT)
         print("L-RT to H-RT: ", t_testLRTtoHRT_R) # n.s.
         
-        t_testRATEtoLREAD_R = stats.ttest_rel(y_rating_all, y_reading_allT)
-        print("Rating to Reading: ", t_testRATEtoLREAD_R)
-        
+    for z in range(32):
+        sub_num = "0{0:02d}".format(z+4)
+        with open (result_data_path + "{}_Reading_task.csv".format(sub_num), "r", encoding= 'unicode_escape') as csvfile_reading:  #, "r", encoding = "utf-8")
+            readingLIST = csvfile_reading.read().split("\n")
+            readingLIST.pop(0)
+            readingLIST = LISTblankEraser(readingLIST)
         
         """
         # H & L RT & ALL_Correctness(Scatter & Regression line)
