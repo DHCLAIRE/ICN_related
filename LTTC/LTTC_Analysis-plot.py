@@ -72,7 +72,8 @@ def scatter_fit_plot(x, y1, y2, y1_c1, y2_c2, x_lable, y_lable, fig_title):  #, 
 
 if __name__ == "__main__":
     
-    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     """
     columns=['Sub_id',
     '(ms)H_raw_RTMean',
@@ -100,6 +101,8 @@ if __name__ == "__main__":
         data = pd.read_csv(csvfile, index_col=0)
         
         x_correctness = data['(%)ALL_Correctness']
+        x_rawHC = data['(%)H_raw_Correctness']
+        x_rawLC = data['(%)L_raw_Correctness']
         x_Hcorrectness = data['(%)H_final_Correctness']
         x_Lcorrectness = data['(%)L_final_Correctness']
         
@@ -156,16 +159,29 @@ if __name__ == "__main__":
                 
         
         
-        """
+        #"""
         # T test section #  WEIRD!!!!
-        t_testCtoHRT_R = stats.ttest_rel(x_correctness, y_H_RT)
-        t_testCtoLRT_R = stats.ttest_rel(x_correctness, y_L_RT)
-        print("C to H-RT: ", t_testCtoHRT_R)  # sig. >> e-15
-        print("C to L-RT: ", t_testCtoLRT_R)  # sig. >> e-17
+        #t_testCtoHRT_R = stats.ttest_rel(x_correctness, y_H_RT)
+        #t_testCtoLRT_R = stats.ttest_rel(x_correctness, y_L_RT)
+        #print("C to H-RT: ", t_testCtoHRT_R)  # sig. >> e-15
+        #print("C to L-RT: ", t_testCtoLRT_R)  # sig. >> e-17
+        
+        r1, p1 = stats.pearsonr(y_L_RT, y_rating_L)
+        r2, p2 = stats.spearmanr(y_H_RT, y_rating_H)
+        print("pearson", r1, p1)
+        print("spearsman", r2, p2)
         
         t_testLRTtoHRT_R = stats.ttest_rel(y_L_RT, y_H_RT)
-        print("L-RT to H-RT: ", t_testLRTtoHRT_R) # n.s.
-        """
+        #print("L-RT to H-RT: ", t_testLRTtoHRT_R) # n.s.
+        
+        t_test_Rfinal = stats.ttest_rel(x_Hcorrectness, x_Lcorrectness)
+        print("L-finalC to H-finalC: ",t_test_Rfinal) # n.s.
+        
+        t_test_Rraw = stats.ttest_rel(x_rawHC, x_rawLC)
+        print("L-rawC to H-rawC: ",t_test_Rraw) # n.s.
+        #"""
+        
+        #t_testLRTtoHRT_R = stats.ttest_rel(y_L_RT, y_H_RT)
         
         """
     for z in range(1):
@@ -184,11 +200,11 @@ if __name__ == "__main__":
             #data['Rating Scale'].plot(data['Rating Scale'], Count, kind="bar")
         """
             
-        
         """
+        
         # H & L RT & ALL_Correctness(Scatter & Regression line)
         # Setting the ax and the plot content of H & L raw RT with Correctness
-        ax1 = data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_final_RTMean", alpha = 0.5, color='Blue',label='H_rawRT')
+        ax1 = data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_raw_RTMean", alpha = 0.5, color='Blue',label='H_rawRT')
         data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)L_raw_RTMean", alpha = 0.5, color='Red',label='L_rawRT', ax = ax1)
         
         # 使用 Numpy 的 polyfit，參數 1 代表一維，算出 fit 直線斜率
@@ -200,18 +216,17 @@ if __name__ == "__main__":
         print(m_rawL, c_rawL)
         
         
-        ax1 = data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_final_RTMean", alpha = 0.5, color='Blue',label='H_rawRT')
-        data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)L_final_RTMean", alpha = 0.5, color='Red',label='L_rawRT', ax = ax1)
+        ax1 = data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)H_final_RTMean", alpha = 0.5, color='Orange',label='H_finalRT')
+        data.plot.scatter(x = "(%)ALL_Correctness", y = "(ms)L_final_RTMean", alpha = 0.5, color='Green',label='L_finalRT', ax = ax1)
         
         # 使用 Numpy 的 polyfit，參數 1 代表一維，算出 fit 直線斜率
-        m_rawH, c_rawH = np.polyfit(data['(%)ALL_Correctness'], data['(ms)H_final_RTMean'], 1) 
-        m_rawL, c_rawL = np.polyfit(data['(%)ALL_Correctness'], data['(ms)L_final_RTMean'], 1)
-        ax1.plot(data['(%)ALL_Correctness'], m_rawH * data['(%)ALL_Correctness'] + c_rawH, color = 'Blue')
-        ax1.plot(data['(%)ALL_Correctness'], m_rawL * data['(%)ALL_Correctness'] + c_rawL, color = 'Red')
-        ax1.xlabel("Correctness")
-        ax1.ylabel("Correctness")
-        print(m_rawH, c_rawH)
-        print(m_rawL, c_rawL)
+        m_finalH, c_finalH = np.polyfit(data['(%)ALL_Correctness'], data['(ms)H_final_RTMean'], 1) 
+        m_finalL, c_finalL = np.polyfit(data['(%)ALL_Correctness'], data['(ms)L_final_RTMean'], 1)
+        ax1.plot(data['(%)ALL_Correctness'], m_finalH * data['(%)ALL_Correctness'] + c_finalH, color = 'Orange')
+        ax1.plot(data['(%)ALL_Correctness'], m_finalL * data['(%)ALL_Correctness'] + c_finalL, color = 'Green')
+
+        print(m_finalH, c_finalH)
+        print(m_finalL, c_finalL)
         
         
         # H & L RT & H & L_Correctness(Scatter & Regression line)
