@@ -144,6 +144,10 @@ if __name__ == "__main__":
         # raw data
         resultLIST = []
         rawLIST = []
+        pseudoLIST = []
+        targetPseudoLIST = []
+        High_CDpwLIST = []
+        Low_CDpwLIST = []
         
         # wanted columnLIST
         sub_idLIST = []
@@ -155,6 +159,20 @@ if __name__ == "__main__":
         RTLIST = []
         
         sub_num = "0{0:02d}".format(z+7)
+        # Open the pseudowordDICT for the further indications
+        with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
+            pseudoDICT = json.load(jfile)
+            #pprint(pseudoDICT)
+        
+            #print(sub_num)
+        
+            targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+            High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
+            Low_CDpwLIST.extend(pseudoDICT["Low_CD condition pseudowords_3"])
+            print(targetPseudoLIST)
+            print(High_CDpwLIST)
+            print(Low_CDpwLIST)
+        
         # For LDT results calculation  >> should I add True/False calculation???
         with open (result_data_path + "{}_LDT_results.csv".format(sub_num), "r", encoding = "utf-8") as csvfile:
             resultLIST = csvfile.read().split("\n")
@@ -170,7 +188,7 @@ if __name__ == "__main__":
         
         for row in resultLIST:
             rawLIST = row.split(",")
-            print(rawLIST)   # ['007', '2022-04-19', 'chaeviy', "['slash']", "['unseen']", '581.0', "['True']"]
+            #print(rawLIST)   # ['007', '2022-04-19', 'chaeviy', "['slash']", "['unseen']", '581.0', "['True']"]
             
             # collect the sub_num
             sub_idLIST.append(rawLIST[0])
@@ -194,7 +212,8 @@ if __name__ == "__main__":
                 ACC = 99
             ACCLIST.append(ACC)
             
-            
+            # collect the pw conditions
+            #if rawLIST[2] in 
             
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
             
