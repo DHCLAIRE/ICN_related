@@ -169,7 +169,7 @@ if __name__ == "__main__":
         
         
     
-    for z in range(32):
+    for z in range(30):
         # Setting up the data_path
         #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     
@@ -182,7 +182,7 @@ if __name__ == "__main__":
         High_CDpwLIST = []
         Low_CDpwLIST = []
 
-        sub_num = "0{0:02d}".format(z+4)
+        sub_num = "0{0:02d}".format(z+7)
         # Open the pseudowordDICT for the further indications
         with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
             pseudoDICT = json.load(jfile)
@@ -583,7 +583,7 @@ if __name__ == "__main__":
                                      
                                      })
         
-        file_name = '000_004-035_PLDT_analyzed_results.csv'
+        file_name = '000_007-036_PLDT_analyzed_results.csv'
         save_path = result_data_path + file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
