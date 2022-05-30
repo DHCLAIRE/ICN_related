@@ -150,7 +150,7 @@ if __name__ == "__main__":
         conditionLIST = []
         trialLIST = []
         itemLIST = []
-        appearanceLIST = []
+        ACCLIST = []
         TandF_LIST = []
         RTLIST = []
         
@@ -171,17 +171,38 @@ if __name__ == "__main__":
         for row in resultLIST:
             rawLIST = row.split(",")
             print(rawLIST)   # ['007', '2022-04-19', 'chaeviy', "['slash']", "['unseen']", '581.0', "['True']"]
-            print(rawLIST[0])
-            print(type(rawLIST[0]))
             
             # collect the sub_num
             sub_idLIST.append(rawLIST[0])
+            
             # calculate and collect the trial count
             trials_count += 1
             trialLIST.append(trials_count)
             
+            # collect the pw item
+            itemLIST.append(rawLIST[2])
+            
+            # collect the RT pf each LDT
+            RTLIST.append(round(float(rawLIST[5]), 4))
+            
+            # collect the accuracy of the LDT
+            if rawLIST[6] == "['True']":
+                ACC = 1
+            elif rawLIST[6] == "['False']":
+                ACC = 0
+            else:
+                ACC = 99
+            ACCLIST.append(ACC)
+            
+            
+            
+            # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
+            
         print(sub_idLIST)
         print(trialLIST)
+        print(itemLIST)
+        print(RTLIST)
+        print(ACCLIST)
             
         """
             if rawLIST[2] in High_CDpwLIST:
