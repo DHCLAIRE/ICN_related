@@ -28,14 +28,6 @@ def LISTblankEraser(rawLIST):
     newrawLIST = rawLIST
     return newrawLIST
 
-def Corr(x, y):
-    '''
-    To get the correlation of the target x and y
-    '''
-    XtoY_corr = x.corr(y)
-    #print(XtoY_corr)
-    return XtoY_corr
-
 def get_List(resultLIST, i):
     '''
     Extract the wanted data from the raw data LIST
@@ -72,8 +64,8 @@ def scatter_fit_plot(x, y1, y2, y1_c1, y2_c2, x_lable, y_lable, fig_title):  #, 
 
 if __name__ == "__main__":
     
-    #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    #result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     """
     columns=['Sub_id',
     '(ms)H_raw_RTMean',
@@ -97,7 +89,7 @@ if __name__ == "__main__":
     """
     
     
-    with open (result_data_path + "000_007-035_PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
+    with open (result_data_path + "000_007-036_PLDT_analyzed_results.csv", "r", encoding = "utf-8") as csvfile:
         data = pd.read_csv(csvfile, index_col=0)
         
         x_correctness = data['(%)ALL_Correctness']
@@ -124,35 +116,39 @@ if __name__ == "__main__":
         # https://quantifyinghealth.com/report-shapiro-wilk-test/  >> How to interpret the test result
         
         # correlation: C to RT
-        H_C = Corr(x_correctness, y_H_RT)
-        L_C = Corr(x_correctness, y_L_RT)
-        H_HC = Corr(x_Hcorrectness, y_H_RT)
-        L_LC = Corr(x_Lcorrectness, y_L_RT)
+        H_C = stats.pearsonr(x_correctness, y_H_RT)
+        L_C = stats.pearsonr(x_correctness, y_L_RT)
+        H_HC = stats.pearsonr(x_Hcorrectness, y_H_RT)
+        L_LC = stats.pearsonr(x_Lcorrectness, y_L_RT)
+        H_CtoL_C = stats.pearsonr(x_Hcorrectness, x_Lcorrectness)
+        rawH_CtorawL_C = stats.pearsonr(x_rawHC, x_rawLC)
         print("H to ALL-C: ", H_C)
         print("L to ALL-C: ", L_C)
         print("H to H-C: ", H_HC)
         print("L to L-C: ", L_LC)
+        print("H-C to L-C: ", H_CtoL_C)
+        print("rawH-C to rawL-C: ", rawH_CtorawL_C)
         
         # correlation: C to rating
-        Cto_ratingALL_corr = Corr(x_correctness, y_rating_all)
-        Cto_ratingH_corr = Corr(x_Hcorrectness, y_rating_H)
-        Cto_ratingL_corr = Corr(x_Lcorrectness, y_rating_L)
+        Cto_ratingALL_corr = stats.pearsonr(x_correctness, y_rating_all)
+        Cto_ratingH_corr = stats.pearsonr(x_Hcorrectness, y_rating_H)
+        Cto_ratingL_corr = stats.pearsonr(x_Lcorrectness, y_rating_L)
         print("ratingALL to C: ", Cto_ratingALL_corr)
         print("rating-H to C: ", Cto_ratingH_corr)
         print("rating-L to C: ", Cto_ratingL_corr)
         
         # correlation: C to reading time
-        Cto_readingALL_corr = Corr(x_correctness, y_reading_allT)
-        Cto_readingH_corr = Corr(x_Hcorrectness, y_reading_HT)
-        Cto_readingL_corr = Corr(x_Lcorrectness, y_reading_LT)
+        Cto_readingALL_corr = stats.pearsonr(x_correctness, y_reading_allT)
+        Cto_readingH_corr = stats.pearsonr(x_Hcorrectness, y_reading_HT)
+        Cto_readingL_corr = stats.pearsonr(x_Lcorrectness, y_reading_LT)
         print("readingALL to C: ", Cto_readingALL_corr)
         print("reading-H to C: ", Cto_readingH_corr)
         print("reading-L to C: ", Cto_readingL_corr)
         
         # correlation: Rating to Reading
-        Ratingto_ReadingALL_corr = Corr(y_rating_all, y_reading_allT)
-        Ratingto_ReadingH_corr = Corr(y_rating_H, y_reading_HT)
-        Ratingto_ReadingL_corr = Corr(y_rating_L, y_reading_LT)
+        Ratingto_ReadingALL_corr = stats.pearsonr(y_rating_all, y_reading_allT)
+        Ratingto_ReadingH_corr = stats.pearsonr(y_rating_H, y_reading_HT)
+        Ratingto_ReadingL_corr = stats.pearsonr(y_rating_L, y_reading_LT)
         print("rating to reading ALL: ", Ratingto_ReadingALL_corr)
         print("rating to reading H: ", Ratingto_ReadingH_corr)
         print("rating to reading L: ", Ratingto_ReadingL_corr)
@@ -166,13 +162,17 @@ if __name__ == "__main__":
         #print("C to H-RT: ", t_testCtoHRT_R)  # sig. >> e-15
         #print("C to L-RT: ", t_testCtoLRT_R)  # sig. >> e-17
         
-        r1, p1 = stats.pearsonr(y_L_RT, y_rating_L)
-        r2, p2 = stats.spearmanr(y_H_RT, y_rating_H)
-        print("pearson", r1, p1)
-        print("spearsman", r2, p2)
+        r_H1, p_H1 = stats.pearsonr(y_H_RT, y_rating_H)
+        r_L1, p_L1 = stats.pearsonr(y_L_RT, y_rating_L)
+        r_H2, p_H2 = stats.spearmanr(y_H_RT, y_rating_H)
+        r_L2, p_L2 = stats.spearmanr(y_L_RT, y_rating_L)
+        print("H_RT to H rating pearson", r_H1, p_H1)
+        print("L_RT to L rating pearson", r_L1, p_L1)
+        print("H_RT to H rating spearmanr", r_H2, p_H2)
+        print("L_RT to L rating spearmanr", r_L2, p_L2)
         
         t_testLRTtoHRT_R = stats.ttest_rel(y_L_RT, y_H_RT)
-        #print("L-RT to H-RT: ", t_testLRTtoHRT_R) # n.s.
+        print("L-RT to H-RT: ", t_testLRTtoHRT_R) # n.s.
         
         t_test_Rfinal = stats.ttest_rel(x_Hcorrectness, x_Lcorrectness)
         print("L-finalC to H-finalC: ",t_test_Rfinal) # n.s.
