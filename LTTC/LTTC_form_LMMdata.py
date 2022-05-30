@@ -146,6 +146,7 @@ if __name__ == "__main__":
         rawLIST = []
         pseudoLIST = []
         targetPseudoLIST = []
+        controlPseudoLIST = []
         High_CDpwLIST = []
         Low_CDpwLIST = []
         
@@ -164,12 +165,12 @@ if __name__ == "__main__":
             pseudoDICT = json.load(jfile)
             #pprint(pseudoDICT)
         
-            #print(sub_num)
-        
             targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
+            controlPseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
             High_CDpwLIST.extend(pseudoDICT["High_CD condition pseudowords_3"])
             Low_CDpwLIST.extend(pseudoDICT["Low_CD condition pseudowords_3"])
             print(targetPseudoLIST)
+            print(controlPseudoLIST)
             print(High_CDpwLIST)
             print(Low_CDpwLIST)
         
@@ -178,7 +179,7 @@ if __name__ == "__main__":
             resultLIST = csvfile.read().split("\n")
             #pprint(resultLIST)
             #print(len(resultLIST))
-            resultLIST.pop(0)   # exclude the headers
+            resultLIST.pop(0)   # exclude t4he headers
             #print(len(resultLIST))
         
             # exclude the blank row
