@@ -157,6 +157,9 @@ if __name__ == "__main__":
         ACCLIST = []
         TandF_LIST = []
         RTLIST = []
+        countLIST = []
+        countTYPE_LIST = []
+        countALL_LIST = []
         
         sub_num = "0{0:02d}".format(z+7)
         # Open the pseudowordDICT for the further indications
@@ -183,6 +186,13 @@ if __name__ == "__main__":
             resultLIST = LISTblankEraser(resultLIST)
         
         trials_count = 0
+        count = 0
+        count_0 = 0
+        count_1 = 0
+        count_2 = 0
+        count_3 = 0
+        count_4 = 0
+        count_5 = 0
         
         for row in resultLIST:
             rawLIST = row.split(",")
@@ -213,13 +223,41 @@ if __name__ == "__main__":
             # collect the pw conditions
             if rawLIST[2] in controlPseudoLIST:
                 print("control pw", rawLIST[2])
+                count_indexINT = controlPseudoLIST.index(rawLIST[2])
+                count += 1
+                """
+                if count_indexINT == 0:
+                    count_0 += 1
+                    #countLIST.append(count_0)
+                if count_indexINT == 1:
+                    count_1 += 1
+                    #countLIST.append(count_1)
+                if count_indexINT == 2:
+                    count_2 += 1
+                    #countLIST.append(count_2)
+                if count_indexINT == 3:
+                    count_3 += 1
+                    #countLIST.append(count_3)
+                if count_indexINT == 4:
+                    count_4 += 1
+                    #countLIST.append(count_4) 
+                if count_indexINT == 5:
+                    count_5 += 1
+                    #countLIST.append(count_5)
+                else:
+                    print("Wrong")
+                """
+                #countLIST.append(count)
+                
             elif rawLIST[2] in High_CDpwLIST:
                 print("H CD pw", rawLIST[2])
+                print(High_CDpwLIST.index(rawLIST[2]))
             elif rawLIST[2] in Low_CDpwLIST:
                 print("L CD pw", rawLIST[2])
+                print(Low_CDpwLIST.index(rawLIST[2]))
             else:
                 print("WRONG!!!", rawLIST[2])
-            
+            countALL_LIST.append(count)
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
             
         print(sub_idLIST)
@@ -227,7 +265,9 @@ if __name__ == "__main__":
         print(itemLIST)
         print(RTLIST)
         print(ACCLIST)
-            
+        print(countALL_LIST)
+        print(len(countALL_LIST))
+        
         """
             if rawLIST[2] in High_CDpwLIST:
                 #print("High CD pw: ", rawLIST)
