@@ -134,7 +134,155 @@ def correctness(resultLIST, typeSTR = None):
     
     return correctnessDICT  #correctnessLIST,   ###count_True, count_False, count_NA, total_correctFLOAT
 
-
-
+    # sub_num/ condition(New word/ H_CD / L_CD) / trials / items(pseudowords_代號或pw本身) / times (出現的次數) / ACC (True_1; False_0) / RT 
+    
+    
 if __name__ == "__main__":
     result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    
+    for z in range(1):
+        # raw data
+        resultLIST = []
+        rawLIST = []
+        
+        # wanted columnLIST
+        sub_idLIST = []
+        conditionLIST = []
+        trialLIST = []
+        itemLIST = []
+        appearanceLIST = []
+        TandF_LIST = []
+        RTLIST = []
+        
+        sub_num = "0{0:02d}".format(z+7)
+        # For LDT results calculation  >> should I add True/False calculation???
+        with open (result_data_path + "{}_LDT_results.csv".format(sub_num), "r", encoding = "utf-8") as csvfile:
+            resultLIST = csvfile.read().split("\n")
+            #pprint(resultLIST)
+            #print(len(resultLIST))
+            resultLIST.pop(0)   # exclude the headers
+            #print(len(resultLIST))
+        
+            # exclude the blank row
+            resultLIST = LISTblankEraser(resultLIST)
+        
+        trials_count = 0
+        
+        for row in resultLIST:
+            rawLIST = row.split(",")
+            print(rawLIST)   # ['007', '2022-04-19', 'chaeviy', "['slash']", "['unseen']", '581.0', "['True']"]
+            print(rawLIST[0])
+            print(type(rawLIST[0]))
+            
+            # collect the sub_num
+            sub_idLIST.append(rawLIST[0])
+            # calculate and collect the trial count
+            trials_count += 1
+            trialLIST.append(trials_count)
+            
+        print(sub_idLIST)
+        print(trialLIST)
+            
+        """
+            if rawLIST[2] in High_CDpwLIST:
+                #print("High CD pw: ", rawLIST)
+                H_CD_rawLIST.append(rawLIST)
+            elif rawLIST[2] in Low_CDpwLIST:
+                #print("Low CD pw: ", rawLIST)
+                L_CD_rawLIST.append(rawLIST)
+            else:   
+                pass
+        """
+
+        """
+        # Finding the wanted H & L CD response, and then calculate the Mean of H & L pwRT
+        for row in resultLIST:
+            rawLIST = row.split(",")
+            
+            if rawLIST[2] in High_CDpwLIST:
+                #print("High CD pw: ", rawLIST)
+                H_CD_rawLIST.append(rawLIST)
+            elif rawLIST[2] in Low_CDpwLIST:
+                #print("Low CD pw: ", rawLIST)
+                L_CD_rawLIST.append(rawLIST)
+            else:   
+                pass
+        #print("H_CD_rawLIST", H_CD_rawLIST)  # [['022', '2022-05-14', 'aegliy', "['z']", "['seen']", '1982.0', "['True']"], ['022', '2022-05-14', 'vaesow', "['z']", "['seen']", '726.0', "['True']"],.....]]
+        #print(len(H_CD_rawLIST))
+        #print("L_CD_rawLIST", L_CD_rawLIST)  # same as "H_CD_rawLIST"
+        #print(len(L_CD_rawLIST))
+        
+        """
+    """
+    # wanted columnLIST
+    sub_LIST = []
+    conditionALL_LIST = []
+    trialsALL_LIST = []
+    itemALL_LIST = []
+    timesLIST = []
+    ACCall_LIST = []
+    RTfinalLIST = []
+    
+    
+    
+    
+    # making the wanted info into the List form for future use
+    sub_idLIST.append(sub_num)
+    
+    # For Mean data
+    H_total_rawRT_LIST.append(H_mean_subFLOAT)
+    L_total_rawRT_LIST.append(L_mean_subFLOAT)
+    H_total_finalRT_LIST.append(H_final_mean_subFLOAT)
+    L_total_finalRT_LIST.append(L_final_mean_subFLOAT)
+    
+    # For Correctness data
+    sub_AllrawCorrect_LIST.append(PLDT_correct_subDICT["PLDT-total Correctness"])
+    H_total_rawCorrect_LIST.append(H_PLDT_correct_subDICT["H-CD PLDT Correctness"])
+    L_total_rawCorrect_LIST.append(L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
+    H_total_finalCorrect_LIST.append(n_H_PLDT_correct_subDICT["New H-CD PLDT Correctness"])
+    L_total_finalCorrect_LIST.append(n_L_PLDT_correct_subDICT["New L-CD PLDT Correctness"])
+    
+    # For Self-rating data
+    ALL_ratingINT_LIST.append(ALL_ratingMeanINT)
+    H_ratingINT_LIST.append(H_ratingMeanINT)
+    L_ratingINT_LIST.append(L_ratingMeanINT)
+    
+    # For self-paced reading data
+    ALL_readingT_msINT_LIST.append(ALL_readingT_msINT)
+    H_readingT_msINT_LIST.append(H_readingT_msINT)
+    L_readingT_msINT_LIST.append(L_readingT_msINT)
+    ALL_readingT_minINT_LIST.append(ALL_readingT_minFLOAT)
+    H_readingT_minINT_LIST.append(H_readingT_minFLOAT)
+    L_readingT_minINT_LIST.append(L_readingT_minFLOAT)
+    
+    
+    # Saving the analyzed results into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                             '(ms)H_raw_RTMean':H_total_rawRT_LIST,
+                             '(ms)H_final_RTMean':H_total_finalRT_LIST,
+                             '(ms)L_raw_RTMean':L_total_rawRT_LIST,
+                             '(ms)L_final_RTMean':L_total_finalRT_LIST,
+                             
+                             '(%)ALL_Correctness':sub_AllrawCorrect_LIST,
+                             '(%)H_raw_Correctness':H_total_rawCorrect_LIST,
+                             '(%)H_final_Correctness':H_total_finalCorrect_LIST,
+                             '(%)L_raw_Correctness':L_total_rawCorrect_LIST,
+                             '(%)L_final_Correctness':L_total_finalCorrect_LIST,
+                             
+                             'Self_rating_Mean':ALL_ratingINT_LIST,
+                             'H_Self_rating_Mean':H_ratingINT_LIST,
+                             'L_Self_rating_Mean':L_ratingINT_LIST,
+                             
+                             '(ms)Self_readingT_msMean':ALL_readingT_msINT_LIST,
+                             '(ms)H_Self_readingT_msMean':H_readingT_msINT_LIST,
+                             '(ms)L_Self_readingT_msMean':L_readingT_msINT_LIST,
+                             '(min)Self_readingT_minMean':ALL_readingT_minINT_LIST,
+                             '(min)H_Self_readingT_minMean':H_readingT_minINT_LIST,
+                             '(min)L_Self_readingT_minMean':L_readingT_minINT_LIST,
+                             
+                             })
+
+    file_name = '000_004-035_PLDT_analyzed_results.csv'
+    save_path = result_data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    """
