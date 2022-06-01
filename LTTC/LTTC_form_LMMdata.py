@@ -346,7 +346,7 @@ if __name__ == "__main__":
                 print("WRONG!!!", rawLIST[2])
             countALL_LIST.extend(count_tmpLIST)
             conditionALLLIST.extend(conditionLIST)
-        # to set the first apprearance pw as the 
+        # to set the first apprearance pw as the "New" condition
         for k in range(12):
             conditionALLLIST[k] = "N"
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
