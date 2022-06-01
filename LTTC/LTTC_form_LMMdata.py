@@ -187,13 +187,28 @@ if __name__ == "__main__":
             resultLIST = LISTblankEraser(resultLIST)
         
         trials_count = 0
-        count = 0
-        count_0 = 0
-        count_1 = 0
-        count_2 = 0
-        count_3 = 0
-        count_4 = 0
-        count_5 = 0
+        
+        count_H_0 = 0
+        count_H_1 = 0
+        count_H_2 = 0
+        count_H_3 = 0
+        count_H_4 = 0
+        count_H_5 = 0
+        
+        count_L_0 = 0
+        count_L_1 = 0
+        count_L_2 = 0
+        count_L_3 = 0
+        count_L_4 = 0
+        count_L_5 = 0
+        
+        count_C_0 = 0
+        count_C_1 = 0
+        count_C_2 = 0
+        count_C_3 = 0
+        count_C_4 = 0
+        count_C_5 = 0
+        
         count_tmpLIST = []
         
         for row in resultLIST:
@@ -225,54 +240,69 @@ if __name__ == "__main__":
             # collect the pw conditions
             if rawLIST[2] in controlPseudoLIST:
                 print("control pw", rawLIST[2])
+                print(controlPseudoLIST.index(rawLIST[2]))
                 count_indexINT = controlPseudoLIST.index(rawLIST[2])
                 
                 if count_indexINT == 0:
-                    count_0 += 1
-                    count_tmpLIST = [count_0]
+                    count_C_0 += 1
+                    count_tmpLIST = [count_C_0]
+                    print(count_tmpLIST)
                 if count_indexINT == 1:
-                    count_1 += 1
-                    count_tmpLIST = [count_1]
+                    count_C_1 += 1
+                    count_tmpLIST = [count_C_1]
+                    print(count_tmpLIST)
                 if count_indexINT == 2:
-                    count_2 += 1
-                    count_tmpLIST = [count_2]
+                    count_C_2 += 1
+                    count_tmpLIST = [count_C_2]
+                    print(count_tmpLIST)
                 if count_indexINT == 3:
-                    count_3 += 1
-                    count_tmpLIST = [count_3]
+                    count_C_3 += 1
+                    count_tmpLIST = [count_C_3]
+                    print(count_tmpLIST)
                 if count_indexINT == 4:
-                    count_4 += 1
-                    count_tmpLIST = [count_4]
+                    count_C_4 += 1
+                    count_tmpLIST = [count_C_4]
+                    print(count_tmpLIST)
                 if count_indexINT == 5:
-                    count_5 += 1
-                    count_tmpLIST = [count_5]
+                    count_C_5 += 1
+                    count_tmpLIST = [count_C_5]
+                    print(count_tmpLIST)
                 else:
-                    print("Wrong")
+                    pass
+                    #print("Wrong")
                 
             elif rawLIST[2] in High_CDpwLIST:
                 print("H CD pw", rawLIST[2])
+                print(High_CDpwLIST.index(rawLIST[2]))
                 count_indexINT = High_CDpwLIST.index(rawLIST[2])
                 
                 if count_indexINT == 0:
-                    count_0 += 1
-                    count_tmpLIST = [count_0]
+                    count_H_0 += 1
+                    count_tmpLIST = [count_H_0]
+                    print(count_tmpLIST)
                 if count_indexINT == 1:
-                    count_1 += 1
-                    count_tmpLIST = [count_1]
+                    count_H_1 += 1
+                    count_tmpLIST = [count_H_1]
+                    print(count_tmpLIST)
                 if count_indexINT == 2:
-                    count_2 += 1
-                    count_tmpLIST = [count_2]
+                    count_H_2 += 1
+                    count_tmpLIST = [count_H_2]
+                    print(count_tmpLIST)
                 if count_indexINT == 3:
-                    count_3 += 1
-                    count_tmpLIST = [count_3]
+                    count_H_3 += 1
+                    count_tmpLIST = [count_H_3]
+                    print(count_tmpLIST)
                 if count_indexINT == 4:
-                    count_4 += 1
-                    count_tmpLIST = [count_4]
+                    count_H_4 += 1
+                    count_tmpLIST = [count_H_4]
+                    print(count_tmpLIST)
                 if count_indexINT == 5:
-                    count_5 += 1
-                    count_tmpLIST = [count_5]
+                    count_H_5 += 1
+                    count_tmpLIST = [count_H_5]
+                    print(count_tmpLIST)
                 else:
-                    print("Wrong")  # there's the word in other category
-                    print()
+                    pass
+                    #print("Wrong")  # there's the word in other category
                     
                 
             elif rawLIST[2] in Low_CDpwLIST:
@@ -283,23 +313,30 @@ if __name__ == "__main__":
                 if count_indexINT == 0:
                     count_0 += 1
                     count_tmpLIST = [count_0]
+                    print(count_tmpLIST)
                 if count_indexINT == 1:
                     count_1 += 1
                     count_tmpLIST = [count_1]
+                    print(count_tmpLIST)
                 if count_indexINT == 2:
                     count_2 += 1
                     count_tmpLIST = [count_2]
+                    print(count_tmpLIST)
                 if count_indexINT == 3:
                     count_3 += 1
                     count_tmpLIST = [count_3]
+                    print(count_tmpLIST)
                 if count_indexINT == 4:
                     count_4 += 1
                     count_tmpLIST = [count_4]
+                    print(count_tmpLIST)
                 if count_indexINT == 5:
                     count_5 += 1
                     count_tmpLIST = [count_5]
+                    print(count_tmpLIST)
                 else:
-                    print("Wrong")
+                    pass
+                    #print("Wrong")
                     
             else:
                 print("WRONG!!!", rawLIST[2])
