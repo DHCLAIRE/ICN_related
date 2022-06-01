@@ -239,101 +239,93 @@ if __name__ == "__main__":
             
             # collect the pw conditions
             if rawLIST[2] in controlPseudoLIST:
-                print("control pw", rawLIST[2])
-                print(controlPseudoLIST.index(rawLIST[2]))
                 count_indexINT = controlPseudoLIST.index(rawLIST[2])
                 
                 if count_indexINT == 0:
                     count_C_0 += 1
                     count_tmpLIST = [count_C_0]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 1:
                     count_C_1 += 1
                     count_tmpLIST = [count_C_1]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 2:
                     count_C_2 += 1
                     count_tmpLIST = [count_C_2]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 3:
                     count_C_3 += 1
                     count_tmpLIST = [count_C_3]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 4:
                     count_C_4 += 1
                     count_tmpLIST = [count_C_4]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 5:
                     count_C_5 += 1
                     count_tmpLIST = [count_C_5]
-                    print(count_tmpLIST)
+                    
                 else:
                     pass
-                    #print("Wrong")
                 
             elif rawLIST[2] in High_CDpwLIST:
-                print("H CD pw", rawLIST[2])
-                print(High_CDpwLIST.index(rawLIST[2]))
                 count_indexINT = High_CDpwLIST.index(rawLIST[2])
                 
                 if count_indexINT == 0:
                     count_H_0 += 1
                     count_tmpLIST = [count_H_0]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 1:
                     count_H_1 += 1
                     count_tmpLIST = [count_H_1]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 2:
                     count_H_2 += 1
                     count_tmpLIST = [count_H_2]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 3:
                     count_H_3 += 1
                     count_tmpLIST = [count_H_3]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 4:
                     count_H_4 += 1
                     count_tmpLIST = [count_H_4]
-                    print(count_tmpLIST)
+                    
                 if count_indexINT == 5:
                     count_H_5 += 1
                     count_tmpLIST = [count_H_5]
-                    print(count_tmpLIST)
+                    
                 else:
                     pass
-                    #print("Wrong")  # there's the word in other category
                     
                 
             elif rawLIST[2] in Low_CDpwLIST:
-                print("L CD pw", rawLIST[2])
-                print(Low_CDpwLIST.index(rawLIST[2]))
                 count_indexINT = Low_CDpwLIST.index(rawLIST[2])
                 
                 if count_indexINT == 0:
-                    count_0 += 1
-                    count_tmpLIST = [count_0]
-                    print(count_tmpLIST)
+                    count_L_0 += 1
+                    count_tmpLIST = [count_L_0]
+                    
                 if count_indexINT == 1:
-                    count_1 += 1
-                    count_tmpLIST = [count_1]
-                    print(count_tmpLIST)
+                    count_L_1 += 1
+                    count_tmpLIST = [count_L_1]
+                    
                 if count_indexINT == 2:
-                    count_2 += 1
-                    count_tmpLIST = [count_2]
-                    print(count_tmpLIST)
+                    count_L_2 += 1
+                    count_tmpLIST = [count_L_2]
+                    
                 if count_indexINT == 3:
-                    count_3 += 1
-                    count_tmpLIST = [count_3]
-                    print(count_tmpLIST)
+                    count_L_3 += 1
+                    count_tmpLIST = [count_L_3]
+                    
                 if count_indexINT == 4:
-                    count_4 += 1
-                    count_tmpLIST = [count_4]
-                    print(count_tmpLIST)
+                    count_L_4 += 1
+                    count_tmpLIST = [count_L_4]
+                    
                 if count_indexINT == 5:
-                    count_5 += 1
-                    count_tmpLIST = [count_5]
-                    print(count_tmpLIST)
+                    count_L_5 += 1
+                    count_tmpLIST = [count_L_5]
+                    
                 else:
                     pass
                     #print("Wrong")
@@ -342,7 +334,6 @@ if __name__ == "__main__":
                 print("WRONG!!!", rawLIST[2])
             countALL_LIST.extend(count_tmpLIST)
             
-            # Why there would be 30????????
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
             
         print(sub_idLIST)
