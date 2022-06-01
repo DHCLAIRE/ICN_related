@@ -138,7 +138,8 @@ def correctness(resultLIST, typeSTR = None):
     
     
 if __name__ == "__main__":
-    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     
     for z in range(1):
         # raw data
@@ -193,6 +194,7 @@ if __name__ == "__main__":
         count_3 = 0
         count_4 = 0
         count_5 = 0
+        count_tmpLIST = []
         
         for row in resultLIST:
             rawLIST = row.split(",")
@@ -224,40 +226,86 @@ if __name__ == "__main__":
             if rawLIST[2] in controlPseudoLIST:
                 print("control pw", rawLIST[2])
                 count_indexINT = controlPseudoLIST.index(rawLIST[2])
-                count += 1
-                """
+                
                 if count_indexINT == 0:
                     count_0 += 1
-                    #countLIST.append(count_0)
+                    count_tmpLIST = [count_0]
                 if count_indexINT == 1:
                     count_1 += 1
-                    #countLIST.append(count_1)
+                    count_tmpLIST = [count_1]
                 if count_indexINT == 2:
                     count_2 += 1
-                    #countLIST.append(count_2)
+                    count_tmpLIST = [count_2]
                 if count_indexINT == 3:
                     count_3 += 1
-                    #countLIST.append(count_3)
+                    count_tmpLIST = [count_3]
                 if count_indexINT == 4:
                     count_4 += 1
-                    #countLIST.append(count_4) 
+                    count_tmpLIST = [count_4]
                 if count_indexINT == 5:
                     count_5 += 1
-                    #countLIST.append(count_5)
+                    count_tmpLIST = [count_5]
                 else:
                     print("Wrong")
-                """
-                #countLIST.append(count)
                 
             elif rawLIST[2] in High_CDpwLIST:
                 print("H CD pw", rawLIST[2])
-                print(High_CDpwLIST.index(rawLIST[2]))
+                count_indexINT = High_CDpwLIST.index(rawLIST[2])
+                
+                if count_indexINT == 0:
+                    count_0 += 1
+                    count_tmpLIST = [count_0]
+                if count_indexINT == 1:
+                    count_1 += 1
+                    count_tmpLIST = [count_1]
+                if count_indexINT == 2:
+                    count_2 += 1
+                    count_tmpLIST = [count_2]
+                if count_indexINT == 3:
+                    count_3 += 1
+                    count_tmpLIST = [count_3]
+                if count_indexINT == 4:
+                    count_4 += 1
+                    count_tmpLIST = [count_4]
+                if count_indexINT == 5:
+                    count_5 += 1
+                    count_tmpLIST = [count_5]
+                else:
+                    print("Wrong")  # there's the word in other category
+                    print()
+                    
+                
             elif rawLIST[2] in Low_CDpwLIST:
                 print("L CD pw", rawLIST[2])
                 print(Low_CDpwLIST.index(rawLIST[2]))
+                count_indexINT = Low_CDpwLIST.index(rawLIST[2])
+                
+                if count_indexINT == 0:
+                    count_0 += 1
+                    count_tmpLIST = [count_0]
+                if count_indexINT == 1:
+                    count_1 += 1
+                    count_tmpLIST = [count_1]
+                if count_indexINT == 2:
+                    count_2 += 1
+                    count_tmpLIST = [count_2]
+                if count_indexINT == 3:
+                    count_3 += 1
+                    count_tmpLIST = [count_3]
+                if count_indexINT == 4:
+                    count_4 += 1
+                    count_tmpLIST = [count_4]
+                if count_indexINT == 5:
+                    count_5 += 1
+                    count_tmpLIST = [count_5]
+                else:
+                    print("Wrong")
+                    
             else:
                 print("WRONG!!!", rawLIST[2])
-            countALL_LIST.append(count)
+            countALL_LIST.extend(count_tmpLIST)
+            
+            # Why there would be 30????????
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
             
         print(sub_idLIST)
