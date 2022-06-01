@@ -141,6 +141,17 @@ if __name__ == "__main__":
     #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
     
+    # wanted columnLIST
+    sub_LIST = []
+    conditionALL_LIST = []
+    trialsALL_LIST = []
+    itemALL_LIST = []
+    timesLIST = []
+    ACCall_LIST = []
+    RTfinalLIST = []
+    
+    
+    
     for z in range(1):
         # raw data
         resultLIST = []
@@ -210,6 +221,8 @@ if __name__ == "__main__":
         count_C_5 = 0
         
         count_tmpLIST = []
+        conditionLIST
+        conditionALLLIST = []
         
         for row in resultLIST:
             rawLIST = row.split(",")
@@ -240,31 +253,30 @@ if __name__ == "__main__":
             # collect the pw conditions
             if rawLIST[2] in controlPseudoLIST:
                 count_indexINT = controlPseudoLIST.index(rawLIST[2])
-                
                 if count_indexINT == 0:
                     count_C_0 += 1
                     count_tmpLIST = [count_C_0]
-                    
+                    conditionLIST = ["C"]
                 if count_indexINT == 1:
                     count_C_1 += 1
                     count_tmpLIST = [count_C_1]
-                    
+                    conditionLIST = ["C"]
                 if count_indexINT == 2:
                     count_C_2 += 1
                     count_tmpLIST = [count_C_2]
-                    
+                    conditionLIST = ["C"]
                 if count_indexINT == 3:
                     count_C_3 += 1
                     count_tmpLIST = [count_C_3]
-                    
+                    conditionLIST = ["C"]
                 if count_indexINT == 4:
                     count_C_4 += 1
                     count_tmpLIST = [count_C_4]
-                    
+                    conditionLIST = ["C"]
                 if count_indexINT == 5:
                     count_C_5 += 1
                     count_tmpLIST = [count_C_5]
-                    
+                    conditionLIST = ["C"]
                 else:
                     pass
                 
@@ -274,27 +286,27 @@ if __name__ == "__main__":
                 if count_indexINT == 0:
                     count_H_0 += 1
                     count_tmpLIST = [count_H_0]
-                    
+                    conditionLIST = ["H"]
                 if count_indexINT == 1:
                     count_H_1 += 1
                     count_tmpLIST = [count_H_1]
-                    
+                    conditionLIST = ["H"]
                 if count_indexINT == 2:
                     count_H_2 += 1
                     count_tmpLIST = [count_H_2]
-                    
+                    conditionLIST = ["H"]
                 if count_indexINT == 3:
                     count_H_3 += 1
                     count_tmpLIST = [count_H_3]
-                    
+                    conditionLIST = ["H"]
                 if count_indexINT == 4:
                     count_H_4 += 1
                     count_tmpLIST = [count_H_4]
-                    
+                    conditionLIST = ["H"]
                 if count_indexINT == 5:
                     count_H_5 += 1
                     count_tmpLIST = [count_H_5]
-                    
+                    conditionLIST = ["H"]
                 else:
                     pass
                     
@@ -305,27 +317,27 @@ if __name__ == "__main__":
                 if count_indexINT == 0:
                     count_L_0 += 1
                     count_tmpLIST = [count_L_0]
-                    
+                    conditionLIST = ["L"]
                 if count_indexINT == 1:
                     count_L_1 += 1
                     count_tmpLIST = [count_L_1]
-                    
+                    conditionLIST = ["L"]
                 if count_indexINT == 2:
                     count_L_2 += 1
                     count_tmpLIST = [count_L_2]
-                    
+                    conditionLIST = ["L"]
                 if count_indexINT == 3:
                     count_L_3 += 1
                     count_tmpLIST = [count_L_3]
-                    
+                    conditionLIST = ["L"]
                 if count_indexINT == 4:
                     count_L_4 += 1
                     count_tmpLIST = [count_L_4]
-                    
+                    conditionLIST = ["L"]
                 if count_indexINT == 5:
                     count_L_5 += 1
                     count_tmpLIST = [count_L_5]
-                    
+                    conditionLIST = ["L"]
                 else:
                     pass
                     #print("Wrong")
@@ -333,7 +345,10 @@ if __name__ == "__main__":
             else:
                 print("WRONG!!!", rawLIST[2])
             countALL_LIST.extend(count_tmpLIST)
-            
+            conditionALLLIST.extend(conditionLIST)
+        # to set the first apprearance pw as the 
+        for k in range(12):
+            conditionALLLIST[k] = "N"
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
             
         print(sub_idLIST)
@@ -342,108 +357,40 @@ if __name__ == "__main__":
         print(RTLIST)
         print(ACCLIST)
         print(countALL_LIST)
-        print(len(countALL_LIST))
+        print(conditionALLLIST)
         
-        """
-            if rawLIST[2] in High_CDpwLIST:
-                #print("High CD pw: ", rawLIST)
-                H_CD_rawLIST.append(rawLIST)
-            elif rawLIST[2] in Low_CDpwLIST:
-                #print("Low CD pw: ", rawLIST)
-                L_CD_rawLIST.append(rawLIST)
-            else:   
-                pass
-        """
-
-        """
-        # Finding the wanted H & L CD response, and then calculate the Mean of H & L pwRT
-        for row in resultLIST:
-            rawLIST = row.split(",")
-            
-            if rawLIST[2] in High_CDpwLIST:
-                #print("High CD pw: ", rawLIST)
-                H_CD_rawLIST.append(rawLIST)
-            elif rawLIST[2] in Low_CDpwLIST:
-                #print("Low CD pw: ", rawLIST)
-                L_CD_rawLIST.append(rawLIST)
-            else:   
-                pass
-        #print("H_CD_rawLIST", H_CD_rawLIST)  # [['022', '2022-05-14', 'aegliy', "['z']", "['seen']", '1982.0', "['True']"], ['022', '2022-05-14', 'vaesow', "['z']", "['seen']", '726.0', "['True']"],.....]]
-        #print(len(H_CD_rawLIST))
-        #print("L_CD_rawLIST", L_CD_rawLIST)  # same as "H_CD_rawLIST"
-        #print(len(L_CD_rawLIST))
+        '''
+        # wanted columnLIST
+        sub_LIST = []
+        conditionALL_LIST = []
+        trialsALL_LIST = []
+        itemALL_LIST = []
+        timesLIST = []
+        ACCall_LIST = []
+        RTfinalLIST = []
+        '''
         
-        """
-    """
-    # wanted columnLIST
-    sub_LIST = []
-    conditionALL_LIST = []
-    trialsALL_LIST = []
-    itemALL_LIST = []
-    timesLIST = []
-    ACCall_LIST = []
-    RTfinalLIST = []
-    
-    
-    
-    
-    # making the wanted info into the List form for future use
-    sub_idLIST.append(sub_num)
-    
-    # For Mean data
-    H_total_rawRT_LIST.append(H_mean_subFLOAT)
-    L_total_rawRT_LIST.append(L_mean_subFLOAT)
-    H_total_finalRT_LIST.append(H_final_mean_subFLOAT)
-    L_total_finalRT_LIST.append(L_final_mean_subFLOAT)
-    
-    # For Correctness data
-    sub_AllrawCorrect_LIST.append(PLDT_correct_subDICT["PLDT-total Correctness"])
-    H_total_rawCorrect_LIST.append(H_PLDT_correct_subDICT["H-CD PLDT Correctness"])
-    L_total_rawCorrect_LIST.append(L_PLDT_correct_subDICT["L-CD PLDT Correctness"])
-    H_total_finalCorrect_LIST.append(n_H_PLDT_correct_subDICT["New H-CD PLDT Correctness"])
-    L_total_finalCorrect_LIST.append(n_L_PLDT_correct_subDICT["New L-CD PLDT Correctness"])
-    
-    # For Self-rating data
-    ALL_ratingINT_LIST.append(ALL_ratingMeanINT)
-    H_ratingINT_LIST.append(H_ratingMeanINT)
-    L_ratingINT_LIST.append(L_ratingMeanINT)
-    
-    # For self-paced reading data
-    ALL_readingT_msINT_LIST.append(ALL_readingT_msINT)
-    H_readingT_msINT_LIST.append(H_readingT_msINT)
-    L_readingT_msINT_LIST.append(L_readingT_msINT)
-    ALL_readingT_minINT_LIST.append(ALL_readingT_minFLOAT)
-    H_readingT_minINT_LIST.append(H_readingT_minFLOAT)
-    L_readingT_minINT_LIST.append(L_readingT_minFLOAT)
-    
-    
-    # Saving the analyzed results into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                             '(ms)H_raw_RTMean':H_total_rawRT_LIST,
-                             '(ms)H_final_RTMean':H_total_finalRT_LIST,
-                             '(ms)L_raw_RTMean':L_total_rawRT_LIST,
-                             '(ms)L_final_RTMean':L_total_finalRT_LIST,
-                             
-                             '(%)ALL_Correctness':sub_AllrawCorrect_LIST,
-                             '(%)H_raw_Correctness':H_total_rawCorrect_LIST,
-                             '(%)H_final_Correctness':H_total_finalCorrect_LIST,
-                             '(%)L_raw_Correctness':L_total_rawCorrect_LIST,
-                             '(%)L_final_Correctness':L_total_finalCorrect_LIST,
-                             
-                             'Self_rating_Mean':ALL_ratingINT_LIST,
-                             'H_Self_rating_Mean':H_ratingINT_LIST,
-                             'L_Self_rating_Mean':L_ratingINT_LIST,
-                             
-                             '(ms)Self_readingT_msMean':ALL_readingT_msINT_LIST,
-                             '(ms)H_Self_readingT_msMean':H_readingT_msINT_LIST,
-                             '(ms)L_Self_readingT_msMean':L_readingT_msINT_LIST,
-                             '(min)Self_readingT_minMean':ALL_readingT_minINT_LIST,
-                             '(min)H_Self_readingT_minMean':H_readingT_minINT_LIST,
-                             '(min)L_Self_readingT_minMean':L_readingT_minINT_LIST,
-                             
-                             })
+        
+        # making the wanted info into the List form for future use
+        sub_LIST.append(sub_idLIST)
+        conditionALL_LIST.append(conditionALLLIST)
+        trialsALL_LIST.append(trialLIST)
+        itemALL_LIST.append(itemLIST)
+        timesLIST.append(countALL_LIST)
+        ACCall_LIST.append(ACCLIST)
+        RTfinalLIST.append(RTLIST)
+        
+        # Saving the analyzed results into csv file
+        dataDICT = pd.DataFrame({'Sub_id':sub_LIST,
+                                 'Condition':conditionALL_LIST,
+                                 'Trials':trialsALL_LIST,
+                                 'Item':itemALL_LIST,
+                                 'Times':timesLIST,
+                                 'ACC':ACCall_LIST,
+                                 'RT':RTfinalLIST
+                                 })
 
-    file_name = '000_004-035_PLDT_analyzed_results.csv'
-    save_path = result_data_path + file_name
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    """
+        file_name = '000_007-036_PLDT_raw_results.csv'
+        save_path = result_data_path + file_name
+        dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+
