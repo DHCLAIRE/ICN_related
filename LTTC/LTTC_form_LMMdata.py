@@ -151,8 +151,7 @@ if __name__ == "__main__":
     RTfinalLIST = []
     
     
-    
-    for z in range(1):
+    for z in range(30):
         # raw data
         resultLIST = []
         rawLIST = []
@@ -359,26 +358,34 @@ if __name__ == "__main__":
         print(countALL_LIST)
         print(conditionALLLIST)
         
-        '''
-        # wanted columnLIST
-        sub_LIST = []
-        conditionALL_LIST = []
-        trialsALL_LIST = []
-        itemALL_LIST = []
-        timesLIST = []
-        ACCall_LIST = []
-        RTfinalLIST = []
-        '''
+
+
         
         
         # making the wanted info into the List form for future use
-        sub_LIST.append(sub_idLIST)
-        conditionALL_LIST.append(conditionALLLIST)
-        trialsALL_LIST.append(trialLIST)
-        itemALL_LIST.append(itemLIST)
-        timesLIST.append(countALL_LIST)
-        ACCall_LIST.append(ACCLIST)
-        RTfinalLIST.append(RTLIST)
+        
+        sub_LIST.extend(sub_idLIST)
+        print(sub_LIST)
+        print(len(sub_LIST))
+        conditionALL_LIST.extend(conditionALLLIST)
+        print(conditionALL_LIST)
+        print(len(conditionALL_LIST))
+        trialsALL_LIST.extend(trialLIST)
+        print(trialsALL_LIST)
+        print(len(trialsALL_LIST))
+        itemALL_LIST.extend(itemLIST)
+        print(itemALL_LIST)
+        print(len(itemALL_LIST))
+        timesLIST.extend(countALL_LIST)
+        print(timesLIST)
+        print(len(timesLIST))
+        ACCall_LIST.extend(ACCLIST)
+        print(ACCall_LIST)
+        print(len(ACCall_LIST))
+        RTfinalLIST.extend(RTLIST)
+        print(RTfinalLIST)
+        print(len(RTfinalLIST))
+
         
         # Saving the analyzed results into csv file
         dataDICT = pd.DataFrame({'Sub_id':sub_LIST,
@@ -387,10 +394,11 @@ if __name__ == "__main__":
                                  'Item':itemALL_LIST,
                                  'Times':timesLIST,
                                  'ACC':ACCall_LIST,
-                                 'RT':RTfinalLIST
+                                 'RT':RTfinalLIST,
                                  })
 
         file_name = '000_007-036_PLDT_raw_results.csv'
         save_path = result_data_path + file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+        print("Done!")
 
