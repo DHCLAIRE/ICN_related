@@ -375,10 +375,6 @@ if __name__ == "__main__":
             countALL_LIST.extend(count_tmpLIST)
             conditionALLLIST.extend(conditionLIST)
             
-            # To exlclude some data
-        # to set the first apprearance pw as the "New" condition
-        for k in range(12):
-            conditionALLLIST[k] = "N"
             # condition & times need to recalculate!!!!!! & and also one colunm that indicates the reason of the deleted responses
             
         print(sub_idLIST)
