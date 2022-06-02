@@ -149,6 +149,7 @@ if __name__ == "__main__":
     timesLIST = []
     ACCall_LIST = []
     RTfinalLIST = []
+    NotesALL_LIST = []
     
     
     for z in range(30):
@@ -171,6 +172,8 @@ if __name__ == "__main__":
         countLIST = []
         countTYPE_LIST = []
         countALL_LIST = []
+        noteLIST = []
+        NotesLIST = []
         
         sub_num = "0{0:02d}".format(z+7)
         # Open the pseudowordDICT for the further indications
@@ -222,6 +225,8 @@ if __name__ == "__main__":
         count_tmpLIST = []
         conditionLIST
         conditionALLLIST = []
+        H_CD_rawLIST = []
+        L_CD_rawLIST = []
         
         for row in resultLIST:
             rawLIST = row.split(",")
@@ -238,16 +243,40 @@ if __name__ == "__main__":
             itemLIST.append(rawLIST[2])
             
             # collect the RT pf each LDT
+            """
+            
+            H_two_stdFLOAT = H_std_subFLOAT*2
+            H_up_RT_range = H_mean_subFLOAT + H_two_stdFLOAT
+            H_low_RT_range = H_mean_subFLOAT - H_two_stdFLOAT
+            
+            for RT_FLOAT in n_H_RT_LIST:
+                if RT_FLOAT > H_up_RT_range:
+                    note = "H_N/A"
+                    #n_H_RT_LIST = remove_value(n_H_RT_LIST, RT_FLOAT)
+                if RT_FLOAT < H_low_RT_range:
+                    note = "H_N/A"
+                    #n_H_RT_LIST = remove_value(n_H_RT_LIST, RT_FLOAT)
+                else:
+                    note = ""
+                NotesLIST.append(note)
+                """
             RTLIST.append(round(float(rawLIST[5]), 4))
+
             
             # collect the accuracy of the LDT
             if rawLIST[6] == "['True']":
                 ACC = 1
+                note = ""
             elif rawLIST[6] == "['False']":
                 ACC = 0
+                note = ""
             else:
                 ACC = 99
+                note = "N/A"
+                
+            # Adding the ACC and the notes for the deisred exclusion
             ACCLIST.append(ACC)
+            NotesLIST.append(note)
             
             # collect the pw conditions
             if rawLIST[2] in controlPseudoLIST:
@@ -345,6 +374,8 @@ if __name__ == "__main__":
                 print("WRONG!!!", rawLIST[2])
             countALL_LIST.extend(count_tmpLIST)
             conditionALLLIST.extend(conditionLIST)
+            
+            # To exlclude some data
         # to set the first apprearance pw as the "New" condition
         for k in range(12):
             conditionALLLIST[k] = "N"
@@ -355,12 +386,74 @@ if __name__ == "__main__":
         print(itemLIST)
         print(RTLIST)
         print(ACCLIST)
+        print(NotesLIST)
+        print(len(NotesLIST))
         print(countALL_LIST)
         print(conditionALLLIST)
         
-
-
+        """
+        # To exclude some data (missing_value & extrema)
+        # High CD condition
+        H_RT_LIST = get_List(H_CD_rawLIST, 5)  #{'High-CD RT count': 30, 'High-CD RT Mean': 783.167, 'Exclude 0.0 count': 0}
+        n_H_RT_LIST = H_RT_LIST.copy()
+        n_H_RT_LIST = remove_value(n_H_RT_LIST, 0.0)
+        H_RT_NA_count = get_NA_count(n_H_RT_LIST, len(H_CD_rawLIST))
+        H_mean_subFLOAT = Mean(n_H_RT_LIST)   #round(np.mean(np.array(H_RT_LIST)), 3)
+        H_std_subFLOAT = STD(n_H_RT_LIST, 1)  #round(np.std(np.array(H_RT_LIST), ddof = 1), 3)
         
+        H_two_stdFLOAT = H_std_subFLOAT*2
+        H_up_RT_range = H_mean_subFLOAT + H_two_stdFLOAT
+        H_low_RT_range = H_mean_subFLOAT - H_two_stdFLOAT
+        
+        # remove values that outside 2 STD 
+        for RT_FLOAT in n_H_RT_LIST:
+            if RT_FLOAT > H_up_RT_range:
+                n_H_RT_LIST = remove_value(n_H_RT_LIST, RT_FLOAT)
+            if RT_FLOAT < H_low_RT_range:
+                n_H_RT_LIST = remove_value(n_H_RT_LIST, RT_FLOAT)
+            else:
+                pass
+        
+        H_final_RT_NA_count = get_NA_count(n_H_RT_LIST, len(H_CD_rawLIST))
+        H_final_mean_subFLOAT = Mean(n_H_RT_LIST)
+        H_final_std_subFLOAT = STD(n_H_RT_LIST, 1)
+        
+        #print(len(H_RT_LIST))
+        #print(len(n_H_RT_LIST))
+        #print(H_RT_NA_count)
+        #print(H_final_RT_NA_count)
+        #print("{} H RT Mean:".format(sub_num), H_mean_subFLOAT)
+        #print("{} H new RT Mean:".format(sub_num), H_final_mean_subFLOAT)
+        #print("{} H RT SD:".format(sub_num), H_std_subFLOAT)
+        #print("{} H new RT SD:".format(sub_num), H_final_std_subFLOAT)
+        
+        # Low CD condition
+        L_RT_LIST = get_List(L_CD_rawLIST, 5)
+        L_RT_LIST = remove_value(L_RT_LIST, 0.0)
+        L_RT_NA_count = get_NA_count(L_RT_LIST, len(L_CD_rawLIST))
+        L_mean_subFLOAT = Mean(L_RT_LIST)   #round(np.mean(np.array(H_RT_LIST)), 3)
+        L_std_subFLOAT = STD(L_RT_LIST, 1)
+        
+        L_two_stdFLOAT = L_std_subFLOAT*2
+        L_up_RT_range = L_mean_subFLOAT + L_two_stdFLOAT
+        L_low_RT_range = L_mean_subFLOAT - L_two_stdFLOAT
+        
+        # remove values that outside 2 STD 
+        for RT_FLOAT in L_RT_LIST:
+            if RT_FLOAT > L_up_RT_range:
+                L_RT_LIST = remove_value(L_RT_LIST, RT_FLOAT)
+                #print("It's bigger!!!", RT_FLOAT)
+            if RT_FLOAT < L_low_RT_range:
+                L_RT_LIST = remove_value(L_RT_LIST, RT_FLOAT)
+                #print("It's smaller!!!", RT_FLOAT)
+            else:
+                pass
+            
+        L_final_RT_NA_count = get_NA_count(L_RT_LIST, len(L_CD_rawLIST))
+        L_final_mean_subFLOAT = Mean(L_RT_LIST)
+        L_final_std_subFLOAT = STD(L_RT_LIST, 1)
+        """
+
         
         # making the wanted info into the List form for future use
         
@@ -385,20 +478,25 @@ if __name__ == "__main__":
         RTfinalLIST.extend(RTLIST)
         print(RTfinalLIST)
         print(len(RTfinalLIST))
+        NotesALL_LIST.extend(NotesLIST)
+        print(NotesALL_LIST)
+        print(len(NotesALL_LIST))
 
         
         # Saving the analyzed results into csv file
-        dataDICT = pd.DataFrame({'Sub_id':sub_LIST,
-                                 'Condition':conditionALL_LIST,
-                                 'Trials':trialsALL_LIST,
-                                 'Item':itemALL_LIST,
-                                 'Times':timesLIST,
-                                 'ACC':ACCall_LIST,
-                                 'RT':RTfinalLIST,
+        dataDICT = pd.DataFrame({'Sub_id': sub_LIST,
+                                 'Condition': conditionALL_LIST,
+                                 'Trials': trialsALL_LIST,
+                                 'Item': itemALL_LIST,
+                                 'Times': timesLIST,
+                                 'ACC': ACCall_LIST,
+                                 'RT': RTfinalLIST,
+                                 'Notes': NotesALL_LIST,
                                  })
 
         file_name = '000_007-036_PLDT_raw_results.csv'
         save_path = result_data_path + file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
         print("Done!")
+
 
