@@ -64,8 +64,8 @@ def scatter_fit_plot(x, y1, y2, y1_c1, y2_c2, x_lable, y_lable, fig_title):  #, 
 
 if __name__ == "__main__":
     
-    result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
-    #result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
+    #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
     """
     columns=['Sub_id',
     '(ms)H_raw_RTMean',
