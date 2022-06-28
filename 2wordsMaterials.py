@@ -27,6 +27,7 @@ if __name__ == "__main__":
     Tone_3_2LIST  = []
     Tone_3_1LIST  = []
     
+    """
     # for articut parser
     input2wordLIST = []
     resultDICT_lv1 = {}
@@ -39,7 +40,7 @@ if __name__ == "__main__":
     CKIPwLIST = []
     ArticutposLIST = []
     wantedCKIPposLIST = []
-    
+    """
     
     with open(data_path + "雙字詞_23-33-3231.csv","r", encoding = "utf-8") as csvfile:
         rawLIST = csvfile.read().split("\n")
