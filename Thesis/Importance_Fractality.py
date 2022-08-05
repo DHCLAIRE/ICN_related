@@ -56,9 +56,6 @@ if __name__ == "__main__":
     N = the number of word in a text
     s = the box size = how many words were count as one box
     
-    
-    
-    
     ========Formula__2 <--> Section__2========
     The shuffling process cannot change the pattern of the words that are uniformly distributed throughout the text
     , although meaning of the text gets lost.
@@ -103,14 +100,21 @@ if __name__ == "__main__":
     s = the box size = how many words were count as one box
     w = the target word
     
-    
-    
     #=====
     THE STEPS:
     *For the values that based on SHUFFLED position*
     1. Segment the words: Cut the word into different box sizes
     2. Count the filled boxes: Count how many times of the target word that appeared in the divided boxes
     3. GET THE VALUE OF THE COUNTS
+    4. Do it all over again and again(what is the scale of the box sizes???)  
+    
+    
+    # We've got 3 formula
+    1. Unshuffled box count >> Vary in box sizes
+    2. Shuffled box count >> Vary in box sizes and (shuffling count??)
+    3. Fractality: sum of [log(Shuffled box count/Unshuffled box count)>> vary in box sizes]
+    
+    
     
     *For the values that based on SHUFFLED position*
     1. Shuffle the orginal text: Shuffled the text by the unit of word(Randomly distributed)
@@ -133,6 +137,17 @@ if __name__ == "__main__":
     6. removing stop words, sparse terms, and particular words
     7. text canonicalization
     '''
+    
+    ======
+    Method
+    ======
+    1. calculate the importance values for all word types in our sample texts
+       >> : To calculate the fractality values, text should be divided into 
+            non-overlapping boxes of size s and the number of filled boxes ( N b ) should be counted.
+    2. constructing the important time series
+       >> : an array which is directed from beginning word of text to the last one is considered.
+            The importance time series of the text is simply constructed by replacing each word with its importance value.
+    
     
     
     """
