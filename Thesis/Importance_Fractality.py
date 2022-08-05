@@ -60,15 +60,17 @@ if __name__ == "__main__":
     
     
     ========Formula__2 <--> Section__2========
-    The shuffling process cannot change the pattern of the words that are uniformly distributed throughout the text, although meaning of the text gets lost.
+    The shuffling process cannot change the pattern of the words that are uniformly distributed throughout the text
+    , although meaning of the text gets lost.
     Therefore, such words have less importance in the semantic structure of the text.
     The distributions of the more important words change remarkably in the shuffled text.
     Accordingly, for an important word, the number of filled boxes in an original text differs from the case of the shuffled text.
-    Difference between the number of filled boxes for a given word in the orig- inal and shuffled text could be considered as a measure of word importance [6] .
+    Difference between the number of filled boxes for a given word in the orig- inal and shuffled text could be considered as
+    a measure of word importance [6] .
     To measure these differences the degree of fractal- ity is defined as:
     
     d f (w ) =   s log ( N sh. b (w, s ) N b (w, s ) ) (2)
-    >>> df(w) = sum(log(Nsh(w,s)/Nb(w,s)))
+    >>> df(w) = the degree of fractality of a target word = sum(log(Nsh(w,s)/Nb(w,s)))
     
     where d f ( w ) is the degree of fractality (or simply fractality) and N sh. b (w, s ) is the number of filled boxes with size s for the particular word w , in the shuffled text.
     To take into account the frequency of each word in a text, the fractality could be multiplied by log ( M ), where M is word frequency, as is explained in the reference [6] .
@@ -81,22 +83,25 @@ if __name__ == "__main__":
     
     ========Formula__3 <--> Section__3========
     To calculate the number of filled boxes in a shuffled text, we have to perform one shuffling process for each particular word.
-    It means that we need to perform a large number of shuffling processes (equal to the number of word-types in a text) to rank the words due to their importance.
+    It means that we need to perform a large number of shuffling processes (equal to the number of word-types in a text) 
+    to rank the words due to their importance.
     To overcome this difficulty we use our conjecture about the number of filled boxes in a shuffled text [6] :
     
     N sh. b (s, ω) = M 1 + ( M−1 N−1 )(s −1)
     >>> Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
     
     where M is frequency of the word ω. This equation shows good conformity with the number of filled boxes in a shuffled text [6] .
-    Higher value of degree of fractality means that the distribution pattern of the word is more different from the uniform distribution; So the word is more important.
+    Higher value of degree of fractality means that the distribution pattern of the word is more different from the uniform distribution
+    ; So the word is more important.
     
     =======
     # NOTES_Section__3
     =======
     Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
-    N = the number of word in a text
+    N = the number of word in a text  >> really??
+    M = the word frequency
     s = the box size = how many words were count as one box
-    
+    w = the target word
     
     
     
