@@ -146,7 +146,8 @@ if __name__ == "__main__":
             non-overlapping boxes of size s and the number of filled boxes ( N b ) should be counted.
     2. constructing the important time series
        >> : an array which is directed from beginning word of text to the last one is considered.
-            The importance time series of the text is simply constructed by replacing each word with its importance value.
+            The importance time series of the text is simply constructed by replacing each word with its importance value. 
+            and then normalizated the 
     
     
     
