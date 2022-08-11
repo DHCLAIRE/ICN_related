@@ -162,11 +162,14 @@ if __name__ == "__main__":
     
     tmpLIST = testing_text.lower().split(" ")
     
-    pprint(tmpLIST)
+    N = float(len(tmpLIST))
+    print("N (The length of the text) = ", N)
+    print(type(N))
+    #pprint(tmpLIST)
     print(len(tmpLIST))
     
     
-    
+    """
     # Storing the sets of punctuation in variable result 
     puncSTR = string.punctuation
     
@@ -191,4 +194,5 @@ if __name__ == "__main__":
     #pprint(n_tmpLIST)
         #print(wordSTR)
         #print(type(strROW))
+    """
 
