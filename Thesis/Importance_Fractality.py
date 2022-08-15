@@ -160,23 +160,32 @@ if __name__ == "__main__":
     #print(type(testing_text))
     #print(testing_text)
     
-    tmpLIST = testing_text.lower().split(" ")
+    tmpLIST = testing_text.lower().split()
+    #print(tmpLIST)
+
     
     N = float(len(tmpLIST))
     print("N (The length of the text) = ", N)
-    print(type(N))
-    pprint(tmpLIST)
+    #print(type(N))
+    #pprint(tmpLIST)
     print(len(tmpLIST))
+
     
-    # count the appearances
-    count_itemINT = 0
+    #def word_count(str):
+    count_itemINT = dict()
+    tmpLIST = testing_text.lower().split()
+    print(tmpLIST)
+    print("words type = ", type(tmpLIST))
+    print("counts type = ", type(count_itemINT))
+    
     for itemSTR in tmpLIST:
-        if itemSTR == tmpLIST:
-            count_itemINT += 1
-        else:
-            pass
-        print(itemSTR, count_itemINT)
-        
+        print("word type = ", type(itemSTR))
+        if itemSTR in count_itemINT:
+            count_itemINT[itemSTR] += 1
+        else:   
+            count_itemINT[itemSTR] = 1
+    print(count_itemINT)
+    print(len(count_itemINT)
     
     """
     # Storing the sets of punctuation in variable result 
