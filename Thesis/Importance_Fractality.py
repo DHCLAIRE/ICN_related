@@ -165,9 +165,18 @@ if __name__ == "__main__":
     N = float(len(tmpLIST))
     print("N (The length of the text) = ", N)
     print(type(N))
-    #pprint(tmpLIST)
+    pprint(tmpLIST)
     print(len(tmpLIST))
     
+    # count the appearances
+    count_itemINT = 0
+    for itemSTR in tmpLIST:
+        if itemSTR == tmpLIST:
+            count_itemINT += 1
+        else:
+            pass
+        print(itemSTR, count_itemINT)
+        
     
     """
     # Storing the sets of punctuation in variable result 
