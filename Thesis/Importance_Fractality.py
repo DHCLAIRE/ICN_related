@@ -26,6 +26,20 @@ def LISTblankEraser(rawLIST):
     #print(len(newrawLIST))
     return newrawLIST
 
+def word_frequncy(text):
+    '''
+    Count the word appearance based on its text content
+    '''
+    count_wordDICT = dict()
+    text_wordLIST = text.lower().split()
+    
+    for wordSTR in text_wordLIST:
+        if wordSTR in count_wordDICT:
+            count_wordDICT[wordSTR] += 1
+        else:
+            count_wordDICT[wordSTR] = 1
+    return count_wordDICT
+
 
 if __name__ == "__main__":
     
@@ -169,23 +183,12 @@ if __name__ == "__main__":
     #print(type(N))
     #pprint(tmpLIST)
     print(len(tmpLIST))
-
     
-    #def word_count(str):
-    count_itemINT = dict()
-    tmpLIST = testing_text.lower().split()
-    print(tmpLIST)
-    print("words type = ", type(tmpLIST))
-    print("counts type = ", type(count_itemINT))
+    # word frequency count  # M >> needs to call out the word(key) for its count(value)
+    word_frequncyDICT = word_frequncy(testing_text)
+    pprint(word_frequncyDICT)
     
-    for itemSTR in tmpLIST:
-        print("word type = ", type(itemSTR))
-        if itemSTR in count_itemINT:
-            count_itemINT[itemSTR] += 1
-        else:   
-            count_itemINT[itemSTR] = 1
-    print(count_itemINT)
-    print(len(count_itemINT)
+    
     
     """
     # Storing the sets of punctuation in variable result 
