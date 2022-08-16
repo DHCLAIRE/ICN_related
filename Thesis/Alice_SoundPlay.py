@@ -27,7 +27,22 @@ def output_duration(length):
     return hours, mins, seconds
 """
 
-# 想想要如何同時撥出十字和音檔 >> or not
+def display_ins(STR, keyPressLIST = None):
+    '''
+    設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
+    若未指定反應鍵，則任意鍵皆可換下一張刺激
+    i.e display("啦啦啦", ['space'])
+    '''
+    instructionsLIST = STR.split("\\\\")
+    keyPressLIST = keyPressLIST
+        
+    for t in instructionsLIST:
+        instructions = visual.TextStim(win = win, text = t)
+        instructions.draw()
+        win.flip()
+        event.waitKeys(keyList = keyPressLIST)
+    win.flip()
+
 def display_fix():
     '''
     呈現"+"於螢幕中央
@@ -49,7 +64,10 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 """
-win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+# Full screen
+#win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+# Testing small screen
+win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix") 
 
 
 if __name__ == "__main__":
@@ -63,7 +81,7 @@ if __name__ == "__main__":
     # display fixation
     display_fix()
     
-    for i in range(12):
+    for i in range(2):
         
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
@@ -89,6 +107,7 @@ if __name__ == "__main__":
             core.quit()
         else:
             pass
+        
         
         core.wait(int(t+1))  # switch this num into the length of each audio files
         """
