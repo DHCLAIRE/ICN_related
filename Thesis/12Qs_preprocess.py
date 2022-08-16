@@ -15,15 +15,14 @@ if __name__ == "__main__":
     textLIST = [] 
     
     for row in text:
+        row = re.sub('\s|\d\t\s|\d', " ", row)#.replace("\n", "")
         print(row)
-        print(type(row))
-        print(len(row))
-        re.sub("\t", " ")#.replace("\n", "")
+        
         if len(row) > 1:
-             
             textLIST.append(row)
         else:
             pass
+            
     print(textLIST)
     
     
