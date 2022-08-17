@@ -85,6 +85,10 @@ if __name__ == "__main__":
     
     for i in range(2):
         
+        # display the number of question
+        display_ins("{}".format(i+1))
+        core.wait(1)
+        
         # display fixation
         display_fix()
         
@@ -103,7 +107,7 @@ if __name__ == "__main__":
         
         # set core wait time that match with the length of each audio files
         core.wait(int(t+1))
-        
+        win.flip()
         
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
@@ -125,7 +129,7 @@ if __name__ == "__main__":
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
         
-        
+        # NEED TO ADD TRIGGER TO THE START/END OF THE QUESTIONS
         
         
         # the Gap between each audio files
