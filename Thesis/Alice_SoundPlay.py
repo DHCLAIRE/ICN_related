@@ -85,6 +85,8 @@ if __name__ == "__main__":
     
     for i in range(2):
         
+        # display fixation
+        display_fix()
         
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
@@ -99,21 +101,8 @@ if __name__ == "__main__":
         #now = ptb.GetSecs()
         Script_Sound.play()
         
-        
-        # Adding the esc function for any emergency condition  >> did it work??
-        keys = event.waitKeys(maxWait = int(t+1), keyList = ['escape'])
-        event.getKeys(keyList = ['escape'])
-        #print(keys)
-        
-        # Setting up the response for the esc keypress
-        if keys == ["escape"]:
-            win.close()
-            core.quit()
-        else:
-            pass
-        
-        
-        core.wait(int(t+1))  # switch this num into the length of each audio files
+        # set core wait time that match with the length of each audio files
+        core.wait(int(t+1))
         
         
         """
