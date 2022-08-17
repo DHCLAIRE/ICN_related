@@ -15,7 +15,8 @@ if __name__ == "__main__":
     textLIST = [] 
     
     for row in text:
-        row = re.sub('\s|\d\t\s|\d', " ", row)#.replace("\n", "")
+        #row = re.sub('\s|\d\t\s|\d', " ", row)
+        #row = re.sub('\s\n', "", row)
         print(row)
         
         if len(row) > 1:
