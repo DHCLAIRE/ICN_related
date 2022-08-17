@@ -79,9 +79,12 @@ if __name__ == "__main__":
     # of actual data read from the wav file
     
     # display fixation
-    display_fix()
+    #display_fix()
+    questionsLIST = ["1\tWhen Alice peeked into her sister's book on the bank, what did it NOT* have?\n", 'a\tNo sign of her sister’s name.\n', 'b\tNo pictures or conversations.\n', 'c\tNo pages at all.\n', 'd\tNo interesting story.\n', 'Answer\tb\n', '\t\n', '2\tWhat two things are immediately most striking to Alice about the rabbit?\n', "a\tIt is talking and won't respond to her.\n", 'b\tIt has a waistcoast-pocket and a watch.\n', 'c\tIt is running late and yelling loudly.\n', 'd\tIt walks and talks just as a human.\n', 'Answer\tb\n', '\t\n', '3\tWhen Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\n', 'a\t"Orange Marmalade"\n', 'b\t"Strawberry Marmalade"\n', 'c\t"Blueberry Jam"\n', 'd\t"Apricot Jam"\n', 'Answer\ta\n', '\t\n', '4\tWhen Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\n', 'a\tArgentina\n', 'b\tUnited States and Canada\n', 'c\tIndia\n', 'd\tAustralia and New Zealand\n', 'Answer\td\n', '\t\n', '5\tWhat does Alice land on at the bottom of the well?\n', 'a\tThe hard stone floor\n', 'b\tAn overstuffed armchair\n', 'c\tA heap of sticks and dry leaves\n', 'd\tA large, purple couch\n', 'Answer\tc\n', '\t\n', "6\tWhat is the name of Alice's cat?\n", 'a\tSelima\n', 'b\tChester\n', 'c\tDinah\n', 'd\tFelix\n', 'Answer\tc\n', '\t\n', '7\tWhat material is the key which Alice finds made of?\n', 'a\tBrass\n', 'b\tSilver\n', 'c\tBronze\n', 'd\tGold\n', 'Answer\td\n', '\t\n', '8\tWhat device does Alice "shut up like"?\n', 'a\tA telescope\n', 'b\tA clam\n', 'c\tA bite\n', 'd\tA lantern\n', 'Answer\ta\n', '\t\n', '9\tWhat are the effects of drinking from the bottle and eating the cake?\n', 'a\tDrinking makes Alice smaller and eating makes her larger.\n', 'b\tDrinking makes Alice larger and eating makes her smaller.\n', 'c\tBoth drinking and eating make her smaller.\n', 'd\tBoth drinking and eating make her larger.\n', 'Answer\ta\n', '\t\n', '10\tDrinking from the bottle has a variety of tastes. What does it *NOT* taste like?\n', 'a\tCherry tart\n', 'b\tPineapple\n', 'c\tTea\n', 'd\tRoast turkey\n', 'Answer\tc\n', '\t\n', '11\tWhy did Alice box her own ears once?\n', 'a\tFor checking out her new boxing gloves.\n', 'b\tFor cheating herself in a game of croquet.\n', 'c\tFor not knowing the capital of Bulgaria.\n', 'd\tFor forgetting to give Dina her milk at tea-time.\n', 'Answer\tb\n', '\t\n', '12\tWhere did Alice find the cake?\n', 'a\tFloating in the pond of her tears.\n', 'b\tIn a little wooden box that was lying on the table.\n', 'c\tIn a little glass box that was lying under the table.\n', 'd\tShe did not find it -- the rabbit gave it to her.\n', 'Answer\tc']
+    keypressLIST = ["space"] #["a", "b", "c", "d"]
     
     for i in range(2):
+        
         
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
@@ -96,7 +99,8 @@ if __name__ == "__main__":
         #now = ptb.GetSecs()
         Script_Sound.play()
         
-        # Adding the esc function for any emergency condition
+        
+        # Adding the esc function for any emergency condition  >> did it work??
         keys = event.waitKeys(maxWait = int(t+1), keyList = ['escape'])
         event.getKeys(keyList = ['escape'])
         #print(keys)
@@ -110,12 +114,17 @@ if __name__ == "__main__":
         
         
         core.wait(int(t+1))  # switch this num into the length of each audio files
+        
+        
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
+        # Display the quesitons per tape
+        display_ins(questionsLIST[i], keyPressLIST= keypressLIST)
+        
         
         print("SoundFile{}".format(i+1), "DONE")
         print("Pause for 5 seconds.")
@@ -126,6 +135,9 @@ if __name__ == "__main__":
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
+        
+        
+        
         
         # the Gap between each audio files
         core.wait(5)
