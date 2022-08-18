@@ -1,30 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-
+from pprint import pprint
 import re
+import csv
 
 
 if __name__ == "__main__":
     data_path = "/Users/neuroling/Downloads/新碩論主題/Ding-Thesis_ExpMaterials/"
-    txtFile = data_path + '(MRI)code_comprehension_questions.txt'
-    text = open(txtFile, 'r')
-    #print(text.read())
-    print(type(text))
     
-    textLIST = [] 
     
-    for row in text:
-        #row = re.sub('\s|\d\t\s|\d', " ", row)
-        #row = re.sub('\s\n', "", row)
-        print(row)
+    with open(data_path + "(MRI)code_comprehension_questions.txt", "r", encoding = "UTF-8") as txtFile:
+        textLIST = txtFile.read().split("\t\n")
+        #print(textLIST)
+        print(type(textLIST))
+        print(len(textLIST))
         
-        if len(row) > 1:
-            textLIST.append(row)
-        else:
-            pass
+        final_textLIST = []
+        tmpLIST = []
+        for row in textLIST:
+            tmpLIST = row.split("\n")
+            #print(tmpLIST)
+            for item in tmpLIST:
+                if len(item) <2:
+                    tmpLIST.remove(item)
+                else:
+                    item = re.sub('\s|\d\t\s', " ", item)
+                    pprint(item)
+                print(tmpLIST)
+            #final_textLIST.append(tmpLIST)
             
-    print(textLIST)
-    
-    
-    #.close()
+        #pprint(final_textLIST)
+            #row = re.sub('\s\t\s', " ", row)
+            #pprint(row)
+
+
