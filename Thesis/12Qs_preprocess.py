@@ -7,15 +7,16 @@ import csv
 
 
 if __name__ == "__main__":
-    data_path = "/Users/neuroling/Downloads/新碩論主題/Ding-Thesis_ExpMaterials/"
+    data_path = "/Users/ting-hsin/Downloads/碩論(二外語言習得的腦科學特徵與譯文判讀之關聯與影響)/新碩論主題/Ding-Thesis_ExpMaterials/"
     
     
     with open(data_path + "(MRI)code_comprehension_questions.txt", "r", encoding = "UTF-8") as txtFile:
         textLIST = txtFile.read().split("\t\n")
-        #print(textLIST)
+        pprint(textLIST)
         print(type(textLIST))
         print(len(textLIST))
         
+        """
         final_textLIST = []
         tmpLIST = []
         for row in textLIST:
@@ -33,5 +34,6 @@ if __name__ == "__main__":
         #pprint(final_textLIST)
             #row = re.sub('\s\t\s', " ", row)
             #pprint(row)
+            """
 
 
