@@ -51,6 +51,14 @@ def display_fix():
     fixation.draw()
     win.flip()
     
+def display_start():
+    '''
+    呈現"Start"於螢幕中央，暗示音檔即將要播出了。
+    '''
+    fixation = visual.TextStim(win = win, text = "Start")
+    fixation.draw()
+    win.flip()
+    
 """
 # For setting up the Trigger
 n = 0
@@ -80,16 +88,21 @@ if __name__ == "__main__":
     
     # display fixation
     #display_fix()
-    questionsLIST = ["1\tWhen Alice peeked into her sister's book on the bank, what did it NOT* have?\n", 'a\tNo sign of her sister’s name.\n', 'b\tNo pictures or conversations.\n', 'c\tNo pages at all.\n', 'd\tNo interesting story.\n', 'Answer\tb\n', '\t\n', '2\tWhat two things are immediately most striking to Alice about the rabbit?\n', "a\tIt is talking and won't respond to her.\n", 'b\tIt has a waistcoast-pocket and a watch.\n', 'c\tIt is running late and yelling loudly.\n', 'd\tIt walks and talks just as a human.\n', 'Answer\tb\n', '\t\n', '3\tWhen Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\n', 'a\t"Orange Marmalade"\n', 'b\t"Strawberry Marmalade"\n', 'c\t"Blueberry Jam"\n', 'd\t"Apricot Jam"\n', 'Answer\ta\n', '\t\n', '4\tWhen Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\n', 'a\tArgentina\n', 'b\tUnited States and Canada\n', 'c\tIndia\n', 'd\tAustralia and New Zealand\n', 'Answer\td\n', '\t\n', '5\tWhat does Alice land on at the bottom of the well?\n', 'a\tThe hard stone floor\n', 'b\tAn overstuffed armchair\n', 'c\tA heap of sticks and dry leaves\n', 'd\tA large, purple couch\n', 'Answer\tc\n', '\t\n', "6\tWhat is the name of Alice's cat?\n", 'a\tSelima\n', 'b\tChester\n', 'c\tDinah\n', 'd\tFelix\n', 'Answer\tc\n', '\t\n', '7\tWhat material is the key which Alice finds made of?\n', 'a\tBrass\n', 'b\tSilver\n', 'c\tBronze\n', 'd\tGold\n', 'Answer\td\n', '\t\n', '8\tWhat device does Alice "shut up like"?\n', 'a\tA telescope\n', 'b\tA clam\n', 'c\tA bite\n', 'd\tA lantern\n', 'Answer\ta\n', '\t\n', '9\tWhat are the effects of drinking from the bottle and eating the cake?\n', 'a\tDrinking makes Alice smaller and eating makes her larger.\n', 'b\tDrinking makes Alice larger and eating makes her smaller.\n', 'c\tBoth drinking and eating make her smaller.\n', 'd\tBoth drinking and eating make her larger.\n', 'Answer\ta\n', '\t\n', '10\tDrinking from the bottle has a variety of tastes. What does it *NOT* taste like?\n', 'a\tCherry tart\n', 'b\tPineapple\n', 'c\tTea\n', 'd\tRoast turkey\n', 'Answer\tc\n', '\t\n', '11\tWhy did Alice box her own ears once?\n', 'a\tFor checking out her new boxing gloves.\n', 'b\tFor cheating herself in a game of croquet.\n', 'c\tFor not knowing the capital of Bulgaria.\n', 'd\tFor forgetting to give Dina her milk at tea-time.\n', 'Answer\tb\n', '\t\n', '12\tWhere did Alice find the cake?\n', 'a\tFloating in the pond of her tears.\n', 'b\tIn a little wooden box that was lying on the table.\n', 'c\tIn a little glass box that was lying under the table.\n', 'd\tShe did not find it -- the rabbit gave it to her.\n', 'Answer\tc']
-    keypressLIST = ["space"] #["a", "b", "c", "d"]
+    instructions = """接下來你會聽到幾段故事，\n每段故事結束後會有一題單選題，\n請依照剛剛聽到的內容進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵開始"""
+    questionsLIST = ["When Alice peeked into her sister's book on the bank, what did it NOT* have?\na No sign of her sister’s name.\nb No pictures or conversations.\nc No pages at all.\nd No interesting story.", "What two things are immediately most striking to Alice about the rabbit?\na It is talking and won't respond to her.\nb It has a waistcoast-pocket and a watch.\nc It is running late and yelling loudly.\nd It walks and talks just as a human.", 'When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\na "Orange Marmalade"\nb "Strawberry Marmalade"\nc "Blueberry Jam"\nd "Apricot Jam"', 'When Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\na Argentina\nb United States and Canada\nc India\nd Australia and New Zealand', 'What does Alice land on at the bottom of the well?\na The hard stone floor\nb An overstuffed armchair\nc A heap of sticks and dry leaves\nd A large, purple couch', "What is the name of Alice's cat?\na Selima\nb Chester\nc Dinah\nd Felix", 'What material is the key which Alice finds made of?\na Brass\nb Silver\nc Bronze\nd Gold', 'What device does Alice shut up like?\na A telescope\nb A clam\nc A bite\nd A lantern', 'What are the effects of drinking from the bottle and eating the cake?\na Drinking makes Alice smaller and eating makes her larger.\nb Drinking makes Alice larger and eating makes her smaller.\nc Both drinking and eating make her smaller.\nd Both drinking and eating make her larger.', 'Drinking from the bottle has a variety of tastes. What does it *NOT* taste like?\na Cherry tart\nb Pineapple\nc Tea\nd Roast turkey', 'Why did Alice box her own ears once?\na For checking out her new boxing gloves.\nb For cheating herself in a game of croquet.\nc For not knowing the capital of Bulgaria.\nd For forgetting to give Dina her milk at tea-time.', 'Where did Alice find the cake?\na Floating in the pond of her tears.\nb In a little wooden box that was lying on the table.\nc In a little glass box that was lying under the table.\nd She did not find it -- the rabbit gave it to her.']
+    keypressLIST_space = ["space"]
+    keypressLIST_ans = ["a", "b", "c", "d"]
+    
+    # display instructions
+    display_ins(instructions, keypressLIST_space)
     
     for i in range(2):
         
-        # display the number of question
-        display_ins("{}".format(i+1))
+        # display "Start" to indicate the start of the audio
+        display_start()
         core.wait(1)
         
-        # display fixation
+        # display fixation for subject to look at when listening to the tape
         display_fix()
         
         # get the length of each audio files of Alice in the Wonderland Chapter one
@@ -105,42 +118,46 @@ if __name__ == "__main__":
         #now = ptb.GetSecs()
         Script_Sound.play()
         
-        # set core wait time that match with the length of each audio files
-        core.wait(int(t+1))
-        win.flip()
-        
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
-        # Display the quesitons per tape
-        display_ins(questionsLIST[i], keyPressLIST= keypressLIST)
+        # set core wait time that match with the length of each audio files
         
-        
-        print("SoundFile{}".format(i+1), "DONE")
-        print("Pause for 5 seconds.")
+        core.wait(int(t+1))
         
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
+        """        
+        
+        print("SoundFile{}".format(i+1), "DONE")
+        #print("Pause for 5 seconds.")
+        
+        """
+        # TO MARK THE QUESTION BEGINS
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+50)),np.uint8(0)]))  #This is open the trigger
+        core.wait(0.01) # Stay for 10 ms
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
+        """
+        win.flip()
+        # Display the quesitons for each tape
+        display_ins(questionsLIST[i], keypressLIST_ans)
+        
+        """
+        # TO MARK THE QUESTION ENDS
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
+        core.wait(0.01) # Stay for 10 ms
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
         
-        # NEED TO ADD TRIGGER TO THE START/END OF THE QUESTIONS
-        
-        
         # the Gap between each audio files
-        core.wait(5)
+        #core.wait(5)
         print("Continue for the SoundFile{}".format(i+2))
-        
-        
-        
-        
-        
-        
         
         # Add ESC could core.quit() function in the middle of the experiments process
         
