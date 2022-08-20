@@ -92,52 +92,52 @@ if __name__ == "__main__":
     questionsLIST = ["When Alice peeked into her sister's book on the bank, what did it NOT* have?\na No sign of her sister’s name.\nb No pictures or conversations.\nc No pages at all.\nd No interesting story.", "What two things are immediately most striking to Alice about the rabbit?\na It is talking and won't respond to her.\nb It has a waistcoast-pocket and a watch.\nc It is running late and yelling loudly.\nd It walks and talks just as a human.", 'When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\na "Orange Marmalade"\nb "Strawberry Marmalade"\nc "Blueberry Jam"\nd "Apricot Jam"', 'When Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\na Argentina\nb United States and Canada\nc India\nd Australia and New Zealand', 'What does Alice land on at the bottom of the well?\na The hard stone floor\nb An overstuffed armchair\nc A heap of sticks and dry leaves\nd A large, purple couch', "What is the name of Alice's cat?\na Selima\nb Chester\nc Dinah\nd Felix", 'What material is the key which Alice finds made of?\na Brass\nb Silver\nc Bronze\nd Gold', 'What device does Alice shut up like?\na A telescope\nb A clam\nc A bite\nd A lantern', 'What are the effects of drinking from the bottle and eating the cake?\na Drinking makes Alice smaller and eating makes her larger.\nb Drinking makes Alice larger and eating makes her smaller.\nc Both drinking and eating make her smaller.\nd Both drinking and eating make her larger.', 'Drinking from the bottle has a variety of tastes. What does it *NOT* taste like?\na Cherry tart\nb Pineapple\nc Tea\nd Roast turkey', 'Why did Alice box her own ears once?\na For checking out her new boxing gloves.\nb For cheating herself in a game of croquet.\nc For not knowing the capital of Bulgaria.\nd For forgetting to give Dina her milk at tea-time.', 'Where did Alice find the cake?\na Floating in the pond of her tears.\nb In a little wooden box that was lying on the table.\nc In a little glass box that was lying under the table.\nd She did not find it -- the rabbit gave it to her.']
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["a", "b", "c", "d"]
-    
+
     # display instructions
     display_ins(instructions, keypressLIST_space)
-    
-    for i in range(2):
-        
+
+    for i in range(12):
+
         # display "Start" to indicate the start of the audio
         display_start()
         core.wait(1)
-        
+
         # display fixation for subject to look at when listening to the tape
         display_fix()
-        
+
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
         len_data = len(data) # holds length of the numpy array
         t = len_data / sample_rate # returns duration but in floats
         print("SoundFile{} length = ".format(i+1), t)
         print("SoundFile{} length = ".format(i+1), int(t+1))
-        
+
         # Play the audio files section by section
         Alice_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
         Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
         Script_Sound.play()
-        
+
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
+        
         # set core wait time that match with the length of each audio files
-        
         core.wait(int(t+1))
-        
+
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """        
-        
+        """
+
         print("SoundFile{}".format(i+1), "DONE")
         #print("Pause for 5 seconds.")
-        
+        core.wait(0.5)
         """
         # TO MARK THE QUESTION BEGINS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+50)),np.uint8(0)]))  #This is open the trigger
@@ -147,21 +147,20 @@ if __name__ == "__main__":
         win.flip()
         # Display the quesitons for each tape
         display_ins(questionsLIST[i], keypressLIST_ans)
-        
+
         """
         # TO MARK THE QUESTION ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
-        
+
         # the Gap between each audio files
         #core.wait(5)
         print("Continue for the SoundFile{}".format(i+2))
-        
+
         # Add ESC could core.quit() function in the middle of the experiments process
-        
-    
+
+
     print("FINISHIED!")
     core.quit()
-    
