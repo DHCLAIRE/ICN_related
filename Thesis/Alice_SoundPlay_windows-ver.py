@@ -139,7 +139,7 @@ if __name__ == "__main__":
         core.wait(0.5)
 
         # TO MARK THE QUESTION BEGINS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+50)),np.uint8(0)]))  #This is open the trigger
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+51)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
 
