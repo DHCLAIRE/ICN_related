@@ -7,6 +7,8 @@ import csv
 
 
 if __name__ == "__main__":
+    
+    """
     data_path = "/Users/ting-hsin/Downloads/碩論(二外語言習得的腦科學特徵與譯文判讀之關聯與影響)/新碩論主題/Ding-Thesis_ExpMaterials/"
     
     
@@ -15,8 +17,8 @@ if __name__ == "__main__":
         pprint(textLIST)
         print(type(textLIST))
         print(len(textLIST))
-        
-        """
+    """
+    """
         final_textLIST = []
         tmpLIST = []
         for row in textLIST:
@@ -35,5 +37,12 @@ if __name__ == "__main__":
             #row = re.sub('\s\t\s', " ", row)
             #pprint(row)
             """
+    
+    #((z-7879)/(65890-7879)) = 0.4
+    z = 0.4*(65890-7879)+(7879)
+    print(z)
+    
+    def correct_time():
+        start_
 
 
