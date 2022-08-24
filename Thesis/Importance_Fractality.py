@@ -186,9 +186,12 @@ if __name__ == "__main__":
     
     # word frequency count  # M >> needs to call out the word(key) for its count(value)
     word_frequncyDICT = word_frequncy(testing_text)
-    pprint(word_frequncyDICT)
+    print("Func: ", word_frequncyDICT)
+    print(len(word_frequncyDICT))
     
-    
+    word_frequncyDICT_2 = Counter(tmpLIST)
+    print("Counter: ", word_frequncyDICT_2)
+    print(len(word_frequncyDICT_2))
     
     """
     # Storing the sets of punctuation in variable result 
