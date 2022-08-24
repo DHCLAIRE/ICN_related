@@ -5,6 +5,10 @@ from pprint import pprint
 import re
 import csv
 
+def correct_time(Start_timeFLOAT, End_timeFLOAT, stim_onsetFLOAT):
+    actual_timeFLOAT = stim_onsetFLOAT*(End_timeFLOAT-Start_timeFLOAT)+(Start_timeFLOAT)
+    return actual_timeFLOAT
+
 
 if __name__ == "__main__":
     
@@ -40,9 +44,16 @@ if __name__ == "__main__":
     
     #((z-7879)/(65890-7879)) = 0.4
     z = 0.4*(65890-7879)+(7879)
-    print(z)
+    print("correct ans: ", z)
     
-    def correct_time():
-        start_
+    ans = correct_time(7879, 65890, 0.4)
+    print("func ans: ", ans)
+    """
+    def correct_time(Start_timeFLOAT, End_timeFLOAT, stim_onsetFLOAT, actual_timeFLOAT):
+        actual_timeFLOAT = stim_onsetFLOAT*(End_timeFLOAT-Start_timeFLOAT)+(Start_timeFLOAT)
+        return actual_timeFLOAT
+    """
+    
+        
 
 
