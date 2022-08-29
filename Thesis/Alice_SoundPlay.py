@@ -82,6 +82,7 @@ ptb.IOPort('Flush', handle)
 
 if __name__ == "__main__":
     data_path = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
+    results_data_path = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
     
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -204,7 +205,7 @@ if __name__ == "__main__":
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_12Qs_results.csv'
-    save_path = data_path + file_name
+    save_path = results_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
 
