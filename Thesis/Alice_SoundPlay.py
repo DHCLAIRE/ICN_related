@@ -167,13 +167,6 @@ if __name__ == "__main__":
         win.flip()
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-        
-        
-        sub_idLIST.append(sub_id)
-        dateLIST.append(day)
-        Ques_textLIST.append(questionsLIST[i])
-        responseLIST.append(ans_keypressSTR)
-        #correctnessLIST.append(correctLIST)
 
         """
         # TO MARK THE QUESTION ENDS
@@ -181,6 +174,13 @@ if __name__ == "__main__":
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
+        
+        # making the wanted info into the List form for future use
+        sub_idLIST.append(sub_id)
+        dateLIST.append(day)
+        Ques_textLIST.append(questionsLIST[i])
+        responseLIST.append(ans_keypressSTR)
+        #correctnessLIST.append(correctLIST)
 
         # the Gap between each audio files
         #core.wait(5)

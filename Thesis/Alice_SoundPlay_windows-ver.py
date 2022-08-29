@@ -161,18 +161,17 @@ if __name__ == "__main__":
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
         
+        # TO MARK THE QUESTION ENDS
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
+        core.wait(0.01) # Stay for 10 ms
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
+        
+        # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
         Ques_textLIST.append(questionsLIST[i])
         responseLIST.append(ans_keypressSTR)
         #correctnessLIST.append(correctLIST)
-
-
-        # TO MARK THE QUESTION ENDS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-
 
         # the Gap between each audio files
         #core.wait(5)
