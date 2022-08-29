@@ -13,6 +13,7 @@ print(sound.Sound)
 import scipy
 from scipy.io import wavfile
 import numpy as np
+from datetime import datetime,date
 
 """
 # function to convert the information into
@@ -35,12 +36,13 @@ def display_ins(STR, keyPressLIST = None):
     '''
     instructionsLIST = STR.split("\\\\")
     keyPressLIST = keyPressLIST
-        
+
     for t in instructionsLIST:
         instructions = visual.TextStim(win = win, text = t)
         instructions.draw()
         win.flip()
-        event.waitKeys(keyList = keyPressLIST)
+        ans = event.waitKeys(keyList = keyPressLIST)
+        print(ans)
     win.flip()
 
 def display_fix():
@@ -92,6 +94,18 @@ if __name__ == "__main__":
     questionsLIST = ["When Alice peeked into her sister's book on the bank, what did it NOT* have?\na No sign of her sister’s name.\nb No pictures or conversations.\nc No pages at all.\nd No interesting story.", "What two things are immediately most striking to Alice about the rabbit?\na It is talking and won't respond to her.\nb It has a waistcoast-pocket and a watch.\nc It is running late and yelling loudly.\nd It walks and talks just as a human.", 'When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\na "Orange Marmalade"\nb "Strawberry Marmalade"\nc "Blueberry Jam"\nd "Apricot Jam"', 'When Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\na Argentina\nb United States and Canada\nc India\nd Australia and New Zealand', 'What does Alice land on at the bottom of the well?\na The hard stone floor\nb An overstuffed armchair\nc A heap of sticks and dry leaves\nd A large, purple couch', "What is the name of Alice's cat?\na Selima\nb Chester\nc Dinah\nd Felix", 'What material is the key which Alice finds made of?\na Brass\nb Silver\nc Bronze\nd Gold', 'What device does Alice shut up like?\na A telescope\nb A clam\nc A bite\nd A lantern', 'What are the effects of drinking from the bottle and eating the cake?\na Drinking makes Alice smaller and eating makes her larger.\nb Drinking makes Alice larger and eating makes her smaller.\nc Both drinking and eating make her smaller.\nd Both drinking and eating make her larger.', 'Drinking from the bottle has a variety of tastes. What does it *NOT* taste like?\na Cherry tart\nb Pineapple\nc Tea\nd Roast turkey', 'Why did Alice box her own ears once?\na For checking out her new boxing gloves.\nb For cheating herself in a game of croquet.\nc For not knowing the capital of Bulgaria.\nd For forgetting to give Dina her milk at tea-time.', 'Where did Alice find the cake?\na Floating in the pond of her tears.\nb In a little wooden box that was lying on the table.\nc In a little glass box that was lying under the table.\nd She did not find it -- the rabbit gave it to her.']
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["a", "b", "c", "d"]
+    
+    # LDT Wanted data
+    day = date.today()
+    dateLIST = []
+    sub_idLIST = []
+    resultKeyLIST = []
+    stimLIST = []
+    conditionLIST = []
+    LDT_rtLIST = []
+    correctnessLIST = []
+    responseLIST = []
+    correctLIST = []    
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -161,9 +175,29 @@ if __name__ == "__main__":
         # the Gap between each audio files
         #core.wait(5)
         print("Continue for the SoundFile{}".format(i+2))
+        
+        
 
         # Add ESC could core.quit() function in the middle of the experiments process
-
-
     print("FINISHIED!")
+    # close the window  at the end of the experiment
+    win.close()
+    
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                             'Date':dateLIST,
+                             'Stimuli':stimLIST,
+                             'Keypress':resultKeyLIST,
+                             'Response':responseLIST,
+                             'LDT_RT':LDT_rtLIST,
+                             'Correctness':correctnessLIST
+                             })
+    
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = sub_id + '_LDT_results.csv'
+    save_path = result_data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    
+
+    # close all the Psychopy application
     core.quit()
