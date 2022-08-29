@@ -73,14 +73,10 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 
-# Full screen
-win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
-# Testing small screen
-#win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-
 
 if __name__ == "__main__":
     data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
+    results_data_path = "E:/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -93,7 +89,24 @@ if __name__ == "__main__":
     questionsLIST = ["When Alice peeked into her sister's book on the bank, what did it NOT* have?\na No sign of her sister’s name.\nb No pictures or conversations.\nc No pages at all.\nd No interesting story.", "What two things are immediately most striking to Alice about the rabbit?\na It is talking and won't respond to her.\nb It has a waistcoast-pocket and a watch.\nc It is running late and yelling loudly.\nd It walks and talks just as a human.", 'When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\na "Orange Marmalade"\nb "Strawberry Marmalade"\nc "Blueberry Jam"\nd "Apricot Jam"', 'When Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\na Argentina\nb United States and Canada\nc India\nd Australia and New Zealand', 'What does Alice land on at the bottom of the well?\na The hard stone floor\nb An overstuffed armchair\nc A heap of sticks and dry leaves\nd A large, purple couch', "What is the name of Alice's cat?\na Selima\nb Chester\nc Dinah\nd Felix", 'What material is the key which Alice finds made of?\na Brass\nb Silver\nc Bronze\nd Gold', 'What device does Alice shut up like?\na A telescope\nb A clam\nc A bite\nd A lantern', 'What are the effects of drinking from the bottle and eating the cake?\na Drinking makes Alice smaller and eating makes her larger.\nb Drinking makes Alice larger and eating makes her smaller.\nc Both drinking and eating make her smaller.\nd Both drinking and eating make her larger.', 'Drinking from the bottle has a variety of tastes. What does it *NOT* taste like?\na Cherry tart\nb Pineapple\nc Tea\nd Roast turkey', 'Why did Alice box her own ears once?\na For checking out her new boxing gloves.\nb For cheating herself in a game of croquet.\nc For not knowing the capital of Bulgaria.\nd For forgetting to give Dina her milk at tea-time.', 'Where did Alice find the cake?\na Floating in the pond of her tears.\nb In a little wooden box that was lying on the table.\nc In a little glass box that was lying under the table.\nd She did not find it -- the rabbit gave it to her.']
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["a", "b", "c", "d"]
-
+    
+    # Answer 12Qs wanted data
+    day = date.today()
+    dateLIST = []
+    sub_idLIST = []
+    Ques_textLIST = []
+    resultKeyLIST = []
+    #correctnessLIST = []
+    responseLIST = []
+    
+    # key in number for notifying which subject it is
+    sub_id = str(input("Subject: "))
+    
+    # Full screen
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    # Testing small screen
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")    
+    
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
@@ -144,8 +157,15 @@ if __name__ == "__main__":
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
 
         win.flip()
+        
         # Display the quesitons for each tape
-        display_ins(questionsLIST[i], keypressLIST_ans)
+        ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
+        
+        sub_idLIST.append(sub_id)
+        dateLIST.append(day)
+        Ques_textLIST.append(questionsLIST[i])
+        responseLIST.append(ans_keypressSTR)
+        #correctnessLIST.append(correctLIST)
 
 
         # TO MARK THE QUESTION ENDS
@@ -159,7 +179,25 @@ if __name__ == "__main__":
         print("Continue for the SoundFile{}".format(i+2))
 
         # Add ESC could core.quit() function in the middle of the experiments process
-
-
+        
     print("FINISHIED!")
+    # close the window  at the end of the experiment
+    win.close()
+    
+    
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                             'Date':dateLIST,
+                             'Stimuli':Ques_textLIST,
+                             'Response':responseLIST,
+                             #'LDT_RT':LDT_rtLIST,
+                             #'Correctness':correctnessLIST
+                             })
+    
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = sub_id + '_12Qs_results.csv'
+    save_path = results_data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+
+    # close all the Psychopy application
     core.quit()
