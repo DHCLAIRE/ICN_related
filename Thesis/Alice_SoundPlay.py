@@ -14,6 +14,10 @@ import scipy
 from scipy.io import wavfile
 import numpy as np
 from datetime import datetime,date
+import json
+import numpy as np
+import pandas as pd
+from pprint import pprint
 
 """
 # function to convert the information into
@@ -41,9 +45,10 @@ def display_ins(STR, keyPressLIST = None):
         instructions = visual.TextStim(win = win, text = t)
         instructions.draw()
         win.flip()
-        ans = event.waitKeys(keyList = keyPressLIST)
-        print(ans)
+        ansSTR = event.waitKeys(keyList = keyPressLIST)
+        print(ansSTR)
     win.flip()
+    return ansSTR
 
 def display_fix():
     '''
@@ -95,17 +100,14 @@ if __name__ == "__main__":
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["a", "b", "c", "d"]
     
-    # LDT Wanted data
+    # Answer 12Qs wanted data
     day = date.today()
     dateLIST = []
     sub_idLIST = []
+    Ques_textLIST = []
     resultKeyLIST = []
-    stimLIST = []
-    conditionLIST = []
-    LDT_rtLIST = []
-    correctnessLIST = []
+    #correctnessLIST = []
     responseLIST = []
-    correctLIST = []    
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -163,7 +165,13 @@ if __name__ == "__main__":
         """
         win.flip()
         # Display the quesitons for each tape
-        display_ins(questionsLIST[i], keypressLIST_ans)
+        ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
+        responseLIST.append(ans_keypressSTR)
+        
+        sub_idLIST.append(sub_id)
+        dateLIST.append(day)
+        Ques_textLIST.append(questionsLIST[i])
+        #correctnessLIST.append(correctLIST)
 
         """
         # TO MARK THE QUESTION ENDS
@@ -183,10 +191,11 @@ if __name__ == "__main__":
     # close the window  at the end of the experiment
     win.close()
     
+    
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
-                             'Stimuli':stimLIST,
+                             'Stimuli':Ques_textLIST,
                              'Keypress':resultKeyLIST,
                              'Response':responseLIST,
                              'LDT_RT':LDT_rtLIST,
@@ -194,10 +203,10 @@ if __name__ == "__main__":
                              })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = sub_id + '_LDT_results.csv'
+    file_name = sub_id + '_12Qs_results.csv'
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    
+
 
     # close all the Psychopy application
     core.quit()
