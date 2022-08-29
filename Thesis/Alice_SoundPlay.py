@@ -79,11 +79,6 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 """
-# Full screen
-#win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
-# Testing small screen
-win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix") 
-
 
 if __name__ == "__main__":
     data_path = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
@@ -111,6 +106,11 @@ if __name__ == "__main__":
     
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
+    
+    # Full screen
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    # Testing small screen
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
     # display instructions
     display_ins(instructions, keypressLIST_space)
@@ -166,11 +166,12 @@ if __name__ == "__main__":
         win.flip()
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-        responseLIST.append(ans_keypressSTR)
+        
         
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
         Ques_textLIST.append(questionsLIST[i])
+        responseLIST.append(ans_keypressSTR)
         #correctnessLIST.append(correctLIST)
 
         """
@@ -196,15 +197,14 @@ if __name__ == "__main__":
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
                              'Stimuli':Ques_textLIST,
-                             'Keypress':resultKeyLIST,
                              'Response':responseLIST,
-                             'LDT_RT':LDT_rtLIST,
-                             'Correctness':correctnessLIST
+                             #'LDT_RT':LDT_rtLIST,
+                             #'Correctness':correctnessLIST
                              })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_12Qs_results.csv'
-    save_path = result_data_path + file_name
+    save_path = data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
 
