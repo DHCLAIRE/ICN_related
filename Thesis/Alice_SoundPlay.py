@@ -195,7 +195,7 @@ if __name__ == "__main__":
         dateLIST.append(day)
         Ques_textLIST.append(questionsLIST[i])
         responseLIST.append(ans_keypressSTR)
-        Q_numLIST.append(i+1)
+        Q_numLIST.append(int(i+1))
         #correctnessLIST.append(correctLIST)
 
         # the Gap between each audio files
