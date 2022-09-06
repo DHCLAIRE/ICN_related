@@ -67,7 +67,7 @@ def display_start():
     win.flip()
 
 
-# For setting up the Trigger
+# For setting up the Trigger in NCU ICN Room608 EEG
 n = 0
 port = 'COM3'
 baudRate = 115200
