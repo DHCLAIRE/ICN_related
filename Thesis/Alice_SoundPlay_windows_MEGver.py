@@ -45,9 +45,10 @@ def display_ins(STR, keyPressLIST = None):
         instructions = visual.TextStim(win = win, text = t)
         instructions.draw()
         win.flip()
-        ans = event.waitKeys(keyList = keyPressLIST)
-        print(ans)
+        ansSTR = event.waitKeys(keyList = keyPressLIST)
+        print(ansSTR)
     win.flip()
+    return ansSTR
 
 def display_fix():
     '''
@@ -81,7 +82,7 @@ ptb.IOPort('Flush', handle)
 
 if __name__ == "__main__":
     data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
-    results_data_path = "E:/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
+    results_data_path = "E:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -105,10 +106,10 @@ if __name__ == "__main__":
         "Why did Alice box her own ears once?\n1. For checking out her new boxing gloves.\n2. For cheating herself in a game of croquet.\n3. For not knowing the capital of Bulgaria.\n4. For forgetting to give Dina her milk at tea-time.",
         "Where did Alice find the cake?\n1. Floating in the pond of her tears.\n2. In a little wooden box that was lying on the table.\n3. In a little glass box that was lying under the table.\n4. She did not find it -- the rabbit gave it to her."
     ]
-
+    
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
-    
+
     # Answer 12Qs wanted data
     day = date.today()
     dateLIST = []
@@ -118,15 +119,15 @@ if __name__ == "__main__":
     #correctnessLIST = []
     responseLIST = []
     Q_numLIST = []
-    
+
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
-    
+
     # Full screen
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")    
-    
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
@@ -177,15 +178,15 @@ if __name__ == "__main__":
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
 
         win.flip()
-        
+
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-        
+
         # TO MARK THE QUESTION ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        
+
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
@@ -199,12 +200,12 @@ if __name__ == "__main__":
         print("Continue for the SoundFile{}".format(i+2))
 
         # Add ESC could core.quit() function in the middle of the experiments process
-        
+
     print("FINISHIED!")
     # close the window  at the end of the experiment
     win.close()
-    
-    
+
+
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
@@ -214,7 +215,7 @@ if __name__ == "__main__":
                              #'LDT_RT':LDT_rtLIST,
                              #'Correctness':correctnessLIST
                              })
-    
+
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_12Qs_results.csv'
     save_path = results_data_path + file_name
