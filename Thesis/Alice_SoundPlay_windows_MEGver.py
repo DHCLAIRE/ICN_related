@@ -66,8 +66,8 @@ def display_start():
     fixation.draw()
     win.flip()
 
-
-# For setting up the Trigger
+"""
+# For setting up the Trigger in EEG
 n = 0
 port = 'COM3'
 baudRate = 115200
@@ -78,7 +78,9 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
+"""
 
+p = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
     data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
@@ -153,40 +155,42 @@ if __name__ == "__main__":
         #now = ptb.GetSecs()
         Script_Sound.play()
 
-
+        """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-
+        """
         # set core wait time that match with the length of each audio files
         core.wait(int(t+1))
-
+        
+        """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-
+        """
 
         print("SoundFile{}".format(i+1), "DONE")
         #print("Pause for 5 seconds.")
         core.wait(0.5)
 
+        """
         # TO MARK THE QUESTION BEGINS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+51)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-
+        """
         win.flip()
 
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-
+        """
         # TO MARK THE QUESTION ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-
+        """
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
