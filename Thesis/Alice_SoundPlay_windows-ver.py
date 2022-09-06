@@ -45,9 +45,10 @@ def display_ins(STR, keyPressLIST = None):
         instructions = visual.TextStim(win = win, text = t)
         instructions.draw()
         win.flip()
-        ans = event.waitKeys(keyList = keyPressLIST)
-        print(ans)
+        ansSTR = event.waitKeys(keyList = keyPressLIST)
+        print(ansSTR)
     win.flip()
+    return ansSTR
 
 def display_fix():
     '''
@@ -81,7 +82,7 @@ ptb.IOPort('Flush', handle)
 
 if __name__ == "__main__":
     data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
-    results_data_path = "E:/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
+    results_data_path = "E:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -91,24 +92,10 @@ if __name__ == "__main__":
     # display fixation
     #display_fix()
     instructions = """接下來你會聽到幾段故事，\n每段故事結束後會有一題單選題，\n請依照剛剛聽到的內容進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵開始"""
-    questionsLIST = [
-        "When Alice peeked into her sister's book on the bank, what did it NOT* have?\n1. No sign of her sister’s name.\n2. No pictures or conversations.\n3. No pages at all.\n4. No interesting story.",
-        "What two things are immediately most striking to Alice about the rabbit?\n1. It is talking and won't respond to her.\n2. It has a waistcoast-pocket and a watch.\n3. It is running late and yelling loudly.\n4. It walks and talks just as a human.",
-        "When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\n1. Orange Marmalade\n2. Strawberry Marmalade\n3. Blueberry Jam\n4. Apricot Jam",
-        "When Alice thinks she might have fallen right through the earth and come out among people that walk backwards, what countries does she think they are from?\n1. Argentina\n2. United States and Canada\n3. India\n4. Australia and New Zealand",
-        "What is the name of Alice's cat?\n1. Selima\n2. Chester\n3. Dinah\n4. Felix",
-        "What does Alice land on at the bottom of the well?\n1. The hard stone floor\n2. An overstuffed armchair\n3. A heap of sticks and dry leaves\n4. A large, purple couch",
-        "What material is the key which Alice finds made of?\n1. Brass\n2. Silver\n3. Bronze\n4. Gold",
-        "What device does Alice 'shut up like'?\n1. A telescope\n2. A clam\n3. A bite\n4. A lantern",
-        "Drinking from the bottle has a variety of tastes. What does it NOT* taste like?\n1. Cherry tart\n2. Pineapple\n3. Tea\n4. Roast turkey",
-        "What are the effects of drinking from the bottle and eating the cake?\n1. Drinking makes Alice smaller and eating makes her larger.\n2. Drinking makes Alice larger and eating makes her smaller.\n3. Both drinking and eating make her smaller.\n4. Both drinking and eating make her larger.",
-        "Why did Alice box her own ears once?\n1. For checking out her new boxing gloves.\n2. For cheating herself in a game of croquet.\n3. For not knowing the capital of Bulgaria.\n4. For forgetting to give Dina her milk at tea-time.",
-        "Where did Alice find the cake?\n1. Floating in the pond of her tears.\n2. In a little wooden box that was lying on the table.\n3. In a little glass box that was lying under the table.\n4. She did not find it -- the rabbit gave it to her."
-    ]
-
+    questionsLIST = ["When Alice peeked into her sister's book on the bank, what did it NOT* have?\na No sign of her sister’s name.\nb No pictures or conversations.\nc No pages at all.\nd No interesting story.", "What two things are immediately most striking to Alice about the rabbit?\na It is talking and won't respond to her.\nb It has a waistcoast-pocket and a watch.\nc It is running late and yelling loudly.\nd It walks and talks just as a human.", 'When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\na "Orange Marmalade"\nb "Strawberry Marmalade"\nc "Blueberry Jam"\nd "Apricot Jam"', 'When Alice thinks she might have fell right through the earth and come out among people that walk backwards, what countries does she think they are from?\na Argentina\nb United States and Canada\nc India\nd Australia and New Zealand', 'What does Alice land on at the bottom of the well?\na The hard stone floor\nb An overstuffed armchair\nc A heap of sticks and dry leaves\nd A large, purple couch', "What is the name of Alice's cat?\na Selima\nb Chester\nc Dinah\nd Felix", 'What material is the key which Alice finds made of?\na Brass\nb Silver\nc Bronze\nd Gold', 'What device does Alice shut up like?\na A telescope\nb A clam\nc A bite\nd A lantern', 'What are the effects of drinking from the bottle and eating the cake?\na Drinking makes Alice smaller and eating makes her larger.\nb Drinking makes Alice larger and eating makes her smaller.\nc Both drinking and eating make her smaller.\nd Both drinking and eating make her larger.', 'Drinking from the bottle has a variety of tastes. What does it *NOT* taste like?\na Cherry tart\nb Pineapple\nc Tea\nd Roast turkey', 'Why did Alice box her own ears once?\na For checking out her new boxing gloves.\nb For cheating herself in a game of croquet.\nc For not knowing the capital of Bulgaria.\nd For forgetting to give Dina her milk at tea-time.', 'Where did Alice find the cake?\na Floating in the pond of her tears.\nb In a little wooden box that was lying on the table.\nc In a little glass box that was lying under the table.\nd She did not find it -- the rabbit gave it to her.']
     keypressLIST_space = ["space"]
-    keypressLIST_ans = ["1", "2", "3", "4"]
-    
+    keypressLIST_ans = ["a", "b", "c", "d"]
+
     # Answer 12Qs wanted data
     day = date.today()
     dateLIST = []
@@ -117,16 +104,15 @@ if __name__ == "__main__":
     resultKeyLIST = []
     #correctnessLIST = []
     responseLIST = []
-    Q_numLIST = []
-    
+
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
-    
+
     # Full screen
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")    
-    
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
@@ -177,21 +163,20 @@ if __name__ == "__main__":
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
 
         win.flip()
-        
+
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-        
+
         # TO MARK THE QUESTION ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        
+
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
         Ques_textLIST.append(questionsLIST[i])
         responseLIST.append(ans_keypressSTR)
-        Q_numLIST.append(int(i+1))
         #correctnessLIST.append(correctLIST)
 
         # the Gap between each audio files
@@ -199,22 +184,21 @@ if __name__ == "__main__":
         print("Continue for the SoundFile{}".format(i+2))
 
         # Add ESC could core.quit() function in the middle of the experiments process
-        
+
     print("FINISHIED!")
     # close the window  at the end of the experiment
     win.close()
-    
-    
+
+
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
-                             'Q_num':Q_numLIST,
                              'Stimuli':Ques_textLIST,
                              'Response':responseLIST,
                              #'LDT_RT':LDT_rtLIST,
                              #'Correctness':correctnessLIST
                              })
-    
+
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_12Qs_results.csv'
     save_path = results_data_path + file_name
