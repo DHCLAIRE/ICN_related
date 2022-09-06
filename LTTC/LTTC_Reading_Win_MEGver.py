@@ -59,6 +59,8 @@ def display_fix():
     fixation.draw()
     win.flip()
 
+# Trigger port info for MEG
+p = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
     stim_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/"

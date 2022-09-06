@@ -42,6 +42,9 @@ def display_fix():
     fixation.draw()
     win.flip()
 
+# Trigger port info for MEG
+p = parallel.ParallelPort('0x0378')
+
 if __name__ == "__main__":
     
     # Step_0: load in all the stimuli
