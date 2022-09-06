@@ -6,7 +6,7 @@ from psychopy import prefs
 prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 import psychtoolbox as ptb
-from psychopy import sound, core, visual, event, gui, monitors, clock  #, parallel   # if you change the setting, this command must be put after the prefs's command
+from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
 #import json
 print(sound.Sound)
 
@@ -66,25 +66,12 @@ def display_start():
     fixation.draw()
     win.flip()
 
-"""
-# For setting up the Trigger in EEG
-n = 0
-port = 'COM3'
-baudRate = 115200
-InputBufferSize = 8
-readTimeout = 1
-portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f ReceiveLatency=0.0001'%(
-    baudRate, InputBufferSize, readTimeout)
-
-[handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
-ptb.IOPort('Flush', handle)
-"""
-
-p = parallel.ParallelPort('0x0378')
+# The MEG trigger port info
+port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
-    data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
-    results_data_path = "E:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
+    data_path = "I:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
+    results_data_path = "I:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -108,7 +95,7 @@ if __name__ == "__main__":
         "Why did Alice box her own ears once?\n1. For checking out her new boxing gloves.\n2. For cheating herself in a game of croquet.\n3. For not knowing the capital of Bulgaria.\n4. For forgetting to give Dina her milk at tea-time.",
         "Where did Alice find the cake?\n1. Floating in the pond of her tears.\n2. In a little wooden box that was lying on the table.\n3. In a little glass box that was lying under the table.\n4. She did not find it -- the rabbit gave it to her."
     ]
-    
+
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
 
@@ -126,14 +113,15 @@ if __name__ == "__main__":
     sub_id = str(input("Subject: "))
 
     # Full screen
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
 
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
-    for i in range(12):
+
+    for i in range(2):
 
         # display "Start" to indicate the start of the audio
         display_start()
@@ -155,42 +143,40 @@ if __name__ == "__main__":
         #now = ptb.GetSecs()
         Script_Sound.play()
 
-        """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
+        port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
+        port.setData(0) #This is close the trigger
+
         # set core wait time that match with the length of each audio files
         core.wait(int(t+1))
-        
-        """
+
         # TO MARK THE AUDIO FILE ENDS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
+        port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
+        port.setData(0) #This is close the trigger
+
 
         print("SoundFile{}".format(i+1), "DONE")
         #print("Pause for 5 seconds.")
         core.wait(0.5)
 
-        """
+
         # TO MARK THE QUESTION BEGINS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+51)),np.uint8(0)]))  #This is open the trigger
+        port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
+        port.setData(0) #This is close the trigger
+
         win.flip()
 
         # Display the quesitons for each tape
         ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-        """
+
         # TO MARK THE QUESTION ENDS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
+        port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
+        port.setData(0) #This is close the trigger
+
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
