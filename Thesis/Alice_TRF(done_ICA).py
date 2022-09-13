@@ -160,5 +160,84 @@ if __name__ == "__main__":
     p = eelbrain.plot.TopoButterfly(eegNDVar2, xlim=5, w=7, h=2)
     p.set_time(1.300)
     
+    
+    # perform the same procedure on the same subject's different runs (part3-5)
+    raw3, envelope3, time3 = get_raw_EEG(1, 3)
+    raw3.filter(1, 20)
+    ica.apply(raw3)
+    eegNDVar3 = raw2NDvar(raw3, time3)
+    
+    raw4, envelope4, time4 = get_raw_EEG(1, 4)
+    raw4.filter(1, 20)
+    ica.apply(raw4)
+    eegNDVar4 = raw2NDvar(raw4, time4)
+    
+    raw5, envelope5, time5 = get_raw_EEG(1, 5)
+    raw5.filter(1, 20)
+    ica.apply(raw5)
+    eegNDVar5 = raw2NDvar(raw5, time5)
+    
+    # combine 5 NDVar data that we just created
+    env_ = eelbrain.concatenate([envelope, envelope2, envelope3, envelope4, envelope5])
+    eegNDVar_ = eelbrain.concatenate([eegNDVar, eegNDVar2, eegNDVar3, eegNDVar4, eegNDVar5])
+    
+    # to see the envelope and the word_onset info
+    print(eegNDVar_)
+    # to calculate the length of the data
+    print(115204 / 128.)  # Divided by the sampling rate will get the length of the data
+    
+    print(eegNDVar)
+    print(22729 / 128.)
+    
+    p = eelbrain.plot.TopoButterfly(eegNDVar_, w=7, h=2)
+    p.set_time(1.300)
+    
+    # partitions=5 >> divide the EEG data into 5 portions, so that the model could compare the training data with the testing data
+    res = eelbrain.boosting(eegNDVar_, env_, -0.100, 0.600, error='l1', basis=0.050, partitions=5, test=1)
+    p = eelbrain.plot.TopoButterfly(res.h_scaled, w=6, h=2)
+    p.set_time(.180)
+    
+    
+    p = eelbrain.plot.Topomap(res.proportion_explained, w=6, h=4)
+    p.set_vlim(-0.01, 0.01)
+    # proportion_explained: is the results of the highest TRF similarity of every channel
+    # remember to save the result of it for further examination of
+    
+    # Sace the envelope's TRF in a pickle file form
+    Subj = 1
+    eelbrain.save.pickle(res, 'Subj%d_TRFs_envelop.pickle'%(Subj))
+    
+    # if you already saved the pickle file in the preoprocessing step, there's a command for you to open the saved pickle file
+    Subj = 1
+    res = eelbrain.load.unpickle('Subj%d_TRFs_envelop.pickle'%(Subj))
+    p = eelbrain.plot.TopoButterfly(res.h_scaled, w=10, h=4)
+    p.set_time(.180)
+    
+    #Making the Word onset TRFs >> if onset = 1
+    onset_word = word_onsets_NDVar(1, time)
+    eelbrain.plot.UTS(onset_word, xlim=10, w=6, h=2)
+    
+    # repeat the same procedure to get run1 to run5's 
+    onset_word2 = word_onsets_NDVar(2, time2)
+    onset_word3 = word_onsets_NDVar(3, time3)
+    onset_word4 = word_onsets_NDVar(4, time4)
+    onset_word5 = word_onsets_NDVar(5, time5)
+    
+    # create
+    w_on = eelbrain.concatenate([onset_word, onset_word2, onset_word3, onset_word4, onset_word5])
+    eelbrain.plot.UTS(w_on, xlim=100, w=10, h=4)
+    
+    # combine the envelope TRF and the word_onset's TRF into one pickle
+    res_v2 = eelbrain.boosting(eegNDVar_, [env_, w_on],  -0.1, 0.6, error='l1',
+                            basis=0.050, partitions=5, test=1, selective_stopping=True)
+    #[env_, w_on] >> 這裡放envelope & word onset 的 TRFs, if you want more, then add it into the list
+    Subj = 1
+    eelbrain.save.pickle(res_v2, 'Subj%d_TRFs_envelop_w_on.pickle'%(Subj))
+    
+    p = eelbrain.plot.TopoButterfly(res_v2.h_scaled, w=6, h=2)
+    p.set_time(.180)
+    
+    
+    
 
 
