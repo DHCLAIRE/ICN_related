@@ -41,6 +41,11 @@ def display_fix():
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
+    
+"""
+1. instructions >> press 'space'?? or other button?
+2. Button press >> one for each side (choose wisely)
+"""
 
 # The MEG trigger port info
 port = parallel.ParallelPort('0x0378')
