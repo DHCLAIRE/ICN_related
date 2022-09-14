@@ -62,6 +62,14 @@ def display_fix():
 # The MEG trigger port info
 port = parallel.ParallelPort('0x0378')
 
+# Parts that Need to modify
+"""
+1. Scaling part >> change it to the new way of keeping them awake??
+2. instructions >> press 'space'?? or other button?
+3. Button press >> for continue the audio??? or 3 parts, 10/10/10
+"""
+# 
+
 if __name__ == "__main__":
     stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
     result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
