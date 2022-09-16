@@ -109,26 +109,39 @@ if __name__ == "__main__":
     # NOTES_Section__3
     =======
     Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
-    N = the number of word in a text  >> really??
-    M = the word frequency
-    s = the box size = how many words were count as one box
+    N = the number of word in a text = Shuffle counts  >>  = the length of the text >> DONE
+    M = the word frequency >> count the appearance of the target word in the text  >> DONE
+    s = the box size = how many words were count as one box >> from 1 to the maximum length of the text
     w = the target word
     
-    #=====
-    THE STEPS:
-    *For the values that based on SHUFFLED position*
-    1. Segment the words: Cut the word into different box sizes
-    2. Count the filled boxes: Count how many times of the target word that appeared in the divided boxes
-    3. GET THE VALUE OF THE COUNTS
-    4. Do it all over again and again(what is the scale of the box sizes???)  
     
+    ================================================================================================================
+    ================================================================================================================
+    Formulas
     
-    # We've got 3 formula
+    1. Nb(w, s) ∼ s−Dw . (1)
+    2. d f (w ) =   s log ( N sh. b (w, s ) N b (w, s ) ) (2)
+       >>> df(w) = the degree of fractality of a target word = sum(log(Nsh(w,s)/Nb(w,s)))
+    3. N sh. b (s, ω) = M 1 + ( M−1 N−1 )(s −1)
+       >>> Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
+    
+    We've got 3 formula
     1. Unshuffled box count >> Vary in box sizes
     2. Shuffled box count >> Vary in box sizes and (shuffling count??)
     3. Fractality: sum of [log(Shuffled box count/Unshuffled box count)>> vary in box sizes]
     
+    ================================================================================================================
+    ================================================================================================================
     
+    
+    #=====
+    THE STEPS:
+    *For the values that based on *UNSHUFFLED* position*
+    1. Segment the words: Cut the word into different box sizes
+    2. Count the filled boxes: Count how many times of the target word that appeared in the divided boxes
+    3. GET THE VALUE OF THE COUNTS
+    4. Do it all over again and again(what is the scale of the box sizes???)  
+
     
     *For the values that based on SHUFFLED position*
     1. Shuffle the orginal text: Shuffled the text by the unit of word(Randomly distributed)
@@ -136,8 +149,10 @@ if __name__ == "__main__":
     3. Count the filled boxes: Count how many times of the target word that appeared in the divided boxes
     
     
-    ======Question======
-    What is the base of the calculation?? >> the whole chapter?  Or each sentence?? 
+    ======Questions======
+    Q1: What is the base of the calculation?? >> the whole chapter?  Or each sentence??  >> I think is the whole text(would the length affect the importance value??)
+    Q2: How to construct the command of spliting in different nox sizes???
+    
     
     '''
     # There's no need to add this first, cause we all ready got the file in word unit
@@ -175,9 +190,21 @@ if __name__ == "__main__":
     #print(testing_text)
     
     tmpLIST = testing_text.lower().split()
-    #print(tmpLIST)
-
+    print(tmpLIST)
     
+    n_tmpLIST = []
+    boxLIST = []
+    for w in range(len(tmpLIST)):
+        if w%2 == 0:
+            boxLIST = tmpLIST[w:w+2] 
+            print(boxLIST)
+            print(len(boxLIST))
+            n_tmpLIST.append(boxLIST)
+        else:
+            pass
+    print(n_tmpLIST)
+
+    """
     N = float(len(tmpLIST))
     print("N (The length of the text) = ", N)
     #print(type(N))
@@ -186,13 +213,14 @@ if __name__ == "__main__":
     
     # word frequency count  # M >> needs to call out the word(key) for its count(value)
     word_frequncyDICT = word_frequncy(testing_text)
-    print("Func: ", word_frequncyDICT)
+    print("Func:", word_frequncyDICT) # Follow the word sequence of text
     print(len(word_frequncyDICT))
     
     word_frequncyDICT_2 = Counter(tmpLIST)
-    print("Counter: ", word_frequncyDICT_2)
+    print("Counter:", word_frequncyDICT_2) # Listed in the rank of frequency
     print(len(word_frequncyDICT_2))
     
+    """
     """
     # Storing the sets of punctuation in variable result 
     puncSTR = string.punctuation
