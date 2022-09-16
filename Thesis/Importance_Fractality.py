@@ -203,7 +203,23 @@ if __name__ == "__main__":
         else:
             pass
     print(n_tmpLIST)
-
+    
+    
+    """NOT SUCCESS
+    n_tmpLIST = []
+    boxLIST = []
+    for w in range(len(tmpLIST)):
+        for b in range(len(tmpLIST)):
+            if (w+1)%(b+1) == 0:
+                boxLIST = tmpLIST[w:w+(b+1)] 
+                #print(boxLIST)
+                #print(len(boxLIST))
+                n_tmpLIST.append(boxLIST)
+            else:
+                pass
+        print(n_tmpLIST)
+    print("DONE")
+    """
     """
     N = float(len(tmpLIST))
     print("N (The length of the text) = ", N)
