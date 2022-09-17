@@ -191,35 +191,29 @@ if __name__ == "__main__":
     
     tmpLIST = testing_text.lower().split()
     print(tmpLIST)
+
+
+    #make a box size list for segment the text according to the box size
+    lengthLIST = list(range(1,len(tmpLIST)+1))
+    print(lengthLIST) # How long is this text
     
-    n_tmpLIST = []
-    boxLIST = []
-    for w in range(len(tmpLIST)):
-        if w%2 == 0:
-            boxLIST = tmpLIST[w:w+2] 
-            print(boxLIST)
-            print(len(boxLIST))
-            n_tmpLIST.append(boxLIST)
-        else:
-            pass
-    print(n_tmpLIST)
-    
-    
-    """NOT SUCCESS
-    n_tmpLIST = []
-    boxLIST = []
-    for w in range(len(tmpLIST)):
-        for b in range(len(tmpLIST)):
-            if (w+1)%(b+1) == 0:
-                boxLIST = tmpLIST[w:w+(b+1)] 
+    #divide the text by the box size
+    for s in lengthLIST:  # s = box isze
+        n_tmpLIST = []
+        boxLIST = []
+        for w in range(len(tmpLIST)):  # w = word
+            # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
+            if w%s == 0:
+                boxLIST = tmpLIST[w:w+s]  # [w:w+s] => if 
                 #print(boxLIST)
                 #print(len(boxLIST))
                 n_tmpLIST.append(boxLIST)
             else:
                 pass
         print(n_tmpLIST)
+        print(len(n_tmpLIST))
     print("DONE")
-    """
+    #"""
     """
     N = float(len(tmpLIST))
     print("N (The length of the text) = ", N)
