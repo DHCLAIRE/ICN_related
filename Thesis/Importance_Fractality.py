@@ -182,56 +182,68 @@ if __name__ == "__main__":
     
     """
     
-    tmpLIST = []
+    raw_textLIST = []
     
     
     testing_text = """The marathon COVID-19 lockdown in Sydney, Australia, ended Monday for vaccinated residents. Stay-at-home orders imposed on June 26 have been lifted. Government advertisements have promised that freedoms would return when vaccination rates passed certain milestones. The message has been getting through to the community. Lockdown in the New South Wales state capital, Sydney, was lifted Monday because inoculation rates have passed 70% for people above aged 16. Shops have reopened for the first time since June. Small gatherings at home are permitted, and larger groups are allowed to meet at parks and beaches. However, the above apply only to fully vaccinated people. All residents still face restrictions on travel beyond Sydney. The rules will be eased when vaccination rates in New South Wales reach 80%. At that point international travel will resume. Still, New South Wales state premier Dominic Perrottet stated that a cautious stages approach to reopening is needed."""
     #print(type(testing_text))
     #print(testing_text)
     
-    tmpLIST = testing_text.lower().split()
-    print(tmpLIST)
-
-
-    #make a box size list for segment the text according to the box size
-    lengthLIST = list(range(1,len(tmpLIST)+1))
-    print(lengthLIST) # How long is this text
+    raw_textLIST = testing_text.lower().split()
+    print(raw_textLIST)
     
-    #divide the text by the box size
-    for s in lengthLIST:  # s = box isze
-        n_tmpLIST = []
-        boxLIST = []
-        for w in range(len(tmpLIST)):  # w = word
-            # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
-            if w%s == 0:
-                boxLIST = tmpLIST[w:w+s]  # [w:w+s] => if 
-                #print(boxLIST)
-                #print(len(boxLIST))
-                n_tmpLIST.append(boxLIST)
-            else:
-                pass
-        print(n_tmpLIST)
-        print(len(n_tmpLIST))
-    print("DONE")
-    #"""
     """
-    N = float(len(tmpLIST))
+    # set the value of N (N = "The length of the text")
+    N = float(len(raw_textLIST))
     print("N (The length of the text) = ", N)
     #print(type(N))
-    #pprint(tmpLIST)
-    print(len(tmpLIST))
+    #pprint(raw_textLIST)
+    print(len(raw_textLIST))
     
     # word frequency count  # M >> needs to call out the word(key) for its count(value)
+    # method 1
     word_frequncyDICT = word_frequncy(testing_text)
     print("Func:", word_frequncyDICT) # Follow the word sequence of text
     print(len(word_frequncyDICT))
     
-    word_frequncyDICT_2 = Counter(tmpLIST)
+    # method 2
+    word_frequncyDICT_2 = Counter(raw_textLIST)
     print("Counter:", word_frequncyDICT_2) # Listed in the rank of frequency
     print(len(word_frequncyDICT_2))
     
     """
+
+    #make a box size list for segment the text according to the box size
+    lengthLIST = list(range(1,len(raw_textLIST)+1))
+    print(lengthLIST) # How long is this text
+    
+    #divide the text by the box size
+    for s in lengthLIST:  # s = box isze
+        boxed_textLIST = []
+        boxLIST = []
+        for c in range(len(raw_textLIST)):  # c = word count
+            # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
+            if c%s == 0:
+                boxLIST = raw_textLIST[c:c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
+                #print(boxLIST)
+                #print(len(boxLIST))
+                boxed_textLIST.append(boxLIST)
+            else:
+                pass
+            
+        print(boxed_textLIST)
+        print(len(boxed_textLIST))
+        print("Box segment DONE")
+        for w in raw_textLIST:
+
+
+    
+    
+    
+    
+
     """
+    # text preprocessing >> remove punctuation
     # Storing the sets of punctuation in variable result 
     puncSTR = string.punctuation
     
@@ -241,19 +253,19 @@ if __name__ == "__main__":
     print(puncLIST)
     print(type(puncLIST))
     
-    n_tmpLIST = []
-    for wordSTR in tmpLIST:
+    boxed_textLIST = []
+    for wordSTR in raw_textLIST:
         for punc in puncLIST:
             if punc in wordSTR:
                 print(wordSTR)
                 wordSTR.translate(wordSTR.maketrans('', '', punc))
                 print("New word:", wordSTR)
        # print(wordSTR)
-                #n_tmpLIST.append(wordSTR)
+                #boxed_textLIST.append(wordSTR)
             #else:
-                #n_tmpLIST.append(wordSTR)
+                #boxed_textLIST.append(wordSTR)
                 #pass
-    #pprint(n_tmpLIST)
+    #pprint(boxed_textLIST)
         #print(wordSTR)
         #print(type(strROW))
     """
