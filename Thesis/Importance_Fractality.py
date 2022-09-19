@@ -234,7 +234,7 @@ if __name__ == "__main__":
         print(boxed_textLIST)
         print(len(boxed_textLIST))
         print("Box segment DONE")
-        for w in raw_textLIST:
+        #for w in raw_textLIST:
 
 
     
@@ -242,7 +242,7 @@ if __name__ == "__main__":
     
     
 
-    """
+        """
     # text preprocessing >> remove punctuation
     # Storing the sets of punctuation in variable result 
     puncSTR = string.punctuation
