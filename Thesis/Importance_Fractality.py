@@ -235,10 +235,8 @@ if __name__ == "__main__":
         print(len(boxed_textLIST))
         print("Box segment DONE")
         #for w in raw_textLIST:
-
-
-    
-    
+        
+        # what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
     
     
 
