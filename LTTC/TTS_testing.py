@@ -15,7 +15,7 @@ from gtts import gTTS
 # play the converted audio
 import os
 
-import pyttsx3
+# import pyttsx3 # Hell no
 
 
 if __name__ == "__main__":
