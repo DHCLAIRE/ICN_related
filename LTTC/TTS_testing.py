@@ -21,7 +21,11 @@ import pyttsx3
 if __name__ == "__main__":
     
     data_path  = "/Users/neuroling/Downloads/"
-
+    
+    
+    
+    """
+    ## METHOD 3 FAIL TERRIBLY##
     # 初始化
     engine = pyttsx3.init()
     
@@ -47,10 +51,11 @@ if __name__ == "__main__":
     
     engine.say('The quick brown fox jumped over the lazy dog.')
     engine.runAndWait()
-    
+    """
     
     
     """
+    ## METHOD 2 HALF_SUCCESS ##
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
     mytext = "Danny drops out of chemistry after the first quarter and graduates with honors in jazz performance and composition. Students learn how Danny has gone on to a very successful career as a jazz pianist and composer. Slow Starters is another story that many students find relevant to their own lives. It tells the story of a young man, Ari, who spent five years in and out of community college while working part-time jobs. Not until Ari met the 'girl of his dreams' did he begin taking a serious interest in finding a career path. He transferred to a four-year university and chose physical education as a major. After graduation Ari was accepted into an osteopathic medical school and became a doctor. And yes, he marry that dream girl. Creativity and Courage is yet another inspiring story about a Japanese graduate student who started his doctoral baepay research in my laboratory."
@@ -75,7 +80,7 @@ if __name__ == "__main__":
     
     """
     """
-    ## FAIL ##
+    ## METHOD 1 FAIL ##
     url = "https://voicerss-text-to-speech.p.rapidapi.com/"
     
     querystring = {"key":"undefined"}
