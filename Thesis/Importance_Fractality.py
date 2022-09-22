@@ -16,6 +16,9 @@ import string   # import string library function
 
 
 def LISTblankEraser(rawLIST):
+    '''
+    Remove the blank that inside the list
+    '''
     newrawLIST = []
     for row in rawLIST:
         if len(row) == 0:
