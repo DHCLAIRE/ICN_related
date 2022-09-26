@@ -214,3 +214,57 @@ if __name__ == "__main__":
     
     
     # To create audio files from the scipts
+    
+    
+    
+    
+    
+    
+    # making the wanted info into the List form for future use
+    text_noLIST.append(int(total_stimSetLIST.index(i))+1)
+    dateLIST.append(day)
+    sub_idLIST.append(sub_id)
+    resultKeyLIST.append(keys)
+    self_paced_rtLIST.append(time_duration)
+    shuffledTotalT_LIST.append([i])
+    rating_LIST.append([""])
+    
+    
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                       'Date':dateLIST,
+                       'Texts_no':text_noLIST,
+                       'Self-paced RT':self_paced_rtLIST,
+                       'Rating Scale': rating_LIST,
+                       'Text content': shuffledTotalT_LIST
+                       })
+    
+    pseudoDICT = {"The TargetPseudo group_6":targetPseudoLIST,
+                  "The ControlPseudo group_6": controlPseudoLIST,
+                  "High_CD condition pseudowords_3":words_high_CD_setLIST,
+                  "Low_CD condition pseudowords_3":words_low_CD_setLIST}
+    
+    textsDICT = {"The High-Low Set Group": Setsinfo_LIST,
+                 "High_textSetsLIST": new_High_textSetsLIST,
+                 "Low_textSetsLIST":new_Low_textSetsLIST,
+                 "Total_stimSetLIST":total_stimSetLIST}
+    
+    
+    #print(type(dataDICT))
+    
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
+    file_name = sub_id + '_Reading_task.csv'
+    fsave_path = result_data_path + file_name
+    dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    
+    DICT_name = sub_id + '_pseudowordsDICT.json'
+    Dsave_path = result_data_path + DICT_name
+    with open(Dsave_path, "w", newline='', encoding="UTF-8") as jsfile:
+        json.dump(pseudoDICT, jsfile, ensure_ascii=False)
+        
+    Text_name = sub_id + '_textsDICT.json'
+    Tsave_path = result_data_path + Text_name
+    with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
+        json.dump(textsDICT, jsfile_2, ensure_ascii=False)
+        
+    
