@@ -219,14 +219,13 @@ if __name__ == "__main__":
     random.shuffle(total_stimSetLIST)
     
     # Creat a new file just for the designate subs
-    sub_data_path = os.mkdir(result_data_path +"S00{}".format(2))
-    #audio_data_path = os.mkdir("{}/S00{}_audio_files".format(sub_data_path).format(2)) # not succeed so far
-    #print(n_audio_data_path)
+    #sub_data_path = os.mkdir(result_data_path +"Test{}".format(2))
     
     # To create audio files from the scipts
     # https://gtts.readthedocs.io/en/latest/
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
-    """
+    
+    #"""
     # The text that you want to convert to audio
     for stim_textSTR in total_stimSetLIST[:5]:   #range(len(total_stimSetLIST)):
         #print(stim_textSTR)
@@ -239,11 +238,11 @@ if __name__ == "__main__":
     
         # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
         stim_audio = gTTS(text = stimtext, lang = language, slow = False)
-    
+        stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
         # Saving the converted audio in a mp3 file
-        stim_audio.save(n_audio_data_path + "Text_Test_original{}.mp3".format("1").format(int(total_stimSetLIST.index(stim_textSTR))+1))
+        stim_audio.save(result_data_path + "Text_Test_original%d.mp3" %stim_audio_numINT)
     print("DONE")
-    """
+    #"""
     
     """
     # making the wanted info into the List form for future use
