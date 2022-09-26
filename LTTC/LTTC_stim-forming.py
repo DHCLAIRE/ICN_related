@@ -13,6 +13,9 @@ Steps:
 8. insert the assigned pseudowords into the pair set of High-CD and Low-CD texts
 # The pseudowords need to be inseted in the texts first, and then randomly choose from the texts set??
 
+
+# for MEG's Audio tapes
+turn the produced texts into audio files as gTTS
 '''
 
 
@@ -22,13 +25,18 @@ import json
 import random
 from random import sample
 
+from gtts import gTTS
+
 
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
     result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/"
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
-
+    
+    audio_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_audiosets/"
+    stimtexts_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_textsets/"
+    
     tmpLIST = []
     tmpLIST_2 = []
     pseudoLIST = []
@@ -201,9 +209,9 @@ if __name__ == "__main__":
                 #pprint(new_tSTR)
                 new_Low_textSetsLIST.extend([new_tSTR])
                 
-    pprint(new_High_textSetsLIST)
+    #pprint(new_High_textSetsLIST)
     print(len(new_High_textSetsLIST))
-    pprint(new_Low_textSetsLIST)
+    #pprint(new_Low_textSetsLIST)
     print(len(new_Low_textSetsLIST))
     
     total_stimSetLIST.extend(new_High_textSetsLIST)
@@ -213,13 +221,32 @@ if __name__ == "__main__":
     random.shuffle(total_stimSetLIST)
     
     
+    n_audio_data_path = os.mkdir(audio_data_path +"PythonTutorials")
+    
+    
     # To create audio files from the scipts
+    # https://gtts.readthedocs.io/en/latest/
+    # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
+    
+    # The text that you want to convert to audio
+    for stim_textSTR in total_stimSetLIST[:5]:   #range(len(total_stimSetLIST)):
+        #print(stim_textSTR)
+        #print(type(stim_textSTR))
+        
+        stimtext = stim_textSTR
+    
+        # Language in which you want to convert
+        language = 'en'
+    
+        # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
+        stim_audio = gTTS(text = stimtext, lang = language, slow = False)
+    
+        # Saving the converted audio in a mp3 file
+        stim_audio.save(n_audio_data_path + "Text_Test_original{}.mp3".format("1").format(int(total_stimSetLIST.index(stim_textSTR))+1))
+    print("DONE")
     
     
-    
-    
-    
-    
+    """
     # making the wanted info into the List form for future use
     text_noLIST.append(int(total_stimSetLIST.index(i))+1)
     dateLIST.append(day)
@@ -249,9 +276,10 @@ if __name__ == "__main__":
                  "Low_textSetsLIST":new_Low_textSetsLIST,
                  "Total_stimSetLIST":total_stimSetLIST}
     
-    
+    """
     #print(type(dataDICT))
     
+    """
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
     file_name = sub_id + '_Reading_task.csv'
     fsave_path = result_data_path + file_name
@@ -266,5 +294,6 @@ if __name__ == "__main__":
     Tsave_path = result_data_path + Text_name
     with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
         json.dump(textsDICT, jsfile_2, ensure_ascii=False)
-        
     
+    
+    """
