@@ -217,34 +217,8 @@ if __name__ == "__main__":
     
     print(len(total_stimSetLIST))
     random.shuffle(total_stimSetLIST)
+
     
-    # Creat a new file just for the designate subs
-    #sub_data_path = os.mkdir(result_data_path +"Test{}".format(2))
-    
-    # To create audio files from the scipts
-    # https://gtts.readthedocs.io/en/latest/
-    # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
-    
-    #"""
-    # The text that you want to convert to audio
-    for stim_textSTR in total_stimSetLIST[:5]:   #range(len(total_stimSetLIST)):
-        #print(stim_textSTR)
-        #print(type(stim_textSTR))
-        
-        stimtext = stim_textSTR
-    
-        # Language in which you want to convert
-        language = 'en'
-    
-        # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
-        stim_audio = gTTS(text = stimtext, lang = language, slow = False)
-        stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
-        # Saving the converted audio in a mp3 file
-        stim_audio.save(result_data_path + "Text_Test_original%d.mp3" %stim_audio_numINT)
-    print("DONE")
-    #"""
-    
-    """
     # making the wanted info into the List form for future use
     text_noLIST.append(int(total_stimSetLIST.index(i))+1)
     dateLIST.append(day)
@@ -293,5 +267,27 @@ if __name__ == "__main__":
     with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
         json.dump(textsDICT, jsfile_2, ensure_ascii=False)
     
+        # Creat a new file just for the designate subs
+        #sub_data_path = os.mkdir(result_data_path +"Test{}".format(2))
+        
+        # To create audio files from the scipts
+        # https://gtts.readthedocs.io/en/latest/
+        # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
+        
+    #"""
+    # The text that you want to convert to audio
+    for stim_textSTR in total_stimSetLIST[:5]:   #range(len(total_stimSetLIST)):
+        #print(stim_textSTR)
+        #print(type(stim_textSTR))
+            
+        stimtext = stim_textSTR
     
-    """
+        # Language in which you want to convert
+        language = 'en'
+        
+        # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
+        stim_audio = gTTS(text = stimtext, lang = language, slow = False)
+        stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
+        # Saving the converted audio in a mp3 file
+        stim_audio.save(result_data_path + "Text_Test_original%d.mp3" %stim_audio_numINT)
+    print("DONE")
