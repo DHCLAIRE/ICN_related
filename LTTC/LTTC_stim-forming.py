@@ -24,7 +24,7 @@ import csv
 import json
 import random
 from random import sample
-
+import os
 from gtts import gTTS
 
 
@@ -34,8 +34,6 @@ if __name__ == "__main__":
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     
-    audio_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_audiosets/"
-    stimtexts_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_textsets/"
     
     tmpLIST = []
     tmpLIST_2 = []
@@ -220,14 +218,15 @@ if __name__ == "__main__":
     print(len(total_stimSetLIST))
     random.shuffle(total_stimSetLIST)
     
-    
-    n_audio_data_path = os.mkdir(audio_data_path +"PythonTutorials")
-    
+    # Creat a new file just for the designate subs
+    sub_data_path = os.mkdir(result_data_path +"S00{}".format(2))
+    #audio_data_path = os.mkdir("{}/S00{}_audio_files".format(sub_data_path).format(2)) # not succeed so far
+    #print(n_audio_data_path)
     
     # To create audio files from the scipts
     # https://gtts.readthedocs.io/en/latest/
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
-    
+    """
     # The text that you want to convert to audio
     for stim_textSTR in total_stimSetLIST[:5]:   #range(len(total_stimSetLIST)):
         #print(stim_textSTR)
@@ -244,7 +243,7 @@ if __name__ == "__main__":
         # Saving the converted audio in a mp3 file
         stim_audio.save(n_audio_data_path + "Text_Test_original{}.mp3".format("1").format(int(total_stimSetLIST.index(stim_textSTR))+1))
     print("DONE")
-    
+    """
     
     """
     # making the wanted info into the List form for future use
