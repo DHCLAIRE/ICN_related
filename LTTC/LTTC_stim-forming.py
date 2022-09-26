@@ -26,6 +26,8 @@ import random
 from random import sample
 import os
 from gtts import gTTS
+import pandas as pd
+import time
 
 
 if __name__ == "__main__":
@@ -149,7 +151,8 @@ if __name__ == "__main__":
     Low_stimLIST = []
     Low_stim_SetLIST = []
     total_stimSetLIST = []
-    suffledTotalT_LIST = []
+    shuffledTotalT_LIST = []
+    rating_LIST = []
     
     # for calling out the sets individually
     HightSetsLIST = []
@@ -172,8 +175,6 @@ if __name__ == "__main__":
     Setsinfo_LIST.extend(LowtSetsLIST)
     
     print(Setsinfo_LIST)
-    
-    
     
     for sets in range(3):
         # High_CD Set TEXTS
@@ -217,24 +218,50 @@ if __name__ == "__main__":
     
     print(len(total_stimSetLIST))
     random.shuffle(total_stimSetLIST)
-
     
-    # making the wanted info into the List form for future use
-    text_noLIST.append(int(total_stimSetLIST.index(i))+1)
-    dateLIST.append(day)
-    sub_idLIST.append(sub_id)
-    resultKeyLIST.append(keys)
-    self_paced_rtLIST.append(time_duration)
-    shuffledTotalT_LIST.append([i])
-    rating_LIST.append([""])
+    
+    dateLIST = []
+    sub_idLIST = []
+    #self_paced_rtLIST=[]
+    text_noLIST = []
+    #resultKeyLIST = []
+    
+    sub_id = "006"
+    
+    # create and save the audio files and the csv file form of textsets at once
+    for stim_textSTR in total_stimSetLIST:
+        ## AUDIO CREATION SECTION ##
+        
+        # Set the value of the transcripts
+        stimtext = stim_textSTR
+        
+        # Language in which you want to convert
+        language = 'en'
+        
+        # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
+        stim_audio = gTTS(text = stimtext, lang = language, slow = False)
+        stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
+        
+        # Saving the converted audio in a mp3 file
+        stim_audio.save(result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT))
+        time.sleep(15)
+        
+        # making the wanted info into the List form for future use
+        text_noLIST.append(stim_audio_numINT)
+        dateLIST.append([""])
+        sub_idLIST.append(sub_id)
+        #resultKeyLIST.append(keys)
+        #self_paced_rtLIST.append(time_duration)
+        shuffledTotalT_LIST.append([stim_textSTR])
+        rating_LIST.append([""])
     
     
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                       'Date':dateLIST,
+                       #'Date':dateLIST,
                        'Texts_no':text_noLIST,
-                       'Self-paced RT':self_paced_rtLIST,
-                       'Rating Scale': rating_LIST,
+                       #'Self-paced RT':self_paced_rtLIST,
+                       #'Rating Scale': rating_LIST,
                        'Text content': shuffledTotalT_LIST
                        })
     
@@ -248,34 +275,34 @@ if __name__ == "__main__":
                  "Low_textSetsLIST":new_Low_textSetsLIST,
                  "Total_stimSetLIST":total_stimSetLIST}
     
-    """
-    #print(type(dataDICT))
-    
-    """
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
-    file_name = sub_id + '_Reading_task.csv'
+    file_name = "S%s" %sub_id + '_Reading_task.csv'
     fsave_path = result_data_path + file_name
     dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
-    DICT_name = sub_id + '_pseudowordsDICT.json'
+    DICT_name = "S%s" %sub_id + '_pseudowordsDICT.json'
     Dsave_path = result_data_path + DICT_name
     with open(Dsave_path, "w", newline='', encoding="UTF-8") as jsfile:
         json.dump(pseudoDICT, jsfile, ensure_ascii=False)
         
-    Text_name = sub_id + '_textsDICT.json'
+    Text_name = "S%s" %sub_id + '_textsDICT.json'
     Tsave_path = result_data_path + Text_name
     with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
         json.dump(textsDICT, jsfile_2, ensure_ascii=False)
+    print("DONEEE!!!")
     
-        # Creat a new file just for the designate subs
-        #sub_data_path = os.mkdir(result_data_path +"Test{}".format(2))
-        
-        # To create audio files from the scipts
-        # https://gtts.readthedocs.io/en/latest/
-        # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
-        
-    #"""
-    # The text that you want to convert to audio
+    
+    
+    
+    # Creat a new file just for the designate subs
+    #sub_data_path = os.mkdir(result_data_path +"Test{}".format(2))
+    
+    # To create audio files from the scipts
+    # https://gtts.readthedocs.io/en/latest/
+    # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
+    
+    """ 
+    # Convert the text you wanted into audio files
     for stim_textSTR in total_stimSetLIST[:5]:   #range(len(total_stimSetLIST)):
         #print(stim_textSTR)
         #print(type(stim_textSTR))
@@ -291,3 +318,4 @@ if __name__ == "__main__":
         # Saving the converted audio in a mp3 file
         stim_audio.save(result_data_path + "Text_Test_original%d.mp3" %stim_audio_numINT)
     print("DONE")
+    """
