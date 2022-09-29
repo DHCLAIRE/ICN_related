@@ -226,7 +226,7 @@ if __name__ == "__main__":
         boxLIST = []
         for c in range(len(raw_textLIST)):  # c = word count
             # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
-            if c%s == 0:
+            if c%s == 0: # s == box size
                 boxLIST = raw_textLIST[c:c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
                 #print(boxLIST)
                 #print(len(boxLIST))
@@ -236,7 +236,7 @@ if __name__ == "__main__":
             
         print(boxed_textLIST)
         print(len(boxed_textLIST))
-        print("Box segment DONE")
+        print("Box dissecction DONE")
         #for w in raw_textLIST:
         
         # what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
