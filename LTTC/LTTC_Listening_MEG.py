@@ -73,16 +73,15 @@ port = parallel.ParallelPort('0x0378')
 if __name__ == "__main__":
     """
     ## The path needs to be modified ##
-    data_path = "I:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
-    results_data_path = "I:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
     
-    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
+    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"
+    
     result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
     #text_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
     """
-    instructions = """接下來你會聽到幾段故事，\n每段故事結束後會有一題單選題，\n請依照剛剛聽到的內容進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵開始"""
+    instructions = """接下來你會聽到幾段故事，\n每段故事結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""    # Need to think about it
     #questionsLIST = [
         #"When Alice peeked into her sister's book on the bank, what did it NOT* have?\n1. No sign of her sister’s name.\n2. No pictures or conversations.\n3. No pages at all.\n4. No interesting story.",
         #"What two things are immediately most striking to Alice about the rabbit?\n1. It is talking and won't respond to her.\n2. It has a waistcoast-pocket and a watch.\n3. It is running late and yelling loudly.\n4. It walks and talks just as a human.",
@@ -123,7 +122,7 @@ if __name__ == "__main__":
     display_ins(instructions, keypressLIST_space)
 
 
-    for i in range(2):
+    for i in range(2):    #30
 
         # display "Start" to indicate the start of the audio
         display_start()
@@ -132,8 +131,8 @@ if __name__ == "__main__":
         # display fixation for subject to look at when listening to the tape
         display_fix()
 
-        # get the length of each audio files of Alice in the Wonderland Chapter one
-        sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
+        # get the length of each audio files of every text
+        sample_rate, data = wavfile.read(stim_data_path + 'S001_textaudio_1.mp3'.format(i+1))
         len_data = len(data) # holds length of the numpy array
         t = len_data / sample_rate # returns duration but in floats
         print("SoundFile{} length = ".format(i+1), t)
