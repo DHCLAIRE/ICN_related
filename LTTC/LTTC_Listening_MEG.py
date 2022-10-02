@@ -188,7 +188,7 @@ if __name__ == "__main__":
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = sub_id + '_LTTC_Listening_results.csv'
-    save_path = results_data_path + file_name
+    save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
     # close all the Psychopy application
