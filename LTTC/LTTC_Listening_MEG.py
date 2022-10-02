@@ -92,11 +92,8 @@ if __name__ == "__main__":
     day = date.today()
     dateLIST = []
     sub_idLIST = []
-    Ques_textLIST = []
     resultKeyLIST = []
-    #correctnessLIST = []
     responseLIST = []
-    Q_numLIST = []
 
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -170,10 +167,7 @@ if __name__ == "__main__":
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
-        #Ques_textLIST.append(questionsLIST[i])
         responseLIST.append(ans_keypressSTR)
-        #Q_numLIST.append(int(i+1))
-        #correctnessLIST.append(correctLIST)
 
         # the Gap between each audio files
         #core.wait(5)
@@ -189,11 +183,7 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
-                             #'Q_num':Q_numLIST,
-                             #'Stimuli':Ques_textLIST,
                              'Response':responseLIST
-                             #'LDT_RT':LDT_rtLIST,
-                             #'Correctness':correctnessLIST
                              })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
