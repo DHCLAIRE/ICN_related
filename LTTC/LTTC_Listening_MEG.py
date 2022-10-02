@@ -82,8 +82,8 @@ if __name__ == "__main__":
     textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
     
-    instructions_1 = """接下來你會聽到幾段故事，\n每段故事結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""    # Need to think about it
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請在紙上評分，評分完畢後\n請按下空白鍵繼續"""
+    instructions_1 = """接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""    # Need to think about it
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
     #questionsLIST = [
         #"When Alice peeked into her sister's book on the bank, what did it NOT* have?\n1. No sign of her sister’s name.\n2. No pictures or conversations.\n3. No pages at all.\n4. No interesting story.",
         #"What two things are immediately most striking to Alice about the rabbit?\n1. It is talking and won't respond to her.\n2. It has a waistcoast-pocket and a watch.\n3. It is running late and yelling loudly.\n4. It walks and talks just as a human.",
@@ -134,14 +134,14 @@ if __name__ == "__main__":
         display_fix()
 
         # get the length of each audio files of every text
-        sample_rate, data = wavfile.read(stim_data_path + 'S{}_textaudio_{}.mp3'.format(sub_id).format(i+1))
+        sample_rate, data = wavfile.read(stim_data_path + 'S%s_textaudio_%d.wav' %(sub_id, i+1))
         len_data = len(data) # holds length of the numpy array
         t = len_data / sample_rate # returns duration but in floats
         print("SoundFile{} length = ".format(i+1), t)
         print("SoundFile{} length = ".format(i+1), int(t+1))
 
         # Play the audio files section by section
-        LTTC_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
+        LTTC_stm = stim_data_path + "S%s_textaudio_%d.wav" %(sub_id, i+1)
         Script_Sound = sound.Sound(LTTC_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
         Script_Sound.play()
