@@ -187,7 +187,7 @@ if __name__ == "__main__":
                              })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = sub_id + '_LTTC_Listening_results.csv'
+    file_name = 'S%s_LTTC_Listening_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
