@@ -71,17 +71,19 @@ def display_start():
 port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
-    """
+    
     ## The path needs to be modified ##
     
-    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"
-    
-    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
+    #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"
+    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  # Testing
+    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"  # Testing
     #text_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
-    """
-    instructions = """接下來你會聽到幾段故事，\n每段故事結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""    # Need to think about it
+    
+    instructions_1 = """接下來你會聽到幾段故事，\n每段故事結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""    # Need to think about it
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請在紙上評分，評分完畢後\n請按下空白鍵繼續"""
     #questionsLIST = [
         #"When Alice peeked into her sister's book on the bank, what did it NOT* have?\n1. No sign of her sister’s name.\n2. No pictures or conversations.\n3. No pages at all.\n4. No interesting story.",
         #"What two things are immediately most striking to Alice about the rabbit?\n1. It is talking and won't respond to her.\n2. It has a waistcoast-pocket and a watch.\n3. It is running late and yelling loudly.\n4. It walks and talks just as a human.",
@@ -100,7 +102,7 @@ if __name__ == "__main__":
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
 
-    # Answer 12Qs wanted data
+    # Answer wanted data
     day = date.today()
     dateLIST = []
     sub_idLIST = []
@@ -119,10 +121,10 @@ if __name__ == "__main__":
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
 
     # display instructions
-    display_ins(instructions, keypressLIST_space)
+    display_ins(instructions_1, keypressLIST_space)
 
 
-    for i in range(2):    #30
+    for i in range(2):    # should be 30
 
         # display "Start" to indicate the start of the audio
         display_start()
@@ -132,58 +134,59 @@ if __name__ == "__main__":
         display_fix()
 
         # get the length of each audio files of every text
-        sample_rate, data = wavfile.read(stim_data_path + 'S001_textaudio_1.mp3'.format(i+1))
+        sample_rate, data = wavfile.read(stim_data_path + 'S{}_textaudio_{}.mp3'.format(sub_id).format(i+1))
         len_data = len(data) # holds length of the numpy array
         t = len_data / sample_rate # returns duration but in floats
         print("SoundFile{} length = ".format(i+1), t)
         print("SoundFile{} length = ".format(i+1), int(t+1))
 
         # Play the audio files section by section
-        Alice_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
-        Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
+        LTTC_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
+        Script_Sound = sound.Sound(LTTC_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
         Script_Sound.play()
-
+        
+        """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         port.setData(0) #This is close the trigger
-
+        """
         # set core wait time that match with the length of each audio files
         core.wait(int(t+1))
-
+        """
         # TO MARK THE AUDIO FILE ENDS
         port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         port.setData(0) #This is close the trigger
-
+        """
 
         print("SoundFile{}".format(i+1), "DONE")
         #print("Pause for 5 seconds.")
         core.wait(0.5)
 
-
+        """
         # TO MARK THE QUESTION BEGINS
         port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         port.setData(0) #This is close the trigger
-
+        """
         win.flip()
 
         # Display the quesitons for each tape
-        ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
-
+        ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
+        """
         # TO MARK THE QUESTION ENDS
         port.setData(2) #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         port.setData(0) #This is close the trigger
-
+        """
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
-        Ques_textLIST.append(questionsLIST[i])
+        #Ques_textLIST.append(questionsLIST[i])
         responseLIST.append(ans_keypressSTR)
-        Q_numLIST.append(int(i+1))
+        #Q_numLIST.append(int(i+1))
         #correctnessLIST.append(correctLIST)
 
         # the Gap between each audio files
@@ -200,18 +203,17 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
-                             'Q_num':Q_numLIST,
-                             'Stimuli':Ques_textLIST,
-                             'Response':responseLIST,
+                             #'Q_num':Q_numLIST,
+                             #'Stimuli':Ques_textLIST,
+                             'Response':responseLIST
                              #'LDT_RT':LDT_rtLIST,
                              #'Correctness':correctnessLIST
                              })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = sub_id + '_12Qs_results.csv'
+    file_name = sub_id + '_LTTC_Listening_results.csv'
     save_path = results_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
     # close all the Psychopy application
     core.quit()
-    
