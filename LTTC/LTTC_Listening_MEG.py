@@ -106,7 +106,7 @@ if __name__ == "__main__":
     # display instructions
     display_ins(instructions_1, keypressLIST_space)
 
-
+    
     for i in range(2):    # should be 30
 
         # display "Start" to indicate the start of the audio
@@ -174,22 +174,30 @@ if __name__ == "__main__":
         print("Continue for the SoundFile{}".format(i+2))
 
         # Add ESC could core.quit() function in the middle of the experiments process
+        
 
     print("FINISHIED!")
     # close the window  at the end of the experiment
     win.close()
 
-
+    
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
                              'Response':responseLIST
                              })
 
+    with open(result_data_path + "S%s_Reading_task.csv" %sub_id, "r", encoding="UTF-8", newline='') as csvfile:
+        result_csv = csvfile.read.split("\n")
+        print(cs)
+    
+    """
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LTTC_Listening_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+"""
+
 
     # close all the Psychopy application
     core.quit()
