@@ -224,6 +224,10 @@ if __name__ == "__main__":
     for s in lengthLIST:  # s = box isze
         boxed_textLIST = []
         boxLIST = []
+        shuffled_boxed_textLIST = []
+        shuffled_boxLIST = []
+        
+        # Unshuffled Box Disecction
         for c in range(len(raw_textLIST)):  # c = word count
             # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
             if c%s == 0: # s == box size
@@ -233,10 +237,24 @@ if __name__ == "__main__":
                 boxed_textLIST.append(boxLIST)
             else:
                 pass
+        
+        for shuffle_c in range(len(raw_textLIST)):
+            if shuffle_c%s == 0: # s == box size
+                shuffled_boxLIST = raw_textLIST[shuffle_c:shuffle_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
+                #print(boxLIST)
+                #print(len(boxLIST))
+                shuffled_boxed_textLIST.append(shuffled_boxLIST)
+            else:
+                pass            
             
-        print(boxed_textLIST)
-        print(len(boxed_textLIST))
-        print("Box dissecction DONE")
+        #print(boxed_textLIST)
+        #print(len(boxed_textLIST))
+        #print("Box dissecction DONE")
+        
+        print(huffled_boxed_textLIST)
+        print(len(huffled_boxed_textLIST))
+        print("Shuffled Box dissecction DONE")
+    
         #for w in raw_textLIST:
         
         # what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
