@@ -74,7 +74,7 @@ if __name__ == "__main__":
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "Text_Test_slow.wav")
+    myobj.save(data_path + "Text_Test_slow.mp3")
     
     # Playing the converted file
     #os.system("mpg321 welcome.mp3")
