@@ -237,8 +237,22 @@ if __name__ == "__main__":
                 boxed_textLIST.append(boxLIST)
             else:
                 pass
+    print(boxed_textLIST)
+    print(len(boxed_textLIST))
+    print("Box dissecction DONE")
         
+    
+    for wordSTR in raw_textLIST:
+        print(wordSTR)
+    
+        
+        
+        
+        """
+        # Shuffled text Box Dissection (YET, Untested)
         for shuffle_c in range(len(raw_textLIST)):
+            
+            
             if shuffle_c%s == 0: # s == box size
                 shuffled_boxLIST = raw_textLIST[shuffle_c:shuffle_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
                 #print(boxLIST)
@@ -246,14 +260,11 @@ if __name__ == "__main__":
                 shuffled_boxed_textLIST.append(shuffled_boxLIST)
             else:
                 pass            
-            
-        #print(boxed_textLIST)
-        #print(len(boxed_textLIST))
-        #print("Box dissecction DONE")
-        
-        print(huffled_boxed_textLIST)
-        print(len(huffled_boxed_textLIST))
-        print("Shuffled Box dissecction DONE")
+        """
+
+        #print(huffled_boxed_textLIST)
+        #print(len(huffled_boxed_textLIST))
+        #print("Shuffled Box dissecction DONE")
     
         #for w in raw_textLIST:
         
