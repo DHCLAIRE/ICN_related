@@ -44,6 +44,15 @@ def word_frequncy(text):
     return count_wordDICT
 
 
+def shuffle_text(targetLIST):
+    '''
+    shuffle the test multiple times based on how long the text is 
+    '''
+    for i in range(len(targetLIST)):
+        random.shuffle(targetLIST)
+    return targetLIST
+
+
 if __name__ == "__main__":
     
     """
