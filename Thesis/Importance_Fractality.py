@@ -230,11 +230,12 @@ if __name__ == "__main__":
     lengthLIST = list(range(1,len(raw_textLIST)+1))
     print(lengthLIST) # How long is this text
     
+    shuffled_textLIST = []
     shuffled_textLIST = shuffle_text(raw_textLIST)
-    print(raw_textLIST)
-    print(shuffled_textLIST)
+    #print(raw_textLIST)
+    #print(shuffled_textLIST)
     
-    """
+    
     #divide the text by the box size
     for s in lengthLIST:  # s = box isze
         boxed_textLIST = []
@@ -255,12 +256,25 @@ if __name__ == "__main__":
                 pass
             
         # Shuffled Box Disecction
-        for shuffled_c in 
+        for shuffled_c in range(len(shuffled_textLIST)):
+            # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
+            if shuffled_c%s == 0: # s == box size
+                shuffled_boxLIST = shuffled_textLIST[shuffled_c:shuffled_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
+                #print(shuffled_boxLIST)
+                print(len(shuffled_boxLIST))
+                shuffled_boxed_textLIST.append(shuffled_boxLIST)
+            else:
+                pass
+        
     print(boxed_textLIST)
     print(len(boxed_textLIST))
     print("Box dissecction DONE")
-        
+    print(shuffled_boxed_textLIST)
+    print(len(shuffled_boxed_textLIST))
+    print("Shuffled Box dissecction DONE")
     
+    
+    """
     for wordSTR in raw_textLIST:
         print(wordSTR)
     
