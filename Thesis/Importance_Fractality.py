@@ -48,9 +48,10 @@ def shuffle_text(targetLIST):
     '''
     shuffle the test multiple times based on how long the text is 
     '''
-    for i in range(len(targetLIST)):
-        random.shuffle(targetLIST)
-    return targetLIST
+    shuffle_textLIST = targetLIST.copy()
+    for i in range(len(shuffle_textLIST)):
+        random.shuffle(shuffle_textLIST)
+    return shuffle_textLIST
 
 
 if __name__ == "__main__":
@@ -229,12 +230,18 @@ if __name__ == "__main__":
     lengthLIST = list(range(1,len(raw_textLIST)+1))
     print(lengthLIST) # How long is this text
     
+    shuffled_textLIST = shuffle_text(raw_textLIST)
+    print(raw_textLIST)
+    print(shuffled_textLIST)
+    
+    """
     #divide the text by the box size
     for s in lengthLIST:  # s = box isze
         boxed_textLIST = []
         boxLIST = []
         shuffled_boxed_textLIST = []
         shuffled_boxLIST = []
+        
         
         # Unshuffled Box Disecction
         for c in range(len(raw_textLIST)):  # c = word count
@@ -246,6 +253,9 @@ if __name__ == "__main__":
                 boxed_textLIST.append(boxLIST)
             else:
                 pass
+            
+        # Shuffled Box Disecction
+        for shuffled_c in 
     print(boxed_textLIST)
     print(len(boxed_textLIST))
     print("Box dissecction DONE")
@@ -254,10 +264,10 @@ if __name__ == "__main__":
     for wordSTR in raw_textLIST:
         print(wordSTR)
     
+    """
         
         
-        
-        """
+    """
         # Shuffled text Box Dissection (YET, Untested)
         for shuffle_c in range(len(raw_textLIST)):
             
@@ -281,7 +291,7 @@ if __name__ == "__main__":
     
     
 
-        """
+    """
     # text preprocessing >> remove punctuation
     # Storing the sets of punctuation in variable result 
     puncSTR = string.punctuation
