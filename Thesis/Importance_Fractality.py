@@ -235,6 +235,8 @@ if __name__ == "__main__":
     #print(raw_textLIST)
     #print(shuffled_textLIST)
     
+    All_boxed_textLIST = []
+    All_shuffled_boxed_textLIST = []
     
     #divide the text by the box size
     for s in lengthLIST:  # s = box isze
@@ -254,6 +256,7 @@ if __name__ == "__main__":
                 boxed_textLIST.append(boxLIST)
             else:
                 pass
+        All_boxed_textLIST.append(boxed_textLIST)
         
         # Shuffled Box Disecction
         # Using the shuffled textx
@@ -266,20 +269,30 @@ if __name__ == "__main__":
                 shuffled_boxed_textLIST.append(shuffled_boxLIST)
             else:
                 pass
+        All_shuffled_boxed_textLIST.append(shuffled_boxed_textLIST)
         
         #print(boxed_textLIST)
         #print(len(boxed_textLIST))  #Do I need to store every boxLIST into one big LIST or DICT??
-        print(shuffled_boxed_textLIST)
-        print(len(shuffled_boxed_textLIST))
+        #print(shuffled_boxed_textLIST)
+        #print(len(shuffled_boxed_textLIST))
     #print("Box dissecction DONE")
     #print("Shuffled Box dissecction DONE")
     
+    #print(All_boxed_textLIST)
+    #print(len(All_boxed_textLIST))
+    #print(All_shuffled_boxed_textLIST)
+    #print(len(All_shuffled_boxed_textLIST))
     
-    """
+    # Count the appearance of the target word in the boxLIST after the disecction was done
     for wordSTR in raw_textLIST:
-        print(wordSTR)
+        #print(wordSTR)
+        for box in boxed_textLIST:
+            print(box)
+            print(len(box))
+            #if wordSTR in bo
+            pass
     
-    """
+    
         
         
     """
