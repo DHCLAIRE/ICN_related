@@ -235,6 +235,7 @@ if __name__ == "__main__":
     #print(raw_textLIST)
     #print(shuffled_textLIST)
     
+    #(SOLVED!) what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
     All_boxed_textLIST = []
     All_shuffled_boxed_textLIST = []
     
@@ -307,41 +308,11 @@ if __name__ == "__main__":
                 
                 else:
                     pass
-                    #print("ERROR!!")
-            #if wordSTR in boxedLIST:
-                #print(wordSTR)
-                #t_wordcountINT = box.count(wordSTR)
-                #print(type(t_wordcountINT))
-            #else:
-                #print("ERROR!!!")
-                #print("The word ", wordSTR, "is here")
                 
                 pass
     
-    
-        
-        
-    """
-        # Shuffled text Box Dissection (YET, Untested)
-        for shuffle_c in range(len(raw_textLIST)):
-            
-            
-            if shuffle_c%s == 0: # s == box size
-                shuffled_boxLIST = raw_textLIST[shuffle_c:shuffle_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
-                #print(boxLIST)
-                #print(len(boxLIST))
-                shuffled_boxed_textLIST.append(shuffled_boxLIST)
-            else:
-                pass            
-        """
 
-        #print(huffled_boxed_textLIST)
-        #print(len(huffled_boxed_textLIST))
-        #print("Shuffled Box dissecction DONE")
-    
-        #for w in raw_textLIST:
         
-        # what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
     
     
 
