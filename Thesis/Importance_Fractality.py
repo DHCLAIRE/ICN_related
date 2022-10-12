@@ -284,18 +284,36 @@ if __name__ == "__main__":
     #print(len(All_shuffled_boxed_textLIST))
     
     # Count the appearance of the target word in the boxLIST after the disecction was done
+    # According to the sequence of the splited raw text = every segmented word in the text
     for wordSTR in raw_textLIST[:1]:
         #print(wordSTR)
+        
+        # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
         for boxedLIST in All_boxed_textLIST[:5]:
             print(wordSTR)
-            #print(boxedLIST)
-            #print(len(boxedLIST))
-            if wordSTR in boxedLIST:
-                print(wordSTR)
+            print(boxedLIST)
+            print(type(boxedLIST))
+            
+            # Access the elements of boxed list based on the box size
+            for small_boxLIST in boxedLIST:
+                #print(small_boxLIST)
+                
+                # Count the presence of the target word
+                if wordSTR in small_boxLIST:
+                    t_wordcountINT = small_boxLIST.count(wordSTR)
+                    print(wordSTR)
+                    print(t_wordcountINT)
+                    print(type(t_wordcountINT))
+                
+                else:
+                    pass
+                    #print("ERROR!!")
+            #if wordSTR in boxedLIST:
+                #print(wordSTR)
                 #t_wordcountINT = box.count(wordSTR)
                 #print(type(t_wordcountINT))
-            else:
-                print("ERROR!!!")
+            #else:
+                #print("ERROR!!!")
                 #print("The word ", wordSTR, "is here")
                 
                 pass
