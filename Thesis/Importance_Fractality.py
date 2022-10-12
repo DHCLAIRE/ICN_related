@@ -254,24 +254,25 @@ if __name__ == "__main__":
                 boxed_textLIST.append(boxLIST)
             else:
                 pass
-            
+        
         # Shuffled Box Disecction
+        # Using the shuffled textx
         for shuffled_c in range(len(shuffled_textLIST)):
             # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
             if shuffled_c%s == 0: # s == box size
                 shuffled_boxLIST = shuffled_textLIST[shuffled_c:shuffled_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
                 #print(shuffled_boxLIST)
-                print(len(shuffled_boxLIST))
+                #print(len(shuffled_boxLIST))
                 shuffled_boxed_textLIST.append(shuffled_boxLIST)
             else:
                 pass
         
-    print(boxed_textLIST)
-    print(len(boxed_textLIST))
-    print("Box dissecction DONE")
-    print(shuffled_boxed_textLIST)
-    print(len(shuffled_boxed_textLIST))
-    print("Shuffled Box dissecction DONE")
+        #print(boxed_textLIST)
+        #print(len(boxed_textLIST))  #Do I need to store every boxLIST into one big LIST or DICT??
+        print(shuffled_boxed_textLIST)
+        print(len(shuffled_boxed_textLIST))
+    #print("Box dissecction DONE")
+    #print("Shuffled Box dissecction DONE")
     
     
     """
