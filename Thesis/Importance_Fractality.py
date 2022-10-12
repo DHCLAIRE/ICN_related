@@ -284,13 +284,21 @@ if __name__ == "__main__":
     #print(len(All_shuffled_boxed_textLIST))
     
     # Count the appearance of the target word in the boxLIST after the disecction was done
-    for wordSTR in raw_textLIST:
+    for wordSTR in raw_textLIST[:1]:
         #print(wordSTR)
-        for box in boxed_textLIST:
-            print(box)
-            print(len(box))
-            #if wordSTR in bo
-            pass
+        for boxedLIST in All_boxed_textLIST[:5]:
+            print(wordSTR)
+            #print(boxedLIST)
+            #print(len(boxedLIST))
+            if wordSTR in boxedLIST:
+                print(wordSTR)
+                #t_wordcountINT = box.count(wordSTR)
+                #print(type(t_wordcountINT))
+            else:
+                print("ERROR!!!")
+                #print("The word ", wordSTR, "is here")
+                
+                pass
     
     
         
