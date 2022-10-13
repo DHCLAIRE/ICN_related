@@ -270,6 +270,7 @@ if __name__ == "__main__":
                 boxed_textLIST.append(boxLIST)
             else:
                 pass
+        # Save all the boxed result into a big LIST
         All_boxed_textLIST.append(boxed_textLIST)
         
         # Shuffled Box Disecction
@@ -283,6 +284,7 @@ if __name__ == "__main__":
                 shuffled_boxed_textLIST.append(shuffled_boxLIST)
             else:
                 pass
+        # Save all the boxed result into a big LIST
         All_shuffled_boxed_textLIST.append(shuffled_boxed_textLIST)
         
         #print(boxed_textLIST)
@@ -304,22 +306,22 @@ if __name__ == "__main__":
         
         # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
         for boxedLIST in All_boxed_textLIST:
-            print(wordSTR)
+            #print(wordSTR)
             print(boxedLIST)
-            print(type(boxedLIST))
+            #print(type(boxedLIST))
             t_wordcountINT = 0
             
             # Access the elements of boxed list based on the box size
             for small_boxLIST in boxedLIST:
                 #print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
                 
-                # Count the presence of the target word
+                # Count the existence of the target word
                 if wordSTR in small_boxLIST:
                     t_wordcountINT +=1
                     
                     #print(wordSTR)
             print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
-            print(type(t_wordcountINT))
+            #print(type(t_wordcountINT))
             # The count in this section would need to be DICTed by the box size, I think
                 #else:
                     #pass
