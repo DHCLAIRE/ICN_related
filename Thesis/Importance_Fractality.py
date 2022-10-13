@@ -254,10 +254,10 @@ if __name__ == "__main__":
     for s in lengthLIST:  # s = box isze
         # Unshuffled text
         boxed_textLIST = []  # the boxed result of the box size  i.e. the boxed result of s = 1
-        boxLIST = [] # the boxed word
+        boxLIST = [] # the boxed word  i.e.['rates']; ['passed', '70%']
         # Shuffled text
-        shuffled_boxed_textLIST = []
-        shuffled_boxLIST = []  # boxed result of the box size from shuffled text  i.e. the boxed result of s = 1
+        shuffled_boxed_textLIST = [] # boxed result of the box size from shuffled text  i.e. the boxed result of s = 1
+        shuffled_boxLIST = []  # the boxed word in shuffled text i.e.['rates']; ['passed', 'aged']
         
         
         # Unshuffled Box Disecction
@@ -274,7 +274,7 @@ if __name__ == "__main__":
         
         # Shuffled Box Disecction
         # Using the shuffled textx
-        for shuffled_c in range(len(shuffled_textLIST)):
+        for shuffled_c in range(len(shuffled_textLIST)):  #shuffled_c = word count in shuffled text
             # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
             if shuffled_c%s == 0: # s == box size
                 shuffled_boxLIST = shuffled_textLIST[shuffled_c:shuffled_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
@@ -318,7 +318,7 @@ if __name__ == "__main__":
                     t_wordcountINT +=1
                     
                     #print(wordSTR)
-            print("The word count of", wordSTR, "in box size = ", len(small_boxLIST), "is", t_wordcountINT)
+            print("The word count of", wordSTR, "in box size = ", len(boxedLIST[0]), "is", t_wordcountINT)
             print(type(t_wordcountINT))
             # The count in this section would need to be DICTed by the box size, I think
                 #else:
