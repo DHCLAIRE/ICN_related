@@ -198,7 +198,18 @@ if __name__ == "__main__":
     raw_textLIST = []
     
     
-    testing_text = """The marathon COVID-19 lockdown in Sydney, Australia, ended Monday for vaccinated residents. Stay-at-home orders imposed on June 26 have been lifted. Government advertisements have promised that freedoms would return when vaccination rates passed certain milestones. The message has been getting through to the community. Lockdown in the New South Wales state capital, Sydney, was lifted Monday because inoculation rates have passed 70% for people above aged 16. Shops have reopened for the first time since June. Small gatherings at home are permitted, and larger groups are allowed to meet at parks and beaches. However, the above apply only to fully vaccinated people. All residents still face restrictions on travel beyond Sydney. The rules will be eased when vaccination rates in New South Wales reach 80%. At that point international travel will resume. Still, New South Wales state premier Dominic Perrottet stated that a cautious stages approach to reopening is needed."""
+    testing_text = """The marathon COVID-19 lockdown in Sydney, Australia, ended Monday for vaccinated residents. 
+    Stay-at-home orders imposed on June 26 have been lifted. 
+    Government advertisements have promised that freedoms would return when vaccination rates passed certain milestones. 
+    The message has been getting through to the community. 
+    Lockdown in the New South Wales state capital, Sydney, was lifted Monday because inoculation rates have passed 70% for people above aged 16. 
+    Shops have reopened for the first time since June. 
+    Small gatherings at home are permitted, and larger groups are allowed to meet at parks and beaches. 
+    However, the above apply only to fully vaccinated people. 
+    All residents still face restrictions on travel beyond Sydney. 
+    The rules will be eased when vaccination rates in New South Wales reach 80%. 
+    At that point international travel will resume. 
+    Still, New South Wales state premier Dominic Perrottet stated that a cautious stages approach to reopening is needed."""
     #print(type(testing_text))
     #print(testing_text)
     
@@ -286,14 +297,15 @@ if __name__ == "__main__":
     
     # Count the appearance of the target word in the boxLIST after the disecction was done
     # According to the sequence of the splited raw text = every segmented word in the text
-    for wordSTR in raw_textLIST[:1]:
+    for wordSTR in raw_textLIST:
         #print(wordSTR)
         
         # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
-        for boxedLIST in All_boxed_textLIST[:5]:
+        for boxedLIST in All_boxed_textLIST:
             print(wordSTR)
             print(boxedLIST)
             print(type(boxedLIST))
+            t_wordcountINT = 0
             
             # Access the elements of boxed list based on the box size
             for small_boxLIST in boxedLIST:
@@ -301,15 +313,16 @@ if __name__ == "__main__":
                 
                 # Count the presence of the target word
                 if wordSTR in small_boxLIST:
-                    t_wordcountINT = small_boxLIST.count(wordSTR)
-                    print(wordSTR)
-                    print(t_wordcountINT)
-                    print(type(t_wordcountINT))
+                    t_wordcountINT +=1
+                    
+                    #print(wordSTR)
+            print(t_wordcountINT)
+            print(type(t_wordcountINT))
+            # The count in this section would need to be DICTed by the box size, I think
+                #else:
+                    #pass
                 
-                else:
-                    pass
-                
-                pass
+            pass
     
 
         
