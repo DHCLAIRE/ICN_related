@@ -247,15 +247,17 @@ if __name__ == "__main__":
     #print(shuffled_textLIST)
     
     #(SOLVED!) what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
-    All_boxed_textLIST = []
-    All_shuffled_boxed_textLIST = []
+    All_boxed_textLIST = []  # All the results of every boxed textLIST
+    All_shuffled_boxed_textLIST = []  #All the results of every boxed textLIST from shuffled text
     
     #divide the text by the box size
     for s in lengthLIST:  # s = box isze
-        boxed_textLIST = []
-        boxLIST = []
+        # Unshuffled text
+        boxed_textLIST = []  # the boxed result of the box size  i.e. the boxed result of s = 1
+        boxLIST = [] # the boxed word
+        # Shuffled text
         shuffled_boxed_textLIST = []
-        shuffled_boxLIST = []
+        shuffled_boxLIST = []  # boxed result of the box size from shuffled text  i.e. the boxed result of s = 1
         
         
         # Unshuffled Box Disecction
@@ -297,7 +299,7 @@ if __name__ == "__main__":
     
     # Count the appearance of the target word in the boxLIST after the disecction was done
     # According to the sequence of the splited raw text = every segmented word in the text
-    for wordSTR in raw_textLIST:
+    for wordSTR in raw_textLIST[:2]:
         #print(wordSTR)
         
         # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
@@ -309,14 +311,14 @@ if __name__ == "__main__":
             
             # Access the elements of boxed list based on the box size
             for small_boxLIST in boxedLIST:
-                #print(small_boxLIST)
+                print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
                 
                 # Count the presence of the target word
                 if wordSTR in small_boxLIST:
                     t_wordcountINT +=1
                     
                     #print(wordSTR)
-            print(t_wordcountINT)
+            print("The word count of", wordSTR, "in box size = ", len(small_boxLIST), "is", t_wordcountINT)
             print(type(t_wordcountINT))
             # The count in this section would need to be DICTed by the box size, I think
                 #else:
