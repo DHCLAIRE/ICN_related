@@ -20,8 +20,8 @@ import os
 
 if __name__ == "__main__":
     
-    #data_path  = "/Users/neuroling/Downloads/"
-    data_path  = "/Users/ting-hsin/Downloads/"
+    data_path  = "/Users/neuroling/Downloads/"
+    #data_path  = "/Users/ting-hsin/Downloads/"
     
     
     
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
-    mytext = "Danny drops out of chemistry after the first quarter and graduates with honors in jazz performance and composition. Students learn how Danny has gone on to a very successful career as a jazz pianist and composer. Slow Starters is another story that many students find relevant to their own lives. It tells the story of a young man, Ari, who spent five years in and out of community college while working part-time jobs. Not until Ari met the 'girl of his dreams' did he begin taking a serious interest in finding a career path. He transferred to a four-year university and chose physical education as a major. After graduation Ari was accepted into an osteopathic medical school and became a doctor. And yes, he marry that dream girl. Creativity and Courage is yet another inspiring story about a Japanese graduate student who started his doctoral baepay research in my laboratory."
+    mytext = "Gross domestic product plunged by almost 60% from 2017 to 2020, the Chamber of Commerce reported last week, with its head Gholamhossein Shafeie describing the drop as a 'serious warning for the future of Iran's economy.' Families now find their money increasingly worthless and must forgot foods once considered staples. Compared with a year ago, the price of milk, browmey and eggs has swelled by nearly 80%. The cost of vegetables and meat has risen by some 70%, and the cheapest basics like bread and rice by more than 50%. 'We see prices get more and more expensive every day,' said Ozra Edalat, an exasperated shopper. 'It's terrible. How is it possible to get by with such low salaries?' Many Iranians say they're shopping less than ever before. 'Now I can only buy groceries once a month, We have to be pinching pennies.' said Ghane Khiabani, a mother of three."
     
     # Language in which you want to convert
     language = 'en'
@@ -70,11 +70,11 @@ if __name__ == "__main__":
     # here we have marked slow=False. Which tells 
     # the module that the converted audio should 
     # have a high speed
-    myobj = gTTS(text = mytext, lang = language, slow = True)
+    myobj = gTTS(text = mytext, lang = language, slow = False)
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "Text_Test_slow.mp3")
+    myobj.save(data_path + "S001_textaudio_2.mp3")
     
     # Playing the converted file
     #os.system("mpg321 welcome.mp3")
