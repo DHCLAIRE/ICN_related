@@ -140,14 +140,15 @@ if __name__ == "__main__":
             print("SoundFile{} length = ".format(i+1), t)
             print("SoundFile{} length = ".format(i+1), int(t+1))
             """
-            
+            core.wait(1)
             # display fixation in the central of the screen
             display_fix()
-            core.wait(3)
+            
             # Display the pw stimulus
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
+            #core.wait(3)
             
             """
             # TO MARK THE PSEUDOWORD APPEARED
@@ -161,7 +162,7 @@ if __name__ == "__main__":
             win.flip()  # always add this after an item was presented
 
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait = 3, keyList = ['1', '2'])
+            keys = event.waitKeys(keyList = ['1', '2']) #maxWait = 3
             event.getKeys(keyList = ['1', '2'])
             print(keys)
 
