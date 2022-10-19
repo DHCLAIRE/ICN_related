@@ -140,9 +140,10 @@ if __name__ == "__main__":
             print("SoundFile{} length = ".format(i+1), t)
             print("SoundFile{} length = ".format(i+1), int(t+1))
             """
+            
             # display fixation in the central of the screen
             display_fix()
-            
+            core.wait(3)
             # Display the pw stimulus
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
             pw_Sound = sound.Sound(LTTC_pw_stm)
@@ -154,7 +155,7 @@ if __name__ == "__main__":
             #core.wait(0.01) # Stay for 10 ms
             #port.setData(0) #This is close the trigger
             """
-            #core.wait(3)
+
             
 
             win.flip()  # always add this after an item was presented
