@@ -152,13 +152,11 @@ if __name__ == "__main__":
             """
             # display fixation in the central of the screen
             display_fix()
-            #core.wait(1)
             
             # Display the pw stimulus
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
-            
             
             """
             # TO MARK THE PSEUDOWORD APPEARED
@@ -166,6 +164,9 @@ if __name__ == "__main__":
             #core.wait(0.01) # Stay for 10 ms
             #port.setData(0) #This is close the trigger
             """
+            #core.wait(3)
+            
+
             win.flip()  # always add this after an item was presented
 
             #setting up what keypress would allow the experiment to proceed
