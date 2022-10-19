@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import psychopy
-from psychopy import visual, core, event, clock, parallel
+#import psychopy
+#from psychopy import visual, core, event, clock, parallel
 import json
 import random
 from random import sample
@@ -48,7 +48,7 @@ def display_fix():
 """
 
 # The MEG trigger port info
-port = parallel.ParallelPort('0x0378')
+#port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     words_low_CD_setLIST = []
 
 
-    DICT_name = sub_id + '_pseudowordsDICT.json'
+    DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
 
     with open (Dsave_path, "r", encoding = "utf-8") as jfile:
@@ -119,9 +119,9 @@ if __name__ == "__main__":
         pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
 
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-
+        
+        print(pseudoLIST)
     pass
-
 
 
     # LDT Wanted data
@@ -147,8 +147,10 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""
+    #instructions_1 = """#接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+
+    #instructions_2 = """#將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
+"""
     keypress = ['space']
 
     core.wait(3)
@@ -169,12 +171,23 @@ if __name__ == "__main__":
             # display fixation in the central of the screen
             display_fix()
             core.wait(1)
-
+            
             start_time = clock.getTime()
-            # Show the testing stimulus
-            testing_stimuli = visual.TextStim(win = win, text = stim_wordSTR)  # how to control that every words only
-            testing_stimuli.draw()
-
+            # Display the pw stimulus
+            sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
+            len_data = len(data) # holds length of the numpy array
+            t = len_data / sample_rate # returns duration but in floats
+            print("SoundFile{} length = ".format(i+1), t)
+            print("SoundFile{} length = ".format(i+1), int(t+1))
+    
+            # Play the audio files section by section
+            Alice_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
+            Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
+            #now = ptb.GetSecs()
+            Script_Sound.play()
+            
+            
+            
             # TO MARK THE PSEUDOWORD APPEARED
             port.setData(8) #This is open the trigger
             #core.wait(0.01) # Stay for 10 ms
@@ -271,3 +284,4 @@ if __name__ == "__main__":
 
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
+"""
