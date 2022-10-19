@@ -140,12 +140,9 @@ if __name__ == "__main__":
         # randomly select the wanted pseudoword from the list
         random.shuffle(pseudoLIST)
         for stim_wordSTR in pseudoLIST:
-            # display fixation in the central of the screen
-            display_fix()
-            core.wait(1)
             
             start_time = clock.getTime()
-            # Display the pw stimulus
+            
             """
             sample_rate, data = wavfile.read(stim_data_path + '{}.wav'.format(stim_wordSTR))
             len_data = len(data) # holds length of the numpy array
@@ -153,10 +150,13 @@ if __name__ == "__main__":
             print("SoundFile{} length = ".format(i+1), t)
             print("SoundFile{} length = ".format(i+1), int(t+1))
             """
-            # Play the audio files section by section
+            # display fixation in the central of the screen
+            display_fix()
+            #core.wait(1)
+            
+            # Display the pw stimulus
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
-            pw_Sound = sound.Sound(LTTC_pw_stm)   #value=str(Alice_stm), secs = 60)
-            #now = ptb.GetSecs()
+            pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
             
             
@@ -169,8 +169,8 @@ if __name__ == "__main__":
             win.flip()  # always add this after an item was presented
 
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait = 5, keyList = ['z', 'slash'])
-            event.getKeys(keyList = ['z', 'slash'])
+            keys = event.waitKeys(maxWait = 3, keyList = ['1', '2'])
+            event.getKeys(keyList = ['1', '2'])
             print(keys)
 
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
