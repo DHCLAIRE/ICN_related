@@ -62,40 +62,6 @@ if __name__ == "__main__":
     words_high_CD_setLIST = []
     words_low_CD_setLIST = []
     PLDT_LIST = []
-    """
-    # 2_Import the pseudoword list (in json file form)
-    with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
-        pseudoLIST = json.load(jfile)
-        #print("12 pseudowords = ", pseudoLIST)
-
-    # 3_Randomly select 6 out of the list of 12 pseudowords as the target words
-        # randomly select 6 target pseudowords from the list
-        targetPseudoLIST = sample(pseudoLIST, 6)
-
-        # collect other 6 pseudowords as the control group
-        for t in pseudoLIST:
-            if t not in targetPseudoLIST:
-                controlPseudoLIST.extend([t])
-            else:
-                pass
-
-        #print("The TargetPseudo words = ", targetPseudoLIST)
-        #print("The ControlPseudo words = ", controlPseudoLIST)
-
-    # 4_Select 3 out of the 6 target words and divided 3-3 into High-CD and Low-CD conditions
-        words_high_CD_setLIST = sample(targetPseudoLIST, 3)
-
-        for w in targetPseudoLIST:
-            if w not in words_high_CD_setLIST:
-                words_low_CD_setLIST.extend([w])
-            else:
-                pass
-
-        #print("High-CD_set = ", words_high_CD_setLIST)
-        #print("Low-CD_set = ", words_low_CD_setLIST)
-
-        random.shuffle(pseudoLIST)
-        """
 
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -147,10 +113,8 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    #instructions_1 = """#接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-
-    #instructions_2 = """#將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
-"""
+    instructions_1 = """#接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+    instructions_2 = """#將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
     keypress = ['space']
 
     core.wait(3)
