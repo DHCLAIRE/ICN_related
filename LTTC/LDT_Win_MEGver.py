@@ -131,38 +131,30 @@ if __name__ == "__main__":
         random.shuffle(pseudoLIST)
         for stim_wordSTR in pseudoLIST:
             
+            #
             start_time = clock.getTime()
             
-            """
-            sample_rate, data = wavfile.read(stim_data_path + '{}.wav'.format(stim_wordSTR))
-            len_data = len(data) # holds length of the numpy array
-            t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(i+1), t)
-            print("SoundFile{} length = ".format(i+1), int(t+1))
-            """
+            # To refresh the win before play out the stim pw
+            win.flip()  # always add this after an item was presented
             core.wait(1)
             # display fixation in the central of the screen
             display_fix()
+            
             
             # Display the pw stimulus
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
-            #core.wait(3)
             
             """
             # TO MARK THE PSEUDOWORD APPEARED
-            port.setData(8) #This is open the trigger
+            #port.setData(8) #This is open the trigger
             #core.wait(0.01) # Stay for 10 ms
-            #port.setData(0) #This is close the trigger
+            port.setData(0) #This is close the trigger
             """
 
-            
-
-            win.flip()  # always add this after an item was presented
-
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(keyList = ['1', '2']) #maxWait = 3
+            keys = event.waitKeys(maxWait = 2, keyList = ['1', '2']) #
             event.getKeys(keyList = ['1', '2'])
             print(keys)
 
