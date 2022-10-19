@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# To Change the backend setting to PTB
+from psychopy import prefs
+prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+
+import psychtoolbox as ptb
+from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+print(sound.Sound)
+
 #import psychopy
 #from psychopy import visual, core, event, clock, parallel
 import json
@@ -66,7 +74,7 @@ if __name__ == "__main__":
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
 
-    #剩把pseudoDICT的值叫出來
+    #把pseudoDICT的值叫出來
     pseudoLIST = []
     targetPseudoLIST = []
     controlPseudoLIST = []
@@ -86,7 +94,7 @@ if __name__ == "__main__":
 
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
         
-        print(pseudoLIST)
+        #print(pseudoLIST)
     pass
 
 
@@ -138,25 +146,26 @@ if __name__ == "__main__":
             
             start_time = clock.getTime()
             # Display the pw stimulus
-            sample_rate, data = wavfile.read(data_path + 'DownTheRabbitHoleFinal_SoundFile{}.wav'.format(i+1))
+            """
+            sample_rate, data = wavfile.read(stim_data_path + '{}.wav'.format(stim_wordSTR))
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
             print("SoundFile{} length = ".format(i+1), t)
             print("SoundFile{} length = ".format(i+1), int(t+1))
-    
+            """
             # Play the audio files section by section
-            Alice_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
-            Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
+            LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
+            pw_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
             #now = ptb.GetSecs()
-            Script_Sound.play()
+            pw_Sound.play()
             
             
-            
+            """
             # TO MARK THE PSEUDOWORD APPEARED
             port.setData(8) #This is open the trigger
             #core.wait(0.01) # Stay for 10 ms
             #port.setData(0) #This is close the trigger
-
+            """
             win.flip()  # always add this after an item was presented
 
             #setting up what keypress would allow the experiment to proceed
@@ -165,16 +174,16 @@ if __name__ == "__main__":
             print(keys)
 
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-            if keys == ["z"]:
-                conditionLIST = ["seen"]
+            if keys == ["1"]:
+                conditionLIST = ["heard"]
                 end_time = clock.getTime()
                 time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
                 print(time_duration)
                 #print(type(time_duration))
                 clock.reset()
 
-            elif keys == ["slash"]:
-                conditionLIST = ["unseen"]
+            elif keys == ["2"]:
+                conditionLIST = ["unheard"]
                 end_time = clock.getTime()
                 time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
                 print(time_duration)
@@ -187,28 +196,29 @@ if __name__ == "__main__":
                 time_duration = 0
                 print(time_duration)
                 clock.reset()
+            """
             # TO MARK THE PSEUDOWORD GONE
             #port.setData(8) #This is open the trigger
             #core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-
+            """
             # calculate the correctness of the LDT response
             if stim_wordSTR in targetPseudoLIST:
                 #conditionLIST = ["seen"]
-                if keys == ["z"]:
+                if keys == ["1"]:
                     correctLIST = ["True"]
                 #conditionLIST = ["unseen"]
-                elif keys == ["slash"]:
+                elif keys == ["2"]:
                     correctLIST = ["False"]
                 else:
                     correctLIST = ["N/A"]
 
             elif stim_wordSTR not in targetPseudoLIST:
                 #conditionLIST = ["seen"]
-                if keys == ["z"]:
+                if keys == ["1"]:
                     correctLIST = ["False"]
                 #conditionLIST = ["unseen"]
-                elif keys == ["slash"]:
+                elif keys == ["2"]:
                     correctLIST = ["True"]
                 else:
                     correctLIST = ["N/A"]
@@ -242,10 +252,9 @@ if __name__ == "__main__":
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = sub_id + '_LDT_results.csv'
+    file_name = 'S%s_LDT_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
-"""
