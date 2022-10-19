@@ -59,29 +59,19 @@ def display_fix():
 #port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
-
+    # key in number for notifying which subject it is
+    sub_id = str(input("Subject_ID: "))
+    
+    # Set up the data path
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"#"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
 
     # setting up usable dataLIST
+    targetPseudoLIST = []
     pseudoLIST = []
     targetPseudoLIST = []
-    controlPseudoLIST = []
-    words_high_CD_setLIST = []
-    words_low_CD_setLIST = []
-    PLDT_LIST = []
 
-    # key in number for notifying which subject it is
-    sub_id = str(input("Subject: "))
-
-    #把pseudoDICT的值叫出來
-    pseudoLIST = []
-    targetPseudoLIST = []
-    controlPseudoLIST = []
-    words_high_CD_setLIST = []
-    words_low_CD_setLIST = []
-
-
+    # Set up the pwDICT's data path
     DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
 
@@ -94,7 +84,7 @@ if __name__ == "__main__":
 
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
         
-        #print(pseudoLIST)
+        print(pseudoLIST)
     pass
 
 
@@ -125,13 +115,13 @@ if __name__ == "__main__":
     instructions_2 = """將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
     keypress = ['space']
 
-    core.wait(3)
+    #core.wait(3)
 
     #Display the instructions
     display_ins(instructions_1, keypress)
     display_ins(instructions_2, keypress)
 
-    core.wait(3)
+    #core.wait(3)
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
