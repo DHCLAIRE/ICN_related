@@ -52,8 +52,8 @@ port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
 
-    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
-    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
+    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"#"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
 
     # setting up usable dataLIST
     pseudoLIST = []
@@ -147,8 +147,8 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會看到一連串的字詞，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """看過請按z 沒看過請按/\n請按空白鍵繼續\\\\將你的左食指輕放在z鍵，右食指輕放在/鍵。\n請按空白鍵繼續\\\\當字詞出現時，請盡快且正確的進行按鍵反應。\n請按空白鍵繼續"""
+    instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+    instructions_2 = """將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""
     keypress = ['space']
 
     core.wait(3)
