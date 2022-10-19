@@ -71,15 +71,17 @@ port = parallel.ParallelPort('0x0378')
 # 
 
 if __name__ == "__main__":
-    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
-    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
+    # For key-in the id of the subject
+    sub_id = str(input("Subject: "))
+    
+    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
     #text_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
 
     # Stimuli Section
     # insert the stim-forming code?? >> or just present the selected texts per paragraphs??
-
 
     # Wanted data
     day = date.today()
@@ -89,9 +91,6 @@ if __name__ == "__main__":
     text_noLIST = []
     resultKeyLIST = []
 
-    # For key-in the id of the subject
-    sub_id = str(input("Subject: "))
-
     # setting up the display win conditions
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
@@ -99,8 +98,9 @@ if __name__ == "__main__":
     #start_time = clock.getTime()
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會看到一篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請在紙上評分，評分完畢後\n請按下空白鍵繼續"""
+    instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""
+    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放音檔"""
     keypress = ['space']
 
     # for pseudoword data
