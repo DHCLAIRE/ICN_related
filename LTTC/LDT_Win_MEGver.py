@@ -181,12 +181,8 @@ if __name__ == "__main__":
                 time_duration = 0
                 print(time_duration)
                 clock.reset()
-            """
-            # TO MARK THE PSEUDOWORD GONE
-            #port.setData(8) #This is open the trigger
-            #core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
+
+
             # calculate the correctness of the LDT response
             if stim_wordSTR in targetPseudoLIST:
                 #conditionLIST = ["seen"]
