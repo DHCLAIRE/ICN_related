@@ -121,8 +121,8 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """#接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """#將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
+    instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+    instructions_2 = """將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
     keypress = ['space']
 
     core.wait(3)
@@ -155,7 +155,7 @@ if __name__ == "__main__":
             """
             # Play the audio files section by section
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
-            pw_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
+            pw_Sound = sound.Sound(LTTC_pw_stm)   #value=str(Alice_stm), secs = 60)
             #now = ptb.GetSecs()
             pw_Sound.play()
             
