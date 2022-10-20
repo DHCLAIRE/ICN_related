@@ -109,9 +109,6 @@ if __name__ == "__main__":
     # Testing small screen
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
 
-    # display instructions
-    display_ins(instructions_1, keypressLIST_space)
-
     
     for i in range(2):  # need to loop a total 3 times
         
@@ -136,8 +133,8 @@ if __name__ == "__main__":
             sample_rate, data = wavfile.read(stim_data_path + "S%s_textaudio_modified_%s.wav" %(sub_id, tape_numSTR))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(tape_numSTR+1), t)
-            print("SoundFile{} length = ".format(tapeINT+1), int(t+1))
+            print("SoundFile{} length = ".format(tape_numSTR), t)
+            print("SoundFile{} length = ".format(tape_numSTR), int(t+1))
     
             # Play the audio files section by section
             LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%s.wav" %(sub_id, tape_numSTR)
@@ -217,11 +214,18 @@ if __name__ == "__main__":
                              'Date':dateLIST,
                              'Response':responseLIST
                              })
+    
+    # Save the file
+    file_name = 'S%s_Listening_results.csv' %sub_id
+    save_path = result_data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
+    """
+    # TRY TO OPEN THE CSV FILE COMMAND
     with open(result_data_path + "S%s_Listening_task.csv" %sub_id, "r", encoding="UTF-8", newline='') as csvfile:
         result_csv = csvfile.read.split("\n")
         print(cs)
-    
+    """
     """
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LTTC_Listening_results.csv' %sub_id
