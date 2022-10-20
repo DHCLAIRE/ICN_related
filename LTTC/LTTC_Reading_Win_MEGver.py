@@ -58,9 +58,18 @@ def display_fix():
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
+    
+def display_start():
+    '''
+    呈現"Start"於螢幕中央，暗示音檔即將要播出了。
+    '''
+    fixation = visual.TextStim(win = win, text = "Start")
+    fixation.draw()
+    win.flip()
+
 
 # The MEG trigger port info
-port = parallel.ParallelPort('0x0378')
+#port = parallel.ParallelPort('0x0378')
 
 # Parts that Need to modify
 """
@@ -98,9 +107,9 @@ if __name__ == "__main__":
     #start_time = clock.getTime()
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""
-    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放音檔"""
+    instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""  #"""接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""  #"""請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
+    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放下一階段的文章"""
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
 
@@ -234,6 +243,27 @@ if __name__ == "__main__":
     # Reading Comprehension Task STARTS
     for i in range(3):  #total_stimSetLIST:  #total_stimSetLIST[:3]:
         for tape in range(10):
+            
+            # display "Start" to indicate the start of the audio
+            display_start()
+            core.wait(1)
+    
+            # display fixation for subject to look at when listening to the tape
+            display_fix()
+    
+            # get the length of each audio files of every text
+            sample_rate, data = wavfile.read(stim_data_path + 'S%s_textaudio_%d.wav' %(sub_id, i+1))
+            len_data = len(data) # holds length of the numpy array
+            t = len_data / sample_rate # returns duration but in floats
+            print("SoundFile{} length = ".format(i+1), t)
+            print("SoundFile{} length = ".format(i+1), int(t+1))
+    
+            # Play the audio files section by section
+            LTTC_stm = stim_data_path + "S%s_textaudio_%d.wav" %(sub_id, i+1)
+            Script_Sound = sound.Sound(LTTC_stm)   #value=str(Alice_stm), secs = 60)
+            #now = ptb.GetSecs()
+            Script_Sound.play()            
+            
             
             # display instructions for Reading Comprehension phase
             display_ins(instructions_1, keypress)
