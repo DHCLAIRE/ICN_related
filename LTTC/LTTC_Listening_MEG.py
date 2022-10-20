@@ -113,80 +113,6 @@ if __name__ == "__main__":
     display_ins(instructions_1, keypressLIST_space)
 
     
-    for i in range(2):    # should be 30
-
-        # display "Start" to indicate the start of the audio
-        display_start()
-        core.wait(1)
-
-        # display fixation for subject to look at when listening to the tape
-        display_fix()
-
-        # get the length of each audio files of every text
-        sample_rate, data = wavfile.read(stim_data_path + 'S%s_textaudio_%d.wav' %(sub_id, i+1))
-        len_data = len(data) # holds length of the numpy array
-        t = len_data / sample_rate # returns duration but in floats
-        print("SoundFile{} length = ".format(i+1), t)
-        print("SoundFile{} length = ".format(i+1), int(t+1))
-
-        # Play the audio files section by section
-        LTTC_stm = stim_data_path + "S%s_textaudio_%d.wav" %(sub_id, i+1)
-        Script_Sound = sound.Sound(LTTC_stm)   #value=str(Alice_stm), secs = 60)
-        #now = ptb.GetSecs()
-        Script_Sound.play()
-        
-        """
-        # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-        port.setData(2) #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        port.setData(0) #This is close the trigger
-        """
-        # set core wait time that match with the length of each audio files
-        core.wait(int(t+1))
-        """
-        # TO MARK THE AUDIO FILE ENDS
-        port.setData(2) #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        port.setData(0) #This is close the trigger
-        """
-
-        print("SoundFile{}".format(i+1), "DONE")
-        #print("Pause for 5 seconds.")
-        core.wait(0.5)
-
-        """
-        # TO MARK THE QUESTION BEGINS
-        port.setData(2) #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        port.setData(0) #This is close the trigger
-        """
-        win.flip()
-
-        # Display the quesitons for each tape
-        ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
-        """
-        # TO MARK THE QUESTION ENDS
-        port.setData(2) #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        port.setData(0) #This is close the trigger
-        """
-        # making the wanted info into the List form for future use
-        sub_idLIST.append(sub_id)
-        dateLIST.append(day)
-        responseLIST.append(ans_keypressSTR)
-
-        # the Gap between each audio files
-        #core.wait(5)
-        print("Continue for the SoundFile{}".format(i+2))
-
-        # Add ESC could core.quit() function in the middle of the experiments process
-        
-
-    print("FINISHIED!")
-    # close the window  at the end of the experiment
-    win.close()
-
-"""
     for i in range(2):  # need to loop a total 3 times
         
         # display instructions for Reading Comprehension phase
@@ -215,27 +141,26 @@ if __name__ == "__main__":
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             #now = ptb.GetSecs()
             Script_Sound.play()
-            
+        
             """
-            # TO MARK THE AUDIO FILE BEGINS
+            # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
             port.setData(2) #This is open the trigger
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
             """
             # set core wait time that match with the length of each audio files
             core.wait(int(t+1))
-            
             """
             # TO MARK THE AUDIO FILE ENDS
             port.setData(2) #This is open the trigger
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
             """
-    
+
             print("SoundFile{}".format(i+1), "DONE")
             #print("Pause for 5 seconds.")
             core.wait(0.5)
-    
+
             """
             # TO MARK THE QUESTION BEGINS
             port.setData(2) #This is open the trigger
@@ -243,18 +168,32 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             """
             win.flip()
-            
-            # display instructions for Listening Comprehension rating
-            rating_ansINT = display_ins(instructions_2, keypressLIST_ans)
-            
+
+            # Display the quesitons for each tape
+            ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
             """
             # TO MARK THE QUESTION ENDS
             port.setData(2) #This is open the trigger
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
             """
-            win.flip()
+            # making the wanted info into the List form for future use
+            sub_idLIST.append(sub_id)
+            dateLIST.append(day)
+            responseLIST.append(ans_keypressSTR)
 
+            # the Gap between each audio files
+            #core.wait(5)
+            print("Continue for the SoundFile{}".format(i+2))
+        # ask the participant to evaluate how well they understand the presented text
+        display_ins(instructions_3, keypressLIST_space)
+        
+
+    print("FINISHIED!")
+    # close the window  at the end of the experiment
+    win.close()
+
+    """
             # setting up what keypress would allow the experiment to proceed
             keys = event.waitKeys(keyList = keypressLIST_ans)
             event.getKeys(keyList = keypress)
@@ -268,37 +207,15 @@ if __name__ == "__main__":
                 clock.reset()
             else:
                 pass  # we should use continue in here, right?
-            """
-            # making the wanted info into the List form for future use
-            text_noLIST.append(int(total_stimSetLIST.index(i))+1)
-            dateLIST.append(day)
-            sub_idLIST.append(sub_id)
-            resultKeyLIST.append(keys)
-            self_paced_rtLIST.append(time_duration)
-            shuffledTotalT_LIST.append([i])
-            rating_LIST.append([""])
-            """
-            core.wait(0.5)
+    """
 
-        # ask the participant to evaluate how well they understand the presented text
-        display_ins(instructions_3, keypressLIST_space)
-
-
-    # close the window  at the end of the experiment
-    win.close()
-"""
-
-
-
-
-    
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
                              'Response':responseLIST
                              })
 
-    with open(result_data_path + "S%s_Reading_task.csv" %sub_id, "r", encoding="UTF-8", newline='') as csvfile:
+    with open(result_data_path + "S%s_Listening_task.csv" %sub_id, "r", encoding="UTF-8", newline='') as csvfile:
         result_csv = csvfile.read.split("\n")
         print(cs)
     
@@ -308,7 +225,6 @@ if __name__ == "__main__":
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 """
-
 
     # close all the Psychopy application
     core.quit()
