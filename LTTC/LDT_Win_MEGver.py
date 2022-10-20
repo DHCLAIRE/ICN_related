@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(1):
+    for i in range(1):  #need to loop 10 times for a 120 total trials
 
         # randomly select the wanted pseudoword from the list
         random.shuffle(pseudoLIST)
