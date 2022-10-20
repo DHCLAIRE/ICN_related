@@ -283,24 +283,43 @@ if __name__ == "__main__":
             core.wait(0.5)
             
             
+            
             """
-            # display instructions for Reading Comprehension phase
-            display_ins(instructions_1, keypress)
-            #win.flip()
+            # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+            # set core wait time that match with the length of each audio files
+            core.wait(int(t+1))
+            """
+            # TO MARK THE AUDIO FILE ENDS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+    
+            print("SoundFile{}".format(i+1), "DONE")
+            #print("Pause for 5 seconds.")
             core.wait(0.5)
-
-            # display fixation in the central of the screen
-            display_fix()
-            core.wait(1)
-
-            start_time = clock.getTime()
-            # display the stimuli, which would be a series of short texts
-            testing_text = i
-            text = visual.TextStim(win = win, text = testing_text)
-            print("text starts")
-            text.draw()
+    
             """
-
+            # TO MARK THE QUESTION BEGINS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+            win.flip()
+    
+            # Display the quesitons for each tape
+            ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
+            """
+            # TO MARK THE QUESTION ENDS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+            
             win.flip()
 
             # setting up what keypress would allow the experiment to proceed
@@ -317,12 +336,6 @@ if __name__ == "__main__":
             else:
                 pass  # we should use continue in here, right?
             
-            """
-            # TO MARK THE AUDIO FILE ENDS
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
             # making the wanted info into the List form for future use
             text_noLIST.append(int(total_stimSetLIST.index(i))+1)
             dateLIST.append(day)
@@ -340,7 +353,7 @@ if __name__ == "__main__":
 
     # close the window  at the end of the experiment
     win.close()
-
+    """
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                        'Date':dateLIST,
@@ -378,6 +391,6 @@ if __name__ == "__main__":
     with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
         json.dump(textsDICT, jsfile_2, ensure_ascii=False)
 
-
+    """
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
