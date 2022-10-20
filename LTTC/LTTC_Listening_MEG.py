@@ -73,7 +73,13 @@ port = parallel.ParallelPort('0x0378')
 if __name__ == "__main__":
     
     ## The path needs to be modified ##
+    # For key-in the id of the subject
+    sub_id = str(input("Subject: "))
     
+    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    
+    """
     #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  # Testing
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
@@ -81,10 +87,13 @@ if __name__ == "__main__":
     #text_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
+    """
+    # Setting the instructions and the response key
+    instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""  #"""接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""  #"""請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
+    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放下一階段的文章"""
     
-    instructions_1 = """接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""    # Need to think about it
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
-
+    # Set up the keypress types
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
 
@@ -94,9 +103,6 @@ if __name__ == "__main__":
     sub_idLIST = []
     resultKeyLIST = []
     responseLIST = []
-
-    # key in number for notifying which subject it is
-    sub_id = str(input("Subject: "))
 
     # Full screen
     #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
@@ -179,6 +185,111 @@ if __name__ == "__main__":
     print("FINISHIED!")
     # close the window  at the end of the experiment
     win.close()
+
+"""
+    for i in range(2):  # need to loop a total 3 times
+        
+        # display instructions for Reading Comprehension phase
+        display_ins(instructions_1, keypressLIST_space)
+        #win.flip()
+        core.wait(0.5)
+        
+        for tapeINT in range(3): # need to loop a total 10 times
+            
+            # display "Start" to indicate the start of the audio
+            display_start()
+            core.wait(1)
+    
+            # display fixation for subject to look at when listening to the tape
+            display_fix()
+    
+            # get the length of each audio files of every text
+            sample_rate, data = wavfile.read(stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1))   # the %s value in here will need to rewrite
+            len_data = len(data) # holds length of the numpy array
+            t = len_data / sample_rate # returns duration but in floats
+            print("SoundFile{} length = ".format(tapeINT+1), t)
+            print("SoundFile{} length = ".format(tapeINT+1), int(t+1))
+    
+            # Play the audio files section by section
+            LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1)
+            Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
+            #now = ptb.GetSecs()
+            Script_Sound.play()
+            
+            """
+            # TO MARK THE AUDIO FILE BEGINS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+            # set core wait time that match with the length of each audio files
+            core.wait(int(t+1))
+            
+            """
+            # TO MARK THE AUDIO FILE ENDS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+    
+            print("SoundFile{}".format(i+1), "DONE")
+            #print("Pause for 5 seconds.")
+            core.wait(0.5)
+    
+            """
+            # TO MARK THE QUESTION BEGINS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+            win.flip()
+            
+            # display instructions for Listening Comprehension rating
+            rating_ansINT = display_ins(instructions_2, keypressLIST_ans)
+            
+            """
+            # TO MARK THE QUESTION ENDS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """
+            win.flip()
+
+            # setting up what keypress would allow the experiment to proceed
+            keys = event.waitKeys(keyList = keypressLIST_ans)
+            event.getKeys(keyList = keypress)
+            print(keys)
+            print("audio ends")
+            if keys == ["space"]:
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                print(type(time_duration))
+                clock.reset()
+            else:
+                pass  # we should use continue in here, right?
+            """
+            # making the wanted info into the List form for future use
+            text_noLIST.append(int(total_stimSetLIST.index(i))+1)
+            dateLIST.append(day)
+            sub_idLIST.append(sub_id)
+            resultKeyLIST.append(keys)
+            self_paced_rtLIST.append(time_duration)
+            shuffledTotalT_LIST.append([i])
+            rating_LIST.append([""])
+            """
+            core.wait(0.5)
+
+        # ask the participant to evaluate how well they understand the presented text
+        display_ins(instructions_3, keypressLIST_space)
+
+
+    # close the window  at the end of the experiment
+    win.close()
+"""
+
+
+
 
     
     # Saving the self_paced_rt result into csv file
