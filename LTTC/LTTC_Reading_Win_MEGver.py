@@ -58,18 +58,9 @@ def display_fix():
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
-    
-def display_start():
-    '''
-    呈現"Start"於螢幕中央，暗示音檔即將要播出了。
-    '''
-    fixation = visual.TextStim(win = win, text = "Start")
-    fixation.draw()
-    win.flip()
-
 
 # The MEG trigger port info
-#port = parallel.ParallelPort('0x0378')
+port = parallel.ParallelPort('0x0378')
 
 # Parts that Need to modify
 """
@@ -80,17 +71,15 @@ def display_start():
 # 
 
 if __name__ == "__main__":
-    # For key-in the id of the subject
-    sub_id = str(input("Subject: "))
-    
-    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
+    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
     #text_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
 
     # Stimuli Section
     # insert the stim-forming code?? >> or just present the selected texts per paragraphs??
+
 
     # Wanted data
     day = date.today()
@@ -100,6 +89,9 @@ if __name__ == "__main__":
     text_noLIST = []
     resultKeyLIST = []
 
+    # For key-in the id of the subject
+    sub_id = str(input("Subject: "))
+
     # setting up the display win conditions
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
@@ -107,11 +99,9 @@ if __name__ == "__main__":
     #start_time = clock.getTime()
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""  #"""接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""  #"""請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
-    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放下一階段的文章"""
-    keypressLIST_space = ["space"]
-    keypressLIST_ans = ["1", "2", "3", "4"]
+    instructions_1 = """接下來你會看到一篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請在紙上評分，評分完畢後\n請按下空白鍵繼續"""
+    keypress = ['space']
 
     # for pseudoword data
     tmpLIST = []
@@ -124,7 +114,7 @@ if __name__ == "__main__":
     texts_high_CD_setLIST = []
     texts_low_CD_setLIST = []
 
-    """
+
     # 2_Import the pseudoword list (in json file form)
     with open (stim_data_path + "LTTC-pseudowordLIST.json", "r", encoding = "utf-8") as jfile:
         pseudoLIST = json.load(jfile)
@@ -156,8 +146,7 @@ if __name__ == "__main__":
         print("High-CD_set = ", words_high_CD_setLIST)
         print("Low-CD_set = ", words_low_CD_setLIST)
 
-        """
-    """
+
     # Load in the stim_texts
     # for the stim_texts data
     textSetsLIST_High = []
@@ -191,10 +180,9 @@ if __name__ == "__main__":
 
     Setsinfo_LIST.extend(HightSetsLIST)
     Setsinfo_LIST.extend(LowtSetsLIST)
-    """
 
-    #for sets in range(3):
-    """
+
+    for sets in range(3):
         # High_CD Set TEXTS
         with open (textSets_data_path + "sets_{}_LIST.json".format(HightSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_3:
             textSetsLIST_High = json.load(jfile_3)
@@ -237,110 +225,73 @@ if __name__ == "__main__":
 
     # Shuffle the texts so that the texts would be randomized
     random.shuffle(total_stimSetLIST)
-    """
+
 
     # Experiment section
     # Reading Comprehension Task STARTS
-    for i in range(2):  # need to loop a total 3 times
-        
+    for i in total_stimSetLIST:  #total_stimSetLIST[:3]:  
         # display instructions for Reading Comprehension phase
-        display_ins(instructions_1, keypressLIST_space)
+        display_ins(instructions_1, keypress)
         #win.flip()
         core.wait(0.5)
-        
-        for tapeINT in range(3): # need to loop a total 10 times
-            
-            # display "Start" to indicate the start of the audio
-            display_start()
-            core.wait(1)
-    
-            # display fixation for subject to look at when listening to the tape
-            display_fix()
-    
-            # get the length of each audio files of every text
-            sample_rate, data = wavfile.read(stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1))   # the %s value in here will need to rewrite
-            len_data = len(data) # holds length of the numpy array
-            t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(tapeINT+1), t)
-            print("SoundFile{} length = ".format(tapeINT+1), int(t+1))
-    
-            # Play the audio files section by section
-            LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1)
-            Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
-            #now = ptb.GetSecs()
-            Script_Sound.play()
-            
-            """
-            # TO MARK THE AUDIO FILE BEGINS
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
-            # set core wait time that match with the length of each audio files
-            core.wait(int(t+1))
-            
-            """
-            # TO MARK THE AUDIO FILE ENDS
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
-    
-            print("SoundFile{}".format(i+1), "DONE")
-            #print("Pause for 5 seconds.")
-            core.wait(0.5)
-    
-            """
-            # TO MARK THE QUESTION BEGINS
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
-            win.flip()
-            
-            # display instructions for Listening Comprehension rating
-            rating_ansINT = display_ins(instructions_2, keypressLIST_ans)
-            
-            """
-            # TO MARK THE QUESTION ENDS
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
-            win.flip()
 
-            # setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(keyList = keypressLIST_ans)
-            event.getKeys(keyList = keypress)
-            print(keys)
-            print("audio ends")
-            if keys == ["space"]:
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                print(time_duration)
-                print(type(time_duration))
-                clock.reset()
-            else:
-                pass  # we should use continue in here, right?
-            """
-            # making the wanted info into the List form for future use
-            text_noLIST.append(int(total_stimSetLIST.index(i))+1)
-            dateLIST.append(day)
-            sub_idLIST.append(sub_id)
-            resultKeyLIST.append(keys)
-            self_paced_rtLIST.append(time_duration)
-            shuffledTotalT_LIST.append([i])
-            rating_LIST.append([""])
-            """
-            core.wait(0.5)
+        # display fixation in the central of the screen
+        display_fix()
+        core.wait(1)
+
+        start_time = clock.getTime()
+        # display the stimuli, which would be a series of short texts
+        testing_text = i
+        text = visual.TextStim(win = win, text = testing_text)
+        print("text starts")
+        text.draw()
+
+        # TO MARK THE AUDIO FILE BEGINS
+        port.setData(2) #This is open the trigger
+        core.wait(0.01) # Stay for 10 ms
+        port.setData(0) #This is close the trigger
+
+        win.flip()
+
+        # adding rating scale in here!!!!
+
+        # setting up what keypress would allow the experiment to proceed
+        keys = event.waitKeys(keyList = keypress)
+        event.getKeys(keyList = keypress)
+        print(keys)
+        print("text ends")
+        if keys == ["space"]:
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            print(time_duration)
+            print(type(time_duration))
+            clock.reset()
+        else:
+            pass
+
+        # TO MARK THE AUDIO FILE ENDS
+        port.setData(2) #This is open the trigger
+        core.wait(0.01) # Stay for 10 ms
+        port.setData(0) #This is close the trigger
+
+        # making the wanted info into the List form for future use
+        text_noLIST.append(int(total_stimSetLIST.index(i))+1)
+        dateLIST.append(day)
+        sub_idLIST.append(sub_id)
+        resultKeyLIST.append(keys)
+        self_paced_rtLIST.append(time_duration)
+        shuffledTotalT_LIST.append([i])
+        rating_LIST.append([""])
+
+        core.wait(0.5)
 
         # ask the participant to evaluate how well they understand the presented text
-        display_ins(instructions_3, keypressLIST_space)
+        display_ins(instructions_2, keypress)
 
 
     # close the window  at the end of the experiment
     win.close()
-    """
+
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                        'Date':dateLIST,
@@ -378,6 +329,6 @@ if __name__ == "__main__":
     with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
         json.dump(textsDICT, jsfile_2, ensure_ascii=False)
 
-    """
+
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
