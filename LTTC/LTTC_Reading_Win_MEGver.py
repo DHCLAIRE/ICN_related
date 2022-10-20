@@ -193,8 +193,8 @@ if __name__ == "__main__":
     Setsinfo_LIST.extend(LowtSetsLIST)
     """
 
-    for sets in range(3):
-        """
+    #for sets in range(3):
+    """
         # High_CD Set TEXTS
         with open (textSets_data_path + "sets_{}_LIST.json".format(HightSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_3:
             textSetsLIST_High = json.load(jfile_3)
@@ -241,8 +241,14 @@ if __name__ == "__main__":
 
     # Experiment section
     # Reading Comprehension Task STARTS
-    for i in range(3):  #total_stimSetLIST:  #total_stimSetLIST[:3]:
-        for tape in range(10):
+    for i in range(2):  # need to loop a total 3 times
+        
+        # display instructions for Reading Comprehension phase
+        display_ins(instructions_1, keypressLIST_space)
+        #win.flip()
+        core.wait(0.5)
+        
+        for tapeINT in range(3): # need to loop a total 10 times
             
             # display "Start" to indicate the start of the audio
             display_start()
@@ -252,19 +258,32 @@ if __name__ == "__main__":
             display_fix()
     
             # get the length of each audio files of every text
-            sample_rate, data = wavfile.read(stim_data_path + 'S%s_textaudio_%d.wav' %(sub_id, i+1))
+            sample_rate, data = wavfile.read(stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(i+1), t)
-            print("SoundFile{} length = ".format(i+1), int(t+1))
+            print("SoundFile{} length = ".format(tapeINT+1), t)
+            print("SoundFile{} length = ".format(tapeINT+1), int(tapeINT+1))
     
             # Play the audio files section by section
-            LTTC_stm = stim_data_path + "S%s_textaudio_%d.wav" %(sub_id, i+1)
-            Script_Sound = sound.Sound(LTTC_stm)   #value=str(Alice_stm), secs = 60)
+            LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1)
+            Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             #now = ptb.GetSecs()
-            Script_Sound.play()            
+            Script_Sound.play()
+            
+            """
+            # TO MARK THE AUDIO FILE BEGINS
+            port.setData(2) #This is open the trigger
+            core.wait(0.01) # Stay for 10 ms
+            port.setData(0) #This is close the trigger
+            """            
+            
+            # display instructions for Listening Comprehension rating
+            display_ins(instructions_2, keypressLIST_ans)
+            #win.flip()
+            core.wait(0.5)
             
             
+            """
             # display instructions for Reading Comprehension phase
             display_ins(instructions_1, keypress)
             #win.flip()
@@ -281,20 +300,14 @@ if __name__ == "__main__":
             print("text starts")
             text.draw()
             """
-            # TO MARK THE AUDIO FILE BEGINS
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
+
             win.flip()
 
-            # adding rating scale in here!!!!
-
             # setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(keyList = keypress)
+            keys = event.waitKeys(keyList = keypressLIST_ans)
             event.getKeys(keyList = keypress)
             print(keys)
-            print("text ends")
+            print("audio ends")
             if keys == ["space"]:
                 end_time = clock.getTime()
                 time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -302,7 +315,8 @@ if __name__ == "__main__":
                 print(type(time_duration))
                 clock.reset()
             else:
-                pass
+                pass  # we should use continue in here, right?
+            
             """
             # TO MARK THE AUDIO FILE ENDS
             port.setData(2) #This is open the trigger
