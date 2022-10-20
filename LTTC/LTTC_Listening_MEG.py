@@ -92,6 +92,7 @@ if __name__ == "__main__":
     instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""  #"""接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""
     instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""  #"""請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
     instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放下一階段的文章"""
+    instructions_4 = """本實驗結束，謝謝您的參與"""
     
     # Set up the keypress types
     keypressLIST_space = ["space"]
@@ -117,7 +118,7 @@ if __name__ == "__main__":
         #win.flip()
         core.wait(0.5)
         
-        for tapeINT in range(3): # need to loop a total 10 times
+        for tapeINT in range(1): # need to loop a total 10 times
             
             # display "Start" to indicate the start of the audio
             display_start()
@@ -187,7 +188,8 @@ if __name__ == "__main__":
             print("Continue for the SoundFile{}".format(i+2))
         # ask the participant to evaluate how well they understand the presented text
         display_ins(instructions_3, keypressLIST_space)
-        
+    display_ins(instructions_4, keypressLIST_space)
+    
 
     print("FINISHIED!")
     # close the window  at the end of the experiment
