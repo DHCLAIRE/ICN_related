@@ -275,23 +275,10 @@ if __name__ == "__main__":
             port.setData(2) #This is open the trigger
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            """            
-            
-            # display instructions for Listening Comprehension rating
-            display_ins(instructions_2, keypressLIST_ans)
-            #win.flip()
-            core.wait(0.5)
-            
-            
-            
-            """
-            # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-            port.setData(2) #This is open the trigger
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
             """
             # set core wait time that match with the length of each audio files
             core.wait(int(t+1))
+            
             """
             # TO MARK THE AUDIO FILE ENDS
             port.setData(2) #This is open the trigger
@@ -310,16 +297,16 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             """
             win.flip()
-    
-            # Display the quesitons for each tape
-            ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
+            
+            # display instructions for Listening Comprehension rating
+            rating_ansINT = display_ins(instructions_2, keypressLIST_ans)
+            
             """
             # TO MARK THE QUESTION ENDS
             port.setData(2) #This is open the trigger
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
             """
-            
             win.flip()
 
             # setting up what keypress would allow the experiment to proceed
@@ -335,7 +322,7 @@ if __name__ == "__main__":
                 clock.reset()
             else:
                 pass  # we should use continue in here, right?
-            
+            """
             # making the wanted info into the List form for future use
             text_noLIST.append(int(total_stimSetLIST.index(i))+1)
             dateLIST.append(day)
@@ -344,7 +331,7 @@ if __name__ == "__main__":
             self_paced_rtLIST.append(time_duration)
             shuffledTotalT_LIST.append([i])
             rating_LIST.append([""])
-
+            """
             core.wait(0.5)
 
         # ask the participant to evaluate how well they understand the presented text
