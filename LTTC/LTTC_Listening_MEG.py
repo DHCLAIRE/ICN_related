@@ -128,16 +128,19 @@ if __name__ == "__main__":
     
             # display fixation for subject to look at when listening to the tape
             display_fix()
-    
+            
+            # This is the tape num creation
+            tape_numSTR = str(int("%d%d" %(i, tapeINT))+1)
+            
             # get the length of each audio files of every text
-            sample_rate, data = wavfile.read(stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1))   # the %s value in here will need to rewrite
+            sample_rate, data = wavfile.read(stim_data_path + "S%s_textaudio_modified_%s.wav" %(sub_id, tape_numSTR))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(tapeINT+1), t)
+            print("SoundFile{} length = ".format(tape_numSTR+1), t)
             print("SoundFile{} length = ".format(tapeINT+1), int(t+1))
     
             # Play the audio files section by section
-            LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1)
+            LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%s.wav" %(sub_id, tape_numSTR)
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             #now = ptb.GetSecs()
             Script_Sound.play()
