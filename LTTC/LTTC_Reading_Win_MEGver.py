@@ -262,7 +262,7 @@ if __name__ == "__main__":
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
             print("SoundFile{} length = ".format(tapeINT+1), t)
-            print("SoundFile{} length = ".format(tapeINT+1), int(tapeINT+1))
+            print("SoundFile{} length = ".format(tapeINT+1), int(t+1))
     
             # Play the audio files section by section
             LTTC_audio_stm = stim_data_path + "S%s_textaudio_modified_%02d.wav" %(sub_id, tapeINT+1)
