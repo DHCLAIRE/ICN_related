@@ -19,20 +19,6 @@ import numpy as np
 import pandas as pd
 from pprint import pprint
 
-
-"""
-# function to convert the information into
-# some readable format
-def output_duration(length):
-    hours = length // 3600 # calculate in hours
-    length %= 3600
-    mins = length // 60 # calculate in minutes
-    length %= 60
-    seconds = length # calculate in seconds
-
-    return hours, mins, seconds
-"""
-
 def display_ins(STR, keyPressLIST = None):
     '''
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
@@ -79,19 +65,10 @@ if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
     
-    """
-    #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"
-    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  # Testing
-    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"  # Testing
-    #text_data_path = "C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
-    textSets_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
-    #C:/Users/user/Documents/DINGHSIN/2020_LTTC/Experiment_materials/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets
-    """
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到幾篇文章，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""  #"""接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請評分，評分完畢後\n將會準備進到下一篇"""  #"""請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
-    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n準備好後將會開始播放下一階段的文章"""
+    instructions_1 = """接下來你會聽到幾段文章，\n每段文章結束後，請依照剛剛聽到的內容進行理解度評分，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n實驗將會直接開始"""  #"""接下來你會聽到幾段文章，\n每段文章結束後會需要請你評分，\n請依照剛剛聽到的內容進行理解度評分，\n中間會有休息時間，\n請按下空白鍵開始"""
+    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""  #"""請問對於剛剛那一篇文章理解了多少？\n請以1～4分評分，\n1分為完全不理解，4分為非常理解\n評分完畢後，將會直接播放下一篇文章\n請評分"""
+    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n您準備好後，將會開始播放下一階段的文章"""
     instructions_4 = """本實驗結束，謝謝您的參與"""
     
     # Set up the keypress types
