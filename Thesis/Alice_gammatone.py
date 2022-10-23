@@ -13,18 +13,18 @@ if __name__ == "__main__":
     DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic")  #Path("~").expanduser() / 'Data' / 'Alice'
     STIMULUS_DIR = DATA_ROOT / "Alice(EEG dataset_mat_and stimuli)/audio"
     
-    print(STIMULUS_DIR)
-    """
+    #print(STIMULUS_DIR)
+    
     # Make Gammatone from audio file
     for i in range(1, 13):
-        dst = STIMULUS_DIR / f'{i}-gammatone.pickle'
-        if dst.exists():
+        audio_gammatone = STIMULUS_DIR / f'{i}-gammatone.pickle'
+        if audio_gammatone.exists():
             continue
         wav = load.wav(STIMULUS_DIR / f'DownTheRabbitHoleFinal_SoundFile{i}.wav')
         gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
-        save.pickle(gt, dst)
+        save.pickle(gt, audio_gammatone)
     
-    """
+    
     # Make predictors from gammatone
     """
     DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
