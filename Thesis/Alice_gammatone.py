@@ -10,10 +10,11 @@ from trftools.neural import edge_detector
 
 
 if __name__ == "__main__":
-    DATA_ROOT = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic"  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic")  #Path("~").expanduser() / 'Data' / 'Alice'
     STIMULUS_DIR = DATA_ROOT / "Alice(EEG dataset_mat_and stimuli)/audio"
     
-    
+    print(STIMULUS_DIR)
+    """
     # Make Gammatone from audio file
     for i in range(1, 13):
         dst = STIMULUS_DIR / f'{i}-gammatone.pickle'
@@ -23,13 +24,13 @@ if __name__ == "__main__":
         gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
         save.pickle(gt, dst)
     
-    
+    """
     # Make predictors from gammatone
     """
     DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
     STIMULUS_DIR = DATA_ROOT / 'stimuli'
     PREDICTOR_DIR = DATA_ROOT / 'predictors'
-    """
+    
     PREDICTOR_DIR.mkdir(exist_ok=True)
     for i in range(1, 13):
         gt = load.unpickle(STIMULUS_DIR / f'{i}-gammatone.pickle')
@@ -49,6 +50,6 @@ if __name__ == "__main__":
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-8.pickle')
         x = gt_on.bin(nbins=8, func=np.sum, dim='frequency')
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-on-8.pickle')
-        
+        """
     
     
