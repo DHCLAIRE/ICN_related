@@ -26,10 +26,10 @@ if __name__ == "__main__":
         value = data[-1]  # what does this means??
         new_data = np.append(data, value)
         
-        wavfile.write(filename=data_path+"testing_{}.wav".format(i+1), rate=44100, data=new_data)
+        wavfile.write(filename=data_path+"S001_modified_{}.wav".format(i+1), rate=44100, data=new_data)
         
         # open NEW data
-        sample_rate_new, data_new = wavfile.read(data_path + 'testing_{}.wav'.format(i+1))
+        sample_rate_new, data_new = wavfile.read(data_path + "S001_modified_{}.wav".format(i+1))
     
         print(sample_rate_new)
         print("The NEW data points of tape", i+1,"is" ,len(data_new))
