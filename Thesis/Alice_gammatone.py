@@ -13,8 +13,8 @@ if __name__ == "__main__":
     DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic")  #Path("~").expanduser() / 'Data' / 'Alice'
     STIMULUS_DIR = DATA_ROOT / "Alice(EEG dataset_mat_and stimuli)/audio"
     
-    #print(STIMULUS_DIR)
-    
+    print(STIMULUS_DIR)
+    """
     # Make Gammatone from audio file
     for i in range(1, 13):
         audio_gammatone = STIMULUS_DIR / f'{i}-gammatone.pickle'
@@ -23,15 +23,16 @@ if __name__ == "__main__":
         wav = load.wav(STIMULUS_DIR / f'DownTheRabbitHoleFinal_SoundFile{i}.wav')
         gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
         save.pickle(gt, audio_gammatone)
-    
+    """
     
     # Make predictors from gammatone
-    """
-    DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
-    STIMULUS_DIR = DATA_ROOT / 'stimuli'
-    PREDICTOR_DIR = DATA_ROOT / 'predictors'
     
-    PREDICTOR_DIR.mkdir(exist_ok=True)
+    #DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
+    #STIMULUS_DIR = DATA_ROOT / 'stimuli'
+    PREDICTOR_DIR = STIMULUS_DIR / 'audio_predictors'  # This command could automatically create a new folder
+    #print(PREDICTOR_DIR)
+    
+    #PREDICTOR_DIR.mkdir(exist_ok=True)
     for i in range(1, 13):
         gt = load.unpickle(STIMULUS_DIR / f'{i}-gammatone.pickle')
     
@@ -45,11 +46,12 @@ if __name__ == "__main__":
         # 1 band predictors
         save.pickle(gt.sum('frequency'), PREDICTOR_DIR / f'{i}~gammatone-1.pickle')
         save.pickle(gt_on.sum('frequency'), PREDICTOR_DIR / f'{i}~gammatone-on-1.pickle')
+        
         # 8 band predictors
         x = gt.bin(nbins=8, func=np.sum, dim='frequency')
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-8.pickle')
         x = gt_on.bin(nbins=8, func=np.sum, dim='frequency')
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-on-8.pickle')
-        """
+        #"""
     
     
