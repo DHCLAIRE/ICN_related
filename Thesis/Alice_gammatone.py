@@ -13,8 +13,9 @@ if __name__ == "__main__":
     DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic")  #Path("~").expanduser() / 'Data' / 'Alice'
     STIMULUS_DIR = DATA_ROOT / "Alice(EEG dataset_mat_and stimuli)/audio"
     
-    print(STIMULUS_DIR)
+    #print(STIMULUS_DIR)
     """
+    ## THE FIRST STEP ##
     # Make Gammatone from audio file
     for i in range(1, 13):
         audio_gammatone = STIMULUS_DIR / f'{i}-gammatone.pickle'
@@ -23,8 +24,9 @@ if __name__ == "__main__":
         wav = load.wav(STIMULUS_DIR / f'DownTheRabbitHoleFinal_SoundFile{i}.wav')
         gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
         save.pickle(gt, audio_gammatone)
-    """
     
+    
+    ## THE SECOND STEP ##
     # Make predictors from gammatone
     
     #DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
@@ -52,6 +54,34 @@ if __name__ == "__main__":
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-8.pickle')
         x = gt_on.bin(nbins=8, func=np.sum, dim='frequency')
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-on-8.pickle')
-        #"""
     
+    """
+    ## THE THIRD STEP ##
+    """
+    Generate predictors for word-level variables
+    
+    See the `explore_word_predictors.py` notebook for more background
+    """
+    #from pathlib import Path
+    #import eelbrain
+    #DATA_ROOT = Path("E:\\").expanduser() / 'Alice'
+    #STIMULUS_DIR = DATA_ROOT  / 'Data' / 'stimuli'
+    #PREDICTOR_DIR = DATA_ROOT / 'predictors'
+    
+    word_table = eelbrain.load.tsv(SDATA_ROOT / 'AliceChapterOne-EEG.csv')
+    # Add word frequency as variable that scales with the expected response: larger response for less frequent words
+    word_table['InvLogFreq'] = 17 - word_table['LogFreq']
+    
+    for segment in range(1, 13):
+        segment_table = word_table.sub(f"Segment == {segment}")
+        ds = eelbrain.Dataset({'time': segment_table['onset']}, info={'tstop': segment_table[-1, 'offset']})
+        # add predictor variables
+        ds['LogFreq'] = segment_table['InvLogFreq']
+        for key in ['NGRAM', 'RNN', 'CFG', 'Position']:
+            ds[key] = segment_table[key]
+        # create masks for lexical and non-lexical words
+        ds['lexical'] = segment_table['IsLexical'] == True
+        ds['nlexical'] = segment_table['IsLexical'] == False
+        # save
+        eelbrain.save.pickle(ds, PREDICTOR_DIR / f'{segment}~word.pickle')
     
