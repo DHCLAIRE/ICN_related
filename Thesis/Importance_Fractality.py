@@ -288,7 +288,7 @@ if __name__ == "__main__":
         All_shuffled_boxed_textLIST.append(shuffled_boxed_textLIST)
         
         #print(boxed_textLIST)
-        #print(len(boxed_textLIST))  #Do I need to store every boxLIST into one big LIST or DICT??
+        #print(len(boxed_textLIST))  #Do I need to store every boxLIST into one big DICT??
         #print(shuffled_boxed_textLIST)
         #print(len(shuffled_boxed_textLIST))
     #print("Box dissecction DONE")
@@ -318,13 +318,11 @@ if __name__ == "__main__":
                 # Count the existence of the target word
                 if wordSTR in small_boxLIST:
                     t_wordcountINT +=1
-                    
                     #print(wordSTR)
             print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
             #print(type(t_wordcountINT))
             # The count in this section would need to be DICTed by the box size, I think
-                #else:
-                    #pass
+                
                 
             pass
     
