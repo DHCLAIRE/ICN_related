@@ -4,6 +4,7 @@
 import numpy as np
 from scipy.io import wavfile
 import scipy.signal
+from pprint import pprint
 
 if __name__ == "__main__":
     # The original script
@@ -13,7 +14,7 @@ if __name__ == "__main__":
     
     new_fs = 44100
     
-    for i in range(30):
+    for i in range(1):
         # open data
         sample_rate, data = wavfile.read(data_path + 'S001_textaudio_modified_{}.wav'.format(i+1))
     
@@ -22,10 +23,13 @@ if __name__ == "__main__":
         
         # resample data
         new_num_samples = round(len(data)*float(new_fs)/sample_rate)
-        data = scipy.signal.resample(data, new_num_samples).astype(np.int16)
-        value = data[-1]  # what does this means??
+        data = scipy.signal.resample(data, new_num_samples).astype(np.int16)  # no astype(np.int16)'s dtype == float64
+        #data_dtype = data.dtype
+        #print(data_dtype)
+        value = data[-1]  # what does this means??   # data[-1]== -1, <class 'numpy.int16'>
         new_data = np.append(data, value)
         
+        """
         wavfile.write(filename=data_path+"S001_modified_{}.wav".format(i+1), rate=44100, data=new_data)
         
         # open NEW data
@@ -33,4 +37,4 @@ if __name__ == "__main__":
     
         print(sample_rate_new)
         print("The NEW data points of tape", i+1,"is" ,len(data_new))
-        
+        """
