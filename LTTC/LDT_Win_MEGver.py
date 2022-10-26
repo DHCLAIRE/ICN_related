@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding:utf-8 -*-
 
 # To Change the backend setting to PTB
 from psychopy import prefs
@@ -7,17 +7,18 @@ prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 import psychtoolbox as ptb
 from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+#import json
 print(sound.Sound)
 
-#import psychopy
-#from psychopy import visual, core, event, clock, parallel
-import json
-import random
-from random import sample
+import scipy
+from scipy.io import wavfile
 import numpy as np
 from datetime import datetime,date
+import json
+import numpy as np
 import pandas as pd
 from pprint import pprint
+import random
 
 '''
 key press: need to be set (we'll use 2 bottons in here')
@@ -49,22 +50,22 @@ def display_fix():
     fixation = visual.TextStim(win = win, text = "+")
     fixation.draw()
     win.flip()
-    
+
 """
 1. instructions >> press 'space'?? or other button?
 2. Button press >> one for each side (choose wisely)
 """
 
 # The MEG trigger port info
-#port = parallel.ParallelPort('0x0378')
+port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
     sub_id = str(input("Subject_ID: "))
-    
+
     # Set up the data path
-    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-results_selfPRT_PLDT/"
+    stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
+    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
 
     # setting up usable dataLIST
     targetPseudoLIST = []
@@ -83,7 +84,7 @@ if __name__ == "__main__":
         pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
 
         targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-        
+
         print(pseudoLIST)
     pass
 
@@ -112,54 +113,55 @@ if __name__ == "__main__":
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """將你的左食指輕放在1鍵，右食指輕放在2鍵。\n聽過請按1 沒聽過請按2\n當詞彙播放完畢時，請盡快且正確的進行按鍵反應。"""  # 按鍵號碼需要再修
-    keypress = ['space']
+    instructions_2 = """將你的左大拇指輕放在左邊\n右大拇指輕放在右邊，\n\n聽過請按右邊，沒聽過請按左邊\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
+    keypressLIST_space = ['space']
+    keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
     #core.wait(3)
 
     #Display the instructions
-    display_ins(instructions_1, keypress)
-    display_ins(instructions_2, keypress)
+    display_ins(instructions_1, keypressLIST_space)
+    display_ins(instructions_2, keypressLIST_space)
 
     #core.wait(3)
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(1):  #need to loop 10 times for a 120 total trials
+    for i in range(2):  #need to loop 10 times for a 120 total trials
 
         # randomly select the wanted pseudoword from the list
         random.shuffle(pseudoLIST)
         for stim_wordSTR in pseudoLIST:
-            
-            #
-            start_time = clock.getTime()
-            
+
             # To refresh the win before play out the stim pw
             win.flip()  # always add this after an item was presented
             core.wait(1)
+            # start to record the time
+            start_time = clock.getTime()
+
             # display fixation in the central of the screen
             display_fix()
-            
-            
+
+
             # Display the pw stimulus
             LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
-            
-            """
+
+            #"""
             # TO MARK THE PSEUDOWORD APPEARED
-            #port.setData(8) #This is open the trigger
-            #core.wait(0.01) # Stay for 10 ms
+            port.setData(8) #This is open the trigger  # MEG channel 195
+            core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            """
+            #"""
 
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait = 2, keyList = ['1', '2']) #
-            event.getKeys(keyList = ['1', '2'])
+            keys = event.waitKeys(maxWait=2, keyList=keypressLIST_ans) #
+            event.getKeys(keyList=keypressLIST_ans)
             print(keys)
 
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-            if keys == ["1"]:
+            if keys == ["6"]:
                 conditionLIST = ["heard"]
                 end_time = clock.getTime()
                 time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -167,7 +169,7 @@ if __name__ == "__main__":
                 #print(type(time_duration))
                 clock.reset()
 
-            elif keys == ["2"]:
+            elif keys == ["1"]:
                 conditionLIST = ["unheard"]
                 end_time = clock.getTime()
                 time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -185,21 +187,21 @@ if __name__ == "__main__":
 
             # calculate the correctness of the LDT response
             if stim_wordSTR in targetPseudoLIST:
-                #conditionLIST = ["seen"]
-                if keys == ["1"]:
+                #conditionLIST = ["heard"]
+                if keys == ["6"]:
                     correctLIST = ["True"]
-                #conditionLIST = ["unseen"]
-                elif keys == ["2"]:
+                #conditionLIST = ["unheard"]
+                elif keys == ["1"]:
                     correctLIST = ["False"]
                 else:
                     correctLIST = ["N/A"]
 
             elif stim_wordSTR not in targetPseudoLIST:
-                #conditionLIST = ["seen"]
-                if keys == ["1"]:
+                #conditionLIST = ["heard"]
+                if keys == ["6"]:
                     correctLIST = ["False"]
-                #conditionLIST = ["unseen"]
-                elif keys == ["2"]:
+                #conditionLIST = ["unheard"]
+                elif keys == ["1"]:
                     correctLIST = ["True"]
                 else:
                     correctLIST = ["N/A"]
