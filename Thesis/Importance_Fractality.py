@@ -325,13 +325,17 @@ if __name__ == "__main__":
             #print(type(t_wordcountINT))
             # The count in this section would need to be DICTed by the box size
             
-            #word_boxDICT = {"marathon":{"Box_size_1": 7},
-                                      # {"Box_size_2": 7},..... }
+            #word_boxDICT = {"marathon":{{"Box_size_1": 7},
+                                      #  {"Box_size_2": 7},.....},
+                        #    "the":{{"Box_size_1": 7},
+                        #           {"Box_size_2": 7},...}, 
+                        #    .....}
             
-            tmpDICT = {"Box_size{}".format(len(boxedLIST[0])):t_wordcountINT}
-            
-            #word_boxDICT[wordSTR] = 
-            pass
+            #box_countDICT = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
+            #print(box_countDICT)
+            word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}  #{"Box_size_{}".format(len(boxedLIST[0])):t_wordcountINT}  #{"{}".format(wordSTR): box_countDICT}
+        print(word_boxDICT)
+        pass
     
 
         
