@@ -299,6 +299,8 @@ if __name__ == "__main__":
     #print(All_shuffled_boxed_textLIST)
     #print(len(All_shuffled_boxed_textLIST))
     
+    word_boxDICT = {}
+    
     # Count the appearance of the target word in the boxLIST after the disecction was done
     # According to the sequence of the splited raw text = every segmented word in the text
     for wordSTR in raw_textLIST[:2]:
@@ -321,9 +323,14 @@ if __name__ == "__main__":
                     #print(wordSTR)
             print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
             #print(type(t_wordcountINT))
-            # The count in this section would need to be DICTed by the box size, I think
-                
-                
+            # The count in this section would need to be DICTed by the box size
+            
+            #word_boxDICT = {"marathon":{"Box_size_1": 7},
+                                      # {"Box_size_2": 7},..... }
+            
+            tmpDICT = {"Box_size{}".format(len(boxedLIST[0])):t_wordcountINT}
+            
+            #word_boxDICT[wordSTR] = 
             pass
     
 
