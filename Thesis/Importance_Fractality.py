@@ -334,8 +334,8 @@ if __name__ == "__main__":
             #box_countDICT = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
             #print(box_countDICT)
             word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}  #{"Box_size_{}".format(len(boxedLIST[0])):t_wordcountINT}  #{"{}".format(wordSTR): box_countDICT}
-        print(word_boxDICT)
-        pass
+    print(word_boxDICT)
+    pass
     
 
         
