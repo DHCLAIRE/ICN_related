@@ -71,7 +71,7 @@ if __name__ == "__main__":
     targetPseudoLIST = []
     pseudoLIST = []
     targetPseudoLIST = []
-
+    """
     # Set up the pwDICT's data path
     DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
@@ -87,7 +87,8 @@ if __name__ == "__main__":
 
         print(pseudoLIST)
     pass
-
+    """
+    pseudoLIST = ["daakaxl", "fayihng", "guwlihng", "kayfiy", "lowtaxst", "maasaxl"]
 
     # LDT Wanted data
     day = date.today()
@@ -162,20 +163,22 @@ if __name__ == "__main__":
 
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
             if keys == ["6"]:
-                conditionLIST = ["heard"]
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                print(time_duration)
-                #print(type(time_duration))
-                clock.reset()
+                pass
+                #conditionLIST = ["heard"]
+                #end_time = clock.getTime()
+                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                #print(time_duration)
+                ##print(type(time_duration))
+                #clock.reset()
 
             elif keys == ["1"]:
-                conditionLIST = ["unheard"]
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                print(time_duration)
-                #print(type(time_duration))
-                clock.reset()
+                pass
+                #conditionLIST = ["unheard"]
+                #end_time = clock.getTime()
+                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                #print(time_duration)
+                ##print(type(time_duration))
+                #clock.reset()
 
             else:
                 keys = ["Wrong!!"]
@@ -184,7 +187,7 @@ if __name__ == "__main__":
                 print(time_duration)
                 clock.reset()
 
-
+            """
             # calculate the correctness of the LDT response
             if stim_wordSTR in targetPseudoLIST:
                 #conditionLIST = ["heard"]
@@ -207,23 +210,23 @@ if __name__ == "__main__":
                     correctLIST = ["N/A"]
             else:
                 pass
-
+            """
 
             # making the wanted info into the List form for future use
-            sub_idLIST.append(sub_id)
-            dateLIST.append(day)
-            stimLIST.append(stim_wordSTR)
-            resultKeyLIST.append(keys)
-            responseLIST.append(conditionLIST)
-            LDT_rtLIST.append(time_duration)
-            correctnessLIST.append(correctLIST)
+            #sub_idLIST.append(sub_id)
+            #dateLIST.append(day)
+            #stimLIST.append(stim_wordSTR)
+            #resultKeyLIST.append(keys)
+            #responseLIST.append(conditionLIST)
+            #LDT_rtLIST.append(time_duration)
+            #correctnessLIST.append(correctLIST)
 
             #core.wait(0.5)
 
             # close the window  at the end of the experiment
     win.close()
 
-
+    """
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
@@ -238,6 +241,6 @@ if __name__ == "__main__":
     file_name = 'S%s_LDT_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-
+    """
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
