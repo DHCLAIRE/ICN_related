@@ -64,7 +64,7 @@ if __name__ == "__main__":
     sub_id = str(input("Subject_ID: "))
 
     # Set up the data path
-    stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
+    stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_practice_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
     result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
 
     # setting up usable dataLIST
@@ -107,8 +107,8 @@ if __name__ == "__main__":
 
     # Step_1: Show the instructions
     # Setting the presented window
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
@@ -213,10 +213,10 @@ if __name__ == "__main__":
             """
 
             # making the wanted info into the List form for future use
-            #sub_idLIST.append(sub_id)
-            #dateLIST.append(day)
-            #stimLIST.append(stim_wordSTR)
-            #resultKeyLIST.append(keys)
+            sub_idLIST.append(sub_id)
+            dateLIST.append(day)
+            stimLIST.append(stim_wordSTR)
+            resultKeyLIST.append(keys)
             #responseLIST.append(conditionLIST)
             #LDT_rtLIST.append(time_duration)
             #correctnessLIST.append(correctLIST)
@@ -226,21 +226,21 @@ if __name__ == "__main__":
             # close the window  at the end of the experiment
     win.close()
 
-    """
+
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
                            'Stimuli':stimLIST,
-                           'Keypress':resultKeyLIST,
-                           'Response':responseLIST,
-                           'LDT_RT':LDT_rtLIST,
-                           'Correctness':correctnessLIST
+                           'Keypress':resultKeyLIST
+                           #'Response':responseLIST,
+                           #'LDT_RT':LDT_rtLIST,
+                           #'Correctness':correctnessLIST
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LDT_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    """
+    
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
