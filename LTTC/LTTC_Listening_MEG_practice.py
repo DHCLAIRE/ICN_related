@@ -63,7 +63,7 @@ if __name__ == "__main__":
     # For key-in the id of the subject
     sub_id = str(input("Subject: "))
 
-    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id) #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
+    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
 
     # Setting the instructions and the response key
@@ -84,9 +84,9 @@ if __name__ == "__main__":
     responseLIST = []
 
     # Full screen
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     '''
     LTTC_audio_stm = stim_data_path + "S001_modified_1.wav" #% (sub_id, tape_numSTR)
     Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
@@ -94,14 +94,14 @@ if __name__ == "__main__":
     core.wait(20)
     '''
     #"""
-    for i in range(3):  # need to loop a total 3 times
+    for i in range(2):  # need to loop a total 3 times
 
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypressLIST_space)
         #win.flip()
         core.wait(0.5)
 
-        for tapeINT in range(10): # need to loop a total 10 times
+        for tapeINT in range(2): # need to loop a total 10 times
 
             # display "Start" to indicate the start of the audio
             display_start()
@@ -132,7 +132,7 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             #'''
             # set core wait time that match with the length of each audio files
-            core.wait(int(t+1))
+            core.wait(10)#int(t+1))
 
             #'''
             # TO MARK THE AUDIO FILE ENDS
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             #'''
 
-            print("SoundFile{}".format(tape_numSTR+1), "DONE")
+            print("SoundFile{}".format(tape_numSTR), "DONE")
             #print("Pause for 5 seconds.")
             core.wait(0.5)
 
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 
             # the Gap between each audio files
             #core.wait(5)
-            print("Continue for the SoundFile{}".format(tape_numSTR+2))
+            print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
         # ask the participant to evaluate how well they understand the presented text
         display_ins(instructions_3, keypressLIST_space)
     display_ins(instructions_4, keypressLIST_space)
