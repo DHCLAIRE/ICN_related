@@ -106,14 +106,14 @@ if __name__ == "__main__":
 
     # Step_1: Show the instructions
     # Setting the presented window
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """將你的左大拇指輕放在左邊\n右大拇指輕放在右邊，\n\n聽過請按右邊，沒聽過請按左邊\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
+    instructions_2 = """將你的左大拇指輕放在左邊按鍵\n右大拇指輕放在右邊按鍵，\n\n聽過請按右邊，沒聽過請按左邊\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應\n\n請按下空白鍵開始"""  # 按鍵號碼需要再修
     keypressLIST_space = ['space']
     keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(2):  #need to loop 10 times for a 120 total trials
+    for i in range(10):  #need to loop 10 times for a 120 total trials
 
         # randomly select the wanted pseudoword from the list
         random.shuffle(pseudoLIST)
