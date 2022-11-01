@@ -324,7 +324,6 @@ if __name__ == "__main__":
             #print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
             #print(type(t_wordcountINT))
             # The count in this section would need to be DICTed by the box size
-            
             #word_boxDICT = {"marathon":{{"Box_size_1": 7},
                                       #  {"Box_size_2": 7},.....},
                         #    "the":{{"Box_size_1": 7},
@@ -333,7 +332,11 @@ if __name__ == "__main__":
             
             #box_countDICT = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
             #print(box_countDICT)
-            word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}  #{"Box_size_{}".format(len(boxedLIST[0])):t_wordcountINT}  #{"{}".format(wordSTR): box_countDICT}
+            
+            # Store everything into a DICT
+            # The old version
+            word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
+            
     print(word_boxDICT)
     print(len(word_boxDICT))
     pass
