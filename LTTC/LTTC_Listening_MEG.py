@@ -84,9 +84,9 @@ if __name__ == "__main__":
     responseLIST = []
 
     # Full screen
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     '''
     LTTC_audio_stm = stim_data_path + "S001_modified_1.wav" #% (sub_id, tape_numSTR)
     Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             #'''
 
-            print("SoundFile{}".format(tape_numSTR+1), "DONE")
+            print("SoundFile{}".format(tape_numSTR), "DONE")
             #print("Pause for 5 seconds.")
             core.wait(0.5)
 
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 
             # the Gap between each audio files
             #core.wait(5)
-            print("Continue for the SoundFile{}".format(tape_numSTR+2))
+            print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
         # ask the participant to evaluate how well they understand the presented text
         display_ins(instructions_3, keypressLIST_space)
     display_ins(instructions_4, keypressLIST_space)
