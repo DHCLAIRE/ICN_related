@@ -13,6 +13,7 @@ from datetime import datetime,date
 import pandas as pd
 from collections import Counter
 import statistics
+from pathlib import Path
 
 def LISTblankEraser(rawLIST):
     '''
@@ -134,12 +135,21 @@ def correctness(resultLIST, typeSTR = None):
     
     return correctnessDICT  #correctnessLIST,   ###count_True, count_False, count_NA, total_correctFLOAT
 
-    # sub_num/ condition(New word/ H_CD / L_CD) / trials / items(pseudowords_代號或pw本身) / times (出現的次數) / ACC (True_1; False_0) / RT 
+    # sub_id/ condition(New word/ H_CD / L_CD) / trials / items(pseudowords_代號或pw本身) / times (出現的次數) / ACC (True_1; False_0) / RT 
     
     
 if __name__ == "__main__":
     #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
+    # Old data_path
+    #result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
+    
+    #sub_idSTR = str(input)
+    
+    # New data_path
+    root_data_path = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")
+    result_data_path = root_data_path / "LTTC_MEG_S001"   #%sub_idSTR
+    
+    
     
     # wanted columnLIST
     sub_LIST = []
@@ -151,8 +161,9 @@ if __name__ == "__main__":
     RTfinalLIST = []
     NotesALL_LIST = []
     
+    sub_id = str(input("Subject_id:"))
     
-    for z in range(30):
+    for z in range(1):
         # raw data
         resultLIST = []
         rawLIST = []
@@ -175,9 +186,12 @@ if __name__ == "__main__":
         noteLIST = []
         NotesLIST = []
         
-        sub_num = "0{0:02d}".format(z+7)
+        folder_nameSTR = "LTTC_MEG_S%s" %sub_id
+        result_data_path = root_data_path / folder_nameSTR
+        
+        #sub_id = "001" #str("%.3d" %z+1)   #"0{0:02d}".format(z+7)
         # Open the pseudowordDICT for the further indications
-        with open (result_data_path + "{}_pseudowordsDICT.json".format(sub_num), "r", encoding = "utf-8") as jfile:
+        with open (result_data_path / "S{}_pseudowordsDICT.json".format(sub_id), "r", encoding = "utf-8") as jfile:
             pseudoDICT = json.load(jfile)
             #pprint(pseudoDICT)
             
@@ -189,7 +203,7 @@ if __name__ == "__main__":
             print(Low_CDpwLIST)
         
         # For LDT results calculation  >> should I add True/False calculation???
-        with open (result_data_path + "{}_LDT_results.csv".format(sub_num), "r", encoding = "utf-8") as csvfile:
+        with open (result_data_path / "S{}_LDT_results.csv".format(sub_id), "r", encoding = "utf-8") as csvfile:
             resultLIST = csvfile.read().split("\n")
             #pprint(resultLIST)
             #print(len(resultLIST))
@@ -232,7 +246,7 @@ if __name__ == "__main__":
             rawLIST = row.split(",")
             print(rawLIST)   # ['007', '2022-04-19', 'chaeviy', "['slash']", "['unseen']", '581.0', "['True']"]
             
-            # collect the sub_num
+            # collect the sub_id
             sub_idLIST.append(rawLIST[0])
             
             # calculate and collect the trial count
@@ -418,10 +432,10 @@ if __name__ == "__main__":
         #print(len(n_H_RT_LIST))
         #print(H_RT_NA_count)
         #print(H_final_RT_NA_count)
-        #print("{} H RT Mean:".format(sub_num), H_mean_subFLOAT)
-        #print("{} H new RT Mean:".format(sub_num), H_final_mean_subFLOAT)
-        #print("{} H RT SD:".format(sub_num), H_std_subFLOAT)
-        #print("{} H new RT SD:".format(sub_num), H_final_std_subFLOAT)
+        #print("{} H RT Mean:".format(sub_id), H_mean_subFLOAT)
+        #print("{} H new RT Mean:".format(sub_id), H_final_mean_subFLOAT)
+        #print("{} H RT SD:".format(sub_id), H_std_subFLOAT)
+        #print("{} H new RT SD:".format(sub_id), H_final_std_subFLOAT)
         
         # Low CD condition
         L_RT_LIST = get_List(L_CD_rawLIST, 5)
@@ -490,8 +504,8 @@ if __name__ == "__main__":
                                  'Notes': NotesALL_LIST,
                                  })
 
-        file_name = '000_007-036_PLDT_raw_results.csv'
-        save_path = result_data_path + file_name
+        file_name = 'S%s_PLDT_raw_results.csv' % sub_id
+        save_path = root_data_path / file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
         print("Done!")
 
