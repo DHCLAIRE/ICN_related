@@ -10,13 +10,13 @@ if __name__ == "__main__":
     # The original script
     # https://gist.github.com/alexjaw/09af24d58ac99e1e4cafba092e063fe3
     
-    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S999/"
+    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S002/S002_audios/"
     
     new_fs = 44100
     
-    for i in range(7):
+    for i in range(30):
         # open data
-        sample_rate, data = wavfile.read(data_path + 'S999_textaudio_{}.wav'.format(i+1))
+        sample_rate, data = wavfile.read(data_path + 'S002_textaudio_modified_{}.wav'.format(i+1))
     
         print(sample_rate)
         print("The data points of tape", i+1,"is" ,len(data))
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         new_data = np.append(data, value)
         
         
-        wavfile.write(filename=data_path+"S999_modified_{}.wav".format(i+1), rate=44100, data=new_data)
+        wavfile.write(filename=data_path+"S002_modified_{}.wav".format(i+1), rate=44100, data=new_data)
         """
         # open NEW data
         sample_rate_new, data_new = wavfile.read(data_path + "S999_modified_{}.wav".format(i+1))
