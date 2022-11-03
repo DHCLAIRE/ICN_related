@@ -14,6 +14,8 @@ if __name__ == "__main__":
     
     new_fs = 44100
     
+    
+    
     for i in range(30):
         # open data
         sample_rate, data = wavfile.read(data_path + 'S002_textaudio_modified_{}.wav'.format(i+1))
