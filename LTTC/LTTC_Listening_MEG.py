@@ -87,21 +87,19 @@ if __name__ == "__main__":
     win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
     #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    '''
-    LTTC_audio_stm = stim_data_path + "S001_modified_1.wav" #% (sub_id, tape_numSTR)
-    Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
-    Script_Sound.play()
-    core.wait(20)
-    '''
+    
+    # Set up the tape num according to the block design
+    numLIST = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16 ,17 ,18 ,19 ,20], [21, 22, 23, 24, 25], [26, 27, 28, 29, 30]]
+
     #"""
-    for i in range(3):  # need to loop a total 3 times
+    for i in range(6):  # need to loop a total 6 times
 
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypressLIST_space)
         #win.flip()
         core.wait(0.5)
 
-        for tapeINT in range(10): # need to loop a total 10 times
+        for tapeINT in range(5): # need to loop a total 5 times == 5 tapes per unit
 
             # display "Start" to indicate the start of the audio
             display_start()
@@ -111,7 +109,7 @@ if __name__ == "__main__":
             display_fix()
 
             # This is the tape num creation
-            tape_numSTR = str(int("%d%d" %(i, tapeINT))+1)
+            tape_numSTR = str(numLIST[i][k])  #str(int("%d%d" %(i, tapeINT))+1)
 
             # get the length of each audio files of every text
             sample_rate, data = wavfile.read(stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR))   # the %s value in here will need to rewrite
