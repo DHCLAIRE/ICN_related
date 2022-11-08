@@ -4,13 +4,13 @@
 import csv
 from pprint import pprint
 
-from psychopy import prefs
-prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+#from psychopy import prefs
+#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-import psychtoolbox as ptb
-from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-#import json
-print(sound.Sound)
+#import psychtoolbox as ptb
+#from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+##import json
+#print(sound.Sound)
 
 
 import scipy
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         result_csvLIST = csvfile.read().split("\n")
         pprint(result_csvLIST)
     """
-    
+    """
     # Inspecting the dtype of the wav file
     data_path = "/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset_mat_and stimuli)/audio/"
     data_path_1 = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"
@@ -59,12 +59,14 @@ if __name__ == "__main__":
     print(x)
     print(y)
     print(z)
-    
     """
+    #"""
+    numLIST = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16 ,17 ,18 ,19 ,20], [21, 22, 23, 24, 25], [26, 27, 28, 29, 30]]
     # How to create a string in a 2 layers loop
-    for i in range(2):
-        for k in range(3):
-            numSTR = str(int("%d%d" %(i, k))+1)
+    for i in range(6):
+        for k in range(5):
+            numSTR = str(numLIST[i][k])  # new version (5 tapes per unit)
+            #numSTR = str(int("%d%d" %(i, k))+1) # old version (10 tapes per unit)
             #numSTR = "%02d" %(i)  # automatically fill the zero on the left side of the number if the number didn't meer 2 digits
             print(numSTR)
-            """
+            #"""
