@@ -61,24 +61,27 @@ if __name__ == "__main__":
     
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
-    mytext = "bie"
+    mytext = "aeggli"#"ægli"
     
     # Language in which you want to convert
     language = 'en'
     
     '''
-    aegliy >> agliy
-    baepay >>
-    baydiy
-    browmey
-    chaeviy
-    laelaxst
-    laeviy
-    maeskiy
-    paenliy
-    payliy
-    vaesow
-    weyaet
+    ### Arpabet-to-ipa ###
+    #>>https://docs.soapboxlabs.com/resources/linguistics/arpabet-to-ipa/
+    
+    aegliy >> ægli >> aeggli(OK)
+    baepay >>bæpaɪ >> badpie(OK)
+    baydiy  >>baɪdi  >> bidey(OK)
+    browmey >>bɹoʊmeɪ  >> bromay(OK)
+    chaeviy  >>tʃævi  >> chavi(OK)
+    laelaxst >>lælʌst  >> lalust(OK)
+    laeviy  >>lævi >> lavvi(OK)
+    maeskiy  >>mæski  >> masgi(OK)
+    paenliy  >>pænli  >> panli(OK)
+    payliy  >>paɪli  >> piely(OK)
+    vaesow  >> væsoʊ  >> vasle(OK)
+    weyaet  >> weɪæt  >> way-at(OK)
     '''
     # Passing the text and language to the engine, 
     # here we have marked slow=False. Which tells 
@@ -88,7 +91,7 @@ if __name__ == "__main__":
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "baydiy_new.mp3")
+    myobj.save(data_path + "aegliy_new.mp3")
     
     # Playing the converted file
     #os.system(data_path + "aegliy_new.mp3")
