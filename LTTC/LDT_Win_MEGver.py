@@ -156,7 +156,7 @@ if __name__ == "__main__":
             #"""
 
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait=2, keyList=keypressLIST_ans) #
+            keys = event.waitKeys(maxWait=3, keyList=keypressLIST_ans) #
             event.getKeys(keyList=keypressLIST_ans)
             print(keys)
 
