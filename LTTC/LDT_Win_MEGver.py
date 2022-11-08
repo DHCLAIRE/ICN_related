@@ -144,7 +144,7 @@ if __name__ == "__main__":
 
 
             # Display the pw stimulus
-            LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
+            LTTC_pw_stm = stim_data_path + '{}_v2_female.wav'.format(stim_wordSTR)
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
 

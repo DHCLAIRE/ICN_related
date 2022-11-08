@@ -61,14 +61,14 @@ if __name__ == "__main__":
     
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
-    mytext = "agliy"
+    mytext = "bie"
     
     # Language in which you want to convert
     language = 'en'
     
     '''
     aegliy >> agliy
-    baepay
+    baepay >>
     baydiy
     browmey
     chaeviy
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "aegliy_new.mp3")
+    myobj.save(data_path + "baydiy_new.mp3")
     
     # Playing the converted file
     #os.system(data_path + "aegliy_new.mp3")
