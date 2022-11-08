@@ -20,8 +20,8 @@ import os
 
 if __name__ == "__main__":
     
-    data_path  = "/Users/neuroling/Downloads/"
-    #data_path  = "/Users/ting-hsin/Downloads/"
+    #data_path  = "/Users/neuroling/Downloads/"
+    data_path  = "/Users/ting-hsin/Downloads/"
     
     
     
@@ -61,11 +61,25 @@ if __name__ == "__main__":
     
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
-    mytext = "Gross domestic product plunged by almost 60% from 2017 to 2020, the Chamber of Commerce reported last week, with its head Gholamhossein Shafeie describing the drop as a 'serious warning for the future of Iran's economy.' Families now find their money increasingly worthless and must forgot foods once considered staples. Compared with a year ago, the price of milk, browmey and eggs has swelled by nearly 80%. The cost of vegetables and meat has risen by some 70%, and the cheapest basics like bread and rice by more than 50%. 'We see prices get more and more expensive every day,' said Ozra Edalat, an exasperated shopper. 'It's terrible. How is it possible to get by with such low salaries?' Many Iranians say they're shopping less than ever before. 'Now I can only buy groceries once a month, We have to be pinching pennies.' said Ghane Khiabani, a mother of three."
+    mytext = "agliy"
     
     # Language in which you want to convert
     language = 'en'
     
+    '''
+    aegliy >> agliy
+    baepay
+    baydiy
+    browmey
+    chaeviy
+    laelaxst
+    laeviy
+    maeskiy
+    paenliy
+    payliy
+    vaesow
+    weyaet
+    '''
     # Passing the text and language to the engine, 
     # here we have marked slow=False. Which tells 
     # the module that the converted audio should 
@@ -74,12 +88,19 @@ if __name__ == "__main__":
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "S001_textaudio_2.mp3")
+    myobj.save(data_path + "aegliy_new.mp3")
     
     # Playing the converted file
-    #os.system("mpg321 welcome.mp3")
+    #os.system(data_path + "aegliy_new.mp3")
     
+    '''
+    # pseudoword voice gender change
+      >> https://praat-users.yahoogroups.co.narkive.com/x1topFJ4/change-gender-documentation-improvements
     
+    1. to change a man to a woman, use a formant shift ratio of 1.2 and a new pitch median of 220 Hz.
+    2. to change a woman to a man, use a formant shift ratio of 0.83 and a new pitch median of 100 Hz.
+    
+    '''
     
     
     """
