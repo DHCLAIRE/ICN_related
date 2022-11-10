@@ -145,9 +145,11 @@ if __name__ == "__main__":
     
     #sub_idSTR = str(input)
     
+    sub_id = str(input("Subject_id:"))
+    
     # New data_path
     root_data_path = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")
-    result_data_path = root_data_path / "LTTC_MEG_S001"   #%sub_idSTR
+    result_data_path = root_data_path / "LTTC_MEG_S%s" %sub_id
     
     
     
@@ -161,7 +163,7 @@ if __name__ == "__main__":
     RTfinalLIST = []
     NotesALL_LIST = []
     
-    sub_id = str(input("Subject_id:"))
+    
     
     for z in range(1):
         # raw data
