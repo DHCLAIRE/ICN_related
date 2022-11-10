@@ -53,6 +53,52 @@ def shuffle_text(targetLIST):
         random.shuffle(shuffle_textLIST)
     return shuffle_textLIST
 
+def box2count(target_boxedLIST):
+    '''
+    count the target word appearance in the boxed text
+    '''
+    word_boxDICT = {}
+    
+    # Count the appearance of the target word in the boxLIST after the disecction was done
+    # According to the sequence of the splited raw text = every segmented word in the text
+    for wordSTR in raw_textLIST:
+        #print(wordSTR)
+        
+        # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
+        for boxedLIST in target_boxedLIST: #All_boxed_textLIST:
+            #print(wordSTR)
+            #print(boxedLIST)
+            #print(type(boxedLIST))
+            t_wordcountINT = 0
+            
+            # Access the elements of boxed list based on the box size
+            for small_boxLIST in boxedLIST:
+                #print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
+                
+                # Count the existence of the target word
+                if wordSTR in small_boxLIST:
+                    t_wordcountINT +=1
+                    #print(wordSTR)
+            #print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
+            #print(type(t_wordcountINT))
+            # The count in this section would need to be DICTed by the box size
+            #word_boxDICT = {"marathon":{{"Box_size_1": 7},
+                                      #  {"Box_size_2": 7},.....},
+                        #    "the":{{"Box_size_1": 7},
+                        #           {"Box_size_2": 7},...}, 
+                        #    .....}
+            
+            #box_countDICT = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
+            #print(box_countDICT)
+            
+            # Store everything into a DICT
+            # The old version
+            word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
+            
+    #print(word_boxDICT)
+    #print(len(word_boxDICT))
+    return word_boxDICT
+
 
 if __name__ == "__main__":
     
@@ -299,70 +345,46 @@ if __name__ == "__main__":
     #print(All_shuffled_boxed_textLIST)
     #print(len(All_shuffled_boxed_textLIST))
     
-    #### UNSHUFFLED  ####
-    word_boxDICT = {}
+    # Save the boxes list word count into DICT
+    boxedDICT = box2count(All_boxed_textLIST)
+    shuffle_boxedDICT = box2count(All_shuffled_boxed_textLIST)
+    #pprint(shuffle_boxedDICT)
+    #pprint(boxedDICT)
     
-    # Count the appearance of the target word in the boxLIST after the disecction was done
-    # According to the sequence of the splited raw text = every segmented word in the text
-    for wordSTR in raw_textLIST:
-        #print(wordSTR)
-        
-        # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
-        for boxedLIST in All_boxed_textLIST:
-            #print(wordSTR)
-            #print(boxedLIST)
-            #print(type(boxedLIST))
-            t_wordcountINT = 0
-            
-            # Access the elements of boxed list based on the box size
-            for small_boxLIST in boxedLIST:
-                #print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
-                
-                # Count the existence of the target word
-                if wordSTR in small_boxLIST:
-                    t_wordcountINT +=1
-                    #print(wordSTR)
-            #print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
-            #print(type(t_wordcountINT))
-            # The count in this section would need to be DICTed by the box size
-            #word_boxDICT = {"marathon":{{"Box_size_1": 7},
-                                      #  {"Box_size_2": 7},.....},
-                        #    "the":{{"Box_size_1": 7},
-                        #           {"Box_size_2": 7},...}, 
-                        #    .....}
-            
-            #box_countDICT = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
-            #print(box_countDICT)
-            
-            # Store everything into a DICT
-            # The old version
-            word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
-            
-    print(word_boxDICT)
-    print(len(word_boxDICT))
+    
+    
+    
+    dataDICT = pd.DataFrame({'boxed word':boxedDICT})
 
+
+    data_path = "/Users/ting-hsin/Downloads/"
+    file_name = 'boxed_count_results.csv' #%sub_id
+    save_path = data_path + file_name
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8") #
+    
+    
+    """
     #### SHUFFLED ####
     shuffuled_word_boxDICT = {}
     
-    
     # Count the appearance of the target word in the boxLIST after the disecction was done
     # According to the sequence of the splited raw text = every segmented word in the text
     for wordSTR in raw_textLIST:
         #print(wordSTR)
         
         # Access every elements inside the stored All_boxed_textLIST & All_shuffled_boxed_textLIST, which are the boxed results of every box size
-        for boxedLIST in All_boxed_textLIST:
+        for shuffled_boxedLIST in All_shuffled_boxed_textLIST:
             #print(wordSTR)
             #print(boxedLIST)
             #print(type(boxedLIST))
             t_wordcountINT = 0
             
             # Access the elements of boxed list based on the box size
-            for small_boxLIST in boxedLIST:
+            for small_s_boxLIST in shuffled_boxed_textLIST:
                 #print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
                 
                 # Count the existence of the target word
-                if wordSTR in small_boxLIST:
+                if wordSTR in small_s_boxLIST:
                     t_wordcountINT +=1
                     #print(wordSTR)
             #print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
@@ -379,11 +401,11 @@ if __name__ == "__main__":
             
             # Store everything into a DICT
             # The old version
-            word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
+            shuffuled_word_boxDICT["%s_%d" %(wordSTR, len(shuffled_boxedLIST[0]))] = {"Box_size_%d" %len(shuffled_boxedLIST[0]):t_wordcountINT}
             
-    print(word_boxDICT)
-    print(len(word_boxDICT))
-    
+    print(shuffuled_word_boxDICT)
+    print(len(shuffuled_word_boxDICT))
+    """
 
         
     
