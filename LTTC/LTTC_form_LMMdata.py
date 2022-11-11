@@ -500,7 +500,7 @@ if __name__ == "__main__":
                                  'Notes': NotesALL_LIST,
                                  })
 
-        file_name = 'S001-004_PLDT_raw_results.csv' #% sub_id
+        file_name = '001-004_PLDT_raw_results.csv' #% sub_id
         save_path = root_data_path / file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
         print("Done!")
