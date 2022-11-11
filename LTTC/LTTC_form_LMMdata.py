@@ -142,16 +142,8 @@ if __name__ == "__main__":
     #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
     # Old data_path
     #result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
-    
-    #sub_idSTR = str(input)
-    
-    sub_id = str(input("Subject_id:"))
-    
-    # New data_path
-    root_data_path = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")
-    result_data_path = root_data_path / "LTTC_MEG_S%s" %sub_id
-    
-    
+
+    #sub_id = str(input("Subject_id:"))
     
     # wanted columnLIST
     sub_LIST = []
@@ -165,7 +157,15 @@ if __name__ == "__main__":
     
     
     
-    for z in range(1):
+    for z in range(2):
+        
+        # Load in the data
+        sub_id = '%.3d' %z+3  # <class 'str'>
+        
+        # New data_path
+        root_data_path = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")
+        result_data_path = root_data_path / Path("LTTC_MEG_S%s" %sub_id)
+                
         # raw data
         resultLIST = []
         rawLIST = []
