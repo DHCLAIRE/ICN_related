@@ -139,12 +139,7 @@ def correctness(resultLIST, typeSTR = None):
     
     
 if __name__ == "__main__":
-    #result_data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/2nd_Stim-results_selfPRT_PLDT/"
-    # Old data_path
-    #result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/2nd_Stim-results_selfPRT_PLDT/"
 
-    #sub_id = str(input("Subject_id:"))
-    
     # wanted columnLIST
     sub_LIST = []
     conditionALL_LIST = []
@@ -156,16 +151,15 @@ if __name__ == "__main__":
     NotesALL_LIST = []
     
     
-    
-    for z in range(2):
-        
+    for z in range(4):
         # Load in the data
-        sub_id = '%.3d' %z+3  # <class 'str'>
+        sub_id = '%.3d' %(z+1)  # <class 'str'>
         
         # New data_path
         root_data_path = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")
         result_data_path = root_data_path / Path("LTTC_MEG_S%s" %sub_id)
-                
+        
+    
         # raw data
         resultLIST = []
         rawLIST = []
@@ -506,7 +500,7 @@ if __name__ == "__main__":
                                  'Notes': NotesALL_LIST,
                                  })
 
-        file_name = 'S%s_PLDT_raw_results.csv' % sub_id
+        file_name = 'S001-004_PLDT_raw_results.csv' #% sub_id
         save_path = root_data_path / file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
         print("Done!")
