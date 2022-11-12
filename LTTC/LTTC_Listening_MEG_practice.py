@@ -132,7 +132,7 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             #'''
             # set core wait time that match with the length of each audio files
-            core.wait(10)#int(t+1))
+            core.wait(int(t+1))
 
             #'''
             # TO MARK THE AUDIO FILE ENDS
@@ -210,7 +210,7 @@ if __name__ == "__main__":
 
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LTTC_Listening_results.csv' %sub_id
+    file_name = 'S%s_LTTC_Listening_practice_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     #"""
