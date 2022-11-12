@@ -94,6 +94,7 @@ def box2count(target_boxedLIST):
             # Store everything into a DICT
             # The old version
             word_boxDICT["%s_%d" %(wordSTR, len(boxedLIST[0]))] = {"Box_size_%d" %len(boxedLIST[0]):t_wordcountINT}
+            #word_boxDICT = {"%s_%d" %(wordSTR, len(boxedLIST[0])): t_wordcountINT}
             
     #print(word_boxDICT)
     #print(len(word_boxDICT))
@@ -348,19 +349,28 @@ if __name__ == "__main__":
     # Save the boxes list word count into DICT
     boxedDICT = box2count(All_boxed_textLIST)
     shuffle_boxedDICT = box2count(All_shuffled_boxed_textLIST)
-    #pprint(shuffle_boxedDICT)
+    pprint(shuffle_boxedDICT)
     #pprint(boxedDICT)
     
     
     
-    
-    dataDICT = pd.DataFrame({'boxed word':boxedDICT})
-
-
-    data_path = "/Users/ting-hsin/Downloads/"
-    file_name = 'boxed_count_results.csv' #%sub_id
-    save_path = data_path + file_name
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8") #
+    dataDICT_1 = pd.DataFrame(boxedDICT)
+    dataDICT_2 = pd.DataFrame(shuffle_boxedDICT)   # why it only until box size 99
+    """
+    save_path_1 = data_path + file_name_1
+    save_path_2 = data_path + file_name_2
+    dataDICT_1.to_csv(save_path_1, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    dataDICT_2.to_csv(save_path_2, sep = "," ,index = False , header = True, encoding = "UTF-8")    
+    """
+    #try:
+        #with open(csvfile_name, 'w') as csvfile:
+            #writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            #writer.writeheader()
+            #for data in boxedDICT:
+                #print(data)
+                ##writer.writerow(data)
+    #except IOError:
+        #print("I/O error")
     
     
     """
