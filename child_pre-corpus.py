@@ -13,6 +13,8 @@ import pandas as pd
 from collections import Counter
 import string   # import string library function
 from pathlib import Path
+import os
+import re
 
 
 
@@ -37,10 +39,12 @@ if __name__ == "__main__":
             #print(children_folder_path)
             for dateINT64 in day_ndarray:
                 try:
-                    if 
                     secL_folder_nameSTR = "%d.%.2d.%.2d"  %(yearINT64, monthINT64, dateINT64) #e.g. 106.01.01
-                txtfile_data_path = children_folder_path / secL_folder_nameSTR
-                print(txtfile_data_path)
-    
-    
-    
+                    txtfile_data_path = children_folder_path / secL_folder_nameSTR
+                    #print(txtfile_data_path)
+                    txtfile_nameSTR = os.listdir(txtfile_data_path / "/")
+                    print(txtfile_nameSTR)
+                    
+                except:
+                    print("ERROR")
+                    #print(txtfile_data_path)
