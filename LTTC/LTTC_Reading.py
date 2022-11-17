@@ -80,8 +80,8 @@ if __name__ == "__main__":
     sub_id = str(input("Subject: "))
     
     # setting up the display win conditions
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")   # Testing screen_small
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")   # Testing screen_small
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     clock = core.Clock()
     #start_time = clock.getTime()
 
