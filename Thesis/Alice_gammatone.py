@@ -3,7 +3,8 @@
 
 from pathlib import Path
 
-from eelbrain import *
+#from eelbrain import *
+import eelbrain
 from trftools import gammatone_bank
 import numpy as np
 from trftools.neural import edge_detector
@@ -67,8 +68,8 @@ if __name__ == "__main__":
     #DATA_ROOT = Path("E:\\").expanduser() / 'Alice'
     #STIMULUS_DIR = DATA_ROOT  / 'Data' / 'stimuli'
     #PREDICTOR_DIR = DATA_ROOT / 'predictors'
-    
-    word_table = eelbrain.load.tsv(SDATA_ROOT / 'AliceChapterOne-EEG.csv')
+    # /Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset_mat_and stimuli)
+    word_table = eelbrain.load.tsv(DATA_ROOT /'Alice(EEG dataset_mat_and stimuli)'/ 'AliceChapterOne-EEG.csv')
     # Add word frequency as variable that scales with the expected response: larger response for less frequent words
     word_table['InvLogFreq'] = 17 - word_table['LogFreq']
     
@@ -77,11 +78,11 @@ if __name__ == "__main__":
         ds = eelbrain.Dataset({'time': segment_table['onset']}, info={'tstop': segment_table[-1, 'offset']})
         # add predictor variables
         ds['LogFreq'] = segment_table['InvLogFreq']
-        for key in ['NGRAM', 'RNN', 'CFG', 'Position']:
+        for key in ['NGRAM', 'CFG', 'Position']:  #'RNN', do not include
             ds[key] = segment_table[key]
         # create masks for lexical and non-lexical words
         ds['lexical'] = segment_table['IsLexical'] == True
         ds['nlexical'] = segment_table['IsLexical'] == False
         # save
-        eelbrain.save.pickle(ds, PREDICTOR_DIR / f'{segment}~word.pickle')
-    
+        eelbrain.save.pickle(ds, STIMULUS_DIR / f'{segment}~Ngram-CFG_word.pickle')
+   # /Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset_mat_and stimuli)
