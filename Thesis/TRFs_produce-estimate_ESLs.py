@@ -85,20 +85,22 @@ if __name__ == "__main__":
         if all(path.exists() for path in trf_paths.values()):
             continue
         # Load the EEG data
-        raw = mne.io.read_raw(EEG_DIR / subject / f'{subject}_ICAed_raw.fif', preload=True)
+        raw = mne.io.read_raw_fif(EEG_DIR / subject / f'{subject}_ICAed_raw.fif', preload=True)
         # Band-pass filter the raw data between 0.5 and 20 Hz
         raw.filter(0.5, 20)
         
         # Interpolate bad channels  
-        raw.interpolate_bads()
-        #>> to rewrite if there're no bad channels to interpolate, skip it
+        #raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
         
         # Extract the events marking the stimulus presentation from the EEG file
         events = eelbrain.load.fiff.events(raw)  # To check to events
         # Not all subjects have all trials; determine which stimuli are present
-        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event']]
+        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event']]  
+        print(trial_indexes)
+        
         # Extract the EEG data segments corresponding to the stimuli
-        trial_durations = [durations[i] for i in trial_indexes]
+        trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
+        print(trial_durations)
         eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
         eeg_concatenated = eelbrain.concatenate(eeg)
