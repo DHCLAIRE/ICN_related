@@ -112,4 +112,5 @@ if __name__ == "__main__":
             # Fit the mTRF
             trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
             # Save the TRF for later analysis
-            eelbrain.save.pickle(trf, path)    
+            eelbrain.save.pickle(trf, path)
+            
