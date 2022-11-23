@@ -15,7 +15,7 @@ if __name__ == "__main__":
     DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    EEG_DIR = DATA_ROOT / 'EEG_Natives'
+    EEG_DIR = DATA_ROOT / 'EEG_Natives' / 'Alice_natives_ICAed_fif'
     SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d*', path.name)]
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_Natives'
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         if all(path.exists() for path in trf_paths.values()):
             continue
         # Load the EEG data
-        raw = mne.io.read_raw(EEG_DIR / subject / f'{subject}_alice-raw.fif', preload=True)
+        raw = mne.io.read_raw(EEG_DIR / subject / f'{subject}_Alice-natives_sfreq-100_raw.fif', preload=True)
         # Band-pass filter the raw data between 0.5 and 20 Hz
         raw.filter(0.5, 20)
         # Interpolate bad channels
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event']]
         # Extract the EEG data segments corresponding to the stimuli
         trial_durations = [durations[i] for i in trial_indexes]
-        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')
+        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, connectivity='auto')  #, decim=5 #decim=5 meaning to resample to sfreq=100Hz
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
         eeg_concatenated = eelbrain.concatenate(eeg)
         for model, predictors in models.items():
