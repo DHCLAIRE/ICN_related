@@ -101,7 +101,7 @@ if __name__ == "__main__":
         # Extract the EEG data segments corresponding to the stimuli
         trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
         print(trial_durations)
-        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')
+        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, connectivity='auto')  #, decim=5
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
         eeg_concatenated = eelbrain.concatenate(eeg)
         for model, predictors in models.items():
