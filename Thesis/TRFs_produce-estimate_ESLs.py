@@ -21,6 +21,8 @@ if __name__ == "__main__":
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
+    print(STIMULI)
+
     
     # Load stimuli
     # ------------
@@ -94,14 +96,15 @@ if __name__ == "__main__":
         
         # Extract the events marking the stimulus presentation from the EEG file
         events = eelbrain.load.fiff.events(raw)  # To check to events
+        print(events)
         # Not all subjects have all trials; determine which stimuli are present
-        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event']]  
+        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
         print(trial_indexes)
-        
         # Extract the EEG data segments corresponding to the stimuli
         trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
         print(trial_durations)
-        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, connectivity='auto')  #, decim=5
+        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5
+        print(eeg)
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
         eeg_concatenated = eelbrain.concatenate(eeg)
         for model, predictors in models.items():
