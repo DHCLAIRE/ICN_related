@@ -85,7 +85,7 @@ if __name__ == "__main__":
         if all(path.exists() for path in trf_paths.values()):
             continue
         # Load the EEG data
-        raw = mne.io.read_raw(EEG_DIR / subject / f'{subject}_Alice-natives_sfreq-100_raw.fif', preload=True)
+        raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)  # subject /
         # Band-pass filter the raw data between 0.5 and 20 Hz
         raw.filter(0.5, 20)
         # Interpolate bad channels
