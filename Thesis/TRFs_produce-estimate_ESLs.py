@@ -16,12 +16,11 @@ if __name__ == "__main__":
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     #EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in DATA_ROOT.iterdir() if re.match(r'S\d*', path.name)]
+    SUBJECTS = [path.name for path in DATA_ROOT.iterdir() if re.match(r'n_S\d*', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
-    print(STIMULI)
 
     
     # Load stimuli
@@ -59,6 +58,7 @@ if __name__ == "__main__":
     
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
+    print(durations)
     
     # Models
     # ------
@@ -100,13 +100,17 @@ if __name__ == "__main__":
         # Not all subjects have all trials; determine which stimuli are present
         trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
         print(trial_indexes)
+        
         # Extract the EEG data segments corresponding to the stimuli
         trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
         print(trial_durations)
-        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5
+        
+        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
         print(eeg)
+        
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
         eeg_concatenated = eelbrain.concatenate(eeg)
+        print(eeg_concatenated)
         for model, predictors in models.items():
             path = trf_paths[model]
             # Skip if this file already exists
@@ -117,6 +121,7 @@ if __name__ == "__main__":
             predictors_concatenated = []
             for predictor in predictors:
                 predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
+            print(predictors_concatenated)
             # Fit the mTRF
             trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
             # Save the TRF for later analysis
