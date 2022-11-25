@@ -60,7 +60,7 @@ if __name__ == "__main__":
     
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
-    print(durations)
+    #print(durations)
     
     # Models
     # ------
@@ -98,14 +98,14 @@ if __name__ == "__main__":
         
         # Extract the events marking the stimulus presentation from the EEG file
         events = eelbrain.load.fiff.events(raw)  # To check to events
-        print(events)
+        #print(events)
         # Not all subjects have all trials; determine which stimuli are present
         trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
-        print(trial_indexes)
+        #print(trial_indexes)
         
         # Extract the EEG data segments corresponding to the stimuli
         trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
-        print(trial_durations)
+        #print(trial_durations)
         
         #all_trial_durations = np.sum(np.array(trial_durations))
         #print(all_trial_durations)
