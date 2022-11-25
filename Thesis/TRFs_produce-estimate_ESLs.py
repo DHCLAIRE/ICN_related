@@ -18,7 +18,7 @@ if __name__ == "__main__":
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_v4S\d*', path.name)]  #S01_alice-raw.fif
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_S\d*', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
@@ -80,11 +80,11 @@ if __name__ == "__main__":
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS:
-        subject_trf_dir = TRF_DIR / subject
+    for subject in SUBJECTS:  #type(subject) == str
+        subject_trf_dir = TRF_DIR / subject[2:6]
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
-        trf_paths = {model: subject_trf_dir / f'{subject} {model}.pickle' for model in models}
+        trf_paths = {model: subject_trf_dir / f'{subject[2:6]} {model}.pickle' for model in models}
         # Skip this subject if all files already exist
         if all(path.exists() for path in trf_paths.values()):
             continue
@@ -107,6 +107,9 @@ if __name__ == "__main__":
         trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
         print(trial_durations)
         
+        #all_trial_durations = np.sum(np.array(trial_durations))
+        #print(all_trial_durations)
+        
         #eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
         #print(eeg)
         
@@ -124,27 +127,26 @@ if __name__ == "__main__":
             predictors_concatenated = []
             for predictor in predictors:
                 predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
-            print(predictors_concatenated)
-            print(predictors_concatenated.info)
+            #print(predictors_concatenated)
             
             # Homemade NDVar instead of using .fiff.variable_length_epochs()
             eeg_ = raw.get_data()
             
-            if eeg_.shape[1] > stim_len:
-                eeg_ = eeg_[:, :stim_len]
+            # Check if the data length is the same as the stimuli's length
+            if eeg_.shape[1] > 73665:
+                eeg_ = eeg_[:, :73665]
             
             # produce the time for NDVar production
-            tstep = 1. / eeg_.info['sfreq']
+            tstep = 1. / raw.info["sfreq"]  # already resample to 100Hz
             n_times = eeg_.shape[1] #audio.shape[0]
             time = eelbrain.UTS(0, tstep, n_times)
-            print(time)
+            #print(time)
         
             # NDVar production
-            montage_x = eelbrain.load.fiff.sensor_dim(eeg_.info)
+            montage_x = eelbrain.load.fiff.sensor_dim(raw.info)
             temp_data = eeg_.T *1e+6
             eeg_concatenated = eelbrain.NDVar(temp_data, (time, montage_x), name='EEG', info={'unit': 'µV'})
             #print(eegNDVar)
-            
             
             # Fit the mTRF
             trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
