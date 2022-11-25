@@ -75,6 +75,47 @@ if __name__ == "__main__":
         'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
     }
     
+    #### TEST SECTION START ####
+    
+    ## for checking the length of every model(NDVar object)
+    #for subject in SUBJECTS[:2]:
+        #subject_trf_dir = TRF_DIR / subject
+        #subject_trf_dir.mkdir(exist_ok=True)
+        ## Generate all TRF paths so we can check whether any new TRFs need to be estimated
+        #trf_paths = {model: subject_trf_dir / f'{subject} {model}.pickle' for model in models}
+        ## Skip this subject if all files already exist
+        #if all(path.exists() for path in trf_paths.values()):
+            #continue
+        ## Load the EEG data
+        #raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
+        ## Band-pass filter the raw data between 0.5 and 20 Hz
+        #raw.filter(0.5, 20)
+        
+        ## Interpolate bad channels  
+        ##raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
+        
+        ## Extract the events marking the stimulus presentation from the EEG file
+        #events = eelbrain.load.fiff.events(raw)  # To check to events
+        #print(events)
+        ## Not all subjects have all trials; determine which stimuli are present
+        #trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
+        #print(trial_indexes)
+        
+        #for model, predictors in models.items():
+            #path = trf_paths[model]
+            ## Skip if this file already exists
+            #if path.exists():
+                #continue
+            #print(f"Estimating: {subject} ~ {model}")
+            ## Select and concetenate the predictors corresponding to the EEG trials
+            #predictors_concatenated = []
+            #for predictor in predictors:
+                #predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
+            #print("{}".format(model), predictors_concatenated)
+    
+    
+    #### TEST SECTION END ####
+    
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
