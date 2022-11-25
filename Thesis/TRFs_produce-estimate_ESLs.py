@@ -9,6 +9,8 @@ import eelbrain
 import mne
 import trftools
 
+import numpy as np
+
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
@@ -75,47 +77,6 @@ if __name__ == "__main__":
         'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
     }
     
-    #### TEST SECTION START ####
-    
-    ## for checking the length of every model(NDVar object)
-    #for subject in SUBJECTS[:2]:
-        #subject_trf_dir = TRF_DIR / subject
-        #subject_trf_dir.mkdir(exist_ok=True)
-        ## Generate all TRF paths so we can check whether any new TRFs need to be estimated
-        #trf_paths = {model: subject_trf_dir / f'{subject} {model}.pickle' for model in models}
-        ## Skip this subject if all files already exist
-        #if all(path.exists() for path in trf_paths.values()):
-            #continue
-        ## Load the EEG data
-        #raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
-        ## Band-pass filter the raw data between 0.5 and 20 Hz
-        #raw.filter(0.5, 20)
-        
-        ## Interpolate bad channels  
-        ##raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
-        
-        ## Extract the events marking the stimulus presentation from the EEG file
-        #events = eelbrain.load.fiff.events(raw)  # To check to events
-        #print(events)
-        ## Not all subjects have all trials; determine which stimuli are present
-        #trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
-        #print(trial_indexes)
-        
-        #for model, predictors in models.items():
-            #path = trf_paths[model]
-            ## Skip if this file already exists
-            #if path.exists():
-                #continue
-            #print(f"Estimating: {subject} ~ {model}")
-            ## Select and concetenate the predictors corresponding to the EEG trials
-            #predictors_concatenated = []
-            #for predictor in predictors:
-                #predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
-            #print("{}".format(model), predictors_concatenated)
-    
-    
-    #### TEST SECTION END ####
-    
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
@@ -130,7 +91,7 @@ if __name__ == "__main__":
         # Load the EEG data
         raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
         # Band-pass filter the raw data between 0.5 and 20 Hz
-        raw.filter(0.5, 20)
+        raw.filter(0.5, 20).resample(sfreq=100)
         
         # Interpolate bad channels  
         #raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
@@ -146,12 +107,13 @@ if __name__ == "__main__":
         trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
         print(trial_durations)
         
-        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
-        print(eeg)
+        #eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
+        #print(eeg)
+        
         
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
-        eeg_concatenated = eelbrain.concatenate(eeg)
-        print(eeg_concatenated)
+        #eeg_concatenated = eelbrain.concatenate(eeg)
+        #print(eeg_concatenated)
         for model, predictors in models.items():
             path = trf_paths[model]
             # Skip if this file already exists
@@ -163,6 +125,27 @@ if __name__ == "__main__":
             for predictor in predictors:
                 predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
             print(predictors_concatenated)
+            print(predictors_concatenated.info)
+            
+            # Homemade NDVar instead of using .fiff.variable_length_epochs()
+            eeg_ = raw.get_data()
+            
+            if eeg_.shape[1] > stim_len:
+                eeg_ = eeg_[:, :stim_len]
+            
+            # produce the time for NDVar production
+            tstep = 1. / eeg_.info['sfreq']
+            n_times = eeg_.shape[1] #audio.shape[0]
+            time = eelbrain.UTS(0, tstep, n_times)
+            print(time)
+        
+            # NDVar production
+            montage_x = eelbrain.load.fiff.sensor_dim(eeg_.info)
+            temp_data = eeg_.T *1e+6
+            eeg_concatenated = eelbrain.NDVar(temp_data, (time, montage_x), name='EEG', info={'unit': 'µV'})
+            #print(eegNDVar)
+            
+            
             # Fit the mTRF
             trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
             # Save the TRF for later analysis
