@@ -12,11 +12,11 @@ import trftools
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
-    DATA_ROOT = Path("/Users/neuroling/Downloads/碩論data")  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    #EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in DATA_ROOT.iterdir() if re.match(r'n_S\d*', path.name)]  #S01_alice-raw.fif
+    EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_v4S\d*', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         if all(path.exists() for path in trf_paths.values()):
             continue
         # Load the EEG data
-        raw = mne.io.read_raw_fif(DATA_ROOT / f'{subject}', preload=True)
+        raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
         # Band-pass filter the raw data between 0.5 and 20 Hz
         raw.filter(0.5, 20)
         
