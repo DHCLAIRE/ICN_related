@@ -18,7 +18,7 @@ if __name__ == "__main__":
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_S\d*', path.name)]  #S01_alice-raw.fif
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S007_ICAed_raw.fif', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
@@ -81,10 +81,10 @@ if __name__ == "__main__":
     # -------------
     # Loop through subjects to estimate TRFs
     for subject in SUBJECTS:  #type(subject) == str
-        subject_trf_dir = TRF_DIR / subject[2:6]
+        subject_trf_dir = TRF_DIR / subject[4:8]
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
-        trf_paths = {model: subject_trf_dir / f'{subject[2:6]} {model}.pickle' for model in models}
+        trf_paths = {model: subject_trf_dir / f'{subject[4:8]} {model}.pickle' for model in models}
         # Skip this subject if all files already exist
         if all(path.exists() for path in trf_paths.values()):
             continue
