@@ -18,7 +18,7 @@ if __name__ == "__main__":
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S007_ICAed_raw.fif', path.name)]  #S01_alice-raw.fif
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S008_ICAed_raw.fif', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
