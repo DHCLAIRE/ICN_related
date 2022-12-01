@@ -10,12 +10,12 @@ if __name__ == "__main__":
     # The original script
     # https://gist.github.com/alexjaw/09af24d58ac99e1e4cafba092e063fe3
     
-    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S002/S002_audios/"
+    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S018/S018_audios/"
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
     
     new_fs = 44100
     
-    
+    '''
     pseudowordLIST = ["aegliy", "baepay", "baydiy", "browmey", "chaeviy", "laelaxst", "laeviy", "maeskiy", "paenliy", "payliy", "vaesow", "weyaet"]
     for wordSTR in pseudowordLIST:
         # open data
@@ -34,10 +34,11 @@ if __name__ == "__main__":
         
         
         wavfile.write(filename=stim_data_path+'{}_v3_female.wav'.format(wordSTR), rate=44100, data=new_data)    
+    "''
     '''
     for i in range(30):
         # open data
-        sample_rate, data = wavfile.read(data_path + 'S002_textaudio_modified_{}.wav'.format(i+1))
+        sample_rate, data = wavfile.read(data_path + 'S018_textaudio_{}.wav'.format(i+1))
     
         print(sample_rate)
         print("The data points of tape", i+1,"is" ,len(data))
@@ -51,9 +52,9 @@ if __name__ == "__main__":
         new_data = np.append(data, value)
         
         
-        wavfile.write(filename=data_path+"S002_modified_{}.wav".format(i+1), rate=44100, data=new_data)
-        '''
-    """
+        wavfile.write(filename=data_path+"S018_textaudio_{}.wav".format(i+1), rate=44100, data=new_data)
+        
+        """
         # open NEW data
         sample_rate_new, data_new = wavfile.read(data_path + "S999_modified_{}.wav".format(i+1))
     
