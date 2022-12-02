@@ -144,30 +144,30 @@ if __name__ == "__main__":
         with open(textSets_data_path + "sets_10_LIST.json", "w", newline='', encoding="UTF-8") as setsfile:
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
-
-    
-    textSetsLIST_High = []
-    textSetsLIST_Low = []
-    new_High_textSetsLIST = []
-    new_Low_textSetsLIST = []
-    High_stimLIST = []
-    High_stim_SetLIST = []
-    Low_stimLIST = []
-    Low_stim_SetLIST = []
-    total_stimSetLIST = []
-    shuffledTotalT_LIST = []
-    rating_LIST = []
-    
-    # for calling out the sets individually
-    HightSetsLIST = []
-    LowtSetsLIST = []
-    Setsinfo_LIST = []
-    
-    
-    for count in range(8, 18):
+    for count in range(11, 18):
         #print(count)
         #print(type(count))
         sub_id = "%.3d" %count 
+    
+        textSetsLIST_High = []
+        textSetsLIST_Low = []
+        new_High_textSetsLIST = []
+        new_Low_textSetsLIST = []
+        High_stimLIST = []
+        High_stim_SetLIST = []
+        Low_stimLIST = []
+        Low_stim_SetLIST = []
+        total_stimSetLIST = []
+        shuffledTotalT_LIST = []
+        rating_LIST = []
+    
+        # for calling out the sets individually
+        HightSetsLIST = []
+        LowtSetsLIST = []
+        Setsinfo_LIST = []
+    
+    
+
     
         # High_CD Set TEXTS
         # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
@@ -349,6 +349,7 @@ if __name__ == "__main__":
             with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
                 json.dump(textsDICT, jsfile_2, ensure_ascii=False)
         print(sub_id, "is DONEEE!!!")
+        time.sleep(100)
     print("ALL DONE~~")
     
     
