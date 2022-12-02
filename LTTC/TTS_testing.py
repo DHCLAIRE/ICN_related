@@ -26,39 +26,6 @@ if __name__ == "__main__":
     data_path  = "/Users/neuroling/Downloads/"
     #data_path  = "/Users/ting-hsin/Downloads/"
     
-    
-    
-    """
-    ## METHOD 3 FAIL TERRIBLY##
-    # 初始化
-    engine = pyttsx3.init()
-    
-    voices = engine.getProperty('voices')
-    # 語速控制
-    rate = engine.getProperty('rate')
-    print(rate)
-    engine.setProperty('rate', rate-20)
-    
-    # 音量控制
-    volume = engine.getProperty('volume')
-    print(volume)
-    engine.setProperty('volume', volume-0.25)
-    
-    engine.say('hello world')
-    engine.say('你好，世界')
-    # 朗讀一次
-    engine.runAndWait()
-    
-    engine.say('語音合成開始')
-    engine.say('我會說中文了，開森，開森')
-    engine.runAndWait()
-    
-    engine.say('The quick brown fox jumped over the lazy dog.')
-    engine.runAndWait()
-    """
-    
-    
-    
     ## METHOD 2 HALF_SUCCESS ##
     # https://gtts.readthedocs.io/en/latest/
     
@@ -100,7 +67,6 @@ if __name__ == "__main__":
     #os.system(data_path + "aegliy_new.mp3")
     
     
-    
     """
     # convert the mp3 to wav
     
@@ -133,6 +99,20 @@ if __name__ == "__main__":
     
     '''
     
+    replace_pwDICT = {'aeggli':'aeggli',
+                      'baepay':'badpie',
+                      'baydiy':'bidey',
+                      'browmey':'bromay',
+                      'chaeviy':'chavi',
+                      'laelaxst':'lalust',
+                      'laeviy':'lavvi',
+                      'maeskiy':'masgi',
+                      'paenliy':'panli',
+                      'payliy':'piely',
+                      'vaesow':'vasle',
+                      'weyaet':'way-at'}
+    print(type(replace_pwDICT.get('paenliy')))
+    
     
     """
     ## METHOD 1 FAIL ##
@@ -153,16 +133,32 @@ if __name__ == "__main__":
     
     """
     
-    replace_pwDICT = {'aeggli':'aeggli',
-                      'baepay':'badpie',
-                      'baydiy':'bidey',
-                      'browmey':'bromay',
-                      'chaeviy':'chavi',
-                      'laelaxst':'lalust',
-                      'laeviy':'lavvi',
-                      'maeskiy':'masgi',
-                      'paenliy':'panli',
-                      'payliy':'piely',
-                      'vaesow':'vasle',
-                      'weyaet':'way-at'}
-    print(type(replace_pwDICT.get('paenliy')))
+    """
+    ## METHOD 3 FAIL TERRIBLY##
+    # 初始化
+    engine = pyttsx3.init()
+    
+    voices = engine.getProperty('voices')
+    # 語速控制
+    rate = engine.getProperty('rate')
+    print(rate)
+    engine.setProperty('rate', rate-20)
+    
+    # 音量控制
+    volume = engine.getProperty('volume')
+    print(volume)
+    engine.setProperty('volume', volume-0.25)
+    
+    engine.say('hello world')
+    engine.say('你好，世界')
+    # 朗讀一次
+    engine.runAndWait()
+    
+    engine.say('語音合成開始')
+    engine.say('我會說中文了，開森，開森')
+    engine.runAndWait()
+    
+    engine.say('The quick brown fox jumped over the lazy dog.')
+    engine.runAndWait()
+    """
+    
