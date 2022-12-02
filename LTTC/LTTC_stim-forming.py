@@ -277,7 +277,7 @@ if __name__ == "__main__":
         
             # Saving the converted audio in a mp3 file
             stim_audio.save(result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT))
-            time.sleep(10)
+            time.sleep(15)
             
             # Turn the mp3 file into wav file form
             src = result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT)
