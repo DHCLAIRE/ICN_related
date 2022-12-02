@@ -18,7 +18,7 @@ import os
 # import pyttsx3 # Hell no
 
 from pydub import AudioSegment
-from ffprobe import FFProbe
+#from ffprobe import FFProbe
 
 
 if __name__ == "__main__":
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     #os.system(data_path + "aegliy_new.mp3")
     
     
-    """
+    
     # convert the mp3 to wav
     
     ## METHOD 1 ##
@@ -78,8 +78,8 @@ if __name__ == "__main__":
     # convert wav to mp3
     sound = AudioSegment.from_mp3(src)
     sound.export(dst, format="wav")
-    """
     
+    """
     ## METHOD 2 ##
     # import required modules
     import subprocess
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     # convert mp3 to wav file
     subprocess.call(['ffmpeg', '-i', data_path + "aegliy_new.mp3",
                      data_path + "aegliy_test.wav"])
-    
+    """
     
     
     '''
