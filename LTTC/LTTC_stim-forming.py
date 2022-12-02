@@ -159,158 +159,167 @@ if __name__ == "__main__":
     LowtSetsLIST = []
     Setsinfo_LIST = []
     
-    # High_CD Set TEXTS
-    # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
-    HighCD_CallingLIST = [["3", "4", "5"], ["4", "5", "6"], ["5", "6", "7"], ["3", "6", "7"], ["3", "4", "7"]]
-    LowCD_CallingLIST = [["1", "2", "8"], ["2", "8", "9"], ["8", "9", "10"], ["1", "9", "10"], ["1", "2", "10"]]
-    HightSetsLIST = random.sample(HighCD_CallingLIST, 1)
-    LowtSetsLIST = random.sample(LowCD_CallingLIST, 1)
-    print(HightSetsLIST)
-    print(HightSetsLIST[0][0])
-    print(LowtSetsLIST)
-    print(LowtSetsLIST[0][0])
     
-    replace_pwDICT = {'aegliy':"aeggli",
-                      'baepay':"badpie",
-                      'baydiy':"bidey",
-                      'browmey':"bromay",
-                      'chaeviy':"chavi",
-                      'laelaxst':"lalust",
-                      'laeviy':"strlavvi",
-                      'maeskiy':"masgi",
-                      'paenliy':"panli",
-                      'payliy':"piely",
-                      'vaesow':"vasle",
-                      'weyaet':"way-at"}
+    for count in range(8, 18):
+        #print(count)
+        #print(type(count))
+        sub_id = "%.3d" %count 
     
-    
-    Setsinfo_LIST.extend(HightSetsLIST)
-    Setsinfo_LIST.extend(LowtSetsLIST)
-    
-    print(Setsinfo_LIST)
-    
-    for sets in range(3):
         # High_CD Set TEXTS
-        with open (textSets_data_path + "sets_{}_LIST.json".format(HightSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_3:
-            textSetsLIST_High = json.load(jfile_3)
-            
-            # randomly select 5 texts from the json file
-            High_stimLIST = random.sample(textSetsLIST_High, 5)
-            #pprint(High_stimLIST)
-            #print(len(High_stimLIST))
+        # texts_high_CD_setLIST = [345, 456, 567, 367, 347]
+        HighCD_CallingLIST = [["3", "4", "5"], ["4", "5", "6"], ["5", "6", "7"], ["3", "6", "7"], ["3", "4", "7"]]
+        LowCD_CallingLIST = [["1", "2", "8"], ["2", "8", "9"], ["8", "9", "10"], ["1", "9", "10"], ["1", "2", "10"]]
+        HightSetsLIST = random.sample(HighCD_CallingLIST, 1)
+        LowtSetsLIST = random.sample(LowCD_CallingLIST, 1)
+        print(HightSetsLIST)
+        print(HightSetsLIST[0][0])
+        print(LowtSetsLIST)
+        print(LowtSetsLIST[0][0])
+    
+        replace_pwDICT = {'aegliy':"aeggli",
+                          'baepay':"badpie",
+                          'baydiy':"bidey",
+                          'browmey':"bromay",
+                          'chaeviy':"chavi",
+                          'laelaxst':"lalust",
+                          'laeviy':"strlavvi",
+                          'maeskiy':"masgi",
+                          'paenliy':"panli",
+                          'payliy':"piely",
+                          'vaesow':"vasle",
+                          'weyaet':"way-at"}
+        
+    
+        Setsinfo_LIST.extend(HightSetsLIST)
+        Setsinfo_LIST.extend(LowtSetsLIST)
+    
+        print(Setsinfo_LIST)
+    
 
-            # replace {} to the assigned pseudowords by different condition
-            for tSTR in High_stimLIST:
-                if words_high_CD_setLIST[sets] != replace_pwDICT.get(words_high_CD_setLIST[sets]):
-                    new_tSTR = tSTR.replace("{}", replace_pwDICT.get(words_high_CD_setLIST[sets]))
-                    #print(words_high_CD_setLIST[sets])
-                    #print(replace_pwDICT.get(words_high_CD_setLIST[sets]))
-                    pprint(new_tSTR)
-                    new_High_textSetsLIST.extend([new_tSTR])
-                else:
-                    pass
+        
+    
+        for sets in range(3):
+            # High_CD Set TEXTS
+            with open (textSets_data_path + "sets_{}_LIST.json".format(HightSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_3:
+                textSetsLIST_High = json.load(jfile_3)
                 
-        # Low_CD Set TEXTS
-        # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
-        with open (textSets_data_path + "sets_{}_LIST.json".format(LowtSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_4:
-            textSetsLIST_Low = json.load(jfile_4)
+                # randomly select 5 texts from the json file
+                High_stimLIST = random.sample(textSetsLIST_High, 5)
+                #pprint(High_stimLIST)
+                #print(len(High_stimLIST))
+                
+                # replace {} to the assigned pseudowords by different condition
+                for tSTR in High_stimLIST:
+                    if words_high_CD_setLIST[sets] != replace_pwDICT.get(words_high_CD_setLIST[sets]):
+                        new_tSTR = tSTR.replace("{}", replace_pwDICT.get(words_high_CD_setLIST[sets]))
+                        #print(words_high_CD_setLIST[sets])
+                        #print(replace_pwDICT.get(words_high_CD_setLIST[sets]))
+                        #pprint(new_tSTR)
+                        new_High_textSetsLIST.extend([new_tSTR])
+                    else:
+                        pass
+                
+                # Low_CD Set TEXTS
+                # texts_low_CD_setLIST = [128, 289, 890, 190, 120]
+                with open (textSets_data_path + "sets_{}_LIST.json".format(LowtSetsLIST[0][sets]), "r", encoding = "utf-8") as jfile_4:
+                    textSetsLIST_Low = json.load(jfile_4)
                     
-            # randomly select 5 texts from the json file
-            Low_stimLIST = random.sample(textSetsLIST_Low, 5)
-            #pprint(Low_stimLIST)
-            #print(len(Low_stimLIST))
+                    # randomly select 5 texts from the json file
+                    Low_stimLIST = random.sample(textSetsLIST_Low, 5)
+                    #pprint(Low_stimLIST)
+                    #print(len(Low_stimLIST))
         
-            # replace {} to the assigned pseudowords by different condition
-            for tSTR in Low_stimLIST:
-                if words_low_CD_setLIST[sets] != replace_pwDICT.get(words_low_CD_setLIST[sets]):
-                    new_tSTR = tSTR.replace("{}", replace_pwDICT.get(words_low_CD_setLIST[sets]))
-                    #pprint(new_tSTR)
-                    new_Low_textSetsLIST.extend([new_tSTR])
-                else:
-                    pass
+                    # replace {} to the assigned pseudowords by different condition
+                    for tSTR in Low_stimLIST:
+                        if words_low_CD_setLIST[sets] != replace_pwDICT.get(words_low_CD_setLIST[sets]):
+                            new_tSTR = tSTR.replace("{}", replace_pwDICT.get(words_low_CD_setLIST[sets]))
+                            #pprint(new_tSTR)
+                            new_Low_textSetsLIST.extend([new_tSTR])
+                        else:
+                            pass
                 
-    pprint(new_High_textSetsLIST)
-    print(len(new_High_textSetsLIST))
-    pprint(new_Low_textSetsLIST)
-    print(len(new_Low_textSetsLIST))
+        pprint(new_High_textSetsLIST)
+        print(len(new_High_textSetsLIST))
+        pprint(new_Low_textSetsLIST)
+        print(len(new_Low_textSetsLIST))
     
-    total_stimSetLIST.extend(new_High_textSetsLIST)
-    total_stimSetLIST.extend(new_Low_textSetsLIST)
+        total_stimSetLIST.extend(new_High_textSetsLIST)
+        total_stimSetLIST.extend(new_Low_textSetsLIST)
     
-    print(len(total_stimSetLIST))
-    random.shuffle(total_stimSetLIST)
+        print(len(total_stimSetLIST))
+        random.shuffle(total_stimSetLIST)
     
     
-    dateLIST = []
-    sub_idLIST = []
-    #self_paced_rtLIST=[]
-    text_noLIST = []
-    #resultKeyLIST = []
+        dateLIST = []
+        sub_idLIST = []
+        #self_paced_rtLIST=[]
+        text_noLIST = []
+        #resultKeyLIST = []
     
-    sub_id = "018"
     
-    # create and save the audio files and the csv file form of textsets at once
-    for stim_textSTR in total_stimSetLIST:
-        ## AUDIO CREATION SECTION ##
+        # create and save the audio files and the csv file form of textsets at once
+        for stim_textSTR in total_stimSetLIST:
+            ## AUDIO CREATION SECTION ##
         
-        # Set the value of the transcripts
-        stimtext = stim_textSTR
+            # Set the value of the transcripts
+            stimtext = stim_textSTR
         
-        # Language in which you want to convert
-        language = 'en'
+            # Language in which you want to convert
+            language = 'en'
         
-        # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
-        stim_audio = gTTS(text=stimtext, lang=language, slow=False)
-        stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
+            # Passing the text and language to the engine, here we have marked slow=False. Which tells the module that the converted audio should have a high speed
+            stim_audio = gTTS(text=stimtext, lang=language, slow=False)
+            stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
         
-        # Saving the converted audio in a mp3 file
-        stim_audio.save(result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT))
-        time.sleep(10)
+            # Saving the converted audio in a mp3 file
+            stim_audio.save(result_data_path + "S%s_textaudio_%d.wav" %(sub_id, stim_audio_numINT))
+            time.sleep(10)
         
-        # making the wanted info into the List form for future use
-        text_noLIST.append(stim_audio_numINT)
-        dateLIST.append([""])
-        sub_idLIST.append(sub_id)
-        #resultKeyLIST.append(keys)
-        #self_paced_rtLIST.append(time_duration)
-        shuffledTotalT_LIST.append([stim_textSTR])
-        rating_LIST.append([""])
+            # making the wanted info into the List form for future use
+            text_noLIST.append(stim_audio_numINT)
+            dateLIST.append([""])
+            sub_idLIST.append(sub_id)
+            #resultKeyLIST.append(keys)
+            #self_paced_rtLIST.append(time_duration)
+            shuffledTotalT_LIST.append([stim_textSTR])
+            rating_LIST.append([""])
     
     
-    # Saving the self_paced_rt result into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                       #'Date':dateLIST,
-                       'Texts_no':text_noLIST,
-                       #'Self-paced RT':self_paced_rtLIST,
-                       #'Rating Scale': rating_LIST,
-                       'Text content': shuffledTotalT_LIST
-                       })
+        # Saving the self_paced_rt result into csv file
+        dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                                 #'Date':dateLIST,
+                                'Texts_no':text_noLIST,
+                                #'Self-paced RT':self_paced_rtLIST,
+                                #'Rating Scale': rating_LIST,
+                                'Text content': shuffledTotalT_LIST
+                                })
     
-    pseudoDICT = {"The TargetPseudo group_6":targetPseudoLIST,
-                  "The ControlPseudo group_6": controlPseudoLIST,
-                  "High_CD condition pseudowords_3":words_high_CD_setLIST,
-                  "Low_CD condition pseudowords_3":words_low_CD_setLIST}
+        pseudoDICT = {"The TargetPseudo group_6":targetPseudoLIST,
+                      "The ControlPseudo group_6": controlPseudoLIST,
+                      "High_CD condition pseudowords_3":words_high_CD_setLIST,
+                      "Low_CD condition pseudowords_3":words_low_CD_setLIST}
     
-    textsDICT = {"The High-Low Set Group": Setsinfo_LIST,
-                 "High_textSetsLIST": new_High_textSetsLIST,
-                 "Low_textSetsLIST":new_Low_textSetsLIST,
-                 "Total_stimSetLIST":total_stimSetLIST}
+        textsDICT = {"The High-Low Set Group": Setsinfo_LIST,
+                     "High_textSetsLIST": new_High_textSetsLIST,
+                     "Low_textSetsLIST":new_Low_textSetsLIST,
+                     "Total_stimSetLIST":total_stimSetLIST}
     
-    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
-    file_name = "S%s" %sub_id + '_Reading_task.csv'
-    fsave_path = result_data_path + file_name
-    dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+        #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
+        file_name = "S%s" %sub_id + '_Reading_task.csv'
+        fsave_path = result_data_path + file_name
+        dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
-    DICT_name = "S%s" %sub_id + '_pseudowordsDICT.json'
-    Dsave_path = result_data_path + DICT_name
-    with open(Dsave_path, "w", newline='', encoding="UTF-8") as jsfile:
-        json.dump(pseudoDICT, jsfile, ensure_ascii=False)
+        DICT_name = "S%s" %sub_id + '_pseudowordsDICT.json'
+        Dsave_path = result_data_path + DICT_name
+        with open(Dsave_path, "w", newline='', encoding="UTF-8") as jsfile:
+            json.dump(pseudoDICT, jsfile, ensure_ascii=False)
         
-    Text_name = "S%s" %sub_id + '_textsDICT.json'
-    Tsave_path = result_data_path + Text_name
-    with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
-        json.dump(textsDICT, jsfile_2, ensure_ascii=False)
-    print("DONEEE!!!")
+            Text_name = "S%s" %sub_id + '_textsDICT.json'
+            Tsave_path = result_data_path + Text_name
+            with open(Tsave_path, "w", newline='', encoding="UTF-8") as jsfile_2:
+                json.dump(textsDICT, jsfile_2, ensure_ascii=False)
+        print(sub_id, "is DONEEE!!!")
+    print("ALL DONE~~")
     
     
     
