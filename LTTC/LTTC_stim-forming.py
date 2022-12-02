@@ -29,9 +29,10 @@ from gtts import gTTS
 import pandas as pd
 import time
 
+# for audio file alternation
 from scipy.io import wavfile
 import scipy.signal
-
+from pydub import AudioSegment
 
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
@@ -275,16 +276,24 @@ if __name__ == "__main__":
             stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
         
             # Saving the converted audio in a mp3 file
-            stim_audio.save(result_data_path + "S%s_textaudio_%d.wav" %(sub_id, stim_audio_numINT))
+            stim_audio.save(result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT))
             time.sleep(10)
             
+            # Turn the mp3 file into wav file form
+            src = result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT)
+            dst = result_data_path + "S%s_textaudio_%d.wav" %(sub_id, stim_audio_numINT)
+            
+            # convert wav to mp3
+            sound = AudioSegment.from_mp3(src)
+            sound.export(dst, format="wav")
+            """
             # Upsample (24kHz to 44.1kHz) at the same time
             new_fs = 44100
-            
+            # read the target wavfile
             sample_rate, data = wavfile.read(result_data_path + "S%s_textaudio_%d.wav" %(sub_id, stim_audio_numINT))
         
-            print(sample_rate)
-            print("The data points of tape", i+1,"is" ,len(data))
+            #print(sample_rate)
+            #print("The data points of tape", i+1,"is" ,len(data))
             
             # resample data
             new_num_samples = round(len(data)*float(new_fs)/sample_rate)
@@ -294,10 +303,8 @@ if __name__ == "__main__":
             value = data[-1]  # what does this means??   # data[-1]== -1, <class 'numpy.int16'>
             new_data = np.append(data, value)
             
-            
-            wavfile.write(filename=(result_data_path + "S%s_upsampled_textaudio_%d.mp3" %(sub_id, stim_audio_numINT)), rate=44100, data=new_data)
-            
-        
+            wavfile.write(filename=(result_data_path + "S%s_upsampled_textaudio_%d.wav" %(sub_id, stim_audio_numINT)), rate=44100, data=new_data)
+            """
             # making the wanted info into the List form for future use
             text_noLIST.append(stim_audio_numINT)
             dateLIST.append([""])
