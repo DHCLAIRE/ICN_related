@@ -17,11 +17,14 @@ import os
 
 # import pyttsx3 # Hell no
 
+from pydub import AudioSegment
+from ffprobe import FFProbe
+
 
 if __name__ == "__main__":
     
-    #data_path  = "/Users/neuroling/Downloads/"
-    data_path  = "/Users/ting-hsin/Downloads/"
+    data_path  = "/Users/neuroling/Downloads/"
+    #data_path  = "/Users/ting-hsin/Downloads/"
     
     
     
@@ -95,6 +98,31 @@ if __name__ == "__main__":
     
     # Playing the converted file
     #os.system(data_path + "aegliy_new.mp3")
+    
+    
+    
+    """
+    # convert the mp3 to wav
+    
+    ## METHOD 1 ##
+    # files
+    src = data_path + "aegliy_new.mp3"
+    dst = data_path + "aegliy_test.wav"
+    
+    # convert wav to mp3
+    sound = AudioSegment.from_mp3(src)
+    sound.export(dst, format="wav")
+    """
+    
+    ## METHOD 2 ##
+    # import required modules
+    import subprocess
+    
+    # convert mp3 to wav file
+    subprocess.call(['ffmpeg', '-i', data_path + "aegliy_new.mp3",
+                     data_path + "aegliy_test.wav"])
+    
+    
     
     '''
     # pseudoword voice gender change
