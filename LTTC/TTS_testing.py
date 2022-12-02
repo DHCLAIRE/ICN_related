@@ -70,7 +70,14 @@ if __name__ == "__main__":
     
     # convert the mp3 to wav
     
-    ## METHOD 1 ##
+    ## METHOD 1 SUCCESS##  #
+    '''
+    # Need pydub & ffmpeg modules to 
+      >> use $ !pip install pydub & brew install ffmpeg
+    in order to successfully using pydub, ffmpeg needs to be installed as well
+    e.g. from pydub import AudioSegment
+    
+    '''
     # files
     src = data_path + "aegliy_new.mp3"
     dst = data_path + "aegliy_test.wav"
