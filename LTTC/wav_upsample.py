@@ -10,7 +10,7 @@ if __name__ == "__main__":
     # The original script
     # https://gist.github.com/alexjaw/09af24d58ac99e1e4cafba092e063fe3
     
-    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S018/S018_audios/"
+    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/"
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
     
     new_fs = 44100
@@ -36,23 +36,26 @@ if __name__ == "__main__":
         wavfile.write(filename=stim_data_path+'{}_v3_female.wav'.format(wordSTR), rate=44100, data=new_data)    
     "''
     '''
-    for i in range(30):
-        # open data
-        sample_rate, data = wavfile.read(data_path + 'S018_textaudio_{}.wav'.format(i+1))
-    
-        print(sample_rate)
-        print("The data points of tape", i+1,"is" ,len(data))
+    for subj in range(8, 18):
+        subj_id = '%.3d' %subj
+        print(subj_id)
+        for i in range(30):
+            # open data
+            sample_rate, data = wavfile.read(data_path + 'S018_textaudio_{}.wav'.format(i+1))
+            
+            print(sample_rate)
+            print("The data points of tape", i+1,"is" ,len(data))
         
-        # resample data
-        new_num_samples = round(len(data)*float(new_fs)/sample_rate)
-        data = scipy.signal.resample(data, new_num_samples).astype(np.int16)  # no astype(np.int16)'s dtype == float64
-        #data_dtype = data.dtype
-        #print(data_dtype)
-        value = data[-1]  # what does this means??   # data[-1]== -1, <class 'numpy.int16'>
-        new_data = np.append(data, value)
+            # resample data
+            new_num_samples = round(len(data)*float(new_fs)/sample_rate)
+            data = scipy.signal.resample(data, new_num_samples).astype(np.int16)  # no astype(np.int16)'s dtype == float64
+            #data_dtype = data.dtype
+            #print(data_dtype)
+            value = data[-1]  # what does this means??   # data[-1]== -1, <class 'numpy.int16'>
+            new_data = np.append(data, value)
         
         
-        wavfile.write(filename=data_path+"S018_textaudio_{}.wav".format(i+1), rate=44100, data=new_data)
+            wavfile.write(filename=data_path+"S018_textaudio_{}.wav".format(i+1), rate=44100, data=new_data)
         
         """
         # open NEW data
