@@ -76,7 +76,6 @@ if __name__ == "__main__":
       >> use $ !pip install pydub & brew install ffmpeg
     in order to successfully using pydub, ffmpeg needs to be installed as well
     e.g. from pydub import AudioSegment
-    
     '''
     # files
     src = data_path + "aegliy_new.mp3"
