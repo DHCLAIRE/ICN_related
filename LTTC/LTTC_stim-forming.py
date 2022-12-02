@@ -295,7 +295,7 @@ if __name__ == "__main__":
             new_data = np.append(data, value)
             
             
-            wavfile.write(filename=(result_data_path + "S%s_upsampled_textaudio_%d.wav" %(sub_id, stim_audio_numINT)), rate=44100, data=new_data)
+            wavfile.write(filename=(result_data_path + "S%s_upsampled_textaudio_%d.mp3" %(sub_id, stim_audio_numINT)), rate=44100, data=new_data)
             
         
             # making the wanted info into the List form for future use
