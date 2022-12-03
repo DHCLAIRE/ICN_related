@@ -10,7 +10,7 @@ if __name__ == "__main__":
     # The original script
     # https://gist.github.com/alexjaw/09af24d58ac99e1e4cafba092e063fe3
     
-    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/"
+    data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/"
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
     
     new_fs = 44100
@@ -36,12 +36,12 @@ if __name__ == "__main__":
         wavfile.write(filename=stim_data_path+'{}_v3_female.wav'.format(wordSTR), rate=44100, data=new_data)    
     "''
     '''
-    for subj in range(8, 18):
+    for subj in range(8, 15):
         subj_id = '%.3d' %subj
         print(subj_id)
         for i in range(30):
             # open data
-            sample_rate, data = wavfile.read(data_path + 'S018_textaudio_{}.wav'.format(i+1))
+            sample_rate, data = wavfile.read(data_path + 'S{}_textaudio_{}.wav'.format(subj_id, i+1))
             
             print(sample_rate)
             print("The data points of tape", i+1,"is" ,len(data))
@@ -55,7 +55,7 @@ if __name__ == "__main__":
             new_data = np.append(data, value)
         
         
-            wavfile.write(filename=data_path+"S018_textaudio_{}.wav".format(i+1), rate=44100, data=new_data)
+            wavfile.write(filename=data_path+"S{}_textaudio_{}.wav".format(subj_id, i+1), rate=44100, data=new_data)
         
         """
         # open NEW data
