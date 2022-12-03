@@ -10,7 +10,7 @@ if __name__ == "__main__":
     # The original script
     # https://gist.github.com/alexjaw/09af24d58ac99e1e4cafba092e063fe3
     
-    data_path = "/Users/neuroling/Downloads/DINGHSIN_Results/"
+    data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/"
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
     
     new_fs = 44100
