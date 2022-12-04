@@ -23,15 +23,15 @@ from pydub import AudioSegment
 
 if __name__ == "__main__":
     
-    data_path  = "/Users/neuroling/Downloads/"
-    #data_path  = "/Users/ting-hsin/Downloads/"
+    #data_path  = "/Users/neuroling/Downloads/"
+    data_path  = "/Users/ting-hsin/Downloads/"
     
     ## METHOD 2 HALF_SUCCESS ##
     # https://gtts.readthedocs.io/en/latest/
     
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
-    mytext = "aeggli"#"ægli"
+    mytext = "thirty first"#"ægli"
     
     # Language in which you want to convert
     language = 'en'
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "aegliy_new.mp3")
+    myobj.save(data_path + "31_new.mp3")
     
     # Playing the converted file
     #os.system(data_path + "aegliy_new.mp3")
@@ -78,12 +78,12 @@ if __name__ == "__main__":
     e.g. from pydub import AudioSegment
     '''
     # files
-    src = data_path + "aegliy_new.mp3"
-    dst = data_path + "aegliy_test.wav"
+    #src = data_path + "31_new.mp3"
+    #dst = data_path + "31_test.wav"
     
-    # convert wav to mp3
-    sound = AudioSegment.from_mp3(src)
-    sound.export(dst, format="wav")
+    ## convert wav to mp3
+    #sound = AudioSegment.from_mp3(src)
+    #sound.export(dst, format="wav")
     
     """
     ## METHOD 2 ##
