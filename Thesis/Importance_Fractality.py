@@ -260,10 +260,12 @@ if __name__ == "__main__":
     #print(type(testing_text))
     #print(testing_text)
     
+    # segment the text word by word
     raw_textLIST = testing_text.lower().split()
     print(raw_textLIST)
     
     """
+    ### APPLY LATER ###
     # set the value of N (N = "The length of the text")
     N = float(len(raw_textLIST))
     print("N (The length of the text) = ", N)
@@ -286,7 +288,7 @@ if __name__ == "__main__":
 
     #make a box size list for segment the text according to the box size
     lengthLIST = list(range(1,len(raw_textLIST)+1))
-    print(lengthLIST) # How long is this text
+    #print(lengthLIST) # How many word in one box size
     
     shuffled_textLIST = []
     shuffled_textLIST = shuffle_text(raw_textLIST)
