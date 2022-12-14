@@ -59,7 +59,7 @@ def box2count(target_boxedLIST):
     '''
     word_boxDICT = {}
     
-    # Count the appearance of the target word in the boxLIST after the disecction was done
+    # Count the appearance of the target word in the box_wordLIST after the disecction was done
     # According to the sequence of the splited raw text = every segmented word in the text
     for wordSTR in raw_textLIST:
         #print(wordSTR)
@@ -72,11 +72,11 @@ def box2count(target_boxedLIST):
             t_wordcountINT = 0
             
             # Access the elements of boxed list based on the box size
-            for small_boxLIST in boxedLIST:
-                #print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
+            for small_box_wordLIST in boxedLIST:
+                #print("small_box_wordLIST = ", small_box_wordLIST)  # The model only catchs the last small_box_wordLIST, there for the word count might be wrong
                 
                 # Count the existence of the target word
-                if wordSTR in small_boxLIST:
+                if wordSTR in small_box_wordLIST:
                     t_wordcountINT +=1
                     #print(wordSTR)
             #print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
@@ -292,8 +292,8 @@ if __name__ == "__main__":
     
     shuffled_textLIST = []
     shuffled_textLIST = shuffle_text(raw_textLIST)
-    #print(raw_textLIST)
-    #print(shuffled_textLIST)
+    #print("RAW text:", raw_textLIST)  # Checked
+    #print("SHUFFLED text:", shuffled_textLIST)  # Checked
     
     #(SOLVED!) what if I store the boxes into a DICT, and index those boxes by it's length?? (NO, by the time)
     All_boxed_textLIST = []  # All the results of every boxed textLIST
@@ -303,22 +303,23 @@ if __name__ == "__main__":
     for s in lengthLIST:  # s = box isze
         # Unshuffled text
         boxed_textLIST = []  # the boxed result of the box size  i.e. the boxed result of s = 1
-        boxLIST = [] # the boxed word  i.e.['rates']; ['passed', '70%']
+        box_wordLIST = [] # the boxed word  i.e.['rates']; ['passed', '70%']
         # Shuffled text
         shuffled_boxed_textLIST = [] # boxed result of the box size from shuffled text  i.e. the boxed result of s = 1
-        shuffled_boxLIST = []  # the boxed word in shuffled text i.e.['rates']; ['passed', 'aged']
+        shuffled_box_wordLIST = []  # the boxed word in shuffled text i.e.['rates']; ['passed', 'aged']
         
         
         # Unshuffled Box Disecction
         for c in range(len(raw_textLIST)):  # c = word count
             # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
             if c%s == 0: # s == box size
-                boxLIST = raw_textLIST[c:c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
-                #print(boxLIST)
-                #print(len(boxLIST))
-                boxed_textLIST.append(boxLIST)
+                box_wordLIST = raw_textLIST[c:c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
+                #print(box_wordLIST)
+                #print(len(box_wordLIST))
+                boxed_textLIST.append(box_wordLIST)
             else:
                 pass
+        print(boxed_textLIST)
         # Save all the boxed result into a big LIST
         All_boxed_textLIST.append(boxed_textLIST)
         
@@ -327,17 +328,17 @@ if __name__ == "__main__":
         for shuffled_c in range(len(shuffled_textLIST)):  #shuffled_c = word count in shuffled text
             # only starting to box the word based on the box size (meaning the residue of that word index is equal to zero)
             if shuffled_c%s == 0: # s == box size
-                shuffled_boxLIST = shuffled_textLIST[shuffled_c:shuffled_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
-                #print(shuffled_boxLIST)
-                #print(len(shuffled_boxLIST))
-                shuffled_boxed_textLIST.append(shuffled_boxLIST)
+                shuffled_box_wordLIST = shuffled_textLIST[shuffled_c:shuffled_c+s]  # [w:w+s] => if w = 2; s = 2 , [w:w+s] = [2:4] = collect word from index 2-3 => [index2 , index3]
+                #print(shuffled_box_wordLIST)
+                #print(len(shuffled_box_wordLIST))
+                shuffled_boxed_textLIST.append(shuffled_box_wordLIST)
             else:
                 pass
         # Save all the boxed result into a big LIST
         All_shuffled_boxed_textLIST.append(shuffled_boxed_textLIST)
         
         #print(boxed_textLIST)
-        #print(len(boxed_textLIST))  #Do I need to store every boxLIST into one big DICT??
+        #print(len(boxed_textLIST))  #Do I need to store every box_wordLIST into one big DICT??
         #print(shuffled_boxed_textLIST)
         #print(len(shuffled_boxed_textLIST))
     #print("Box dissecction DONE")
@@ -347,7 +348,7 @@ if __name__ == "__main__":
     #print(len(All_boxed_textLIST))
     #print(All_shuffled_boxed_textLIST)
     #print(len(All_shuffled_boxed_textLIST))
-    
+    """
     # Save the boxes list word count into DICT
     boxedDICT = box2count(All_boxed_textLIST)
     shuffle_boxedDICT = box2count(All_shuffled_boxed_textLIST)
@@ -358,6 +359,7 @@ if __name__ == "__main__":
     
     dataDICT_1 = pd.DataFrame(boxedDICT)
     dataDICT_2 = pd.DataFrame(shuffle_boxedDICT)   # why it only until box size 99
+    """
     """
     save_path_1 = data_path + file_name_1
     save_path_2 = data_path + file_name_2
@@ -379,7 +381,7 @@ if __name__ == "__main__":
     #### SHUFFLED ####
     shuffuled_word_boxDICT = {}
     
-    # Count the appearance of the target word in the boxLIST after the disecction was done
+    # Count the appearance of the target word in the box_wordLIST after the disecction was done
     # According to the sequence of the splited raw text = every segmented word in the text
     for wordSTR in raw_textLIST:
         #print(wordSTR)
@@ -392,11 +394,11 @@ if __name__ == "__main__":
             t_wordcountINT = 0
             
             # Access the elements of boxed list based on the box size
-            for small_s_boxLIST in shuffled_boxed_textLIST:
-                #print("small_boxLIST = ", small_boxLIST)  # The model only catchs the last small_boxLIST, there for the word count might be wrong
+            for small_s_box_wordLIST in shuffled_boxed_textLIST:
+                #print("small_box_wordLIST = ", small_box_wordLIST)  # The model only catchs the last small_box_wordLIST, there for the word count might be wrong
                 
                 # Count the existence of the target word
-                if wordSTR in small_s_boxLIST:
+                if wordSTR in small_s_box_wordLIST:
                     t_wordcountINT +=1
                     #print(wordSTR)
             #print("The word count of", "[", wordSTR, "]", "in box size = ", "[", len(boxedLIST[0]), "]", "is", t_wordcountINT)
