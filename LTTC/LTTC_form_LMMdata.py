@@ -151,12 +151,13 @@ if __name__ == "__main__":
     NotesALL_LIST = []
     
     
-    for z in range(4):
+    for z in range(1, 16):
         # Load in the data
-        sub_id = '%.3d' %(z+1)  # <class 'str'>
+        sub_id = '%.3d' %z  # <class 'str'>
+        #print(sub_id)
         
         # New data_path
-        root_data_path = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")
+        root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG")
         result_data_path = root_data_path / Path("LTTC_MEG_S%s" %sub_id)
         
     
@@ -500,7 +501,7 @@ if __name__ == "__main__":
                                  'Notes': NotesALL_LIST,
                                  })
 
-        file_name = '001-004_PLDT_raw_results.csv' #% sub_id
+        file_name = '001-015_PLDT_raw_results.csv' #% sub_id
         save_path = root_data_path / file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
         print("Done!")
