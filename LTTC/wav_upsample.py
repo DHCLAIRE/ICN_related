@@ -62,10 +62,10 @@ if __name__ == "__main__":
         
     
         # open NEW data
-        sample_rate_new, data_new = wavfile.read(data_path + "S999_modified_{}.wav".format(i+1))
+        #sample_rate_new, data_new = wavfile.read(data_path + "S999_modified_{}.wav".format(i+1))
     
-        print(sample_rate_new)
-        print("The NEW data points of tape", i+1,"is" ,len(data_new))
+        #print(sample_rate_new)
+        #print("The NEW data points of tape", i+1,"is" ,len(data_new))
     """
     
     tmp_data_path = "/Users/ting-hsin/Downloads/S005-S007/LTTC_MEG_S013/S013_audios/"
