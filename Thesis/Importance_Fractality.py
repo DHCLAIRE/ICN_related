@@ -319,10 +319,9 @@ if __name__ == "__main__":
                 boxed_textLIST.append(box_wordLIST)
             else:
                 pass
-        print(boxed_textLIST)
+        #print(boxed_textLIST)
         # Save all the boxed result into a big LIST
         All_boxed_textLIST.append(boxed_textLIST)
-        print(All_boxed_textLIST)
         
         # Shuffled Box Disecction
         # Using the shuffled textx
@@ -335,7 +334,7 @@ if __name__ == "__main__":
                 shuffled_boxed_textLIST.append(shuffled_box_wordLIST)
             else:
                 pass
-        print(shuffled_boxed_textLIST)
+        #print(shuffled_boxed_textLIST)
         # Save all the boxed result into a big LIST
         All_shuffled_boxed_textLIST.append(shuffled_boxed_textLIST)
         
@@ -346,7 +345,9 @@ if __name__ == "__main__":
     #print("Box dissecction DONE")
     #print("Shuffled Box dissecction DONE")
     
-    #print(All_boxed_textLIST)
+    print(All_boxed_textLIST[2])
+    print(All_boxed_textLIST[2][1])
+    print(All_boxed_textLIST[2][1][1])
     #print(len(All_boxed_textLIST))
     #print(All_shuffled_boxed_textLIST)
     #print(len(All_shuffled_boxed_textLIST))
