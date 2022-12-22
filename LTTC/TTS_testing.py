@@ -23,18 +23,18 @@ from pydub import AudioSegment
 
 if __name__ == "__main__":
     
-    #data_path  = "/Users/neuroling/Downloads/"
-    data_path  = "/Users/ting-hsin/Downloads/"
+    data_path  = "/Users/neuroling/Downloads/"
+    #data_path  = "/Users/ting-hsin/Downloads/"
     
     ## METHOD 2 HALF_SUCCESS ##
     # https://gtts.readthedocs.io/en/latest/
     
     # GOOGLE gTTS >> worked but pause at the strange point  >> Try other's method first
     # The text that you want to convert to audio
-    mytext = "Lipset"#"ægli"
+    mytext = "奇奇獨自踏著輕快步伐，走在原野上。白紋蝶好奇的飛過來問：「奇奇，你要去哪裡？」「我要去外婆家。」「自己去嗎？你好棒喔！自己去沒問題嗎？」「沒問題！媽媽常常帶我走這條路。」「路上小心！」奇奇來到池塘邊，發現橋斷了。「哎呀！這下子該怎麼辦才好？我只知道這一條路，如果沒辦法走過池塘，我就不能去找外婆了。」奇奇正在煩惱時，池塘裡的青蛙探出水面問：「你怎麼了？」「橋斷了，我到不了外婆家了。」「別擔心，我們可以送你到對岸。」啪啦！嘩啦「哇！這是我第一次抱著蹼足過池塘！」奇奇向青蛙道謝後，沿著小路走過森林，就看到外婆家。「外婆！」奇奇興奮的跑了起來。「哇！奇奇自己來的，真是好棒喔！」外婆見到奇奇也非常開心。"#"ægli"
     
     # Language in which you want to convert
-    language = 'en'
+    language = 'zh'#'en'
     
     '''
     ### Arpabet-to-ipa ###
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     
     # Saving the converted audio in a mp3 file named
     # welcome 
-    myobj.save(data_path + "Lipset_new.mp3")
+    myobj.save(data_path + "文本_new.mp3")
     
     # Playing the converted file
     #os.system(data_path + "aegliy_new.mp3")
