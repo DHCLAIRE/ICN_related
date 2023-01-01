@@ -38,7 +38,7 @@ if __name__ == "__main__":
         wavfile.write(filename=stim_data_path+'{}_v3_female.wav'.format(wordSTR), rate=44100, data=new_data)    
     """
     
-    for subj in range(19, 20):
+    for subj in range(20, 23):
         subj_id = '%.3d' %subj
         audio_data_path = data_path / Path("LTTC_MEG_S%s/S%s_audios" %(subj_id, subj_id))
         print(subj_id)
