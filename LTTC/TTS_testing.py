@@ -105,7 +105,7 @@ if __name__ == "__main__":
     
     '''
     
-    replace_pwDICT = {'aeggli':'aeggli',
+    replace_pwDICT = {'aegliy':'aeggli',
                       'baepay':'badpie',
                       'baydiy':'bidey',
                       'browmey':'bromay',
