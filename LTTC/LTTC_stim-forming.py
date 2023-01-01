@@ -144,7 +144,7 @@ if __name__ == "__main__":
         with open(textSets_data_path + "sets_10_LIST.json", "w", newline='', encoding="UTF-8") as setsfile:
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
-    for count in range(19, 20):
+    for count in range(20, 24):
         #print(count)
         #print(type(count))
         sub_id = "%.3d" %count 
