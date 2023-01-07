@@ -36,7 +36,7 @@ from pydub import AudioSegment
 
 if __name__ == "__main__":
     stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_audio_behavioral/"
     text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
     textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
     
@@ -144,7 +144,7 @@ if __name__ == "__main__":
         with open(textSets_data_path + "sets_10_LIST.json", "w", newline='', encoding="UTF-8") as setsfile:
             json.dump(sets_10_LIST, setsfile, ensure_ascii=False)
         """
-    for count in range(23, 26):
+    for count in range(21, 31):
         #print(count)
         #print(type(count))
         sub_id = "%.3d" %count 
@@ -276,12 +276,12 @@ if __name__ == "__main__":
             stim_audio_numINT = int(total_stimSetLIST.index(stim_textSTR))+1
         
             # Saving the converted audio in a mp3 file
-            stim_audio.save(result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT))
+            stim_audio.save(result_data_path + "S%s_behavioral_textaudio_%d.mp3" %(sub_id, stim_audio_numINT))
             time.sleep(15)
             
             # Turn the mp3 file into wav file form
-            src = result_data_path + "S%s_textaudio_%d.mp3" %(sub_id, stim_audio_numINT)
-            dst = result_data_path + "S%s_textaudio_%d.wav" %(sub_id, stim_audio_numINT)
+            src = result_data_path + "S%s_behavioral_textaudio_%d.mp3" %(sub_id, stim_audio_numINT)
+            dst = result_data_path + "S%s_behavioral_textaudio_%d.wav" %(sub_id, stim_audio_numINT)
             
             # convert wav to mp3
             sound = AudioSegment.from_mp3(src)
@@ -335,7 +335,7 @@ if __name__ == "__main__":
                      "Total_stimSetLIST":total_stimSetLIST}
     
         #data_path = "/Users/ting-hsin/Docs/Github/ICN_related"
-        file_name = "S%s" %sub_id + '_Reading_task.csv'
+        file_name = "S%s" %sub_id + '_Listening_task.csv'
         fsave_path = result_data_path + file_name
         dataDICT.to_csv(fsave_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
