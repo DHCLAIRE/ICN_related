@@ -38,14 +38,14 @@ if __name__ == "__main__":
         wavfile.write(filename=stim_data_path+'{}_v3_female.wav'.format(wordSTR), rate=44100, data=new_data)    
     """
     
-    for subj in range(2, 31):
+    for subj in range(20, 21):
         subj_id = '%.3d' %subj
-        audio_data_path = data_path / Path("LTTC_Behavioral_S%s" %subj_id)  # tmp, delete this command later
+        #audio_data_path = data_path / Path("LTTC_Behavioral_S%s" %subj_id)  # tmp, delete this command later
         #audio_data_path = data_path / Path("LTTC_Behavioral_S%s/S%s_behavioral_audios" %(subj_id, subj_id))
         print(subj_id)
         for i in range(30):
             # open data
-            sample_rate, data = wavfile.read(audio_data_path / Path('S{}_behavioral_textaudio_{}.wav'.format(subj_id, i+1)))
+            sample_rate, data = wavfile.read(audio_data_path / Path('S{}_textaudio_{}.wav'.format(subj_id, i+1)))
             
             print(sample_rate)
             print("The data points of tape", i+1,"is" ,len(data))
@@ -59,7 +59,7 @@ if __name__ == "__main__":
             new_data = np.append(data, value)
         
         
-            wavfile.write(filename=audio_data_path / Path("S{}_behavioral_textaudio_{}.wav".format(subj_id, i+1)), rate=44100, data=new_data)
+            wavfile.write(filename=audio_data_path / Path("S{}_textaudio_{}.wav".format(subj_id, i+1)), rate=44100, data=new_data)
         print("S%s" %subj_id, "is DONE!")
     print("ALL DONEEE!!")
         # open NEW data
