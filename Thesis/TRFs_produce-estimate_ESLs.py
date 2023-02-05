@@ -14,11 +14,12 @@ import numpy as np
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
-    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S008_ICAed_raw.fif', path.name)]  #S01_alice-raw.fif
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
@@ -91,7 +92,7 @@ if __name__ == "__main__":
         # Load the EEG data
         raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
         # Band-pass filter the raw data between 0.5 and 20 Hz
-        raw.filter(0.5, 20).resample(sfreq=100)
+        raw.filter(0.5, 20)  #.resample(sfreq=100)  # >> already resample to sfreq=100
         
         # Interpolate bad channels  
         #raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
