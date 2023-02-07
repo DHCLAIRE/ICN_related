@@ -171,9 +171,9 @@ if __name__ == "__main__":
     =======
     Number of shuffled box count (Nsh-b(s, w)) = M(The frequency of the word ) / 1+(M-1/N-1)(s-1)
     N = the number of word in a text = Shuffle counts  >>  = the length of the text >> DONE
-    M = the word frequency >> count the appearance of the target word in the text  >> DONE
-    s = the box size = how many words were count as one box >> from 1 to the maximum length of the text
-    w = the target word
+    M = the word frequency >> count the appearance of the target word in the text  >> UNDONE
+    s = the box size = how many words were count as one box >> from 1 to the maximum length of the text  >> DONE
+    w = the target word  >> DONE
     
     
     ================================================================================================================
@@ -258,7 +258,7 @@ if __name__ == "__main__":
     # segment the text word by word
     raw_textLIST = cleaned_text.lower().split()
     print(raw_textLIST)
-    print(len(raw_textLIST))  # = 150
+    #print(len(raw_textLIST))  # = 150
     """
     ### APPLY LATER ###
     # set the value of N (N = "The length of the text")
@@ -268,7 +268,7 @@ if __name__ == "__main__":
     #pprint(raw_textLIST)
     print(len(raw_textLIST))
     
-    # word frequency count  # M >> needs to call out the word(key) for its count(value)
+    ##NOT THIS WAY## # word frequency count  # M >> needs to call out the word(key) for its count(value)
     # method 1
     word_frequncyDICT = word_frequncy(testing_text)
     print("Func:", word_frequncyDICT) # Follow the word sequence of text
@@ -280,7 +280,9 @@ if __name__ == "__main__":
     print(len(word_frequncyDICT_2))
     
     """
-
+    
+    ## THIS IS BOX COUNTING ##
+    #Number of the box count >> M >> I guess??
     #make a box size list for segment the text according to the box size
     lengthLIST = list(range(1,len(raw_textLIST)+1))
     #print(lengthLIST) # How many word in one box size
@@ -340,6 +342,8 @@ if __name__ == "__main__":
     #print("Box dissecction DONE")
     #print("Shuffled Box dissecction DONE")
     
+    # Check for the box result of the unshuffled and shuffled types
+    # The unshuffled type
     #pprint(All_boxed_textLIST)
     #print(All_boxed_textLIST[2]) # should be the result of s=3  >> correct
     #print(len(All_boxed_textLIST[2])) # = 50 >> correct
@@ -347,9 +351,22 @@ if __name__ == "__main__":
     #print(len(All_boxed_textLIST[2][1])) # = 3 >> correct
     print(All_boxed_textLIST[2][1][1]) # should be the second single word(STR) in the second segment of the s=3 result
     print(len(All_boxed_textLIST[2][1][1])) # = the length of the certain target word(STR)
-    #print(len(All_boxed_textLIST))
+
+    # The shuffled type
     #print(All_shuffled_boxed_textLIST)
-    #print(len(All_shuffled_boxed_textLIST))
+    #print(All_shuffled_boxed_textLIST[2]) # >>correct
+    #print(len(All_shuffled_boxed_textLIST[2]))  # >>correct
+    #print(All_shuffled_boxed_textLIST[2][1])  # >>correct
+    #print(len(All_shuffled_boxed_textLIST[2][1]))  # >>correct
+    print(All_shuffled_boxed_textLIST[2][1][1])  # >>correct
+    print(len(All_shuffled_boxed_textLIST[2][1][1]))  # >>correct
+    
+    
+    # Calculate the 
+    
+    
+    
+    ### DOWN below is the saving part, we'll deal with it later ###
     """
     # Save the boxes list word count into DICT
     boxedDICT = box2count(All_boxed_textLIST)
