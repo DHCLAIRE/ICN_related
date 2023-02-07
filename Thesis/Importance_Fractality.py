@@ -3,6 +3,7 @@
 
 
 from pprint import pprint
+import re
 import csv
 import json
 import random
@@ -245,25 +246,19 @@ if __name__ == "__main__":
     raw_textLIST = []
     
     
-    testing_text = """The marathon COVID-19 lockdown in Sydney, Australia, ended Monday for vaccinated residents. 
-    Stay-at-home orders imposed on June 26 have been lifted. 
-    Government advertisements have promised that freedoms would return when vaccination rates passed certain milestones. 
-    The message has been getting through to the community. 
-    Lockdown in the New South Wales state capital, Sydney, was lifted Monday because inoculation rates have passed 70% for people above aged 16. 
-    Shops have reopened for the first time since June. 
-    Small gatherings at home are permitted, and larger groups are allowed to meet at parks and beaches. 
-    However, the above apply only to fully vaccinated people. 
-    All residents still face restrictions on travel beyond Sydney. 
-    The rules will be eased when vaccination rates in New South Wales reach 80%. 
-    At that point international travel will resume. 
-    Still, New South Wales state premier Dominic Perrottet stated that a cautious stages approach to reopening is needed."""
+    testing_text = """The marathon COVID-19 lockdown in Sydney, Australia, ended Monday for vaccinated residents. Stay-at-home orders imposed on June 26 have been lifted. Government advertisements have promised that freedoms would return when vaccination rates passed certain milestones. The message has been getting through to the community. Lockdown in the New South Wales state capital, Sydney, was lifted Monday because inoculation rates have passed 70% for people above aged 16. Shops have reopened for the first time since June. Small gatherings at home are permitted, and larger groups are allowed to meet at parks and beaches. However, the above apply only to fully vaccinated people. All residents still face restrictions on travel beyond Sydney. The rules will be eased when vaccination rates in New South Wales reach 80%. At that point international travel will resume. Still, New South Wales state premier Dominic Perrottet stated that a cautious stages approach to reopening is needed."""
     #print(type(testing_text))
     #print(testing_text)
     
-    # segment the text word by word
-    raw_textLIST = testing_text.lower().split()
-    print(raw_textLIST)
+    # Using re to remove the punctuations
+    #a_string = '!hi. wh?at is the weat[h]er lik?e.'
+    cleaned_text = re.sub(r'[^\w\s]', '', testing_text) #a_string
+    #print(cleaned_text)
     
+    # segment the text word by word
+    raw_textLIST = cleaned_text.lower().split()
+    print(raw_textLIST)
+    print(len(raw_textLIST))  # = 150
     """
     ### APPLY LATER ###
     # set the value of N (N = "The length of the text")
@@ -345,9 +340,13 @@ if __name__ == "__main__":
     #print("Box dissecction DONE")
     #print("Shuffled Box dissecction DONE")
     
-    print(All_boxed_textLIST[2])
-    print(All_boxed_textLIST[2][1])
-    print(All_boxed_textLIST[2][1][1])
+    #pprint(All_boxed_textLIST)
+    #print(All_boxed_textLIST[2]) # should be the result of s=3  >> correct
+    #print(len(All_boxed_textLIST[2])) # = 50 >> correct
+    #print(All_boxed_textLIST[2][1]) # should be the second segment of the s=3 result >> = ['lockdown', 'in', 'sydney,'] =correct
+    #print(len(All_boxed_textLIST[2][1])) # = 3 >> correct
+    print(All_boxed_textLIST[2][1][1]) # should be the second single word(STR) in the second segment of the s=3 result
+    print(len(All_boxed_textLIST[2][1][1])) # = the length of the certain target word(STR)
     #print(len(All_boxed_textLIST))
     #print(All_shuffled_boxed_textLIST)
     #print(len(All_shuffled_boxed_textLIST))
