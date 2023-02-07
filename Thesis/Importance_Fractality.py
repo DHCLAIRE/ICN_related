@@ -423,35 +423,3 @@ if __name__ == "__main__":
     print(len(shuffuled_word_boxDICT))
     """
 
-        
-    
-    
-
-    """
-    # text preprocessing >> remove punctuation
-    # Storing the sets of punctuation in variable result 
-    puncSTR = string.punctuation
-    
-    puncLIST = []
-    for punc in puncSTR:
-        puncLIST.append(punc)
-    print(puncLIST)
-    print(type(puncLIST))
-    
-    boxed_textLIST = []
-    for wordSTR in raw_textLIST:
-        for punc in puncLIST:
-            if punc in wordSTR:
-                print(wordSTR)
-                wordSTR.translate(wordSTR.maketrans('', '', punc))
-                print("New word:", wordSTR)
-       # print(wordSTR)
-                #boxed_textLIST.append(wordSTR)
-            #else:
-                #boxed_textLIST.append(wordSTR)
-                #pass
-    #pprint(boxed_textLIST)
-        #print(wordSTR)
-        #print(type(strROW))
-    """
-
