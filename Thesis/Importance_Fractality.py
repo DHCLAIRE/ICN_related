@@ -342,28 +342,44 @@ if __name__ == "__main__":
     #print("Box dissecction DONE")
     #print("Shuffled Box dissecction DONE")
     
-    # Check for the box result of the unshuffled and shuffled types
-    # The unshuffled type
+    ## Check for the box result of the unshuffled and shuffled types ##
+    ## The unshuffled type ##
     #pprint(All_boxed_textLIST)
     #print(All_boxed_textLIST[2]) # should be the result of s=3  >> correct
     #print(len(All_boxed_textLIST[2])) # = 50 >> correct
     #print(All_boxed_textLIST[2][1]) # should be the second segment of the s=3 result >> = ['lockdown', 'in', 'sydney,'] =correct
     #print(len(All_boxed_textLIST[2][1])) # = 3 >> correct
-    print(All_boxed_textLIST[2][1][1]) # should be the second single word(STR) in the second segment of the s=3 result
-    print(len(All_boxed_textLIST[2][1][1])) # = the length of the certain target word(STR)
+    #print(All_boxed_textLIST[2][1][1]) # should be the second single word(STR) in the second segment of the s=3 result
+    #print(len(All_boxed_textLIST[2][1][1])) # = the length of the certain target word(STR)
 
-    # The shuffled type
+    ## The shuffled type ##
     #print(All_shuffled_boxed_textLIST)
     #print(All_shuffled_boxed_textLIST[2]) # >>correct
     #print(len(All_shuffled_boxed_textLIST[2]))  # >>correct
     #print(All_shuffled_boxed_textLIST[2][1])  # >>correct
     #print(len(All_shuffled_boxed_textLIST[2][1]))  # >>correct
-    print(All_shuffled_boxed_textLIST[2][1][1])  # >>correct
-    print(len(All_shuffled_boxed_textLIST[2][1][1]))  # >>correct
+    #print(All_shuffled_boxed_textLIST[2][1][1])  # >>correct
+    #print(len(All_shuffled_boxed_textLIST[2][1][1]))  # >>correct
     
     
-    # Calculate the 
-    
+    # Calculate the box count
+    # Original texts
+    for target_wSTR in raw_textLIST[0:5]:
+        #print(type(target_wSTR))
+        #target_wcountINT = 0
+        for ori_itemLIST in All_boxed_textLIST[0:5]:   #ori_seg_boxLIST
+            #print(ori_itemLIST)
+            for ori_seg_boxLIST in ori_itemLIST:
+                #print(ori_seg_boxLIST)
+                s = len(ori_seg_boxLIST)  #s= box size
+                print("#########Round", s, "##########") ## indicating the length of the box that we're checking
+                for wordSTR in ori_seg_boxLIST:
+                    print("THE TARGET WORD IS", wordSTR)
+                    if target_wSTR in wordSTR:
+                        target_wcountINT=+ 1
+                    else:
+                        pass #print("ERROR: N/A")
+                print("## Box count:", target_wcountINT)
     
     
     ### DOWN below is the saving part, we'll deal with it later ###
