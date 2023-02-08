@@ -257,7 +257,7 @@ if __name__ == "__main__":
     
     # segment the text word by word
     raw_textLIST = cleaned_text.lower().split()
-    print(raw_textLIST)
+    #print(raw_textLIST)
     #print(len(raw_textLIST))  # = 150
     """
     ### APPLY LATER ###
@@ -364,22 +364,38 @@ if __name__ == "__main__":
     
     # Calculate the box count
     # Original texts
-    for target_wSTR in raw_textLIST[0:5]:
-        #print(type(target_wSTR))
-        #target_wcountINT = 0
-        for ori_itemLIST in All_boxed_textLIST[0:5]:   #ori_seg_boxLIST
-            #print(ori_itemLIST)
-            for ori_seg_boxLIST in ori_itemLIST:
-                #print(ori_seg_boxLIST)
-                s = len(ori_seg_boxLIST)  #s= box size
-                print("#########Round", s, "##########") ## indicating the length of the box that we're checking
-                for wordSTR in ori_seg_boxLIST:
-                    print("THE TARGET WORD IS", wordSTR)
-                    if target_wSTR in wordSTR:
-                        target_wcountINT=+ 1
+    
+
+    # Peel the first layer of the LIST
+    for ori_itemLIST in All_boxed_textLIST[0:5]:  # the first five box size collections
+        print("ori_itemLIST", ori_itemLIST)
+        box_size_allsegINDEX = All_boxed_textLIST.index(ori_itemLIST)
+        box_countINT = 0
+        
+        for ori_seg_boxLIST in ori_itemLIST[0:5]:
+            print("ori_seg_boxLIST", ori_seg_boxLIST)
+            box_countINT += 1
+            sizeINDEX = ori_itemLIST.index(ori_seg_boxLIST)
+
+            for wordSTR in ori_seg_boxLIST[0:5]:
+                wordINDEX = ori_seg_boxLIST.index(wordSTR)
+                target_wcountINT = 0
+                
+                for target_wSTR in raw_textLIST[0:5]:  # the first five words
+                    if target_wSTR == All_boxed_textLIST[box_size_allsegINDEX][sizeINDEX][wordINDEX]:   #if target_wSTR == wordSTR:
+                        print("testing wordSTR<", wordSTR, ">; target word<", All_boxed_textLIST[box_size_allsegINDEX][sizeINDEX][wordINDEX], ">")
+                        target_wcountINT +=1
                     else:
                         pass #print("ERROR: N/A")
-                print("## Box count:", target_wcountINT)
+                    print(target_wSTR, "'s box count:", target_wcountINT)
+                    print("  ")
+    print("  ")
+    print("  ")
+    print("### ROUND:", box_countINT)
+    
+    
+    
+    
     
     
     ### DOWN below is the saving part, we'll deal with it later ###
