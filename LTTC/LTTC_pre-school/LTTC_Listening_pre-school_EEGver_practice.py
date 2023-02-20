@@ -66,18 +66,18 @@ if __name__ == "__main__":
     #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
     # the path for testing only (For Mac)
-    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id    
+    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
     
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n請依照聽到的內容進行理解度評分，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n\n請以1～4分評分\n1分為完全不理解，4分為非常理解\n\n評分完畢後，將會直接播放下一篇文章"""
-    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
+    instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
+    instructions_2 = """請問有聽懂剛剛那一篇文章嗎？\n\n評分完畢後，將會直接播放下一篇文章"""
+    instructions_3 = """現在為1分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
     instructions_4 = """本實驗結束，謝謝您的參與"""
 
     # Set up the keypress types
     keypressLIST_space = ["space"]
-    keypressLIST_ans = ["6", "7", "8", "9"]  # "6"==1分; "7"==2分; "8"==3分; "9"==4分 (右手由上往下的順序)
+    #keypressLIST_ans = ["6", "7", "8", "9"]  # "6"==1分; "7"==2分; "8"==3分; "9"==4分 (右手由上往下的順序)
 
     # Answer wanted data
     day = date.today()
@@ -157,7 +157,7 @@ if __name__ == "__main__":
             win.flip()
 
             # Display the quesitons for each tape
-            ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
+            ans_keypressSTR = display_ins(instructions_2, keypressLIST_space)
             '''
             # TO MARK THE QUESTION ENDS
             port.setData(4) #This is open the trigger  # MEG channel 194
@@ -172,9 +172,11 @@ if __name__ == "__main__":
             # the Gap between each audio files
             #core.wait(5)
             print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
-        # ask the participant to evaluate how well they understand the presented text
-        display_ins(instructions_3, keypressLIST_space)
-    display_ins(instructions_4, keypressLIST_space)
+    # ask the participant to evaluate how well they understand the presented text
+    if i == 1:
+        display_ins(instructions_4, keypressLIST_space)  # End of experiment
+    else:
+        display_ins(instructions_3, keypressLIST_space)  # 1 miute break
 
 
     print("FINISHIED!")
