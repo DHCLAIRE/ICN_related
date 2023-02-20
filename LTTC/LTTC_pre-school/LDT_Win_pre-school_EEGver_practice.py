@@ -57,16 +57,19 @@ def display_fix():
 """
 
 # The MEG trigger port info
-port = parallel.ParallelPort('0x0378')
+#port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
     sub_id = str(input("Subject_ID: "))
 
-    # Set up the data path
-    stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_practice_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
-    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
-
+    # Set up the data path (For Win)
+    #stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_practice_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
+    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
+    # the path for testing only (For Mac)
+    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_practice_pw_audios/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    
     # setting up usable dataLIST
     targetPseudoLIST = []
     pseudoLIST = []
@@ -107,8 +110,8 @@ if __name__ == "__main__":
 
     # Step_1: Show the instructions
     # Setting the presented window
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
@@ -149,12 +152,12 @@ if __name__ == "__main__":
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
 
-            #"""
+            """
             # TO MARK THE PSEUDOWORD APPEARED
             port.setData(8) #This is open the trigger  # MEG channel 195
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #"""
+            """
 
             #setting up what keypress would allow the experiment to proceed
             keys = event.waitKeys(maxWait=2, keyList=keypressLIST_ans) #
