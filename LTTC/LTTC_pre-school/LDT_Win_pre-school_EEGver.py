@@ -57,16 +57,19 @@ def display_fix():
 """
 
 # The MEG trigger port info
-port = parallel.ParallelPort('0x0378')
+#port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
     sub_id = str(input("Subject_ID: "))
 
-    # Set up the data path
-    stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
-    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
-
+    # Set up the data path (For Win)
+    #stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
+    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
+    # the path for testing only (For Mac)
+    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    
     # setting up usable dataLIST
     targetPseudoLIST = []
     pseudoLIST = []
@@ -106,16 +109,16 @@ if __name__ == "__main__":
 
     # Step_1: Show the instructions
     # Setting the presented window
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """將你的左大拇指輕放在左邊按鍵\n右大拇指輕放在右邊按鍵，\n\n聽過請按右邊，沒聽過請按左邊\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應\n\n請按下空白鍵開始"""  # 按鍵號碼需要再修
+    instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
     keypressLIST_space = ['space']
-    keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
+    #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
     #core.wait(3)
 
@@ -127,7 +130,7 @@ if __name__ == "__main__":
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(10):  #need to loop 10 times for a 120 total trials
+    for i in range(1):  #need to loop 10 times for a 120 total trials
 
         # randomly select the wanted pseudoword from the list
         random.shuffle(pseudoLIST)
@@ -148,27 +151,27 @@ if __name__ == "__main__":
             pw_Sound = sound.Sound(LTTC_pw_stm)
             pw_Sound.play()
 
-            #"""
+            """
             # TO MARK THE PSEUDOWORD APPEARED
             port.setData(8) #This is open the trigger  # MEG channel 195
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #"""
+            """
 
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait=3, keyList=keypressLIST_ans) #
-            event.getKeys(keyList=keypressLIST_ans)
+            keys = event.waitKeys(maxWait=3, keyList=keypressLIST_space) # only press "space" when you have heard this word
+            event.getKeys(keyList=keypressLIST_space)
             print(keys)
 
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-            if keys == ["6"]:
+            if keys == ["space"]:
                 conditionLIST = ["heard"]
                 end_time = clock.getTime()
                 time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
                 print(time_duration)
                 #print(type(time_duration))
                 clock.reset()
-
+                """
             elif keys == ["1"]:
                 conditionLIST = ["unheard"]
                 end_time = clock.getTime()
@@ -176,10 +179,11 @@ if __name__ == "__main__":
                 print(time_duration)
                 #print(type(time_duration))
                 clock.reset()
+                """
 
             else:
-                keys = ["Wrong!!"]
-                conditionLIST = ["N/A"]
+                keys = ["None"]
+                conditionLIST = ["unheard"]
                 time_duration = 0
                 print(time_duration)
                 clock.reset()
@@ -188,20 +192,20 @@ if __name__ == "__main__":
             # calculate the correctness of the LDT response
             if stim_wordSTR in targetPseudoLIST:
                 #conditionLIST = ["heard"]
-                if keys == ["6"]:
+                if keys == ["space"]:
                     correctLIST = ["True"]
                 #conditionLIST = ["unheard"]
-                elif keys == ["1"]:
+                elif keys == ["None"]:
                     correctLIST = ["False"]
                 else:
                     correctLIST = ["N/A"]
 
             elif stim_wordSTR not in targetPseudoLIST:
                 #conditionLIST = ["heard"]
-                if keys == ["6"]:
+                if keys == ["space"]:
                     correctLIST = ["False"]
                 #conditionLIST = ["unheard"]
-                elif keys == ["1"]:
+                elif keys == ["None"]:
                     correctLIST = ["True"]
                 else:
                     correctLIST = ["N/A"]
@@ -235,7 +239,7 @@ if __name__ == "__main__":
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LDT_results.csv' %sub_id
+    file_name = 'S%s_LDT_pre-school_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
