@@ -142,7 +142,7 @@ if __name__ == "__main__":
         core.wait(0.01) # Stay for 10 ms
         port.setData(0) #This is close the trigger
         """        
-        for i in range(2):  #need to loop 10 times for a 120 total trials
+        for i in range(6):  #need to loop 6 times for 48 trials in one round (96 trials in total)
 
             # randomly select the wanted pseudoword from the list
             random.shuffle(pseudoLIST)
