@@ -55,17 +55,20 @@ def display_start():
     win.flip()
 
 # The MEG trigger port info
-port = parallel.ParallelPort('0x0378')
+#port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
 
     ## The path needs to be modified ##
     # For key-in the id of the subject
     sub_id = str(input("Subject: "))
-
-    stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
-    result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
-
+    # Set up the data path (For Win)
+    #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
+    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
+    # the path for testing only (For Mac)
+    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
+    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id    
+    
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n請依照聽到的內容進行理解度評分，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
     instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n\n請以1～4分評分\n1分為完全不理解，4分為非常理解\n\n評分完畢後，將會直接播放下一篇文章"""
@@ -84,9 +87,9 @@ if __name__ == "__main__":
     responseLIST = []
 
     # Full screen
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     '''
     LTTC_audio_stm = stim_data_path + "S001_modified_1.wav" #% (sub_id, tape_numSTR)
     Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
@@ -125,42 +128,42 @@ if __name__ == "__main__":
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             Script_Sound.play()
 
-            #'''
+            '''
             # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
             port.setData(2) #This is open the trigger  # MEG channel 193
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
             # set core wait time that match with the length of each audio files
             core.wait(int(t+1))
 
-            #'''
+            '''
             # TO MARK THE AUDIO FILE ENDS
             port.setData(4) #This is open the trigger  # MEG channel 194
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
 
             print("SoundFile{}".format(tape_numSTR), "DONE")
             #print("Pause for 5 seconds.")
             core.wait(0.5)
 
-            #'''
+            '''
             # TO MARK THE QUESTION BEGINS
             port.setData(8) #This is open the trigger  # MEG channel 195
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
             win.flip()
 
             # Display the quesitons for each tape
             ans_keypressSTR = display_ins(instructions_2, keypressLIST_ans)
-            #'''
+            '''
             # TO MARK THE QUESTION ENDS
             port.setData(4) #This is open the trigger  # MEG channel 194
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
             # making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
             dateLIST.append(day)
