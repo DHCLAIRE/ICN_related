@@ -103,6 +103,7 @@ if __name__ == "__main__":
     correctnessLIST = []
     responseLIST = []
     correctLIST = []
+    roundLIST = []
 
     # key in number for notifying which subject it is
     #sub_id = str(input("Subject: "))
@@ -117,6 +118,8 @@ if __name__ == "__main__":
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
     instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
+    instructions_3 = """中場休息1分鐘"""
+    instructions_4 = """本實驗結束，謝謝！"""
     keypressLIST_space = ['space']
     #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
@@ -130,99 +133,105 @@ if __name__ == "__main__":
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for i in range(1):  #need to loop 10 times for a 120 total trials
+    for round_ in range(1, 3):  # only two round
+        print("Please ready for Round", round_)
+        """
+        ## To mark the round number  ##
+        # TO MARK THE PSEUDOWORD APPEARED
+        port.setData(8) #This is open the trigger  # MEG channel 195
+        core.wait(0.01) # Stay for 10 ms
+        port.setData(0) #This is close the trigger
+        """        
+        for i in range(2):  #need to loop 10 times for a 120 total trials
 
-        # randomly select the wanted pseudoword from the list
-        random.shuffle(pseudoLIST)
-        for stim_wordSTR in pseudoLIST:
+            # randomly select the wanted pseudoword from the list
+            random.shuffle(pseudoLIST)
+            for stim_wordSTR in pseudoLIST:
 
-            # To refresh the win before play out the stim pw
-            win.flip()  # always add this after an item was presented
-            core.wait(1)
-            # start to record the time
-            start_time = clock.getTime()
+                # To refresh the win before play out the stim pw
+                win.flip()  # always add this after an item was presented
+                core.wait(1)
+                # start to record the time
+                start_time = clock.getTime()
 
-            # display fixation in the central of the screen
-            display_fix()
+                # display fixation in the central of the screen
+                display_fix()
 
 
-            # Display the pw stimulus
-            LTTC_pw_stm = stim_data_path + '{}_v2_female.wav'.format(stim_wordSTR)
-            pw_Sound = sound.Sound(LTTC_pw_stm)
-            pw_Sound.play()
+                # Display the pw stimulus
+                LTTC_pw_stm = stim_data_path + '{}_v3_female.wav'.format(stim_wordSTR)
+                pw_Sound = sound.Sound(LTTC_pw_stm)
+                pw_Sound.play()
 
-            """
-            # TO MARK THE PSEUDOWORD APPEARED
-            port.setData(8) #This is open the trigger  # MEG channel 195
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            """
-
-            #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait=3, keyList=keypressLIST_space) # only press "space" when you have heard this word
-            event.getKeys(keyList=keypressLIST_space)
-            print(keys)
-
-            # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-            if keys == ["space"]:
-                conditionLIST = ["heard"]
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                print(time_duration)
-                #print(type(time_duration))
-                clock.reset()
                 """
-            elif keys == ["1"]:
-                conditionLIST = ["unheard"]
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                print(time_duration)
-                #print(type(time_duration))
-                clock.reset()
+                # TO MARK THE PSEUDOWORD APPEARED
+                port.setData(8) #This is open the trigger  # MEG channel 195
+                core.wait(0.01) # Stay for 10 ms
+                port.setData(0) #This is close the trigger
                 """
 
-            else:
-                keys = ["None"]
-                conditionLIST = ["unheard"]
-                time_duration = 0
-                print(time_duration)
-                clock.reset()
+                #setting up what keypress would allow the experiment to proceed
+                keys = event.waitKeys(maxWait=3, keyList=keypressLIST_space) # only press "space" when you have heard this word
+                event.getKeys(keyList=keypressLIST_space)
+                print(keys)
 
-
-            # calculate the correctness of the LDT response
-            if stim_wordSTR in targetPseudoLIST:
-                #conditionLIST = ["heard"]
+                # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
                 if keys == ["space"]:
-                    correctLIST = ["True"]
-                #conditionLIST = ["unheard"]
-                elif keys == ["None"]:
-                    correctLIST = ["False"]
+                    conditionLIST = ["heard"]
+                    end_time = clock.getTime()
+                    time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                    print(time_duration)
+                    #print(type(time_duration))
+                    clock.reset()
+
                 else:
-                    correctLIST = ["N/A"]
+                    keys = ["None"]
+                    conditionLIST = ["unheard"]
+                    time_duration = 0
+                    print(time_duration)
+                    clock.reset()
 
-            elif stim_wordSTR not in targetPseudoLIST:
-                #conditionLIST = ["heard"]
-                if keys == ["space"]:
-                    correctLIST = ["False"]
-                #conditionLIST = ["unheard"]
-                elif keys == ["None"]:
-                    correctLIST = ["True"]
+
+                # calculate the correctness of the LDT response
+                if stim_wordSTR in targetPseudoLIST:
+                    #conditionLIST = ["heard"]
+                    if keys == ["space"]:
+                        correctLIST = ["True"]
+                    #conditionLIST = ["unheard"]
+                    elif keys == ["None"]:
+                        correctLIST = ["False"]
+                    else:
+                        correctLIST = ["N/A"]
+
+                elif stim_wordSTR not in targetPseudoLIST:
+                    #conditionLIST = ["heard"]
+                    if keys == ["space"]:
+                        correctLIST = ["False"]
+                    #conditionLIST = ["unheard"]
+                    elif keys == ["None"]:
+                        correctLIST = ["True"]
+                    else:
+                        correctLIST = ["N/A"]
                 else:
-                    correctLIST = ["N/A"]
-            else:
-                pass
+                    pass
 
 
-            # making the wanted info into the List form for future use
-            sub_idLIST.append(sub_id)
-            dateLIST.append(day)
-            stimLIST.append(stim_wordSTR)
-            resultKeyLIST.append(keys)
-            responseLIST.append(conditionLIST)
-            LDT_rtLIST.append(time_duration)
-            correctnessLIST.append(correctLIST)
-
-            #core.wait(0.5)
+                # making the wanted info into the List form for future use
+                sub_idLIST.append(sub_id)
+                dateLIST.append(day)
+                stimLIST.append(stim_wordSTR)
+                resultKeyLIST.append(keys)
+                responseLIST.append(conditionLIST)
+                LDT_rtLIST.append(time_duration)
+                correctnessLIST.append(correctLIST)
+                roundLIST.append(round_)
+            
+        #Display the instruction of the break in between Round 1 & Round 2
+        print("Round", round_, "is over.")
+        if round_ == 1:
+            display_ins(instructions_3, keypressLIST_space)
+        else:
+            display_ins(instructions_4, keypressLIST_space)
 
             # close the window  at the end of the experiment
     win.close()
@@ -231,6 +240,7 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                            'Date':dateLIST,
+                           'Round':roundLIST,
                            'Stimuli':stimLIST,
                            'Keypress':resultKeyLIST,
                            'Response':responseLIST,
@@ -239,7 +249,7 @@ if __name__ == "__main__":
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LDT_pre-school_results.csv' %sub_id
+    file_name = 'S%s_LDT_pre-school_testing_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
