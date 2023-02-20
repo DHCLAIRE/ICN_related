@@ -117,9 +117,9 @@ if __name__ == "__main__":
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
-    instructions_2 = """將你的左大拇指輕放在左邊\n右大拇指輕放在右邊，\n\n聽過請按右邊，沒聽過請按左邊\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
+    instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
     keypressLIST_space = ['space']
-    keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
+    #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
     #core.wait(3)
 
@@ -160,12 +160,12 @@ if __name__ == "__main__":
             """
 
             #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait=2, keyList=keypressLIST_ans) #
-            event.getKeys(keyList=keypressLIST_ans)
+            keys = event.waitKeys(maxWait=2, keyList=keypressLIST_space) # only press "space" when you have heard this word
+            event.getKeys(keyList=keypressLIST_space)
             print(keys)
 
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-            if keys == ["6"]:
+            if keys == ["space"]:
                 pass
                 #conditionLIST = ["heard"]
                 #end_time = clock.getTime()
@@ -173,7 +173,7 @@ if __name__ == "__main__":
                 #print(time_duration)
                 ##print(type(time_duration))
                 #clock.reset()
-
+                """
             elif keys == ["1"]:
                 pass
                 #conditionLIST = ["unheard"]
@@ -182,9 +182,9 @@ if __name__ == "__main__":
                 #print(time_duration)
                 ##print(type(time_duration))
                 #clock.reset()
-
+            """
             else:
-                keys = ["Wrong!!"]
+                keys = ["None"]
                 conditionLIST = ["N/A"]
                 time_duration = 0
                 print(time_duration)
