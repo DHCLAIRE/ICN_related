@@ -51,11 +51,6 @@ def display_fix():
     fixation.draw()
     win.flip()
 
-"""
-1. instructions >> press 'space'?? or other button?
-2. Button press >> one for each side (choose wisely)
-"""
-
 # The MEG trigger port info
 #port = parallel.ParallelPort('0x0378')
 
@@ -78,7 +73,7 @@ if __name__ == "__main__":
     # Set up the pwDICT's data path
     DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
-
+    
     with open (Dsave_path, "r", encoding = "utf-8") as jfile:
         pseudoDICT = json.load(jfile)
         pprint(pseudoDICT)
@@ -105,29 +100,21 @@ if __name__ == "__main__":
     responseLIST = []
     correctLIST = []
 
-    # key in number for notifying which subject it is
-    #sub_id = str(input("Subject: "))
-
     # Step_1: Show the instructions
     # Setting the presented window
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
     clock = core.Clock()
-    #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
     instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
     keypressLIST_space = ['space']
-    #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
-
-    #core.wait(3)
 
     #Display the instructions
     display_ins(instructions_1, keypressLIST_space)
     display_ins(instructions_2, keypressLIST_space)
 
-    #core.wait(3)
 
     # 假詞all重新排列後依序送出，整個LIST重複送10次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
@@ -167,22 +154,7 @@ if __name__ == "__main__":
             # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
             if keys == ["space"]:
                 pass
-                #conditionLIST = ["heard"]
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
-                """
-            elif keys == ["1"]:
-                pass
-                #conditionLIST = ["unheard"]
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
-            """
+
             else:
                 keys = ["None"]
                 conditionLIST = ["N/A"]
@@ -190,41 +162,11 @@ if __name__ == "__main__":
                 print(time_duration)
                 clock.reset()
 
-            """
-            # calculate the correctness of the LDT response
-            if stim_wordSTR in targetPseudoLIST:
-                #conditionLIST = ["heard"]
-                if keys == ["6"]:
-                    correctLIST = ["True"]
-                #conditionLIST = ["unheard"]
-                elif keys == ["1"]:
-                    correctLIST = ["False"]
-                else:
-                    correctLIST = ["N/A"]
-
-            elif stim_wordSTR not in targetPseudoLIST:
-                #conditionLIST = ["heard"]
-                if keys == ["6"]:
-                    correctLIST = ["False"]
-                #conditionLIST = ["unheard"]
-                elif keys == ["1"]:
-                    correctLIST = ["True"]
-                else:
-                    correctLIST = ["N/A"]
-            else:
-                pass
-            """
-
             # making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
             dateLIST.append(day)
             stimLIST.append(stim_wordSTR)
             resultKeyLIST.append(keys)
-            #responseLIST.append(conditionLIST)
-            #LDT_rtLIST.append(time_duration)
-            #correctnessLIST.append(correctLIST)
-
-            #core.wait(0.5)
 
             # close the window  at the end of the experiment
     win.close()
@@ -235,9 +177,6 @@ if __name__ == "__main__":
                              'Date':dateLIST,
                            'Stimuli':stimLIST,
                            'Keypress':resultKeyLIST
-                           #'Response':responseLIST,
-                           #'LDT_RT':LDT_rtLIST,
-                           #'Correctness':correctnessLIST
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
