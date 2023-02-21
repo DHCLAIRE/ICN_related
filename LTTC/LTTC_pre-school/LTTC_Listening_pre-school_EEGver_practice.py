@@ -172,11 +172,11 @@ if __name__ == "__main__":
             # the Gap between each audio files
             #core.wait(5)
             print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
-    # ask the participant to evaluate how well they understand the presented text
-    if i == 1:
-        display_ins(instructions_4, keypressLIST_space)  # End of experiment
-    else:
-        display_ins(instructions_3, keypressLIST_space)  # 1 miute break
+        # ask the participant to evaluate how well they understand the presented text
+        if i == 1:
+            display_ins(instructions_4, keypressLIST_space)  # End of experiment
+        else:
+            display_ins(instructions_3, keypressLIST_space)  # 1 miute break
 
 
     print("FINISHIED!")
