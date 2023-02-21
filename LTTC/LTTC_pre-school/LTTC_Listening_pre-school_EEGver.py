@@ -90,17 +90,17 @@ if __name__ == "__main__":
     #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
 
     # Set up the tape num according to the block design
-    numLIST = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16 ,17 ,18 ,19 ,20], [21, 22, 23, 24, 25], [26, 27, 28, 29, 30]]
+    numLIST = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
 
     #"""
-    for i in range(6):  # need to loop a total 6 times
+    for i in range(1, 5):  # need to loop a total 4 times
 
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypressLIST_space)
         #win.flip()
         core.wait(0.5)
 
-        for tapeINT in range(5): # need to loop a total 5 times == 5 tapes per unit
+        for tapeINT in range(3): # need to loop a total 3 times == 3 tapes per unit
 
             # display "Start" to indicate the start of the audio
             display_start()
@@ -124,32 +124,32 @@ if __name__ == "__main__":
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             Script_Sound.play()
 
-            #'''
+            '''
             # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
             port.setData(2) #This is open the trigger  # MEG channel 193
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
             # set core wait time that match with the length of each audio files
             core.wait(int(t+1))
 
-            #'''
+            '''
             # TO MARK THE AUDIO FILE ENDS
             port.setData(4) #This is open the trigger  # MEG channel 194
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
 
             print("SoundFile{}".format(tape_numSTR), "DONE")
             #print("Pause for 5 seconds.")
             core.wait(0.5)
 
-            #'''
+            '''
             # TO MARK THE QUESTION BEGINS
             port.setData(8) #This is open the trigger  # MEG channel 195
             core.wait(0.01) # Stay for 10 ms
             port.setData(0) #This is close the trigger
-            #'''
+            '''
             win.flip()
 
             # Display the quesitons for each tape
@@ -169,8 +169,10 @@ if __name__ == "__main__":
             #core.wait(5)
             print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
         # ask the participant to evaluate how well they understand the presented text
-        display_ins(instructions_3, keypressLIST_space)
-    display_ins(instructions_4, keypressLIST_space)
+        if i == 4:
+            display_ins(instructions_4, keypressLIST_space)  # End of experiment
+        else:
+            display_ins(instructions_3, keypressLIST_space)  # 1 miute break
 
 
     print("FINISHIED!")
@@ -209,7 +211,7 @@ if __name__ == "__main__":
 
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LTTC_Listening_results.csv' %sub_id
+    file_name = 'S%s_LTTC_Listening-testing_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     #"""
