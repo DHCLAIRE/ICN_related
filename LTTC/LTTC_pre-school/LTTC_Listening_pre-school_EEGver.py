@@ -67,7 +67,7 @@ if __name__ == "__main__":
     #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id) #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
     # the path for testing only (For Mac)
-    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
     
     # Setting the instructions and the response key
@@ -97,7 +97,7 @@ if __name__ == "__main__":
     numLIST = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
 
     #"""
-    for i in range(1, 5):  # need to loop a total 4 times
+    for i in range(4):  # need to loop a total 4 times
 
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypressLIST_space)
@@ -173,7 +173,7 @@ if __name__ == "__main__":
             #core.wait(5)
             print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
         # ask the participant to evaluate how well they understand the presented text
-        if i == 4:
+        if i == 3:
             display_ins(instructions_4, keypressLIST_space)  # End of experiment
         else:
             display_ins(instructions_3, keypressLIST_space)  # 1 miute break
