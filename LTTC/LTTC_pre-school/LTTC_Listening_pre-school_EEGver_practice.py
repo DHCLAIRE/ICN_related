@@ -135,7 +135,7 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             '''
             # set core wait time that match with the length of each audio files
-            core.wait(int(t+1))
+            core.wait(10)  #int(t+1))
 
             '''
             # TO MARK THE AUDIO FILE ENDS
