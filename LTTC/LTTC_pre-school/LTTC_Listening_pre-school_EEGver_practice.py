@@ -114,6 +114,15 @@ if __name__ == "__main__":
         print(audio_stimLIST)
         print(len(audio_stimLIST))
     
+    ## To group the stimLIST per 3 tape
+    item_numINT = 3
+    n_audio_stimLIST = []
+    for tape_count in range(0, len(audio_stimLIST), item_numINT):
+        tmp_stimLIST = audio_stimLIST[tape_count:tape_count+item_numINT]
+        n_audio_stimLIST.append(tmp_stimLIST)
+    pprint(n_audio_stimLIST)
+    print(len(n_audio_stimLIST))
+    
     """
     for i in range(2):  # need to loop a total 3 times
 
