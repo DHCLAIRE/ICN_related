@@ -104,10 +104,15 @@ if __name__ == "__main__":
     story_stim_data_path =  root_data_path / Path("LTTC-stories/Set_%s" %sub_cond)
     if sub_cond == "A":
         print(story_stim_data_path)
+        audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_A_', path.name)]
+        print(audio_stimLIST)
+        print(len(audio_stimLIST))
         
     elif sub_cond == "B":
         print(story_stim_data_path)
-    
+        audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_B_', path.name)]
+        print(audio_stimLIST)
+        print(len(audio_stimLIST))
     
     """
     for i in range(2):  # need to loop a total 3 times
