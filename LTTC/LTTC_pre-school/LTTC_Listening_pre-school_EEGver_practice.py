@@ -19,6 +19,8 @@ import numpy as np
 import pandas as pd
 from pprint import pprint
 import random
+import re
+from pathlib import Path
 
 def display_ins(STR, keyPressLIST = None):
     '''
@@ -58,16 +60,14 @@ def display_start():
 #port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
-
-    ## The path needs to be modified ##
-    # For key-in the id of the subject
-    sub_id = str(input("Subject: "))
     # Set up the data path (For Win)
     #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
     # the path for testing only (For Mac)
-    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    target_w_stim_data_path = root_data_path / "LDT-8 target words"
+    result_data_path = root_data_path / "LTTC_pre-school_results"
+    result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
@@ -96,7 +96,20 @@ if __name__ == "__main__":
     Script_Sound.play()
     core.wait(20)
     '''
-    #"""
+    ## The path needs to be modified ##
+    # For key-in the id of the subject
+    sub_id = str(input("Subject: "))
+    sub_cond = str(input("Condition: "))
+    
+    story_stim_data_path =  root_data_path / Path("LTTC-stories/Set_%s" %sub_cond)
+    if sub_cond == "A":
+        print(story_stim_data_path)
+        
+    elif sub_cond == "B":
+        print(story_stim_data_path)
+    
+    
+    """
     for i in range(2):  # need to loop a total 3 times
 
         # display instructions for Reading Comprehension phase
@@ -117,7 +130,7 @@ if __name__ == "__main__":
             tape_numSTR = str(int("%d%d" %(i, tapeINT))+1)
 
             # get the length of each audio files of every text
-            sample_rate, data = wavfile.read(stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR))   # the %s value in here will need to rewrite
+            sample_rate, data = wavfile.read(story_stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
             print("SoundFile{} length = ".format(tape_numSTR), t)
@@ -218,7 +231,7 @@ if __name__ == "__main__":
     file_name = 'S%s_LTTC_Listening_practice_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    #"""
+    """
 
     # close all the Psychopy application
     core.quit()
