@@ -60,6 +60,11 @@ def display_start():
 #port = parallel.ParallelPort('0x0378')
 
 if __name__ == "__main__":
+    ## The path needs to be modified ##
+    # For key-in the id of the subject
+    sub_id = str(input("Subject: "))
+    sub_cond = str(input("Condition: "))
+    
     # Set up the data path (For Win)
     #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id) #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
@@ -70,9 +75,9 @@ if __name__ == "__main__":
     result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n請依照聽到的內容進行理解度評分，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
-    instructions_2 = """請問對於剛剛那一篇文章理解了多少？\n\n請以1～4分評分\n1分為完全不理解，4分為非常理解\n\n評分完畢後，將會直接播放下一篇文章"""
-    instructions_3 = """現在為2分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
+    instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
+    instructions_2 = """請問有聽懂剛剛那一篇文章嗎？\n\n評分完畢後，將會直接播放下一篇文章"""
+    instructions_3 = """現在為1分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
     instructions_4 = """本實驗結束，謝謝您的參與"""
 
     # Set up the keypress types
@@ -92,11 +97,6 @@ if __name__ == "__main__":
     # Testing small screen
     #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
-    ## The path needs to be modified ##
-    # For key-in the id of the subject
-    sub_id = str(input("Subject: "))
-    sub_cond = str(input("Condition: "))
-    
     ## To collect the stim base on the conditions
     story_stim_data_path =  root_data_path / Path("LTTC-stories/Set_%s" %sub_cond)
     if sub_cond == "A":
@@ -110,7 +110,10 @@ if __name__ == "__main__":
         audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_B_', path.name)]
         print(audio_stimLIST)
         print(len(audio_stimLIST))
-
+    
+    ## Random shuffle the tape
+    random.shuffle(audio_stimLIST)
+    
     ## To group the stimLIST per 3 tape
     item_numINT = 3
     n_audio_stimLIST = []
@@ -143,16 +146,16 @@ if __name__ == "__main__":
             # This is the tape num creation
             tape_numSTR = str(n_audio_stimLIST[i][tapeINT])  #str(int("%d%d" %(i, tapeINT))+1)
             print(tape_numSTR)
-            """
+            
             # get the length of each audio files of every text
-            sample_rate, data = wavfile.read(stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR))   # the %s value in here will need to rewrite
+            sample_rate, data = wavfile.read(story_stim_data_path / Path(tape_numSTR))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
             print("SoundFile{} length = ".format(tape_numSTR), t)
             print("SoundFile{} length = ".format(tape_numSTR), int(t+1))
 
             # Play the audio files section by section
-            LTTC_audio_stm = stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR)
+            LTTC_audio_stm = story_stim_data_path / Path(tape_numSTR)
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             Script_Sound.play()
 
@@ -172,7 +175,7 @@ if __name__ == "__main__":
             port.setData(0) #This is close the trigger
             '''
 
-            print("SoundFile{}".format(tape_numSTR), "DONE")
+            #print("SoundFile{}".format(tape_numSTR), "DONE")
             #print("Pause for 5 seconds.")
             core.wait(0.5)
 
@@ -199,7 +202,7 @@ if __name__ == "__main__":
 
             # the Gap between each audio files
             #core.wait(5)
-            print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
+            #print("Continue for the SoundFile{}".format(int(tape_numSTR)+1))
         # ask the participant to evaluate how well they understand the presented text
         if i == 3:
             display_ins(instructions_4, keypressLIST_space)  # End of experiment
@@ -244,9 +247,9 @@ if __name__ == "__main__":
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LTTC_Listening-testing_results.csv' %sub_id
-    save_path = result_data_path + file_name
+    save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    """
+    #"""
 
     # close all the Psychopy application
     core.quit()
