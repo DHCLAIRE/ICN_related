@@ -114,6 +114,8 @@ if __name__ == "__main__":
         print(audio_stimLIST)
         print(len(audio_stimLIST))
     
+    random.shuffle(audio_stimLIST)
+    
     ## To group the stimLIST per 3 tape
     item_numINT = 3
     n_audio_stimLIST = []
