@@ -21,6 +21,7 @@ from pprint import pprint
 import random
 import re
 from pathlib import Path
+import serial
 
 def display_ins(STR, keyPressLIST = None):
     '''
@@ -34,7 +35,7 @@ def display_ins(STR, keyPressLIST = None):
     for t in instructionsLIST:
         instructions = visual.TextStim(win = win, text = t)
         instructions.draw()
-        win.flip()
+        #win.flip()
         ansSTR = event.waitKeys(keyList = keyPressLIST)
         print(ansSTR)
         win.flip()
@@ -56,8 +57,8 @@ def display_start():
     fixation.draw()
     win.flip()
 
-# The MEG trigger port info
-#port = parallel.ParallelPort('0x0378')
+# The EEG trigger port info
+port = serial.Serial("COM3", 115200)  # check the COM? every time we inpluge the trigger ; 115200 == how many bites were transmissed per second
 
 if __name__ == "__main__":
     ## The path needs to be modified ##
@@ -66,13 +67,16 @@ if __name__ == "__main__":
     sub_cond = str(input("Condition: "))
     
     # Set up the data path (For Win)
-    #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id) #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
-    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
-    # the path for testing only (For Mac)
-    root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
     target_w_stim_data_path = root_data_path / "LDT-8 target words"
     result_data_path = root_data_path / "LTTC_pre-school_results"
     result_data_path.mkdir(exist_ok=True)
+   
+    # the path for testing only (For Mac)
+    #root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    #target_w_stim_data_path = root_data_path / "LDT-8 target words"
+    #result_data_path = root_data_path / "LTTC_pre-school_results"
+    #result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
@@ -102,14 +106,14 @@ if __name__ == "__main__":
     if sub_cond == "A":
         print(story_stim_data_path)
         audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_A_', path.name)]
-        print(audio_stimLIST)
-        print(len(audio_stimLIST))
+        #print(audio_stimLIST)
+        #print(len(audio_stimLIST))
         
     elif sub_cond == "B":
         print(story_stim_data_path)
         audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_B_', path.name)]
-        print(audio_stimLIST)
-        print(len(audio_stimLIST))
+        #print(audio_stimLIST)
+        #print(len(audio_stimLIST))
     
     ## Random shuffle the tape
     random.shuffle(audio_stimLIST)
@@ -121,7 +125,7 @@ if __name__ == "__main__":
         tmp_stimLIST = audio_stimLIST[tape_count:tape_count+item_numINT]
         n_audio_stimLIST.append(tmp_stimLIST)
     pprint(n_audio_stimLIST)
-    print(len(n_audio_stimLIST))
+    #print(len(n_audio_stimLIST))
     
     # Set up the tape num according to the block design
     #numLIST = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
@@ -157,44 +161,42 @@ if __name__ == "__main__":
             # Play the audio files section by section
             LTTC_audio_stm = story_stim_data_path / Path(tape_numSTR)
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
-            Script_Sound.play()
-
-            '''
+            #Script_Sound.play()
+            
+            #'''
             # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-            port.setData(2) #This is open the trigger  # MEG channel 193
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            '''
+            port.write(b'1') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
+            #'''
+            
             # set core wait time that match with the length of each audio files
             core.wait(5) #(int(t+1))
 
-            '''
+            #'''
             # TO MARK THE AUDIO FILE ENDS
-            port.setData(4) #This is open the trigger  # MEG channel 194
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            '''
+            port.write(b'9') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
+            #'''
 
-            #print("SoundFile{}".format(tape_numSTR), "DONE")
-            #print("Pause for 5 seconds.")
+            print("SoundFile{}".format(tape_numSTR), "DONE")
+            print("Pause for 5 seconds.")
             core.wait(0.5)
 
-            '''
+            #'''
             # TO MARK THE QUESTION BEGINS
-            port.setData(8) #This is open the trigger  # MEG channel 195
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            '''
+            port.write(b'4') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
+            #'''
             win.flip()
 
             # Display the quesitons for each tape
             ans_keypressSTR = display_ins(instructions_2, keypressLIST_space)
-            '''
+            #'''
             # TO MARK THE QUESTION ENDS
-            port.setData(4) #This is open the trigger  # MEG channel 194
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
-            '''
+            port.write(b'9') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
+            
+            #'''
             # making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
             dateLIST.append(day)
@@ -214,22 +216,6 @@ if __name__ == "__main__":
     # close the window  at the end of the experiment
     win.close()
 
-    '''
-    ## LET IT SILDE RIGHT NOW
-    # setting up what keypress would allow the experiment to proceed
-    keys = event.waitKeys(keyList = keypressLIST_ans)
-    event.getKeys(keyList = keypress)
-    print(keys)
-    print("audio ends")
-    if keys == ["space"]:
-        end_time = clock.getTime()
-        time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-        print(time_duration)
-        print(type(time_duration))
-        clock.reset()
-    else:
-        pass  # we should use continue in here, right?
-    '''
 
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
