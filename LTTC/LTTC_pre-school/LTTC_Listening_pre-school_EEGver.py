@@ -33,10 +33,10 @@ def display_ins(STR, keyPressLIST = None):
     keyPressLIST = keyPressLIST
 
     for t in instructionsLIST:
-        instructions = visual.TextStim(win = win, text = t)
+        instructions = visual.TextStim(win=win, text=t)
         instructions.draw()
-        #win.flip()
-        ansSTR = event.waitKeys(keyList = keyPressLIST)
+        win.flip()
+        ansSTR = event.waitKeys(keyList=keyPressLIST)
         print(ansSTR)
         win.flip()
     return ansSTR
@@ -45,7 +45,7 @@ def display_fix():
     '''
     呈現"+"於螢幕中央
     '''
-    fixation = visual.TextStim(win = win, text = "+")
+    fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
 
@@ -53,12 +53,12 @@ def display_start():
     '''
     呈現"Start"於螢幕中央，暗示音檔即將要播出了。
     '''
-    fixation = visual.TextStim(win = win, text = "Start")
+    fixation = visual.TextStim(win=win, text="Start")
     fixation.draw()
     win.flip()
 
 # The EEG trigger port info
-port = serial.Serial("COM3", 115200)  # check the COM? every time we inpluge the trigger ; 115200 == how many bites were transmissed per second
+#port = serial.Serial("COM4", 115200)  # check the COM? every time we inpluge the trigger ; 115200 == how many bites were transmissed per second
 
 if __name__ == "__main__":
     ## The path needs to be modified ##
@@ -149,54 +149,53 @@ if __name__ == "__main__":
 
             # This is the tape num creation
             tape_numSTR = str(n_audio_stimLIST[i][tapeINT])  #str(int("%d%d" %(i, tapeINT))+1)
-            print(tape_numSTR)
+            print(tape_numSTR[0:11])
             
             # get the length of each audio files of every text
             sample_rate, data = wavfile.read(story_stim_data_path / Path(tape_numSTR))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(tape_numSTR), t)
-            print("SoundFile{} length = ".format(tape_numSTR), int(t+1))
+            print("SoundFile{} length = ".format(tape_numSTR[0:11]), t)
+            print("SoundFile{} length = ".format(tape_numSTR[0:11]), int(t+1))
 
             # Play the audio files section by section
             LTTC_audio_stm = story_stim_data_path / Path(tape_numSTR)
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
-            #Script_Sound.play()
+            Script_Sound.play()
             
-            #'''
+            '''
             # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
             port.write(b'1') #This is the num_tag for opening the trigger
             core.wait(.01); # Stay for 10 ms
-            #'''
+            '''
             
             # set core wait time that match with the length of each audio files
             core.wait(5) #(int(t+1))
 
-            #'''
+            '''
             # TO MARK THE AUDIO FILE ENDS
             port.write(b'9') #This is the num_tag for opening the trigger
             core.wait(.01); # Stay for 10 ms
-            #'''
+            '''
 
-            print("SoundFile{}".format(tape_numSTR), "DONE")
+            print("SoundFile{}".format(tape_numSTR[0:11]), "DONE")
             print("Pause for 5 seconds.")
             core.wait(0.5)
 
-            #'''
+            '''
             # TO MARK THE QUESTION BEGINS
             port.write(b'4') #This is the num_tag for opening the trigger
             core.wait(.01); # Stay for 10 ms
-            #'''
+            '''
             win.flip()
 
             # Display the quesitons for each tape
             ans_keypressSTR = display_ins(instructions_2, keypressLIST_space)
-            #'''
+            '''
             # TO MARK THE QUESTION ENDS
             port.write(b'9') #This is the num_tag for opening the trigger
             core.wait(.01); # Stay for 10 ms
-            
-            #'''
+            '''
             # making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
             dateLIST.append(day)
