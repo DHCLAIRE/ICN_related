@@ -100,19 +100,21 @@ if __name__ == "__main__":
     # Testing small screen
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
+    ## To collect the stim base on the conditions
     story_stim_data_path =  root_data_path / Path("LTTC-stories/Set_%s" %sub_cond)
     if sub_cond == "A":
         print(story_stim_data_path)
         audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_A_', path.name)]
-        print(audio_stimLIST)
-        print(len(audio_stimLIST))
+        #print(audio_stimLIST)
+        #print(len(audio_stimLIST))
         
     elif sub_cond == "B":
         print(story_stim_data_path)
         audio_stimLIST = [path.name for path in story_stim_data_path.iterdir() if re.match(r'Set_B_', path.name)]
-        print(audio_stimLIST)
-        print(len(audio_stimLIST))
+        #print(audio_stimLIST)
+        #print(len(audio_stimLIST))
     
+    ## Random shuffle the tape
     random.shuffle(audio_stimLIST)
     
     ## To group the stimLIST per 3 tape
