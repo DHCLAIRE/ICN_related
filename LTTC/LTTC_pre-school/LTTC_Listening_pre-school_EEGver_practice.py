@@ -126,7 +126,7 @@ if __name__ == "__main__":
     pprint(n_audio_stimLIST)
     print(len(n_audio_stimLIST))
     
-    """
+    
     for i in range(2):  # need to loop a total 3 times
 
         # display instructions for Reading Comprehension phase
@@ -236,19 +236,11 @@ if __name__ == "__main__":
                              'Response':responseLIST
                              })
 
-    '''
-    # TRY TO OPEN THE CSV FILE COMMAND
-    with open(result_data_path + "S%s_Listening_task.csv" %sub_id, "r", encoding="UTF-8", newline='') as csvfile:
-        result_csv = csvfile.read.split("\n")
-        print(cs)
-    '''
-
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LTTC_Listening_practice_results.csv' %sub_id
     save_path = result_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    """
-
+    #"""
     # close all the Psychopy application
     core.quit()

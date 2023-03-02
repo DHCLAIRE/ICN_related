@@ -222,19 +222,11 @@ if __name__ == "__main__":
                              'Response':responseLIST
                              })
 
-    '''
-    # TRY TO OPEN THE CSV FILE COMMAND
-    with open(result_data_path + "S%s_Listening_task.csv" %sub_id, "r", encoding="UTF-8", newline='') as csvfile:
-        result_csv = csvfile.read.split("\n")
-        print(cs)
-    '''
-
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LTTC_Listening-testing_results.csv' %sub_id
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     #"""
-
     # close all the Psychopy application
     core.quit()
