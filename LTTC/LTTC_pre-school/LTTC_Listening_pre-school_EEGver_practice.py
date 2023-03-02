@@ -96,9 +96,10 @@ if __name__ == "__main__":
     responseLIST = []
 
     # Full screen
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    #win = visual.Window(color=[-1, -1, -1], units="pix", fullscr=True)    #, fullscr=True)   # Present screen_Full, fullscr == [1280 1024](for MEG)
     # Testing small screen
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    
     '''
     LTTC_audio_stm = stim_data_path + "S001_modified_1.wav" #% (sub_id, tape_numSTR)
     Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
