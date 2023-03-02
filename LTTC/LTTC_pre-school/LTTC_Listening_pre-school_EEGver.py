@@ -79,7 +79,7 @@ if __name__ == "__main__":
     #result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
+    instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n請依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n實驗將開始"""
     instructions_2 = """請問有聽懂剛剛那一篇文章嗎？\n\n評分完畢後，將會直接播放下一篇文章"""
     instructions_3 = """現在為1分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
     instructions_4 = """本實驗結束，謝謝您的參與"""
