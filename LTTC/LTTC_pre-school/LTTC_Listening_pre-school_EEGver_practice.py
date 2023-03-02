@@ -124,9 +124,8 @@ if __name__ == "__main__":
         tmp_stimLIST = audio_stimLIST[tape_count:tape_count+item_numINT]
         n_audio_stimLIST.append(tmp_stimLIST)
     pprint(n_audio_stimLIST)
-    print(len(n_audio_stimLIST))
     
-    
+    #"""
     for i in range(2):  # need to loop a total 3 times
 
         # display instructions for Reading Comprehension phase
