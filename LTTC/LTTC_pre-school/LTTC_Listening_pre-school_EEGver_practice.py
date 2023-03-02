@@ -130,7 +130,6 @@ if __name__ == "__main__":
 
         # display instructions for Reading Comprehension phase
         display_ins(instructions_1, keypressLIST_space)
-        #win.flip()
         core.wait(0.5)
 
         for tapeINT in range(2): # need to loop a total 10 times
