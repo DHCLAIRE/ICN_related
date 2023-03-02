@@ -37,17 +37,17 @@ def display_ins(STR, keyPressLIST = None):
     keyPressLIST = keyPressLIST
 
     for t in instructionsLIST:
-        instructions = visual.TextStim(win = win, text = t)
+        instructions = visual.TextStim(win=win, text=t)
         instructions.draw()
         win.flip()
-        event.waitKeys(keyList = keyPressLIST)
+        event.waitKeys(keyList=keyPressLIST)
     win.flip()
 
 def display_fix():
     '''
     呈現"+"於螢幕中央
     '''
-    fixation = visual.TextStim(win = win, text = "+")
+    fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
 

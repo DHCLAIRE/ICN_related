@@ -21,6 +21,7 @@ from pprint import pprint
 import random
 import re
 from pathlib import Path
+import serial
 
 def display_ins(STR, keyPressLIST = None):
     '''
@@ -32,10 +33,10 @@ def display_ins(STR, keyPressLIST = None):
     keyPressLIST = keyPressLIST
 
     for t in instructionsLIST:
-        instructions = visual.TextStim(win = win, text = t)
+        instructions = visual.TextStim(win=win, text=t)
         instructions.draw()
         win.flip()
-        ansSTR = event.waitKeys(keyList = keyPressLIST)
+        ansSTR = event.waitKeys(keyList=keyPressLIST)
         print(ansSTR)
         win.flip()
     return ansSTR
@@ -44,7 +45,7 @@ def display_fix():
     '''
     呈現"+"於螢幕中央
     '''
-    fixation = visual.TextStim(win = win, text = "+")
+    fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
 
@@ -52,7 +53,7 @@ def display_start():
     '''
     呈現"Start"於螢幕中央，暗示音檔即將要播出了。
     '''
-    fixation = visual.TextStim(win = win, text = "Start")
+    fixation = visual.TextStim(win=win, text="Start")
     fixation.draw()
     win.flip()
 
