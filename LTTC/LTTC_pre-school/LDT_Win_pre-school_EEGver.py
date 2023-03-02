@@ -56,8 +56,8 @@ def display_fix():
 2. Button press >> one for each side (choose wisely)
 """
 
-# The MEG trigger port info
-#port = parallel.ParallelPort('0x0378')
+# The EEG trigger port info
+#port = serial.Serial("COM4", 115200)  # check the COM? every time we inpluge the trigger ; 115200 == how many bites were transmissed per second
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
