@@ -213,22 +213,6 @@ if __name__ == "__main__":
     # close the window  at the end of the experiment
     win.close()
 
-    '''
-    ## LET IT SILDE RIGHT NOW
-    # setting up what keypress would allow the experiment to proceed
-    keys = event.waitKeys(keyList = keypressLIST_ans)
-    event.getKeys(keyList = keypress)
-    print(keys)
-    print("audio ends")
-    if keys == ["space"]:
-        end_time = clock.getTime()
-        time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-        print(time_duration)
-        print(type(time_duration))
-        clock.reset()
-    else:
-        pass  # we should use continue in here, right?
-    '''
 
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
