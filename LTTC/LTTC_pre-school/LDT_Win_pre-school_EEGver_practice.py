@@ -54,7 +54,6 @@ def display_fix():
 # The EEG trigger port info
 #port = serial.Serial("COM4", 115200)  # check the COM? every time we inpluge the trigger ; 115200 == how many bites were transmissed per second
 
-
 if __name__ == "__main__":
     # key in number for notifying which subject it is
     sub_id = str(input("Subject_ID: "))
