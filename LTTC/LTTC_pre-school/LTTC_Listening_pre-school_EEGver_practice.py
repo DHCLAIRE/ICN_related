@@ -142,17 +142,18 @@ if __name__ == "__main__":
             display_fix()
 
             # This is the tape num creation
-            tape_numSTR = str(int("%d%d" %(i, tapeINT))+1)
+            tape_numSTR = str(n_audio_stimLIST[i][tapeINT])  #str(int("%d%d" %(i, tapeINT))+1)
+            print(tape_numSTR[0:11])
 
             # get the length of each audio files of every text
-            sample_rate, data = wavfile.read(story_stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR))   # the %s value in here will need to rewrite
+            sample_rate, data = wavfile.read(story_stim_data_path / Path(tape_numSTR))   # the %s value in here will need to rewrite
             len_data = len(data) # holds length of the numpy array
             t = len_data / sample_rate # returns duration but in floats
-            print("SoundFile{} length = ".format(tape_numSTR), t)
-            print("SoundFile{} length = ".format(tape_numSTR), int(t+1))
+            print("SoundFile{} length = ".format(tape_numSTR[0:11]), t)
+            print("SoundFile{} length = ".format(tape_numSTR[0:11]), int(t+1))
 
             # Play the audio files section by section
-            LTTC_audio_stm = stim_data_path + "S%s_modified_%s.wav" % (sub_id, tape_numSTR)
+            LTTC_audio_stm = story_stim_data_path / Path(tape_numSTR)
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
             Script_Sound.play()
 
