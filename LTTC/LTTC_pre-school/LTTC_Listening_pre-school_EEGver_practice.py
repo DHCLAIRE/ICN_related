@@ -67,14 +67,16 @@ if __name__ == "__main__":
     sub_cond = str(input("Condition: "))
     
     # Set up the data path (For Win)
-    #stim_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/S001_audios/"  #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/S%s_audios/" %(sub_id, sub_id)
-    #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"E:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S001/"
-    
-    # the path for testing only (For Mac)
-    root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
     target_w_stim_data_path = root_data_path / "LDT-8 target words"
     result_data_path = root_data_path / "LTTC_pre-school_results"
     result_data_path.mkdir(exist_ok=True)
+    
+    # the path for testing only (For Mac)
+    #root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    #target_w_stim_data_path = root_data_path / "LDT-8 target words"
+    #result_data_path = root_data_path / "LTTC_pre-school_results"
+    #result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n並依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n將開始實驗"""
