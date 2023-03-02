@@ -100,17 +100,6 @@ if __name__ == "__main__":
     # Testing small screen
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     
-    '''
-    LTTC_audio_stm = stim_data_path + "S001_modified_1.wav" #% (sub_id, tape_numSTR)
-    Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
-    Script_Sound.play()
-    core.wait(20)
-    '''
-    ## The path needs to be modified ##
-    # For key-in the id of the subject
-    sub_id = str(input("Subject: "))
-    sub_cond = str(input("Condition: "))
-    
     story_stim_data_path =  root_data_path / Path("LTTC-stories/Set_%s" %sub_cond)
     if sub_cond == "A":
         print(story_stim_data_path)
