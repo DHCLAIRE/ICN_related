@@ -159,18 +159,16 @@ if __name__ == "__main__":
 
             '''
             # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-            port.setData(2) #This is open the trigger  # MEG channel 193
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
+            port.write(b'1') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
             '''
             # set core wait time that match with the length of each audio files
             core.wait(10)  #int(t+1))
 
             '''
             # TO MARK THE AUDIO FILE ENDS
-            port.setData(4) #This is open the trigger  # MEG channel 194
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
+            port.write(b'9') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
             '''
 
             print("SoundFile{}".format(tape_numSTR), "DONE")
@@ -179,9 +177,8 @@ if __name__ == "__main__":
 
             '''
             # TO MARK THE QUESTION BEGINS
-            port.setData(8) #This is open the trigger  # MEG channel 195
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
+            port.write(b'4') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
             '''
             win.flip()
 
@@ -189,9 +186,8 @@ if __name__ == "__main__":
             ans_keypressSTR = display_ins(instructions_2, keypressLIST_space)
             '''
             # TO MARK THE QUESTION ENDS
-            port.setData(4) #This is open the trigger  # MEG channel 194
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
+            port.write(b'9') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
             '''
             # making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
