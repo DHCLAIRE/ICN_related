@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LTTC_pre-school_testing_results.csv' %sub_id
+    file_name = 'S%s_LTTC_preschool_testing_results.csv' %sub_id
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     #"""
