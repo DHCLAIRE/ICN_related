@@ -144,9 +144,8 @@ if __name__ == "__main__":
 
             """
             # TO MARK THE PSEUDOWORD APPEARED
-            port.setData(8) #This is open the trigger  # MEG channel 195
-            core.wait(0.01) # Stay for 10 ms
-            port.setData(0) #This is close the trigger
+            port.write(b'1') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
             """
 
             #setting up what keypress would allow the experiment to proceed
