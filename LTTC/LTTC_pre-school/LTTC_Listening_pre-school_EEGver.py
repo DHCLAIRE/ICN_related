@@ -68,7 +68,6 @@ if __name__ == "__main__":
     
     # Set up the data path (For Win)
     root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
-    target_w_stim_data_path = root_data_path / "LDT-8 target words"
     result_data_path = root_data_path / "LTTC_pre-school_results"
     result_data_path.mkdir(exist_ok=True)
    
