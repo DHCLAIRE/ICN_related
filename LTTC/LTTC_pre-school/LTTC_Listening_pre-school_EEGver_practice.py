@@ -67,12 +67,12 @@ if __name__ == "__main__":
     sub_cond = str(input("Condition: "))
     
     # Set up the data path (For Win)
-    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
-    result_data_path = root_data_path / "LTTC_pre-school_results"
+    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
+    result_data_path = root_data_path / "LTTC_preschool_results"
     result_data_path.mkdir(exist_ok=True)
     
     # the path for testing only (For Mac)
-    #root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    #root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
     #target_w_stim_data_path = root_data_path / "LDT-8 target words"
     #result_data_path = root_data_path / "LTTC_pre-school_results"
     #result_data_path.mkdir(exist_ok=True)
