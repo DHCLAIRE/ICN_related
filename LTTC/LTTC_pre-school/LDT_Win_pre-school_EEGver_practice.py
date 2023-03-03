@@ -72,23 +72,7 @@ if __name__ == "__main__":
     targetPseudoLIST = []
     pseudoLIST = []
     targetPseudoLIST = []
-    """
-    # Set up the pwDICT's data path
-    DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
-    Dsave_path = result_data_path + DICT_name
-    
-    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
-        pseudoDICT = json.load(jfile)
-        pprint(pseudoDICT)
-        #print(pseudoDICT["High_CD condition pseudowords_3"])
-        pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
-        pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
 
-        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-
-        print(pseudoLIST)
-    pass
-    """
     pseudoLIST = ["daakaxl", "fayihng", "guwlihng", "kayfiy", "lowtaxst", "maasaxl"]
 
     # LDT Wanted data
@@ -112,6 +96,8 @@ if __name__ == "__main__":
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
     instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
+    instructions_3 = """中場休息1分鐘"""
+    instructions_4 = """本實驗結束，謝謝！"""
     keypressLIST_space = ['space']
 
     #Display the instructions
