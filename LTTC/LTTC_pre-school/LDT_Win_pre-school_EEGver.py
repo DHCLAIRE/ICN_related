@@ -69,9 +69,12 @@ if __name__ == "__main__":
     # Set up the data path (For Win)
     #stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
+    
     # the path for testing only (For Mac)
-    stim_data_path =  "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id
+    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
+    target_w_stim_data_path = root_data_path / "LDT-8 target words"
+    esult_data_path = root_data_path / "LTTC_pre-school_results"
+    result_data_path.mkdir(exist_ok=True)
     
     # setting up usable dataLIST
     targetPseudoLIST = []
@@ -134,16 +137,14 @@ if __name__ == "__main__":
 
     #core.wait(3)
 
-    # 假詞all重新排列後依序送出，整個LIST重複送10次
+    # 假詞all重新排列後依序送出，整個LIST重複送2次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     for round_ in range(1, 3):  # only two round
         print("Please ready for Round", round_)
         """
         ## To mark the round number  ##
-        # TO MARK THE PSEUDOWORD APPEARED
-        port.setData(8) #This is open the trigger  # MEG channel 195
-        core.wait(0.01) # Stay for 10 ms
-        port.setData(0) #This is close the trigger
+        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+        core.wait(.01); # Stay for 10 ms
         """        
         for i in range(6):  #need to loop 6 times for 48 trials in one round (96 trials in total)
 
