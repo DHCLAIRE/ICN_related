@@ -19,6 +19,9 @@ import numpy as np
 import pandas as pd
 from pprint import pprint
 import random
+import re
+from pathlib import Path
+import serial
 
 '''
 key press: need to be set (we'll use 2 bottons in here')
