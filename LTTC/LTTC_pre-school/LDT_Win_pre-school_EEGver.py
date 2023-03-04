@@ -2,13 +2,13 @@
 # -*- coding:utf-8 -*-
 
 # To Change the backend setting to PTB
-from psychopy import prefs
-prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+#from psychopy import prefs
+#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-import psychtoolbox as ptb
-from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+#import psychtoolbox as ptb
+#from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
 #import json
-print(sound.Sound)
+#print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -71,9 +71,9 @@ if __name__ == "__main__":
     #result_data_path = "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/" %sub_id #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_MEG_S%s/"
     
     # the path for testing only (For Mac)
-    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_pre-school")
-    target_w_stim_data_path = root_data_path / "LDT-8 target words"
-    esult_data_path = root_data_path / "LTTC_pre-school_results"
+    root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
+    target_w_stim_data_path = root_data_path / "LDT-8_target_words"
+    result_data_path = root_data_path / "LTTC_preschool_results"
     result_data_path.mkdir(exist_ok=True)
     
     # setting up usable dataLIST
@@ -81,7 +81,9 @@ if __name__ == "__main__":
     pseudoLIST = []
     targetPseudoLIST = []
 
-    # Set up the pwDICT's data path
+    # Set up the pws' data path, and Call out the pw's LIST by the audios' names
+    pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\s', path.name)]
+    print(pw_stimLIST)
     DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
 
@@ -96,7 +98,6 @@ if __name__ == "__main__":
 
         print(pseudoLIST)
     pass
-
 
     # LDT Wanted data
     day = date.today()
