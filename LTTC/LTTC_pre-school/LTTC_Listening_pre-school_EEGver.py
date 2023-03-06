@@ -67,15 +67,15 @@ if __name__ == "__main__":
     sub_cond = str(input("Condition: "))
     
     # Set up the data path (For Win)
-    root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
-    result_data_path = root_data_path / "LTTC_preschool_results"
-    result_data_path.mkdir(exist_ok=True)
+    #root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
+    #result_data_path = root_data_path / "LTTC_preschool_results"
+    #result_data_path.mkdir(exist_ok=True)
    
     # the path for testing only (For Mac)
-    #root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
-    #target_w_stim_data_path = root_data_path / "LDT-8 target words"
-    #result_data_path = root_data_path / "LTTC_pre-school_results"
-    #result_data_path.mkdir(exist_ok=True)
+    root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
+    target_w_stim_data_path = root_data_path / "LDT-8 target words"
+    result_data_path = root_data_path / "LTTC_pre-school_results"
+    result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n請依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n實驗將開始"""
@@ -160,7 +160,7 @@ if __name__ == "__main__":
             # Play the audio files section by section
             LTTC_audio_stm = story_stim_data_path / Path(tape_numSTR)
             Script_Sound = sound.Sound(LTTC_audio_stm)   #value=str(Alice_stm), secs = 60)
-            Script_Sound.play()
+            #Script_Sound.play()
             
             '''
             # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
@@ -169,7 +169,7 @@ if __name__ == "__main__":
             '''
             
             # set core wait time that match with the length of each audio files
-            core.wait(5) #(int(t+1))
+            core.wait(1) #(int(t+1))
 
             '''
             # TO MARK THE AUDIO FILE ENDS
@@ -217,6 +217,7 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
+                             'Sets':sub_condLIST,
                              'Response':responseLIST
                              })
 
