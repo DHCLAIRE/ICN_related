@@ -261,13 +261,14 @@ if __name__ == "__main__":
                 # making the wanted info into the List form for future use
                 sub_idLIST.append(sub_id)
                 dateLIST.append(day)
+                sub_condLIST.append(sub_cond)
+                roundLIST.append(round_)
                 stimLIST.append(stim_wordSTR)
                 CD_condLIST.append(cdSTR)
                 resultKeyLIST.append(keys)
                 responseLIST.append(conditionLIST)
                 LDT_rtLIST.append(time_duration)
                 correctnessLIST.append(correctLIST)
-                roundLIST.append(round_)
             
         #Display the instruction of the break in between Round 1 & Round 2
         print("Round", round_, "is over.")
@@ -283,6 +284,7 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                            'Date':dateLIST,
+                           'Sets':sub_condLIST,
                            'Round':roundLIST,
                            'Stimuli':stimLIST,
                            'CD_condition':CD_condLIST,
