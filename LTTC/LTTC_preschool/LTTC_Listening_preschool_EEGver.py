@@ -57,6 +57,16 @@ def display_start():
     fixation.draw()
     win.flip()
 
+def display_Image(ImageSTR):  #, keyPressLIST=None):
+    '''
+    呈現圖片於螢幕中央
+    '''
+    pic = visual.ImageStim(win=win, image=ImageSTR)
+    pic.draw()
+    win.flip()
+    #event.waitKeys(keyList=keyPressLIST)
+    #win.flip()
+
 # The EEG trigger port info
 #port = serial.Serial("COM4", 115200)  # check the COM? every time we inpluge the trigger ; 115200 == how many bites were transmissed per second
 
@@ -82,6 +92,9 @@ if __name__ == "__main__":
     instructions_2 = """請問有聽懂剛剛那一篇文章嗎？\n\n評分完畢後，將會直接播放下一篇文章"""
     instructions_3 = """現在為1分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
     instructions_4 = """本實驗結束，謝謝您的參與"""
+    
+    # Setting the pic to replace the fixation
+    picPNG = root_data_path / "Smiley_face.png"
 
     # Set up the keypress types
     keypressLIST_space = ["space"]
@@ -144,7 +157,9 @@ if __name__ == "__main__":
             core.wait(1)
 
             # display fixation for subject to look at when listening to the tape
-            display_fix()
+            #display_fix()
+            # display an Smiley_face for subject to look at when listening to the tape
+            display_Image(picPNG) #, keypressLIST_space)
 
             # This is the tape num creation
             tape_numSTR = str(n_audio_stimLIST[i][tapeINT])  #str(int("%d%d" %(i, tapeINT))+1)
