@@ -101,8 +101,8 @@ if __name__ == "__main__":
     # ALL target PWs
     targetPseudoLIST = ['bo4_luo2', 'ji3_an4', 'pu2_zu2', 'sheng1_chu4']   #[簸籮, 几案, 蹼足, 牲畜]
     # Paired target PWs
-    pair_1pw_LIST = ['pu2_zu2', 'sheng1_chu4']  #  = Set_A's H
-    pair_2pw_LIST = ['bo4_luo2', 'ji3_an4']
+    pair_1pw_LIST = ['sheng1_chu4', 'ji3_an4']  #[牲畜, 几案] = Set_A's HCD / Set_B's LCD
+    pair_2pw_LIST = ['bo4_luo2', 'pu2_zu2']  #[簸籮, 蹼足] = Set_A's LCD / Set_H's LCD
     
     '''
     with open (Dsave_path, "r", encoding = "utf-8") as jfile:
