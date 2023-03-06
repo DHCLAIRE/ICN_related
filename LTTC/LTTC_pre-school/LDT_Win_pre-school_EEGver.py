@@ -82,23 +82,29 @@ if __name__ == "__main__":
     targetPseudoLIST = []
 
     # Set up the pws' data path, and Call out the pw's LIST by the audios' names
-    pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\w', path.name)]  #\w == any characters(digits included)
-    #print(pw_stimLIST) # pw_stimLIST = ['bi4_ba2.wav', 'bo4_luo2.wav', 'chai2_fei1.wav', 'ge2_lu3.wav', 'ji3_an4.wav', 'pu2_zu2.wav', 'sheng1_chu4.wav', 'zhai1_tan2.wav']
+    pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\D', path.name)]  #(both works)\D == any non-digits; \w == any characters(digits included)
+    print(pw_stimLIST) # pw_stimLIST = ['bi4_ba2.wav', 'bo4_luo2.wav', 'chai2_fei1.wav', 'ge2_lu3.wav', 'ji3_an4.wav', 'pu2_zu2.wav', 'sheng1_chu4.wav', 'zhai1_tan2.wav']
     '''
     # This is just for testing the re commands
     for path in target_w_stim_data_path.iterdir():
         if re.match(r'\w', path.name):  # path.name == the name of the file in the specfic location
             print(path.suffix)  # path.suffix == the file type of the file in the specfic location
+            print(type(path.suffix))
     '''
     # This the every pseudowords audio file name
+    #pseudoLIST = pw_stimLIST.copy()
+    #print(pseudoLIST)
+    for f_nameSTR in pw_stimLIST:
+        pseudoLIST.append(f_nameSTR[:-4])
+    print(pseudoLIST)
     
-    for f_nameSTR in pseudoLIST:
-        if re.match(r'.wav$', f_nameSTR.name):
-            print(f_nameSTR.name)
+    # ALL target PWs
+    targetPseudoLIST = ['bo4_luo2', 'ji3_an4', 'pu2_zu2', 'sheng1_chu4']   #[簸籮, 几案, 蹼足, 牲畜]
+    # Paired target PWs
+    pair_1pw_LIST = ['pu2_zu2', 'sheng1_chu4']  #  = Set_A's H
+    pair_2pw_LIST = ['bo4_luo2', 'ji3_an4']
     
-    DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
-    Dsave_path = result_data_path + DICT_name
-
+    '''
     with open (Dsave_path, "r", encoding = "utf-8") as jfile:
         pseudoDICT = json.load(jfile)
         pprint(pseudoDICT)
@@ -110,7 +116,7 @@ if __name__ == "__main__":
 
         print(pseudoLIST)
     pass
-
+    '''
     # LDT Wanted data
     day = date.today()
     dateLIST = []
@@ -176,9 +182,9 @@ if __name__ == "__main__":
 
 
                 # Display the pw stimulus
-                LTTC_pw_stm = stim_data_path + '{}_v3_female.wav'.format(stim_wordSTR)
+                LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
                 pw_Sound = sound.Sound(LTTC_pw_stm)
-                pw_Sound.play()
+                #pw_Sound.play()
 
                 """
                 # TO MARK THE PSEUDOWORD APPEARED
