@@ -2,13 +2,13 @@
 # -*- coding:utf-8 -*-
 
 # To Change the backend setting to PTB
-#from psychopy import prefs
-#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+from psychopy import prefs
+prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 #import psychtoolbox as ptb
-#from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-#import json
-#print(sound.Sound)
+from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+import json
+print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -64,7 +64,8 @@ def display_fix():
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
-    #sub_id = str(input("Subject_ID: "))
+    sub_id = str(input("Subject_ID: "))
+    sub_cond = str(input("Condition: "))
 
     # Set up the data path (For Win)
     #stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
@@ -158,14 +159,14 @@ if __name__ == "__main__":
 
     # 假詞all重新排列後依序送出，整個LIST重複送2次
     # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    for round_ in range(1, 3):  # only two round
+    for round_ in range(1, 3):  # only 2 rounds
         print("Please ready for Round", round_)
         """
         ## To mark the round number  ##
         port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
         core.wait(.01); # Stay for 10 ms
         """        
-        for i in range(6):  #need to loop 6 times for 48 trials in one round (96 trials in total)
+        for i in range(1):  #need to loop 6 times for 48 trials in one round (96 trials in total)
 
             # randomly select the wanted pseudoword from the list
             random.shuffle(pseudoLIST)
@@ -182,9 +183,9 @@ if __name__ == "__main__":
 
 
                 # Display the pw stimulus
-                LTTC_pw_stm = stim_data_path + '{}.wav'.format(stim_wordSTR)
+                LTTC_pw_stm = target_w_stim_data_path / Path('{}.wav'.format(stim_wordSTR))
                 pw_Sound = sound.Sound(LTTC_pw_stm)
-                #pw_Sound.play()
+                pw_Sound.play()
 
                 """
                 # TO MARK THE PSEUDOWORD APPEARED
@@ -196,7 +197,7 @@ if __name__ == "__main__":
                 keys = event.waitKeys(maxWait=3, keyList=keypressLIST_space) # only press "space" when you have heard this word
                 event.getKeys(keyList=keypressLIST_space)
                 print(keys)
-
+                
                 # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
                 if keys == ["space"]:
                     conditionLIST = ["heard"]
@@ -213,8 +214,9 @@ if __name__ == "__main__":
                     print(time_duration)
                     clock.reset()
 
-
+                """
                 # calculate the correctness of the LDT response
+                if se
                 if stim_wordSTR in targetPseudoLIST:
                     #conditionLIST = ["heard"]
                     if keys == ["space"]:
@@ -236,7 +238,7 @@ if __name__ == "__main__":
                         correctLIST = ["N/A"]
                 else:
                     pass
-
+                    """
 
                 # making the wanted info into the List form for future use
                 sub_idLIST.append(sub_id)
@@ -245,7 +247,7 @@ if __name__ == "__main__":
                 resultKeyLIST.append(keys)
                 responseLIST.append(conditionLIST)
                 LDT_rtLIST.append(time_duration)
-                correctnessLIST.append(correctLIST)
+                #correctnessLIST.append(correctLIST)
                 roundLIST.append(round_)
             
         #Display the instruction of the break in between Round 1 & Round 2
@@ -266,8 +268,8 @@ if __name__ == "__main__":
                            'Stimuli':stimLIST,
                            'Keypress':resultKeyLIST,
                            'Response':responseLIST,
-                           'LDT_RT':LDT_rtLIST,
-                           'Correctness':correctnessLIST
+                           'LDT_RT':LDT_rtLIST
+                           #'Correctness':correctnessLIST
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
