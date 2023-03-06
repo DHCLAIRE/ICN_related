@@ -124,6 +124,7 @@ if __name__ == "__main__":
     sub_idLIST = []
     resultKeyLIST = []
     stimLIST = []
+    CD_condLIST = []
     conditionLIST = []
     LDT_rtLIST = []
     correctnessLIST = []
@@ -214,9 +215,8 @@ if __name__ == "__main__":
                     print(time_duration)
                     clock.reset()
 
-                """
+                
                 # calculate the correctness of the LDT response
-                if se
                 if stim_wordSTR in targetPseudoLIST:
                     #conditionLIST = ["heard"]
                     if keys == ["space"]:
@@ -238,16 +238,35 @@ if __name__ == "__main__":
                         correctLIST = ["N/A"]
                 else:
                     pass
-                    """
+                
+                # Collect the H/LCD of the words
+                ## FOR Set A H/LCD
+                if sub_cond == "A":
+                    if stim_wordSTR in pair_1pw_LIST:
+                        cdSTR = "H"
+                    elif stim_wordSTR in pair_2pw_LIST:
+                        cdSTR = "L"
+                    else:
+                        cdSTR = "C"
+                
+                ## FOR Set B H/LCD
+                if sub_cond == "B":
+                    if stim_wordSTR in pair_1pw_LIST:
+                        cdSTR = "L"
+                    elif stim_wordSTR in pair_2pw_LIST:
+                        cdSTR = "H"
+                    else:
+                        cdSTR = "C"
 
                 # making the wanted info into the List form for future use
                 sub_idLIST.append(sub_id)
                 dateLIST.append(day)
                 stimLIST.append(stim_wordSTR)
+                CD_condLIST.append(cdSTR)
                 resultKeyLIST.append(keys)
                 responseLIST.append(conditionLIST)
                 LDT_rtLIST.append(time_duration)
-                #correctnessLIST.append(correctLIST)
+                correctnessLIST.append(correctLIST)
                 roundLIST.append(round_)
             
         #Display the instruction of the break in between Round 1 & Round 2
@@ -266,15 +285,16 @@ if __name__ == "__main__":
                            'Date':dateLIST,
                            'Round':roundLIST,
                            'Stimuli':stimLIST,
+                           'CD_condition':CD_condLIST,
                            'Keypress':resultKeyLIST,
                            'Response':responseLIST,
-                           'LDT_RT':LDT_rtLIST
-                           #'Correctness':correctnessLIST
+                           'LDT_RT':LDT_rtLIST,
+                           'Correctness':correctnessLIST
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'S%s_LDT_preschool_testing_results.csv' %sub_id
-    save_path = result_data_path + file_name
+    save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
     # close all the possible ongoing commands that could be running in the background
