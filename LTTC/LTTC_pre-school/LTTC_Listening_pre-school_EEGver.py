@@ -91,6 +91,7 @@ if __name__ == "__main__":
     day = date.today()
     dateLIST = []
     sub_idLIST = []
+    sub_condLIST = []
     resultKeyLIST = []
     responseLIST = []
 
@@ -196,8 +197,10 @@ if __name__ == "__main__":
             '''
             # making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
+            sub_condLIST.append(sub_cond)
             dateLIST.append(day)
             responseLIST.append(ans_keypressSTR)
+            
 
         # ask the participant to evaluate how well they understand the presented text
         if i == 3:
