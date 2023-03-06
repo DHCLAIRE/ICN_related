@@ -82,8 +82,8 @@ if __name__ == "__main__":
     targetPseudoLIST = []
 
     # Set up the pws' data path, and Call out the pw's LIST by the audios' names
-    pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\s', path.name)]
-    print(pw_stimLIST)
+    pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\w', path.name)]  #\w == any characters(digits included)
+    #print(pw_stimLIST)
     DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
 
