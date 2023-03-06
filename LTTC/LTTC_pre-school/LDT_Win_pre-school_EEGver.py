@@ -64,7 +64,7 @@ def display_fix():
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
-    sub_id = str(input("Subject_ID: "))
+    #sub_id = str(input("Subject_ID: "))
 
     # Set up the data path (For Win)
     #stim_data_path =  "I:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/" #"/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_LDT_pw_audios/"
@@ -83,7 +83,19 @@ if __name__ == "__main__":
 
     # Set up the pws' data path, and Call out the pw's LIST by the audios' names
     pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\w', path.name)]  #\w == any characters(digits included)
-    #print(pw_stimLIST)
+    #print(pw_stimLIST) # pw_stimLIST = ['bi4_ba2.wav', 'bo4_luo2.wav', 'chai2_fei1.wav', 'ge2_lu3.wav', 'ji3_an4.wav', 'pu2_zu2.wav', 'sheng1_chu4.wav', 'zhai1_tan2.wav']
+    '''
+    # This is just for testing the re commands
+    for path in target_w_stim_data_path.iterdir():
+        if re.match(r'\w', path.name):  # path.name == the name of the file in the specfic location
+            print(path.suffix)  # path.suffix == the file type of the file in the specfic location
+    '''
+    # This the every pseudowords audio file name
+    
+    for f_nameSTR in pseudoLIST:
+        if re.match(r'.wav$', f_nameSTR.name):
+            print(f_nameSTR.name)
+    
     DICT_name = 'S%s_pseudowordsDICT.json' %sub_id
     Dsave_path = result_data_path + DICT_name
 
