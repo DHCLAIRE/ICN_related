@@ -97,7 +97,7 @@ if __name__ == "__main__":
     #pseudoLIST = pw_stimLIST.copy()
     #print(pseudoLIST)
     for f_nameSTR in pw_stimLIST:
-        pseudoLIST.append(f_nameSTR[:-4])
+        pseudoLIST.append(f_nameSTR[:-4])  # exclude the file extension
     print(pseudoLIST)
     
     # ALL target PWs
