@@ -106,19 +106,6 @@ if __name__ == "__main__":
     pair_1pw_LIST = ['sheng1_chu4', 'ji3_an4']  #[牲畜, 几案] = Set_A's HCD / Set_B's LCD
     pair_2pw_LIST = ['bo4_luo2', 'pu2_zu2']  #[簸籮, 蹼足] = Set_A's LCD / Set_H's LCD
     
-    '''
-    with open (Dsave_path, "r", encoding = "utf-8") as jfile:
-        pseudoDICT = json.load(jfile)
-        pprint(pseudoDICT)
-        #print(pseudoDICT["High_CD condition pseudowords_3"])
-        pseudoLIST.extend(pseudoDICT["The ControlPseudo group_6"])
-        pseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-
-        targetPseudoLIST.extend(pseudoDICT["The TargetPseudo group_6"])
-
-        print(pseudoLIST)
-    pass
-    '''
     # LDT Wanted data
     day = date.today()
     dateLIST = []
