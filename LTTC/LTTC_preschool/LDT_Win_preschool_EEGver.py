@@ -110,6 +110,7 @@ if __name__ == "__main__":
     day = date.today()
     dateLIST = []
     sub_idLIST = []
+    sub_condLIST = []
     resultKeyLIST = []
     stimLIST = []
     CD_condLIST = []
