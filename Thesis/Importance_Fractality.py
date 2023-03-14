@@ -257,7 +257,7 @@ if __name__ == "__main__":
     
     # segment the text word by word
     raw_textLIST = cleaned_text.lower().split()
-    #print(raw_textLIST)
+    print(raw_textLIST)
     #print(len(raw_textLIST))  # = 150
     """
     ### APPLY LATER ###
@@ -365,7 +365,7 @@ if __name__ == "__main__":
     # Calculate the box count
     # Original texts
     
-
+    """
     # Peel the first layer of the LIST
     for ori_itemLIST in All_boxed_textLIST[0:5]:  # the first five box size collections
         print("ori_itemLIST", ori_itemLIST)
@@ -393,9 +393,34 @@ if __name__ == "__main__":
     print("  ")
     print("### ROUND:", box_countINT)
     
+    """
     
+    #count_word = 0
+    ## METHOD TWO FOR COUNTING APPEARENCE ##
     
+    ## Call out every words in the raw text to further counting its appearance
+    for targ_word in raw_textLIST[0:3]:
     
+        ## Open the outer layer of boxed LIST, which are the big LIST containing boxed text according to box size
+        for tmp_itemLIST in All_boxed_textLIST[0:3]:
+            print(All_boxed_textLIST.index(tmp_itemLIST), tmp_itemLIST)
+            
+            ## Open the middle layer of the boxed LIST, which are the boxes in different size within  the boxed LIST
+            for tmp_boxLIST in tmp_itemLIST[0:3]:
+                print(tmp_itemLIST.index(tmp_boxLIST), tmp_boxLIST)
+                
+                ## Open the inner layer, which are the wordSTR within each box
+                for tmp_wordSTR in tmp_boxLIST[0:3]:
+                    print(tmp_boxLIST.index(tmp_wordSTR), tmp_wordSTR)
+                    print()
+                    '''
+                    count_word = 0
+                    if re.match(tmp_wordSTR, targ_word):
+                        count_word += 1
+                        print("YES >>", tmp_wordSTR)
+                print(tmp_wordSTR, count_word)
+                print()
+                '''
     
     
     ### DOWN below is the saving part, we'll deal with it later ###
