@@ -400,7 +400,8 @@ if __name__ == "__main__":
     
     ## Call out every words in the raw text to further counting its appearance
     for targ_word in raw_textLIST[0:3]:
-    
+        print("CHECKING:", targ_word)
+        count_word = 0
         ## Open the outer layer of boxed LIST, which are the big LIST containing boxed text according to box size
         for tmp_itemLIST in All_boxed_textLIST[0:3]:
             print(All_boxed_textLIST.index(tmp_itemLIST), tmp_itemLIST)
@@ -412,6 +413,14 @@ if __name__ == "__main__":
                 ## Open the inner layer, which are the wordSTR within each box
                 for tmp_wordSTR in tmp_boxLIST[0:3]:
                     print(tmp_boxLIST.index(tmp_wordSTR), tmp_wordSTR)
+                    #print()
+                    if re.match(tmp_wordSTR, targ_word):
+                        print("YES >>", tmp_wordSTR)
+                        count_word += 1
+                    else:
+                        print("NOPE", tmp_wordSTR)
+                    print(targ_word, "==", count_word)
+                    print()
                     print()
                     '''
                     count_word = 0
