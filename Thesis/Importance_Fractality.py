@@ -397,21 +397,21 @@ if __name__ == "__main__":
     
     #count_word = 0
     ## METHOD TWO FOR COUNTING APPEARENCE ##
-    
+    box_countDICT = {}
     ## Call out every words in the raw text to further counting its appearance
     for targ_word in raw_textLIST[0:3]:
         print("CHECKING:", targ_word)
         count_word = 0
-        ## Open the outer layer of boxed LIST, which are the big LIST containing boxed text according to box size
+        ## Open the outer layer of boxed LIST, which are the big LIST containing every boxed text set(all box sizes included)  # [[[the], [B], [C]], [the, B], [C, D]]
         for tmp_itemLIST in All_boxed_textLIST[0:3]:
             print(All_boxed_textLIST.index(tmp_itemLIST), tmp_itemLIST)
             
-            ## Open the middle layer of the boxed LIST, which are the boxes in different size within  the boxed LIST
-            for tmp_boxLIST in tmp_itemLIST[0:3]:
+            ## Open the middle layer of the boxed LIST, which are the boxes text in different size  # [[the], [B], [C]] or [[the, B], [C, D]]
+            for tmp_boxLIST in tmp_itemLIST:
                 print(tmp_itemLIST.index(tmp_boxLIST), tmp_boxLIST)
                 
-                ## Open the inner layer, which are the wordSTR within each box
-                for tmp_wordSTR in tmp_boxLIST[0:3]:
+                ## Open the inner layer, which are the wordSTR within each box based on the box size  # [the], [B], [C] or [the, B], [C, D]
+                for tmp_wordSTR in tmp_boxLIST:
                     print(tmp_boxLIST.index(tmp_wordSTR), tmp_wordSTR)
                     #print()
                     if re.match(tmp_wordSTR, targ_word):
@@ -422,14 +422,7 @@ if __name__ == "__main__":
                     print(targ_word, "==", count_word)
                     print()
                     print()
-                    '''
-                    count_word = 0
-                    if re.match(tmp_wordSTR, targ_word):
-                        count_word += 1
-                        print("YES >>", tmp_wordSTR)
-                print(tmp_wordSTR, count_word)
-                print()
-                '''
+                    
     
     
     ### DOWN below is the saving part, we'll deal with it later ###
