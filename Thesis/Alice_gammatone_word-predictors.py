@@ -69,7 +69,7 @@ if __name__ == "__main__":
     #STIMULUS_DIR = DATA_ROOT  / 'Data' / 'stimuli'
     #PREDICTOR_DIR = DATA_ROOT / 'predictors'
     # /Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset_mat_and stimuli)
-    word_table = eelbrain.load.tsv(DATA_ROOT /'Alice(EEG dataset_mat_and stimuli)'/ 'AliceChapterOne-EEG.csv')
+    word_table = eelbrain.load.tsv(DATA_ROOT /'Alice(EEG_mat_and stimuli)'/ 'AliceChapterOne-EEG.csv')
     # Add word frequency as variable that scales with the expected response: larger response for less frequent words
     word_table['InvLogFreq'] = 17 - word_table['LogFreq']
     
