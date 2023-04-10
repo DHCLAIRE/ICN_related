@@ -2,19 +2,19 @@
 
 ## Thesis_Ailce TRFs Progress and scripts
 
-### Predictors
+### Predictors (DONE)
 ```
-# Scripts (Done and Compared)
+# Scripts
 All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
-### Acoustic (envelope, word onset)
+### Acoustic (envelope, word onset)  (DONE)
 ```
-# Scripts (Done and Compared)
+# Scripts
 Natives: /Thesis/TRFs_produce-estimate_Natives.py
 ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
-### Word-Models (NGram, CFG, Fractality)
+### Word-Models (NGram, CFG, Fractality) (NOT YET)
 ```
 # Fractality Model script (unfinished)
 /Thesis/Importance_Fractality.py
@@ -22,11 +22,11 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 /Thesis/boxed_count_results_2.csv
 ```
 
-### Lexical (Content v.s. Function words)
+### Lexical (Content v.s. Function words)  (About to)
 
-### Instant Frequency (From envelope by HHT_EMD)
+### Instant Frequency (From envelope by HHT_EMD)  (NO testing YET)
 
-### Foundamental Frequency (F0)
+### Foundamental Frequency (F0)  (Working on it)
 
 ### figures (Statistics/Analyses)
 ```
@@ -34,13 +34,13 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 Natives:/Thesis/Alice_Natives_analysis.ipynb
 ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
-### Experiment (for ESLs)
- **Text Preprocessing**
+### Experiment (for ESLs) (DONE)
+Text Preprocessing
 ```
 12 Qs: /Thesis/12Qs_preprocess.py
 Corrected 12 Qs text: /Thesis/Alice_questionsLIST.json
 ```
- **Procedure**
+Procedure
 ```
 # MacbookPro & iMac 2017
 /Thesis/Alice_SoundPlay.py
