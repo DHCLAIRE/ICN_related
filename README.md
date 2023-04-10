@@ -72,6 +72,12 @@ Sentence (by tape)
 
 IsLexical (1 & 0 == Booleen)
 
+NGram
+
+CFG
+
+Fractality
+
 ### Acoustic (envelope, word onset)
 
 ### Word-Models (NGram, CFG, Fractality)
