@@ -32,9 +32,13 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 Natives:/Thesis/Alice_Natives_analysis.ipynb
 ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
-### Experiment Procedure(for ESLs)
+### Experiment (for ESLs)
+**Text Preprocessing**
 ```
-# Scripts
+12 Qs: /Thesis/12Qs_preprocess.py
+```
+**Procedure**
+```
 # MacbookPro & iMac 2017
 /Thesis/Alice_SoundPlay.py
 
