@@ -2,19 +2,19 @@
 
 ## Thesis_Ailce TRFs Progress and scripts
 
-### Predictors (DONE)
+#### Predictors (DONE)
 ```
 # Scripts
 All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
-### Acoustic (envelope, word onset)  (DONE)
+#### Acoustic (envelope, word onset)  (DONE)
 ```
 # Scripts
 Natives: /Thesis/TRFs_produce-estimate_Natives.py
 ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
-### Word-Models (NGram, CFG, Fractality) (NOT YET)
+#### Word-Models (NGram, CFG, Fractality) (NOT YET)
 ```
 # Fractality Model script (unfinished)
 /Thesis/Importance_Fractality.py
@@ -22,19 +22,19 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 /Thesis/boxed_count_results_2.csv
 ```
 
-### Lexical (Content v.s. Function words)  (About to)
+#### Lexical (Content v.s. Function words)  (About to)
 
-### Instant Frequency (From envelope by HHT_EMD)  (NO testing YET)
+#### Instant Frequency (From envelope by HHT_EMD)  (NO testing YET)
 
-### Foundamental Frequency (F0)  (Working on it)
+#### Foundamental Frequency (F0)  (Working on it)
 
-### figures (Statistics/Analyses)
+#### figures (Statistics/Analyses)
 ```
 # Scripts
 Natives:/Thesis/Alice_Natives_analysis.ipynb
 ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
-### Experiment (for ESLs) (DONE)
+#### Experiment (for ESLs) (DONE)
 Text Preprocessing
 ```
 12 Qs: /Thesis/12Qs_preprocess.py
@@ -56,9 +56,9 @@ Procedure
 
 
 
-## Thesis_LTTC TRFs Progress (Start with Predictor tables_)
+## Thesis_LTTC TRFs Progress (0%_Starting with Predictor tables_)
 
-### Predictor tables
+#### Predictor tables
 word (split)
 
 Segment (per tape)
@@ -85,14 +85,14 @@ CFG
 
 Fractality
 
-### Acoustic (envelope, word onset)
+#### Acoustic (envelope, word onset)
 
-### Word-Models (NGram, CFG, Fractality)
+#### Word-Models (NGram, CFG, Fractality)
 
-### Lexical (Content v.s. Function words)
+#### Lexical (Content v.s. Function words)
 
-### Instant Frequency (From envelope by HHT_EMD)
+#### Instant Frequency (From envelope by HHT_EMD)
 
-### Foundamental Frequency (F0)
+#### Foundamental Frequency (F0)
 
-### figures (Statistics/Analyses)
+#### figures (Statistics/Analyses)
