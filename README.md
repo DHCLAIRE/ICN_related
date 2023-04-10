@@ -30,7 +30,7 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 
 #### figures (Statistics/Analyses)
 ```
-# Scripts
+# envelope & onset
   Natives:/Thesis/Alice_Natives_analysis.ipynb
   ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
