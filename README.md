@@ -45,10 +45,10 @@ Procedure
 # MacbookPro & iMac 2017
   /Thesis/Alice_SoundPlay.py
 
-# Win10 & _NeuroScan (in NCU)
+# Win10 & NeuroScan (in NCU)
   /Thesis/Alice_SoundPlay_windows_EEGver.py
 
-# Win8 & MEG 160 system(in _Academia _Sinica
+# Win8 & MEG 160 system(in Academia _Sinica)
   /Thesis/Alice_SoundPlay_windows_MEGver.py
 ```
 
