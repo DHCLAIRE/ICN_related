@@ -56,9 +56,9 @@ Procedure
 
 
 
-## Thesis_LTTC TRFs Progress (0%_Starting with Predictor tables_)
+## Thesis_LTTC TRFs Progress (0% Starting with Predictor tables_)
 
-#### Predictor tables
+#### Predictor tables (NOPE)
 word (split)
 
 Segment (per tape)
@@ -85,14 +85,14 @@ CFG
 
 Fractality
 
-#### Acoustic (envelope, word onset)
+#### Acoustic (envelope, word onset)  (NOPE)
 
-#### Word-Models (NGram, CFG, Fractality)
+#### Word-Models (NGram, CFG, Fractality)  (NOPE)
 
-#### Lexical (Content v.s. Function words)
+#### Lexical (Content v.s. Function words)  (NOPE)
 
-#### Instant Frequency (From envelope by HHT_EMD)
+#### Instant Frequency (From envelope by HHT_EMD)  (NOPE)
 
-#### Foundamental Frequency (F0)
+#### Foundamental Frequency (F0)  (NOPE)
 
-#### figures (Statistics/Analyses)
+#### figures (Statistics/Analyses)  (NOPE)
