@@ -15,6 +15,10 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
 ### Word-Models (NGram, CFG, Fractality)
+```
+# Fractality Model (Unfinished script)
+/Thesis/Importance_Fractality.py
+```
 
 ### Lexical (Content v.s. Function words)
 
