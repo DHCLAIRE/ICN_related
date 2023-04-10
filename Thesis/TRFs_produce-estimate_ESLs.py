@@ -19,7 +19,7 @@ if __name__ == "__main__":
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2__S\d', path.name)]  #S01_alice-raw.fif
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
@@ -59,6 +59,10 @@ if __name__ == "__main__":
     word_lexical = [eelbrain.event_impulse_predictor(gt.time, value='lexical', ds=ds, name='lexical') for gt, ds in zip(gammatone, word_tables)]
     word_nlexical = [eelbrain.event_impulse_predictor(gt.time, value='nlexical', ds=ds, name='non_lexical') for gt, ds in zip(gammatone, word_tables)]
     
+    # NGRAM/CFG word impulses based on the values in the word-tables
+    word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
+    word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
+    
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
     #print(durations)
@@ -66,6 +70,14 @@ if __name__ == "__main__":
     # Models
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
+    models = {
+        # Language Models
+        'Ngram': [word_Ngram],
+        'CFG': [word_CFG],
+        'Ngram-CFG_all': [word_Ngram, word_CFG]
+    }
+    
+    """
     models = {
         # Acoustic models
         'envelope': [envelope],
@@ -77,15 +89,15 @@ if __name__ == "__main__":
         'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
         'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
     }
-    
+    """
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
     for subject in SUBJECTS:  #type(subject) == str
-        subject_trf_dir = TRF_DIR / subject[5:9]
+        subject_trf_dir = TRF_DIR / subject[:4]
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
-        trf_paths = {model: subject_trf_dir / f'{subject[5:9]} {model}.pickle' for model in models}
+        trf_paths = {model: subject_trf_dir / f'{subject[:4]} {model}.pickle' for model in models}
         # Skip this subject if all files already exist
         if all(path.exists() for path in trf_paths.values()):
             continue
