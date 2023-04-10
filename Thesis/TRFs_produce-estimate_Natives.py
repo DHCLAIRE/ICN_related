@@ -86,8 +86,8 @@ if __name__ == "__main__":
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS[:1]:
-        subject_trf_dir = TRF_DIR / subject[:4]
+    for subject in SUBJECTS[2:]:
+        subject_trf_dir = TRF_DIR / subject
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
         trf_paths = {model: subject_trf_dir / f'{subject[:3]} {model}.pickle' for model in models}
