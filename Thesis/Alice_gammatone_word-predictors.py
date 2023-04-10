@@ -74,9 +74,10 @@ if __name__ == "__main__":
     word_table['InvLogFreq'] = 17 - word_table['LogFreq']
     
     for segment in range(1, 13):
-        segment_table = word_table.sub(f"Segment == {segment}")
-        ds = eelbrain.Dataset({'time': segment_table['onset']}, info={'tstop': segment_table[-1, 'offset']})
-        # add predictor variables
+        segment_table = word_table.sub(f"Segment == {segment}") # still don't understand the  .sub() means
+        # recreate a dataset for the pre-TRFs making
+        ds = eelbrain.Dataset({'time': segment_table['onset']}, info={'tstop': segment_table[-1, 'offset']})  # segment_table[-1, 'offset'] == the last offset of segment 1~13
+        # add predictor variables(add InvLogFreq as the LogFreq; for the purpose of line 73 in here)
         ds['LogFreq'] = segment_table['InvLogFreq']
         for key in ['NGRAM', 'CFG', 'Position']:  #'RNN', do not include
             ds[key] = segment_table[key]
