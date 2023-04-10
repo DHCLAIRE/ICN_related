@@ -16,7 +16,7 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 
 #### Word-Models (NGram, CFG, Fractality) (NOT YET)
 ```
-# CFG & N-gram TRFs (Produced, not yet analyzed)
+# CFG & N-gram TRFs (Produced, yet not analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 
