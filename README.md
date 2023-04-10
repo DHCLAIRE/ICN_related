@@ -32,13 +32,13 @@ ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
 # Scripts
 # MacbookPro & iMac 2017
-Alice_SoundPlay.py
+/Thesis/Alice_SoundPlay.py
 
 # Win10
-Alice_SoundPlay_windows_EEGver.py
+/Thesis/Alice_SoundPlay_windows_EEGver.py
 
 # Win8
-Alice_SoundPlay_windows_MEGver.py
+/Thesis/Alice_SoundPlay_windows_MEGver.py
 ```
 
 
