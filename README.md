@@ -10,16 +10,16 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 #### Acoustic (envelope, word onset)  (DONE)
 ```
 # Scripts
-Natives: /Thesis/TRFs_produce-estimate_Natives.py
-ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
+  Natives: /Thesis/TRFs_produce-estimate_Natives.py
+  ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
 #### Word-Models (NGram, CFG, Fractality) (NOT YET)
 ```
 # Fractality Model script (unfinished)
-/Thesis/Importance_Fractality.py
+  /Thesis/Importance_Fractality.py
 # box count result (preview ver.)
-/Thesis/boxed_count_results_2.csv
+  /Thesis/boxed_count_results_2.csv
 ```
 
 #### Lexical (Content v.s. Function words)  (About to)
@@ -31,8 +31,8 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 #### figures (Statistics/Analyses)
 ```
 # Scripts
-Natives:/Thesis/Alice_Natives_analysis.ipynb
-ESLs:/Thesis/Alice_ESLs_analysis.ipynb
+  Natives:/Thesis/Alice_Natives_analysis.ipynb
+  ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
 #### Experiment (for ESLs) (DONE)
 Text Preprocessing
@@ -43,13 +43,13 @@ Corrected 12 Qs text: /Thesis/Alice_questionsLIST.json
 Procedure
 ```
 # MacbookPro & iMac 2017
-/Thesis/Alice_SoundPlay.py
+> /Thesis/Alice_SoundPlay.py
 
 # Win10
-/Thesis/Alice_SoundPlay_windows_EEGver.py
+> /Thesis/Alice_SoundPlay_windows_EEGver.py
 
 # Win8
-/Thesis/Alice_SoundPlay_windows_MEGver.py
+> /Thesis/Alice_SoundPlay_windows_MEGver.py
 ```
 
 
