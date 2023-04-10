@@ -5,13 +5,12 @@
 ### Predictors
 ```
 # Scripts
+# Scripts (Done and Compared)
 All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
-
 ### Acoustic (envelope, word onset)
-Done and Compared
 ```
-# Scripts
+# Scripts (Done and Compared)
 Natives: /Thesis/TRFs_produce-estimate_Natives.py
 ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
