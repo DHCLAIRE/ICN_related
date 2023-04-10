@@ -9,7 +9,7 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
 #### Acoustic (envelope, word onset)  (DONE)
 ```
-# Scripts
+# TRF Scripts
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
