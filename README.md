@@ -16,8 +16,10 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 
 ### Word-Models (NGram, CFG, Fractality)
 ```
-# Fractality Model (Unfinished script)
+# Fractality Model script (unfinished)
 /Thesis/Importance_Fractality.py
+# box count result (preview ver.)
+/Thesis/boxed_count_results_2.csv
 ```
 
 ### Lexical (Content v.s. Function words)
@@ -36,6 +38,7 @@ ESLs:/Thesis/Alice_ESLs_analysis.ipynb
  **Text Preprocessing**
 ```
 12 Qs: /Thesis/12Qs_preprocess.py
+Corrected 12 Qs text: /Thesis/Alice_questionsLIST.json
 ```
  **Procedure**
 ```
