@@ -43,13 +43,13 @@ Corrected 12 Qs text: /Thesis/Alice_questionsLIST.json
 Procedure
 ```
 # MacbookPro & iMac 2017
-> /Thesis/Alice_SoundPlay.py
+  /Thesis/Alice_SoundPlay.py
 
 # Win10
-> /Thesis/Alice_SoundPlay_windows_EEGver.py
+  /Thesis/Alice_SoundPlay_windows_EEGver.py
 
 # Win8
-> /Thesis/Alice_SoundPlay_windows_MEGver.py
+  /Thesis/Alice_SoundPlay_windows_MEGver.py
 ```
 
 
