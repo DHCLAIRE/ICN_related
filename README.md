@@ -49,7 +49,7 @@ ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 
 
 
-## Thesis_LTTC TRFs Progress
+## Thesis_LTTC TRFs Progress (Start with Predictor tables_)
 
 ### Predictor tables
 word (split)
