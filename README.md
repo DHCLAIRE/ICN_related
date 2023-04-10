@@ -4,7 +4,6 @@
 
 ### Predictors
 ```
-# Scripts
 # Scripts (Done and Compared)
 All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
@@ -24,7 +23,23 @@ ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ### Foundamental Frequency (F0)
 
 ### figures (Statistics/Analyses)
+```
+# Scripts
+Natives:/Thesis/Alice_Natives_analysis.ipynb
+ESLs:/Thesis/Alice_ESLs_analysis.ipynb
+```
+### Experiment Procedure(for ESLs)
+```
+# Scripts
+# MacbookPro & iMac 2017
+Alice_SoundPlay.py
 
+# Win10
+Alice_SoundPlay_windows_EEGver.py
+
+# Win8
+Alice_SoundPlay_windows_MEGver.py
+```
 
 
 
