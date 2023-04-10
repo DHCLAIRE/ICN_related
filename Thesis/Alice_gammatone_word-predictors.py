@@ -9,6 +9,7 @@ from trftools import gammatone_bank
 import numpy as np
 from trftools.neural import edge_detector
 
+# Source Github repo: https://github.com/Eelbrain/Alice
 
 if __name__ == "__main__":
     DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic")  #Path("~").expanduser() / 'Data' / 'Alice'
@@ -16,7 +17,7 @@ if __name__ == "__main__":
     
     #print(STIMULUS_DIR)
     """
-    ## THE FIRST STEP ##
+    ## THE FIRST STEP ## #from Alice/predictors/make_gammatone.py
     # Make Gammatone from audio file
     for i in range(1, 13):
         audio_gammatone = STIMULUS_DIR / f'{i}-gammatone.pickle'
@@ -27,7 +28,7 @@ if __name__ == "__main__":
         save.pickle(gt, audio_gammatone)
     
     
-    ## THE SECOND STEP ##
+    ## THE SECOND STEP ##  # from Alice/predictors/make_gammatone_predictors.py
     # Make predictors from gammatone
     
     #DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
@@ -57,7 +58,7 @@ if __name__ == "__main__":
         save.pickle(x, PREDICTOR_DIR / f'{i}~gammatone-on-8.pickle')
     
     """
-    ## THE THIRD STEP ##
+    ## THE THIRD STEP ##  # from Alice/predictors/make_word_predictors.py
     """
     Generate predictors for word-level variables
     
