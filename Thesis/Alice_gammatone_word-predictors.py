@@ -85,6 +85,7 @@ if __name__ == "__main__":
         # create masks for lexical and non-lexical words
         ds['lexical'] = segment_table['IsLexical'] == True
         ds['nlexical'] = segment_table['IsLexical'] == False
+        #print(ds)
         # save
         eelbrain.save.pickle(ds, STIMULUS_DIR / f'{segment}~Ngram-CFG_word.pickle')
    # /Volumes/Neurolang_1/Master Program/New_Thesis_topic/Alice(EEG dataset_mat_and stimuli)
