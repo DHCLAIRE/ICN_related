@@ -49,11 +49,15 @@ if __name__ == "__main__":
     
     # Load word tables and convert tables into continuous time-series with matching time dimension
     word_tables = [eelbrain.load.unpickle(PREDICTOR_word_DIR / f'{stimulus}~Ngram-CFG_word.pickle') for stimulus in STIMULI]
-    word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)]
+    word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)] # not sure why they could get the word onset this way
     
     # Function and content word impulses based on the boolean variables in the word-tables
     word_lexical = [eelbrain.event_impulse_predictor(gt.time, value='lexical', ds=ds, name='lexical') for gt, ds in zip(gammatone, word_tables)]
     word_nlexical = [eelbrain.event_impulse_predictor(gt.time, value='nlexical', ds=ds, name='non_lexical') for gt, ds in zip(gammatone, word_tables)]
+    
+    # NGRAM/CFG word impulses based on the values in the word-tables
+    word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
+    word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
     
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
@@ -62,6 +66,7 @@ if __name__ == "__main__":
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
+        """
         # Acoustic models
         'envelope': [envelope],
         'envelope+onset': [envelope, onset_envelope],
@@ -71,12 +76,17 @@ if __name__ == "__main__":
         'words+lexical': [word_onsets, word_lexical, word_nlexical],
         'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
         'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
+        """
+        # Language Models
+        'Ngram': [word_Ngram],
+        'CFG': [word_CFG],
+        'All': [word_Ngram, word_CFG]
     }
     
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS:
+    for subject in SUBJECTS[:2]:
         subject_trf_dir = TRF_DIR / subject
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
