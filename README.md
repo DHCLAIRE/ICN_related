@@ -14,13 +14,15 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
-#### Word-Models (NGram, CFG, Fractality) (TRFs NOT YET)
+#### Word-Models (NGram, CFG, Fractality) (NOT YET)
 ```
 # CFG & N-gram TRFs (Produced, not yet analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
+
 # Fractality Model script (unfinished)
   /Thesis/Importance_Fractality.py
+
 # box count result (preview ver.)
   /Thesis/boxed_count_results_2.csv
 ```
