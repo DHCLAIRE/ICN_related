@@ -1,6 +1,6 @@
 # ICN_related
 
-## Thesis_Ailce TRFs Progress
+## Thesis_Ailce TRFs Progress and scripts
 
 ### Predictors
 ```
