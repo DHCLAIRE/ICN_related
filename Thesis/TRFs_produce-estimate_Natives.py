@@ -66,19 +66,10 @@ if __name__ == "__main__":
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
-        # Acoustic models
-        'envelope': [envelope],
-        'envelope+onset': [envelope, onset_envelope],
-        'acoustic': [gammatone, gammatone_onsets],
-        # Models with word-onsets and word-class
-        'words': [word_onsets],
-        'words+lexical': [word_onsets, word_lexical, word_nlexical],
-        'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
-        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
         # Language Models
-        'Ngram': [word_Ngram],
-        'CFG': [word_CFG],
-        'Ngram-CFG_all': [word_Ngram, word_CFG]
+        'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
+        'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
+        'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical]
     }
     """
     # Acoustic models
