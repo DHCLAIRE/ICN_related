@@ -21,6 +21,7 @@ if __name__ == "__main__":
     TRF_DIR = DATA_ROOT / 'TRFs_Natives'
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
+    print(len(SUBJECTS))
     
     # Load stimuli
     # ------------
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     
     # Pad onset with 100 ms and offset with 1 second; make sure to give the predictor a unique name as that will make it easier to identify the TRF later
     gammatone = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
-    
+    """
     # Load the broad-band envelope and process it in the same way
     envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
     envelope = [x.bin(0.01, dim='time', label='start') for x in envelope]
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     gammatone_onsets = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-on-8.pickle') for stimulus in STIMULI]
     gammatone_onsets = [x.bin(0.01, dim='time', label='start') for x in gammatone_onsets]
     gammatone_onsets = [eelbrain.set_time(x, gt.time, name='gammatone_on') for x, gt in zip(gammatone_onsets, gammatone)]
-    
+    """
     # Load word tables and convert tables into continuous time-series with matching time dimension
     word_tables = [eelbrain.load.unpickle(PREDICTOR_word_DIR / f'{stimulus}~Ngram-CFG_word.pickle') for stimulus in STIMULI]
     word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)] # not sure why they could get the word onset this way
@@ -86,14 +87,14 @@ if __name__ == "__main__":
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS[2:]:
+    for subject in SUBJECTS:
         subject_trf_dir = TRF_DIR / subject
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
         trf_paths = {model: subject_trf_dir / f'{subject[:3]} {model}.pickle' for model in models}
         # Skip this subject if all files already exist
-        if all(path.exists() for path in trf_paths.values()):
-            continue
+        #if all(path.exists() for path in trf_paths.values()):
+            #continue
         # Load the EEG data
         raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)  # subject /
         # Band-pass filter the raw data between 0.5 and 20 Hz
@@ -112,15 +113,15 @@ if __name__ == "__main__":
         for model, predictors in models.items():
             path = trf_paths[model]
             # Skip if this file already exists
-            if path.exists():
-                continue
+            #if path.exists():
+                #continue
             print(f"Estimating: {subject[:3]} ~ {model}")
             # Select and concetenate the predictors corresponding to the EEG trials
             predictors_concatenated = []
             for predictor in predictors:
-                print(predictor)
+                #print(predictor)
                 predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
-            print(predictors_concatenated)
+            #print(predictors_concatenated)
             # Fit the mTRF
             trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
             # Save the TRF for later analysis
