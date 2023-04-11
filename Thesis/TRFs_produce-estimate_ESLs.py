@@ -14,8 +14,8 @@ import numpy as np
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
-    #DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
-    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
+    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
@@ -71,6 +71,15 @@ if __name__ == "__main__":
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
+        # Acoustic models
+        'envelope': [envelope],
+        'envelope+onset': [envelope, onset_envelope],
+        'acoustic': [gammatone, gammatone_onsets],
+        # Models with word-onsets and word-class
+        'words': [word_onsets],
+        'words+lexical': [word_onsets, word_lexical, word_nlexical],
+        'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
+        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],        
         # Language Models
         'Ngram': [word_Ngram],
         'CFG': [word_CFG],
@@ -123,13 +132,14 @@ if __name__ == "__main__":
         #all_trial_durations = np.sum(np.array(trial_durations))
         #print(all_trial_durations)
         
-        #eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
+        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
         #print(eeg)
         
         
         # Since trials are of unequal length, we will concatenate them for the TRF estimation.
         #eeg_concatenated = eelbrain.concatenate(eeg)
         #print(eeg_concatenated)
+        
         for model, predictors in models.items():
             path = trf_paths[model]
             # Skip if this file already exists
@@ -139,11 +149,17 @@ if __name__ == "__main__":
             # Select and concetenate the predictors corresponding to the EEG trials
             predictors_concatenated = []
             for predictor in predictors:
+                print(predictor)
                 predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
-            #print(predictors_concatenated)
+            print(predictors_concatenated)
             
             # Homemade NDVar instead of using .fiff.variable_length_epochs()
             eeg_ = raw.get_data()
+            
+            #[<NDVar 'envelope': 5863 time>, <NDVar 'envelope': 6194 time>, <NDVar 'envelope': 6435 time>, <NDVar 'envelope': 7108 time>, 
+            # <NDVar 'envelope': 6737 time>, <NDVar 'envelope': 6487 time>, <NDVar 'envelope': 6399 time>, <NDVar 'envelope': 5840 time>, 
+            # <NDVar 'envelope': 5832 time>, <NDVar 'envelope': 6236 time>, <NDVar 'envelope': 5726 time>, <NDVar 'envelope': 4808 time>]
+            #[<NDVar 'envelope': 73665 time>]
             
             # Check if the data length is the same as the stimuli's length
             if eeg_.shape[1] > 73665:
