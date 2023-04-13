@@ -20,8 +20,14 @@ from pydub import AudioSegment
 """
 
 if __name__ == "__main__":
-    stim_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/"
-    result_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_audio_behavioral/"
-    text_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/"
-    textSets_data_path = "/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_material_2nd/2nd_Stim-Materials/USE_Output/LTTC_modifiedTexts_output/LTTC_TextSets/"
+    LTTCroot_datapath = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG")
+    Thesisroot_datapath = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")
+    for sub_id in range(1):
+        sub_idINT = sub_id+1
+        text_data_path = LTTCroot_datapath / Path("LTTC_MEG_S%.3d" %sub_idINT)
+        
+        textCSV = text_data_path / Path("S%.sd_Reading_task.csv" %sub_idINT)
+        print(sub_idINT)
+        print(text_data_path)
+        #result_data_path = root_data_path / 
 
