@@ -77,15 +77,20 @@ if __name__ == "__main__":
         with open (text_data_path / Path("S%.3d_Reading_task.csv" %sub_idINT), "r", encoding = "utf-8") as csvfile:
             fileLIST = csvfile.read().split("\n")
             fileLIST = LISTblankEraser(fileLIST)
-            print(len(fileLIST))
-            print(fileLIST)
+            fileLIST.pop(0)
+            #print(len(fileLIST)) # length Should be 30 
+            #print(fileLIST)
             
             # Call out every text per subject
             for row in fileLIST:
-                print(row)
+                #print(row)
                 per_textLIST = row.split(',"[')
                 print(per_textLIST)
-            
+                # Find the segment sequence
+                segmentINT = fileLIST.index(row)+1
+                print(segmentINT)
+                for item in per_textLIST:
+                    print(item)
 
                 """
                 
