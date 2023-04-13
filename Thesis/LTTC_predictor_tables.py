@@ -13,10 +13,23 @@ import time
 from pathlib import Path
 
 """
-# for audio file alternation
-from scipy.io import wavfile
-import scipy.signal
-from pydub import AudioSegment
+## Predictor ItemS
+Word: the current word
+Segment: per tape
+Onset: word onset
+Offset: word offset
+Order: word order
+LogFreq: the Log frequency of the current word
+LogFreq_Prev: the Log frequency of the previous word, hence the first word is always 0
+LogFreq_Next: the Log frequency of the next word
+SndPower: word SndPower
+Length: Offset minus Onset
+Position: word position per sentence
+Sentence:sentence position per text
+IsLexical: 1=Content word; 0=Function word
+NGRAM: the POS surprisal calculated from Tri-Gram model
+CFG: the POS surprisal calculated from CFG model
+Fractality: the POS surprisal calculated from Fractality model
 """
 
 def LISTblankEraser(rawLIST):
@@ -37,7 +50,24 @@ if __name__ == "__main__":
     LTTCroot_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG")
     Thesisroot_data_path = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")
     
-    word_LIST = []
+    # The predictor items
+    Word_LIST = []
+    SegmentLIST = []
+    OnsetLIST = []
+    OffsetLIST = []
+    OrderLIST = []
+    LogFreqLIST = []
+    LogFreq_PrevLIST = []
+    LogFreq_NextLIST = []
+    SndPowerLIST = []
+    LengthLIST = []
+    PositionLIST = []
+    SentenceLIST = []
+    IsLexicalLIST = []
+    NGRAM_LIST = []
+    CFG_LIST = []
+    Fractality_LIST = []
+    
     
     for sub_id in range(1):
         sub_idINT = sub_id+1
@@ -58,6 +88,7 @@ if __name__ == "__main__":
             
 
                 """
+                
                 # making the wanted info into the List form for future use
                 sub_idLIST.append(sub_id)
                 dateLIST.append(day)
@@ -69,34 +100,28 @@ if __name__ == "__main__":
                 responseLIST.append(conditionLIST)
                 LDT_rtLIST.append(time_duration)
                 correctnessLIST.append(correctLIST)
-            
-        #Display the instruction of the break in between Round 1 & Round 2
-        print("Round", round_, "is over.")
-        if round_ == 1:
-            display_ins(instructions_3, keypressLIST_space)
-        else:
-            display_ins(instructions_4, keypressLIST_space)
-
-            # close the window  at the end of the experiment
-    win.close()
-
 
     # Saving the self_paced_rt result into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                           'Date':dateLIST,
-                           'Sets':sub_condLIST,
-                           'Round':roundLIST,
-                           'Stimuli':stimLIST,
-                           'CD_condition':CD_condLIST,
-                           'Keypress':resultKeyLIST,
-                           'Response':responseLIST,
-                           'LDT_RT':LDT_rtLIST,
-                           'Correctness':correctnessLIST
+    dataDICT = pd.DataFrame({'Word':Word_LIST,
+                           'Segment':SegmentLIST,
+                           'Onset':OnsetLIST,
+                           'Offset':OffsetLIST,
+                           'Order':OrderLIST,
+                           'LogFreq':LogFreqLIST,
+                           'LogFreq_Prev':LogFreq_PrevLIST,
+                           'LogFreq_Next':LogFreq_NextLIST,
+                           'SndPower':SndPowerLIST,
+                           'Position':PositionLIST,
+                           'Sentence':SentenceLIST,
+                           'IsLexical':IsLexicalLIST,
+                           'NGRAM':NGRAM_LIST,
+                           'CFG':CFG_LIST,
+                           'Fractality':Fractality_LIST
                            })
-
-    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LDT_preschool_testing_results.csv' %sub_id
-    save_path = result_data_path / Path(file_name)
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+                           
+            #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+            file_name = 'S%.3d_TRF_predictor_tables.csv' %sub_idINT
+            save_path = Thesisroot_data_path / Path(file_name)
+            dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
 """
