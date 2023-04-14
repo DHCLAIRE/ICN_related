@@ -11,6 +11,9 @@ from gtts import gTTS
 import pandas as pd
 import time
 from pathlib import Path
+import nltk
+#from nltk import sent_tokenize
+#from nltk import tokenize
 
 """
 ## Predictor ItemS
@@ -82,15 +85,24 @@ if __name__ == "__main__":
             #print(fileLIST)
             
             # Call out every text per subject
-            for row in fileLIST:
+            for row in fileLIST[:1]:
                 #print(row)
                 per_textLIST = row.split(',"[')
-                print(per_textLIST)
+                pprint(per_textLIST)
                 # Find the segment sequence
                 segmentINT = fileLIST.index(row)+1
                 print(segmentINT)
-                for item in per_textLIST:
-                    print(item)
+                print(len(per_textLIST))
+                
+                # Sentence Segmentation by nltk
+                textSTR = per_textLIST[1]
+                sentenceLIST = nltk.sent_tokenize(textSTR)
+                pprint(sentenceLIST)
+                print(len(sentenceLIST))
+                
+                # Tokenization by nltk
+                wordLIST = nltk.word_tokenize(textSTR)
+                print(wordLIST)
 
                 """
                 
