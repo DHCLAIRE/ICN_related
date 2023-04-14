@@ -101,8 +101,11 @@ if __name__ == "__main__":
                 print(len(sentenceLIST))
                 
                 # Tokenization by nltk
-                wordLIST = nltk.word_tokenize(textSTR)
-                print(wordLIST)
+                wordAllLIST = []
+                for sentence in sentenceLIST:
+                    wordLIST = nltk.word_tokenize(sentence)
+                    AllwordLIST.append(wordLIST)
+                print(AllwordLIST)
 
                 """
                 
