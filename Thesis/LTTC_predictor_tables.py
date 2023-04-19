@@ -12,6 +12,7 @@ import pandas as pd
 import time
 from pathlib import Path
 import nltk
+import re
 #from nltk import sent_tokenize
 #from nltk import tokenize
 
@@ -101,8 +102,11 @@ if __name__ == "__main__":
                 print(len(sentenceLIST))
                 
                 # Tokenization by nltk
-                wordAllLIST = []
+                AllwordLIST = []
                 for sentence in sentenceLIST:
+                    # Use re to filter out the punctuations
+                    sentence = re.sub(r'[^\w\s]', '', sentence) #a_string
+                    # Tokenize the cleaned text into a LIST form
                     wordLIST = nltk.word_tokenize(sentence)
                     AllwordLIST.append(wordLIST)
                 print(AllwordLIST)
