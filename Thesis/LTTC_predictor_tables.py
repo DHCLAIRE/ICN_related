@@ -103,13 +103,21 @@ if __name__ == "__main__":
                 
                 # Tokenization by nltk
                 AllwordLIST = []
+                Allword_seqLIST = []
                 for sentence in sentenceLIST:
                     # Use re to filter out the punctuations
                     sentence = re.sub(r'[^\w\s]', '', sentence) #a_string
                     # Tokenize the cleaned text into a LIST form
                     wordLIST = nltk.word_tokenize(sentence)
+                    print(len(wordLIST))
                     AllwordLIST.append(wordLIST)
+                    word_seqLIST = []
+                    for word in wordLIST:
+                        word_seqINT = wordLIST.index(word)
+                        word_seqLIST.append(word_seqINT)
+                    Allword_seqLIST.append(word_seqLIST)
                 print(AllwordLIST)
+                print(Allword_seqLIST)
 
                 """
                 
