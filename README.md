@@ -114,7 +114,8 @@ Content Table---
 List of Tables---  
 List of Figures---  
 
-Introduction
+### 1 Introduction
+```
 1.1 Text/speech comprehension  
 1.2 Bilingualism and second language learning  
 1.2.1
@@ -127,7 +128,9 @@ Introduction
 	
 1.6 Temporal Response Function (TRF) Analysis
 1.7 Aims of this study
-Experiment 1
+```
+### 2 Experiment 1
+```
 2.1 Hypothesis (Fractality model => A useful indicator on neural activity prediction?)
 2.2 Methods and Materials
   2.2.1 Participants
@@ -138,7 +141,9 @@ Experiment 1
 2.3 Statistical analyses (TRF)
 2.4 Results (TRF)
 2.5 Discussion
-Experiment 2_LTTC
+```
+### 3 Experiment 2_LTTC
+```
 3.1 Hypothesis (How ESL learners’ proficiency level affect their VP detection abilities? (Arai & Keller, 2013))
 3.2 Methods and Materials
   3.2.1 Participants
@@ -149,10 +154,12 @@ Experiment 2_LTTC
 3.3 Statistical analyses (ERPs_?? & TRF)
 3.4 Results (TRFs)
 3.5 Discussion
-General Discussion and Conclusion
+```
+### 4 General Discussion and Conclusion
+```
 4.1 Summary
 4.2 Applications
 4.3 Limitations of this study and future directions
-References
-Appendixes
-
+```
+### References
+### Appendixes
