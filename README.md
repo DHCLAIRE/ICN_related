@@ -147,7 +147,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 - [ ] 3.2 Methods and Materials
   - [ ] 3.2.1 Participants
   - [ ] 3.2.2 Stimuli
-  - [ ] 3.2.3 Procedure (Same as LTTC)
+  - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
   - [ ] 3.2.4 EEG recording
   - [ ] 3.2.5 EEG pre-processing
 - [ ] 3.3 Statistical analyses (ERPs_?? & TRF)
