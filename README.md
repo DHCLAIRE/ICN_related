@@ -135,7 +135,7 @@ List of Figures---
 2.2 Methods and Materials
   2.2.1 Participants
   2.2.2 Stimuli
-  2.2.3 Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
+  2.2.3(1st Draft DONE) Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
   2.2.4 EEG recording
   2.2.5 EEG pre-processing
 2.3 Statistical analyses (TRF)
