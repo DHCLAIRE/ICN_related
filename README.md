@@ -130,18 +130,18 @@ List of Figures---
 1.7 Aims of this study
 ```
 ### 2 Experiment 1
-```
-2.1 Hypothesis (Fractality model => A useful indicator on neural activity prediction?)
-2.2 Methods and Materials
-  2.2.1 Participants
-  2.2.2 Stimuli
-  2.2.3(1st Draft DONE) Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
-  2.2.4 EEG recording
-  2.2.5 EEG pre-processing
-2.3 Statistical analyses (TRF)
-2.4 Results (TRF)
-2.5 Discussion
-```
+
+- [] 2.1 Hypothesis (Fractality model => A useful indicator on neural activity prediction?)
+- [] 2.2 Methods and Materials
+  - [] 2.2.1 Participants
+  - [] 2.2.2 Stimuli
+  - [] 2.2.3(1st Draft DONE) Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
+  - [] 2.2.4 EEG recording
+  - [] 2.2.5 EEG pre-processing
+- [] 2.3 Statistical analyses (TRF)
+- [] 2.4 Results (TRF)
+- [] 2.5 Discussion
+
 ### 3 Experiment 2_LTTC
 ```
 3.1 Hypothesis (How ESL learners’ proficiency level affect their VP detection abilities? (Arai & Keller, 2013))
