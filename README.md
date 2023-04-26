@@ -105,18 +105,18 @@ Fractality
 
 # THE PROGRESS OF THE THESIS
 
-Table of Contents(ALL Content needs to be rewrite!!!)
+Table of Contents(ALL Content needs to be rewrite!!!)  
 
-Chinese Abstract---
-English Abstract---
-Aknoledgements--
-Content Table---
-List of Tables---
-List of Figures---
+Chinese Abstract---  
+English Abstract---  
+Aknoledgements--  
+Content Table---  
+List of Tables---  
+List of Figures---  
 
 Introduction
-1.1 Text/speech comprehension
-1.2 Bilingualism and second language learning
+1.1 Text/speech comprehension  
+1.2 Bilingualism and second language learning  
 1.2.1
 1.3 Auditory features(phonetics, envelope, word onset, sentence boundary, F0,instantaneous frequency)
 	1.3.1 Envelope
