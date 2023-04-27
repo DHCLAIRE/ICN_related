@@ -124,7 +124,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 - [ ] 1.4 Linguistic features(phonetics, semantics, syntactics, context, Verb types)
 - [ ] 1.5 Language model(Ngram, CFG, Fractality: Syntactic surprisal & Semantic Surprisal)
   - [ ] 1.5.1 N-gram model
- - [ ] 1.5.2 Context Free G model	
+  - [ ] 1.5.2 Context Free G model	
 - [ ] 1.6 Temporal Response Function (TRF) Analysis
 - [ ] 1.7 Aims of this study
 
@@ -132,7 +132,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 
 - [ ] 2.1 Hypothesis (Fractality model => A useful indicator on neural activity prediction?)
 - [ ] 2.2 Methods and Materials
-  - [ ] 2.2.1 Participants
+  - [x] 2.2.1 `(1st Draft_need to check on Natives)`Participants
   - [x] 2.2.2 `(1st Draft_need revised on REFs)` Stimuli
   - [x] 2.2.3 `(1st Draft)` Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
   - [x] 2.2.4 `(1st Draft_need revised on ESL-EEG)` EEG recording
@@ -145,7 +145,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 
 - [ ] 3.1 Hypothesis (How ESL learners’ proficiency level affect their VP detection abilities? (Arai & Keller, 2013))
 - [ ] 3.2 Methods and Materials
-  - [ ] 3.2.1 Participants
+  - [x] 3.2.1 `(1st Draft)` Participants
   - [ ] 3.2.2 Stimuli
   - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
   - [ ] 3.2.4 MEG recording
