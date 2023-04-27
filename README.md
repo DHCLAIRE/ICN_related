@@ -133,7 +133,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 - [ ] 2.1 Hypothesis (Fractality model => A useful indicator on neural activity prediction?)
 - [ ] 2.2 Methods and Materials
   - [ ] 2.2.1 Participants
-  - [x] 2.2.2 `(1st Draft)` Stimuli
+  - [x] 2.2.2 `(1st Draft_need revised on REFs)` Stimuli
   - [x] 2.2.3 `(1st Draft)` Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
   - [x] 2.2.4 `(1st Draft_need revised on ESL-EEG)` EEG recording
   - [ ] 2.2.5 EEG pre-processing
