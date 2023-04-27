@@ -148,8 +148,8 @@ Table of Contents(ALL Content needs to be rewrite!!!)
   - [ ] 3.2.1 Participants
   - [ ] 3.2.2 Stimuli
   - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
-  - [ ] 3.2.4 EEG recording
-  - [ ] 3.2.5 EEG pre-processing
+  - [ ] 3.2.4 MEG recording
+  - [ ] 3.2.5 MEG pre-processing
 - [ ] 3.3 Statistical analyses (ERPs_?? & TRF)
 - [ ] 3.4 Results (TRFs)
 - [ ] 3.5 Discussion
