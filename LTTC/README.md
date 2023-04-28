@@ -7,6 +7,7 @@
 - [ ] novelty & contextual diversity effect on word learning (with controlled neighborhood density)
 - [ ] Semantic diversity evaluation /(semantic distinctiveness) >> CD & SD could facilitate word-form or phonological representation learning
 - [ ] vocabulary level (at least university level)
+- [ ] the use of language model (word2vec/word embedding)
 - [ ] Aim of this study
 
 ## Methods
