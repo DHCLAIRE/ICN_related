@@ -3,22 +3,26 @@
 - [ ] Revised Abstract
 
 ## Introduction
-- [ ] Word learning on WF effect/SD effect
-- [ ] Semantic diversity evaluation /(semantic distinctiveness)
+- [ ] Word learning on WF effect/SD effect (implicit learning)
+- [ ] novelty & contextual diversity effect on word learning (with controlled neighborhood density)
+- [ ] Semantic diversity evaluation /(semantic distinctiveness) >> CD & SD could facilitate word-form or phonological representation learning
+- [ ] vocabulary level (at least university level)
 - [ ] Aim of this study
 
 ## Methods
 - [x] `1st draft` Participants
 - [x] `1st draft` Stimuli (Material preparation & Semantic similarity_USE model
-- [x] `1st draft` Procedure
-- [ ] (Data analysis)??
+- [x] `1st draft` Procedure  (complete random design`NEED TO INCLUDE`)
+- [ ] Data analysis (LMM)
 
 ## Results
 - [ ] CD effect
 - [ ] Novelty effect
 
 ## Discussion
-- [ ] 
+- [ ] SD Effect on word learning
+- [ ] 2nd language word embedding model could be use on ESL word learning performance
+- [ ] Future direction & limitation
 
 
 ```
