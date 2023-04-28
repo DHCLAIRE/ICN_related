@@ -8,9 +8,9 @@
 - [ ] Aim of this study
 
 ## Methods
-- [ ] Participants
-- [ ] Material preparation & Stimuli
-- [ ] Procedure
+- [x] `1st draft` Participants
+- [x] `1st draft` Stimuli (Material preparation & Semantic similarity_USE model
+- [x] `1st draft` Procedure
 - [ ] (Data analysis)??
 
 ## Results
