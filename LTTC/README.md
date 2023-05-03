@@ -11,14 +11,23 @@
 - [ ] Aim of this study
 
 ## Methods
+  ##  Exp 1
 - [x] `1st draft` Participants
 - [x] `1st draft` Stimuli (Material preparation & Semantic similarity_USE model
 - [x] `1st draft` Procedure  (complete random design`NEED TO INCLUDE`)
 - [ ] Data analysis (LMM)
+  
+  ##  Exp 2
+- [ ] `NEED revised` Participants
+- [ ] `NEED revised` Stimuli (Material preparation & Semantic similarity_USE model
+- [x] `1st draft` Procedure  (complete random design`NEED TO INCLUDE`)
+- [ ] Data analysis (LMM)
+
 
 ## Results
 - [ ] CD effect
 - [ ] Novelty effect
+- [ ] MEG results
 
 ## Discussion
 - [ ] SD Effect on word learning
