@@ -34,7 +34,7 @@ if __name__ == "__main__":
     
     # Pad onset with 100 ms and offset with 1 second; make sure to give the predictor a unique name as that will make it easier to identify the TRF later
     gammatone = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
-    """
+    #"""
     # Load the broad-band envelope and process it in the same way
     envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
     envelope = [x.bin(0.01, dim='time', label='start') for x in envelope]
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     gammatone_onsets = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-on-8.pickle') for stimulus in STIMULI]
     gammatone_onsets = [x.bin(0.01, dim='time', label='start') for x in gammatone_onsets]
     gammatone_onsets = [eelbrain.set_time(x, gt.time, name='gammatone_on') for x, gt in zip(gammatone_onsets, gammatone)]
-    """
+    #"""
     # Load word tables and convert tables into continuous time-series with matching time dimension
     word_tables = [eelbrain.load.unpickle(PREDICTOR_word_DIR / f'{stimulus}~Ngram-CFG_word.pickle') for stimulus in STIMULI]
     word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)] # not sure why they could get the word onset this way
@@ -76,7 +76,13 @@ if __name__ == "__main__":
         'words': [word_onsets],
         'words+lexical': [word_onsets, word_lexical, word_nlexical],
         'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
-        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical]
+        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
+
+        # Language Models
+        'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
+        'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
+        'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical]
+
     }
     """
     # Acoustic models
@@ -97,7 +103,7 @@ if __name__ == "__main__":
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS[:1]:
+    for subject in SUBJECTS:
         subject_trf_dir = TRF_DIR / subject[:3]
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
