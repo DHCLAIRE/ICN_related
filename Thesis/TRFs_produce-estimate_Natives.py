@@ -67,10 +67,16 @@ if __name__ == "__main__":
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
-        # Language Models
-        'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
-        'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
-        'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical]
+        # Acoustic models
+        'envelope': [envelope],
+        'envelope+onset': [envelope, onset_envelope],
+        'acoustic': [gammatone, gammatone_onsets],
+        
+        # Models with word-onsets and word-class
+        'words': [word_onsets],
+        'words+lexical': [word_onsets, word_lexical, word_nlexical],
+        'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
+        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical]
     }
     """
     # Acoustic models
@@ -82,13 +88,17 @@ if __name__ == "__main__":
     'words+lexical': [word_onsets, word_lexical, word_nlexical],
     'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
     'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
+    # Language Models
+    'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
+    'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
+    'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical]
     """    
     
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS:
-        subject_trf_dir = TRF_DIR / subject
+    for subject in SUBJECTS[:1]:
+        subject_trf_dir = TRF_DIR / subject[:3]
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
         trf_paths = {model: subject_trf_dir / f'{subject[:3]} {model}.pickle' for model in models}
