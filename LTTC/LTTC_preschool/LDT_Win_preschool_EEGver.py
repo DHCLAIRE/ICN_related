@@ -133,7 +133,7 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵"""
+    instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n實驗將準備開始"""
     instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
     instructions_3 = """中場休息1分鐘"""
     instructions_4 = """本實驗結束，謝謝！"""
