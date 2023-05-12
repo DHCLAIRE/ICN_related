@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # the path for testing only (For Mac)
     root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
     #target_w_stim_data_path = root_data_path / "LDT-8 target words"
-    result_data_path = root_data_path / Path("LTTC_preschool_results/%s_S%s" %(sub_type, sub_id))
+    result_data_path = root_data_path / Path("LTTC_preschool_results/%s_Sub%s" %(sub_type, sub_id))
     result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
