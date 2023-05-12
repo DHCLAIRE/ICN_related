@@ -83,14 +83,14 @@ if __name__ == "__main__":
    
     # the path for testing only (For Mac)
     root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
-    target_w_stim_data_path = root_data_path / "LDT-8 target words"
+    #target_w_stim_data_path = root_data_path / "LDT-8 target words"
     result_data_path = root_data_path / "LTTC_pre-school_results"
     result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
     instructions_1 = """接下來你會聽到幾段文章，文章結束後，\n請依照實驗指示進行按鍵反應。\n\n當你準備好的時候，\n實驗將開始"""
-    instructions_2 = """請問有聽懂剛剛那一篇文章嗎？\n\n評分完畢後，將會直接播放下一篇文章"""
-    instructions_3 = """現在為1分鐘的休息時間\n請稍作休息，\n休息好後請跟我們說"""
+    instructions_2 = """請問有聽懂剛剛那一篇文章嗎？\n\n接著將會直接播放下一篇文章"""
+    instructions_3 = """現在為休息時間\n請稍作休息，\n休息好後請跟我們說"""
     instructions_4 = """本實驗結束，謝謝您的參與"""
     
     # Setting the pic to replace the fixation
@@ -98,6 +98,7 @@ if __name__ == "__main__":
 
     # Set up the keypress types
     keypressLIST_space = ["space"]
+    keypressLIST_enter = ["enter"]
     #keypressLIST_ans = ["6", "7", "8", "9"]  # "6"==1分; "7"==2分; "8"==3分; "9"==4分 (右手由上往下的順序)
 
     # Answer wanted data
@@ -147,7 +148,7 @@ if __name__ == "__main__":
     for i in range(4):  # need to loop a total 4 times
 
         # display instructions for Reading Comprehension phase
-        display_ins(instructions_1, keypressLIST_space)
+        display_ins(instructions_1, keypressLIST_enter)
         core.wait(0.5)
 
         for tapeINT in range(3): # need to loop a total 3 times == 3 tapes per unit
@@ -204,7 +205,7 @@ if __name__ == "__main__":
             win.flip()
 
             # Display the quesitons for each tape
-            ans_keypressSTR = display_ins(instructions_2, keypressLIST_space)
+            ans_keypressSTR = display_ins(instructions_2, keypressLIST_enter)
             '''
             # TO MARK THE QUESTION ENDS
             port.write(b'9') #This is the num_tag for opening the trigger
@@ -219,9 +220,9 @@ if __name__ == "__main__":
 
         # ask the participant to evaluate how well they understand the presented text
         if i == 3:
-            display_ins(instructions_4, keypressLIST_space)  # End of experiment
+            display_ins(instructions_4, keypressLIST_enter)  # End of experiment
         else:
-            display_ins(instructions_3, keypressLIST_space)  # 1 miute break == the Gap between each audio files
+            display_ins(instructions_3, keypressLIST_enter)  # 1 miute break == the Gap between each audio files
 
 
     print("FINISHIED!")
