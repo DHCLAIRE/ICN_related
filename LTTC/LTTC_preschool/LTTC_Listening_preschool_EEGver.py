@@ -73,6 +73,7 @@ def display_Image(ImageSTR):  #, keyPressLIST=None):
 if __name__ == "__main__":
     ## The path needs to be modified ##
     # For key-in the id of the subject
+    sub_type = str(input("Group type: "))
     sub_id = str(input("Subject: "))
     sub_cond = str(input("Condition: "))
     
@@ -84,7 +85,7 @@ if __name__ == "__main__":
     # the path for testing only (For Mac)
     root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
     #target_w_stim_data_path = root_data_path / "LDT-8 target words"
-    result_data_path = root_data_path / "LTTC_pre-school_results"
+    result_data_path = root_data_path / Path("LTTC_preschool_results/%s_S%s" %(sub_type, sub_id))
     result_data_path.mkdir(exist_ok=True)
     
     # Setting the instructions and the response key
@@ -98,7 +99,7 @@ if __name__ == "__main__":
 
     # Set up the keypress types
     keypressLIST_space = ["space"]
-    keypressLIST_enter = ["enter"]
+    keypressLIST_enter = ["return"]
     #keypressLIST_ans = ["6", "7", "8", "9"]  # "6"==1分; "7"==2分; "8"==3分; "9"==4分 (右手由上往下的順序)
 
     # Answer wanted data
@@ -239,7 +240,7 @@ if __name__ == "__main__":
 
     # Save the file
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LTTC_preschool_testing_results.csv' %sub_id
+    file_name = '%s_S%s_LTTC_preschool_testing_results.csv' %(sub_type, sub_id)
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     #"""
