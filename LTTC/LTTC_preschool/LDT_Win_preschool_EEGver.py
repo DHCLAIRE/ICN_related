@@ -64,7 +64,8 @@ def display_fix():
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
-    sub_id = str(input("Subject_ID: "))
+    sub_type = str(input("Group type: "))
+    sub_id = str(input("Subject: "))
     sub_cond = str(input("Condition: "))
 
     # Set up the data path (For Win)
@@ -75,7 +76,7 @@ if __name__ == "__main__":
     # the path for testing only (For Mac)
     root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
     target_w_stim_data_path = root_data_path / "LDT-8_target_words"
-    result_data_path = root_data_path / "LTTC_preschool_results"
+    result_data_path = root_data_path / Path("LTTC_preschool_results/%s_Sub%s" %(sub_type, sub_id))
     result_data_path.mkdir(exist_ok=True)
     
     # setting up usable dataLIST
@@ -137,13 +138,14 @@ if __name__ == "__main__":
     instructions_3 = """中場休息1分鐘"""
     instructions_4 = """本實驗結束，謝謝！"""
     keypressLIST_space = ['space']
+    keypressLIST_enter = ["return"]
     #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
     #core.wait(3)
 
     #Display the instructions
-    display_ins(instructions_1, keypressLIST_space)
-    display_ins(instructions_2, keypressLIST_space)
+    display_ins(instructions_1, keypressLIST_enter)
+    display_ins(instructions_2, keypressLIST_enter)
 
     #core.wait(3)
 
@@ -164,7 +166,7 @@ if __name__ == "__main__":
 
                 # To refresh the win before play out the stim pw
                 win.flip()  # always add this after an item was presented
-                core.wait(1)
+                core.wait(2)
                 # start to record the time
                 start_time = clock.getTime()
 
@@ -184,7 +186,7 @@ if __name__ == "__main__":
                 """
 
                 #setting up what keypress would allow the experiment to proceed
-                keys = event.waitKeys(maxWait=3, keyList=keypressLIST_space) # only press "space" when you have heard this word
+                keys = event.waitKeys(maxWait=5, keyList=keypressLIST_space) # only press "space" when you have heard this word
                 event.getKeys(keyList=keypressLIST_space)
                 print(keys)
                 
@@ -262,9 +264,9 @@ if __name__ == "__main__":
         #Display the instruction of the break in between Round 1 & Round 2
         print("Round", round_, "is over.")
         if round_ == 1:
-            display_ins(instructions_3, keypressLIST_space)
+            display_ins(instructions_3, keypressLIST_enter)
         else:
-            display_ins(instructions_4, keypressLIST_space)
+            display_ins(instructions_4, keypressLIST_enter)
 
             # close the window  at the end of the experiment
     win.close()
@@ -284,7 +286,7 @@ if __name__ == "__main__":
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%s_LDT_preschool_testing_results.csv' %sub_id
+    file_name = '%s_S%s_LDT_preschool_testing_results.csv' %(sub_type, sub_id)
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
