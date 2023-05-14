@@ -29,7 +29,7 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 
 #### Lexical (Content v.s. Function words)  (About to)
 ```
-# CFG & N-gram TRFs (Produced and analyzed)
+# Lexical & non-lexical TRFs (Produced and analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
