@@ -16,7 +16,7 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 
 #### Word-Models (NGram, CFG, Fractality) (NOT YET)
 ```
-# CFG & N-gram TRFs (Produced, yet not analyzed)
+# CFG & N-gram TRFs (Produced and analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 
@@ -28,6 +28,11 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
 
 #### Lexical (Content v.s. Function words)  (About to)
+```
+# CFG & N-gram TRFs (Produced and analyzed)
+  Natives: /Thesis/TRFs_produce-estimate_Natives.py
+  ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
+```
 
 #### Instant Frequency (From envelope by HHT_EMD)  (NO testing YET)
 
