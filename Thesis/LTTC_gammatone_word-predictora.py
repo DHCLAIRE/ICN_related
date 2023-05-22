@@ -3,7 +3,7 @@
 
 from pathlib import Path
 
-#from eelbrain import *
+from eelbrain import *
 import eelbrain
 from trftools import gammatone_bank
 import numpy as np
@@ -12,21 +12,21 @@ from trftools.neural import edge_detector
 # Source Github repo: https://github.com/Eelbrain/Alice
 
 if __name__ == "__main__":
-    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic")  #Path("~").expanduser() / 'Data' / 'Alice'
-    STIMULUS_DIR = DATA_ROOT / "Alice(EEG dataset_mat_and stimuli)/audio"
+    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")  #Path("~").expanduser() / 'Data' / 'Alice'
+    STIMULUS_DIR = DATA_ROOT / "LTTC_MEG_S001/S001_audios"
 
     #print(STIMULUS_DIR)
     #"""
     ## THE FIRST STEP ## #from Alice/predictors/make_gammatone.py
     # Make Gammatone from audio file
-    for i in range(1, 13):
-        audio_gammatone = STIMULUS_DIR / f'{i}-gammatone.pickle'
+    for i in range(1, 3):
+        audio_gammatone = STIMULUS_DIR / f'S001_{i}-gammatone.pickle'
         if audio_gammatone.exists():
             continue
-        wav = load.wav(STIMULUS_DIR / f'DownTheRabbitHoleFinal_SoundFile{i}.wav')
+        wav = load.wav(STIMULUS_DIR / f'S001_modified_{i}.wav')
         gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
         save.pickle(gt, audio_gammatone)
-
+    #"""
     """
     ## THE SECOND STEP ##  # from Alice/predictors/make_gammatone_predictors.py
     # Make predictors from gammatone
