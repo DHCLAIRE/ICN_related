@@ -15,16 +15,16 @@ if __name__ == "__main__":
     DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")  #Path("~").expanduser() / 'Data' / 'Alice'
     
     for sub_idINT in range(1, 3):
-        STIMULUS_DIR = DATA_ROOT / "LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT)
+        STIMULUS_DIR = DATA_ROOT / Path("LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT))
         #print(STIMULUS_DIR)
         #"""
         ## THE FIRST STEP ## #from Alice/predictors/make_gammatone.py
         # Make Gammatone from audio file
         for i in range(1, 3):
-            audio_gammatone = STIMULUS_DIR / f'S%.3d_{i}-gammatone.pickle' %sub_idINT
+            audio_gammatone = STIMULUS_DIR / Path(f'S%.3d_{i}TTTgammatone.pickle' %sub_idINT)
             if audio_gammatone.exists():
                 continue
-            wav = load.wav(STIMULUS_DIR / f'S%.3d_modified_{i}.wav') %sub_idINT
+            wav = load.wav(STIMULUS_DIR / Path(f'S%.3d_modified_{i}.wav' %sub_idINT))
             gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
             save.pickle(gt, audio_gammatone)
     #"""
