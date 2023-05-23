@@ -16,13 +16,13 @@ if __name__ == "__main__":
     PREDICTOR_DIR = DATA_ROOT / 'LTTC_TRFs_pridictors' #/ 'LTTC_audio_predictors'
     PREDICTOR_DIR.mkdir(exist_ok=True)
     """
-    for sub_idINT in range(20, 23):  # Done with Sub009~Sub017, Sub020~Sub022, only left Sub007
+    for sub_idINT in range(9, 18):  # Done with Sub009~Sub017, Sub020~Sub022, only left Sub007
         STIMULUS_DIR = DATA_ROOT / Path("LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT))
         #print(STIMULUS_DIR)
         
         ## THE FIRST STEP ## #from Alice/predictors/make_gammatone.py
         # Make Gammatone from audio file
-        for i in range(1, 30):
+        for i in range(30, 31):
             audio_gammatone = PREDICTOR_DIR / Path(f'S%.3d_{i}gammatone.pickle' %sub_idINT)
             if audio_gammatone.exists():
                 continue
@@ -35,30 +35,31 @@ if __name__ == "__main__":
     # Make predictors from gammatone
 
     #DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
-    for sub_idINT in range(20, 23): 
-        STIMULUS_DIR = PREDICTOR_DIR #DATA_ROOT / Path("LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT))
+    for sub_idINT in range(9, 18): 
+        PREDICTOR_DIR = DATA_ROOT / 'LTTC_TRFs_pridictors' #== #DATA_ROOT / Path("LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT))
         PREDICTOR_DIR2 = PREDICTOR_DIR / 'LTTC_audio_predictors'  # This command could automatically create a new folder
         PREDICTOR_DIR2.mkdir(exist_ok=True)
-        for i in range(1, 13):
-            gt = load.unpickle(STIMULUS_DIR / Path(f'S%.3d_{i}gammatone.pickle' %sub_idINT))
-
+        print("YES 1")
+        for i in range(1, 31):
+            gt = load.unpickle(PREDICTOR_DIR / Path(f'S%.3d_{i}gammatone.pickle' %sub_idINT))
+            print("YES 2")
             # Remove resampling artifacts
             gt = gt.clip(0, out=gt)
             # apply log transform
             gt = (gt + 1).log()
             # generate onset detector model
             gt_on = edge_detector(gt, c=30)
-
+            print("YES 3")
             # 1 band predictors
             save.pickle(gt.sum('frequency'), PREDICTOR_DIR2 / Path(f'S%.3d_{i}~gammatone-1.pickle' %sub_idINT))
             save.pickle(gt_on.sum('frequency'), PREDICTOR_DIR2 / Path(f'S%.3d_{i}~gammatone-on-1.pickle' %sub_idINT))
-
+            print("YES 4")
             # 8 band predictors
             x = gt.bin(nbins=8, func=np.sum, dim='frequency')
             save.pickle(x, PREDICTOR_DIR2 / Path(f'S%.3d_{i}~gammatone-8.pickle' %sub_idINT))
             x = gt_on.bin(nbins=8, func=np.sum, dim='frequency')
             save.pickle(x, PREDICTOR_DIR2 / Path(f'S%.3d_{i}~gammatone-on-8.pickle' %sub_idINT))
-
+            print("YES 5")
     #"""
     ## THE THIRD STEP ##  # from Alice/predictors/make_word_predictors.py
     """
