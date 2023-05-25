@@ -35,6 +35,9 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
 
 #### Instant Frequency (From envelope by HHT_EMD)  (NO testing YET)
+```
+Produced by EMD, working on how to trun into the 12 part of the data.
+```
 
 #### Foundamental Frequency (F0)  (Working on it)
 
@@ -65,31 +68,30 @@ Procedure
 
 
 
-
 ## Thesis_LTTC TRFs Progress (0% Starting with Predictor tables_)
 
-#### Predictor tables (NOPE)
-word (split)
+#### Predictor tables (Partial, but not orgaanized and saved into csv)
+word (split) `DONE`
 
-Segment (per tape)
+Segment (per tape) `DONE`
 
-Onset & Offset
+Onset & Offset  `Ongoing`
 
-Order (accumalate sequence)
+Order (accumalate sequence) `DONE`
 
-LogFreq & LogFreq_Prev & LogFreq_Next
+LogFreq & LogFreq_Prev & LogFreq_Next  `NOPE`
 
-SndPower
+SndPower  `NOPE`
 
-Length (Offset - Onser)
+Length (Offset - Onset)  `NOPE`
 
-Position (by sentence)
+Position (by sentence) `DONE`
 
-Sentence (by tape)
+Sentence (by tape) `DONE`
 
-IsLexical (1 & 0 == Booleen)
+IsLexical (1 & 0 == Booleen)  `Ongoing`
 
-NGram
+NGram `Almost`
 
 CFG
 
