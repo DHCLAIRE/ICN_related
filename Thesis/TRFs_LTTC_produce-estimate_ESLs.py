@@ -77,12 +77,12 @@ if __name__ == "__main__":
         # Acoustic models
         'envelope': [envelope],
         'envelope+onset': [envelope, onset_envelope],
-        'acoustic': [gammatone, gammatone_onsets],
+        ###(NOPE)'acoustic': [gammatone, gammatone_onsets],
         # Models with word-onsets and word-class
         'words': [word_onsets],
         'words+lexical': [word_onsets, word_lexical, word_nlexical],
-        'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
-        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
+        ###(NOPE)'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
+        ###(NOPE)'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
         # Language Models
         'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
         'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
