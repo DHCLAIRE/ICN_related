@@ -2,19 +2,18 @@
 
 ## Thesis_Ailce TRFs Progress and scripts
 
-#### `(DONE)` Predictors  
+#### `(DONE)` Predictors
 ```
 # Scripts
 All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
-```
-#### `(DONE)` Acoustic (envelope, word onset)  
+```  
+#### `(DONE)` Acoustic (envelope, word onset)
 ```
 # TRF Scripts
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
-```
-
-#### `(DONE)` Word-Models (NGram, CFG, Fractality)  
+```  
+#### `(DONE)` Word-Models (NGram, CFG, Fractality)
 ```
 # CFG & N-gram TRFs (Produced and analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
@@ -25,15 +24,13 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 
 # box count result (preview ver.)
   /Thesis/boxed_count_results_2.csv
-```
-
-#### `(DONE)` Lexical (Content v.s. Function words)  
+```  
+#### `(DONE)` Lexical (Content v.s. Function words)
 ```
 # Lexical & non-lexical TRFs (Produced and analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
-```
-
+```  
 #### Instant Frequency (From envelope by HHT_EMD)  `(Almost, not yet divided into 12 parts)`
 ```
 Produced by EMD, working on how to trun into the 12 part of the data.
@@ -42,8 +39,7 @@ Produced by EMD, working on how to trun into the 12 part of the data.
 # IF TRFs
   Natives: /Thesis/??
   ESLs: /Thesis/??
-```
-
+```  
 #### Foundamental Frequency (F0)  `(Working on it, Matlab)`
 
 #### figures (Statistics/Analyses)
@@ -51,8 +47,9 @@ Produced by EMD, working on how to trun into the 12 part of the data.
 # envelope & onset
   Natives:/Thesis/Alice_Natives_analysis.ipynb
   ESLs:/Thesis/Alice_ESLs_analysis.ipynb
-```
-#### `(DONE)` Experiment (for ESLs)  
+```  
+
+#### `(DONE)` Experiment (for ESLs)
 Text Preprocessing
 ```
 12 Qs: /Thesis/12Qs_preprocess.py
@@ -69,9 +66,7 @@ Procedure
 # Win8 & MEG 160 system(in Academia _Sinica)
   /Thesis/Alice_SoundPlay_windows_MEGver.py
 ```
-
-
-
+***
 
 ## Thesis_LTTC TRFs Progress (0% Starting with Predictor tables_)
 
