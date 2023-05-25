@@ -37,6 +37,11 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 #### Instant Frequency (From envelope by HHT_EMD)  `(Almost, not yet divided into 12 parts)`
 ```
 Produced by EMD, working on how to trun into the 12 part of the data.
+# Predictor: IF
+  Alice_IF_EMD.ipynb
+# IF TRFs
+  Natives: /Thesis/??
+  ESLs: /Thesis/??
 ```
 
 #### Foundamental Frequency (F0)  `(Working on it, Matlab)`
