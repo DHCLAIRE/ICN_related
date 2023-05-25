@@ -2,19 +2,19 @@
 
 ## Thesis_Ailce TRFs Progress and scripts
 
-#### Predictors (DONE)
+#### `(DONE)` Predictors  
 ```
 # Scripts
 All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
 ```
-#### Acoustic (envelope, word onset)  (DONE)
+#### `(DONE)` Acoustic (envelope, word onset)  
 ```
 # TRF Scripts
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
-#### Word-Models (NGram, CFG, Fractality) (NOT YET)
+#### `(DONE)` Word-Models (NGram, CFG, Fractality)  
 ```
 # CFG & N-gram TRFs (Produced and analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
@@ -27,19 +27,19 @@ All(gammatone, onset, CFG-Lexical): Thesis/Alice_gammatone_word-predictors.py
   /Thesis/boxed_count_results_2.csv
 ```
 
-#### Lexical (Content v.s. Function words)  (About to)
+#### `(DONE)` Lexical (Content v.s. Function words)  
 ```
 # Lexical & non-lexical TRFs (Produced and analyzed)
   Natives: /Thesis/TRFs_produce-estimate_Natives.py
   ESLs: /Thesis/TRFs_produce-estimate_ESLs.py
 ```
 
-#### Instant Frequency (From envelope by HHT_EMD)  (NO testing YET)
+#### Instant Frequency (From envelope by HHT_EMD)  `(Almost, not yet divided into 12 parts)`
 ```
 Produced by EMD, working on how to trun into the 12 part of the data.
 ```
 
-#### Foundamental Frequency (F0)  (Working on it)
+#### Foundamental Frequency (F0)  `(Working on it, Matlab)`
 
 #### figures (Statistics/Analyses)
 ```
@@ -47,7 +47,7 @@ Produced by EMD, working on how to trun into the 12 part of the data.
   Natives:/Thesis/Alice_Natives_analysis.ipynb
   ESLs:/Thesis/Alice_ESLs_analysis.ipynb
 ```
-#### Experiment (for ESLs) (DONE)
+#### `(DONE)` Experiment (for ESLs)  
 Text Preprocessing
 ```
 12 Qs: /Thesis/12Qs_preprocess.py
@@ -70,32 +70,32 @@ Procedure
 
 ## Thesis_LTTC TRFs Progress (0% Starting with Predictor tables_)
 
-#### Predictor tables (Partial, but not orgaanized and saved into csv)
-word (split) `DONE`
+#### Predictor tables `(Partial, but not orgaanized and saved into csv)`
+`(DONE)` word (split)  
 
-Segment (per tape) `DONE`
+`(DONE)` Segment (per tape)  
 
-Onset & Offset  `Ongoing`
+`Ongoing` Onset & Offset   
 
-Order (accumalate sequence) `DONE`
+`(DONE)` Order (accumalate sequence)  
 
 LogFreq & LogFreq_Prev & LogFreq_Next  `NOPE`
 
 SndPower  `NOPE`
 
-Length (Offset - Onset)  `NOPE`
+Length (Offset - Onset)  `NOPE`  
 
-Position (by sentence) `DONE`
+`(DONE)` Position (by sentence)  
 
-Sentence (by tape) `DONE`
+`(DONE)` Sentence (by tape)  
 
-IsLexical (1 & 0 == Booleen)  `Ongoing`
+`Ongoing` IsLexical (1 & 0 == Booleen)  
 
-NGram `Almost`
+`Almost` NGram  
 
-CFG
+CFG `NOPE`  
 
-Fractality
+Fractality `NOPE`  
 
 #### Acoustic (envelope, word onset)  (NOPE)
 
