@@ -15,27 +15,27 @@ if __name__ == "__main__":
     DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/LTTC_MEG")  #Path("~").expanduser() / 'Data' / 'Alice'
     PREDICTOR_DIR = DATA_ROOT / 'LTTC_TRFs_pridictors' #/ 'LTTC_audio_predictors'
     PREDICTOR_DIR.mkdir(exist_ok=True)
-    """
-    for sub_idINT in range(9, 18):  # Done with Sub009~Sub017, Sub020~Sub022, only left Sub007
+    #"""
+    for sub_idINT in range(7, 8):  # Done with Sub009~Sub017, Sub020~Sub022, only left Sub007
         STIMULUS_DIR = DATA_ROOT / Path("LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT))
         #print(STIMULUS_DIR)
         
         ## THE FIRST STEP ## #from Alice/predictors/make_gammatone.py
         # Make Gammatone from audio file
-        for i in range(30, 31):
+        for i in range(1, 31):
             audio_gammatone = PREDICTOR_DIR / Path(f'S%.3d_{i}gammatone.pickle' %sub_idINT)
             if audio_gammatone.exists():
                 continue
             wav = load.wav(STIMULUS_DIR / Path(f'S%.3d_modified_{i}.wav' %sub_idINT))
             gt = gammatone_bank(wav, 20, 5000, 256, location='left', pad=False, tstep=0.001)
             save.pickle(gt, audio_gammatone)
-    """
+    #"""
     #"""
     ## THE SECOND STEP ##  # from Alice/predictors/make_gammatone_predictors.py
     # Make predictors from gammatone
 
     #DATA_ROOT = Path("~").expanduser() / 'Data' / 'Alice'
-    for sub_idINT in range(9, 18): 
+    for sub_idINT in range(7, 8): 
         PREDICTOR_DIR = DATA_ROOT / 'LTTC_TRFs_pridictors' #== #DATA_ROOT / Path("LTTC_MEG_S%.3d/S%.3d_audios" %(sub_idINT, sub_idINT))
         PREDICTOR_DIR2 = PREDICTOR_DIR / 'LTTC_audio_predictors'  # This command could automatically create a new folder
         PREDICTOR_DIR2.mkdir(exist_ok=True)
