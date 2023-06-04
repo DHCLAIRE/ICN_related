@@ -143,7 +143,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
   - [x] 2.2.2 `(1st Draft_need revised on REFs)` Stimuli
   - [x] 2.2.3 `(1st Draft)` Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
   - [x] 2.2.4 `(1st Draft_need revised on ESL-EEG)` EEG recording
-  - [ ] 2.2.5 EEG pre-processing
+  - [x] 2.2.5 `(1st Draft)_need to check refernces descriptions` EEG pre-processing
 - [ ] 2.3 Statistical analyses (TRF)
 - [ ] 2.4 Results (TRF)
 - [ ] 2.5 Discussion
