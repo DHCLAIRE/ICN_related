@@ -14,11 +14,13 @@ import numpy as np
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
-    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
-    #DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
+    #DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
+    IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
+    IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)]    
     SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
@@ -37,7 +39,7 @@ if __name__ == "__main__":
     
     # Pad onset with 100 ms and offset with 1 second; make sure to give the predictor a unique name as that will make it easier to identify the TRF later
     gammatone = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
-    
+    """
     # Load the broad-band envelope and process it in the same way
     envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
     envelope = [x.bin(0.01, dim='time', label='start') for x in envelope]
@@ -62,19 +64,30 @@ if __name__ == "__main__":
     # NGRAM/CFG word impulses based on the values in the word-tables
     word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
     word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
-    
+    """
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
     #print(durations)
     
+    # Get the calculated IMFs
+    imf_1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])
+    imf_2 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])
+    imf_3 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[2])
+    imf_4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])
+    imf_5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])
+    imf_6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[5])
+    
     # Models
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
-    models = {     
-        # Language Models
-        'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
-        'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
-        'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical]
+    models = {
+        # IFs
+        'IMF_1':[imf_1],
+        'IMF_2':[imf_2],
+        'IMF_3':[imf_3],
+        'IMF_4':[imf_4],
+        'IMF_5':[imf_5],
+        'IMF_6':[imf_6]
     }
     
     """
@@ -88,6 +101,18 @@ if __name__ == "__main__":
         'words+lexical': [word_onsets, word_lexical, word_nlexical],
         'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
         'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
+        # Language Models
+        'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
+        'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
+        'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical],
+        
+        # IFs
+        'IMF_1':[imf_1],
+        'IMF_2':[imf_2],
+        'IMF_3':[imf_3],
+        'IMF_4':[imf_4],
+        'IMF_5':[imf_5],
+        'IMF_6':[imf_6]
     }
     """
     # Estimate TRFs
