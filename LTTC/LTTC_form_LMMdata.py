@@ -150,11 +150,12 @@ if __name__ == "__main__":
     RTfinalLIST = []
     NotesALL_LIST = []
     
+    selected_subLIST = [7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 21, 22]  # the included sub_id
     
-    for z in range(9, 23):
+    for z in selected_subLIST: #range(9, 23):
         # Load in the data
         sub_id = '%.3d' %z  # <class 'str'>
-        #print(sub_id)
+        print(sub_id)
         
         # New data_path
         root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG")
@@ -501,7 +502,7 @@ if __name__ == "__main__":
                                  'Notes': NotesALL_LIST,
                                  })
 
-        file_name = '009-022_PLDT_raw_results.csv' #% sub_id
+        file_name = 'All_PLDT_raw_results.csv' #% sub_id
         save_path = root_data_path / file_name
         dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
         print("Done!")
