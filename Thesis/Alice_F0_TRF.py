@@ -40,7 +40,7 @@ if __name__ == "__main__":
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
     F0_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
     F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
-    F0sLIST = [path.name for path in F0_DIR.iterdir() if re.match(r'Alice_IF_F0_*', path.name)]    
+    IMFsLIST = [path.name for path in F0_DIR.iterdir() if re.match(r'Alice_IF_F0_*', path.name)]    
     SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
@@ -55,15 +55,23 @@ if __name__ == "__main__":
         with open (F0_DIR / Path("Alice_%s_F0.csv" %str(F0_seqINT)), "r", encoding = "utf-8") as F0_csvFile:
             F0_fileLIST = F0_csvFile.read().split("\n")
             F0_fileLIST = LISTblankEraser(F0_fileLIST)
-            pprint(F0_fileLIST)
+            #pprint(F0_fileLIST)
             print(len(F0_fileLIST))
         
         pre_stimLIST = [0]*10  # = -0.100 ms 's timpoints
         post_stimLIST = [0]*100  # = + 1 s 's timpoints
         
         n_F0_LIST.extend(pre_stimLIST)
-        print(n_F0_LIST)
-        print(len(n_F0_LIST))
+        #print("1", n_F0_LIST)
+        #print(len(n_F0_LIST))
+        n_F0_LIST.extend(F0_fileLIST)
+        #print("2", n_F0_LIST)
+        #print(len(n_F0_LIST))
+        n_F0_LIST.extend(post_stimLIST)
+        print("3", len(n_F0_LIST))
+        #print(len(n_F0_LIST))
+        
+        
         
         """
         F0_NDVar = []
@@ -75,7 +83,7 @@ if __name__ == "__main__":
         tmpF0_ = eelbrain.NDVar(F0_fileLIST, (time,), name='F0')
         #F0_ = trftools.pad(tmpF0_, tstart=-0.100, tstop=tmpF0_.time.tstop + 1, name='F0_1')
         F0_NDVar.append(tmpF0_)
-    print(F0__NDVar)
+    print(F0_NDVar)
     print(type(F0_1_NDVar))
     
     # save the F0 into pickle files
