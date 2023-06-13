@@ -39,7 +39,7 @@ if __name__ == "__main__":
     
     # Pad onset with 100 ms and offset with 1 second; make sure to give the predictor a unique name as that will make it easier to identify the TRF later
     gammatone = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
-    """
+    
     # Load the broad-band envelope and process it in the same way
     envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
     envelope = [x.bin(0.01, dim='time', label='start') for x in envelope]
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # NGRAM/CFG word impulses based on the values in the word-tables
     word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
     word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
-    """
+    
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
     #print(durations)
@@ -82,12 +82,12 @@ if __name__ == "__main__":
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
         # IFs
-        'IMF_1':[imf_1],
-        'IMF_2':[imf_2],
-        'IMF_3':[imf_3],
-        'IMF_4':[imf_4],
-        'IMF_5':[imf_5],
-        'IMF_6':[imf_6]
+        'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6],
+        # All auditory features model
+        'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6],
+        # All model
+        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
+
     }
     
     """
@@ -112,7 +112,13 @@ if __name__ == "__main__":
         'IMF_3':[imf_3],
         'IMF_4':[imf_4],
         'IMF_5':[imf_5],
-        'IMF_6':[imf_6]
+        'IMF_6':[imf_6],
+        'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
+        
+        # All auditory features model
+        'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6],
+        # All model
+        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
     }
     """
     # Estimate TRFs
