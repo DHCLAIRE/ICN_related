@@ -14,14 +14,15 @@ import numpy as np
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
-    DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_TRFs_pridictors/LTTC_audio_predictors
     #DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
-    PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
-    PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d', path.name)]  #S01_alice-raw.fif
+    PREDICTOR_audio_DIR = DATA_ROOT / 'LTTC_TRFs_pridictors/LTTC_audio_predictors'
+    #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
+    EEG_DIR = DATA_ROOT / 'LTTC_MEG_ALL_results'
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d_AliceL_cutICAedMEG.fif', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
-    TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
+    TRF_DIR = DATA_ROOT / 'LTTC_TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
 
