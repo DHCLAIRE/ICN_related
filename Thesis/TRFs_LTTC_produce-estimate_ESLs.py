@@ -13,25 +13,33 @@ import numpy as np
 
 if __name__ == "__main__":
     
-    STIMULI = [str(i) for i in range(1, 13)]
+    STIMULI = [str(i) for i in range(1, 31)]
     DATA_ROOT = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG")  #Path("~").expanduser() / 'Data' / 'Alice'
     #/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_MEG/LTTC_TRFs_pridictors/LTTC_audio_predictors
     #DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     PREDICTOR_audio_DIR = DATA_ROOT / 'LTTC_TRFs_pridictors/LTTC_audio_predictors'
     #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'LTTC_MEG_ALL_results'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d_AliceL_cutICAedMEG.fif', path.name)]  #S01_alice-raw.fif
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d+_LTTCL_cutICAedMEG.fif', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
     TRF_DIR = DATA_ROOT / 'LTTC_TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
-
+    print(len(SUBJECTS))  # 缺S009 >> why??
     
+    """
+    # Create the sub_id from SUBJECTS
+    sub_idLIST = []
+    for subs in SUBJECTS:
+        sub_idLIST
+    """
+
+    #for stim_len in range(1, 31):
     # Load stimuli
     # ------------
     # Make sure to name the stimuli so that the TRFs can later be distinguished
     # Load the gammatone-spectrograms; use the time axis of these as reference
-    gammatone = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-8.pickle') for stimulus in STIMULI]
+    gammatone = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'S007_{stimulus}~gammatone-8.pickle') for stimulus in STIMULI]
     
     # Resample the spectrograms to 100 Hz (time-step = 0.01 s), which we will use for TRFs
     gammatone = [x.bin(0.01, dim='time', label='start') for x in gammatone]
@@ -40,13 +48,12 @@ if __name__ == "__main__":
     gammatone = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
     
     # Load the broad-band envelope and process it in the same way
-    envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
+    envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'S007_{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
     envelope = [x.bin(0.01, dim='time', label='start') for x in envelope]
     envelope = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='envelope') for x in envelope]
-    onset_envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-on-1.pickle') for stimulus in STIMULI]
+    onset_envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'S007_{stimulus}~gammatone-on-1.pickle') for stimulus in STIMULI]
     onset_envelope = [x.bin(0.01, dim='time', label='start') for x in onset_envelope]
     onset_envelope = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='onset') for x in onset_envelope]
-    
     
     """ ### MUTE THESE FOR NOW ###
     # Load word tables and convert tables into continuous time-series with matching time dimension
@@ -60,10 +67,10 @@ if __name__ == "__main__":
     # NGRAM/CFG word impulses based on the values in the word-tables
     word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
     word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
-    
+    """
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
-    """
+    
     # Models
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
@@ -90,86 +97,90 @@ if __name__ == "__main__":
         'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical]
     }
     """
+    
+    print("TRF Preparation is DONE!!")
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS:  #type(subject) == str
-        subject_trf_dir = TRF_DIR / subject[4:8]
-        subject_trf_dir.mkdir(exist_ok=True)
-        # Generate all TRF paths so we can check whether any new TRFs need to be estimated
-        trf_paths = {model: subject_trf_dir / f'{subject[4:8]} {model}.pickle' for model in models}
-        # Skip this subject if all files already exist
-        #if all(path.exists() for path in trf_paths.values()):
+    #for subject in SUBJECTS:  #type(subject) == str
+    subject = 'S007_LTTCL_cutICAedMEG.fif'
+    subject_trf_dir = TRF_DIR / subject[:11]
+    subject_trf_dir.mkdir(exist_ok=True)
+    # Generate all TRF paths so we can check whether any new TRFs need to be estimated
+    trf_paths = {model: subject_trf_dir / f'{subject[:11]} {model}.pickle' for model in models}
+    # Skip this subject if all files already exist
+    #if all(path.exists() for path in trf_paths.values()):
+        #continue
+    # Load the EEG data
+    raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
+    # Band-pass filter the raw data between 0.5 and 20 Hz
+    raw.filter(0.5, 20)  #.resample(sfreq=100)  # >> already resample to sfreq=100
+    
+    # Interpolate bad channels  
+    #raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
+    
+    # Extract the events marking the stimulus presentation from the EEG file
+    events = eelbrain.load.fiff.events(raw)  # To check to events
+    print(events)
+    print(events.info)
+    # Not all subjects have all trials; determine which stimuli are present
+    trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
+    print(trial_indexes)
+    
+    # Extract the EEG data segments corresponding to the stimuli
+    trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
+    #print(trial_durations)
+    
+    #all_trial_durations = np.sum(np.array(trial_durations))
+    #print(all_trial_durations)
+    
+    #eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
+    #print(eeg)
+    
+    
+    # Since trials are of unequal length, we will concatenate them for the TRF estimation.
+    #eeg_concatenated = eelbrain.concatenate(eeg)
+    #print(eeg_concatenated)
+    
+    for model, predictors in models.items():
+        path = trf_paths[model]
+        # Skip if this file already exists
+        #if path.exists():
             #continue
-        # Load the EEG data
-        raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
-        # Band-pass filter the raw data between 0.5 and 20 Hz
-        raw.filter(0.5, 20)  #.resample(sfreq=100)  # >> already resample to sfreq=100
+        print(f"Estimating: {subject[:4]} ~ {model}")
+        # Select and concetenate the predictors corresponding to the EEG trials
+        predictors_concatenated = []
+        for predictor in predictors:
+            #print(predictor)
+            predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
+        print(predictors_concatenated)
         
-        # Interpolate bad channels  
-        #raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
+        # Homemade NDVar instead of using .fiff.variable_length_epochs()
+        eeg_ = raw.get_data()
         
-        # Extract the events marking the stimulus presentation from the EEG file
-        events = eelbrain.load.fiff.events(raw)  # To check to events
-        #print(events)
-        # Not all subjects have all trials; determine which stimuli are present
-        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
-        #print(trial_indexes)
+        #[<NDVar 'envelope': 5863 time>, <NDVar 'envelope': 6194 time>, <NDVar 'envelope': 6435 time>, <NDVar 'envelope': 7108 time>, 
+        # <NDVar 'envelope': 6737 time>, <NDVar 'envelope': 6487 time>, <NDVar 'envelope': 6399 time>, <NDVar 'envelope': 5840 time>, 
+        # <NDVar 'envelope': 5832 time>, <NDVar 'envelope': 6236 time>, <NDVar 'envelope': 5726 time>, <NDVar 'envelope': 4808 time>]
+        #[<NDVar 'envelope': 73665 time>]
         
-        # Extract the EEG data segments corresponding to the stimuli
-        trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
-        #print(trial_durations)
+        # Check if the data length is the same as the stimuli's length
+        if eeg_.shape[1] > 73665:
+            eeg_ = eeg_[:, :73665]
         
-        #all_trial_durations = np.sum(np.array(trial_durations))
-        #print(all_trial_durations)
+        # produce the time for NDVar production
+        tstep = 1. / raw.info["sfreq"]  # already resample to 100Hz
+        n_times = eeg_.shape[1] #audio.shape[0]
+        time = eelbrain.UTS(0, tstep, n_times)
+        #print(time)
+    
+        # NDVar production
+        montage_x = eelbrain.load.fiff.sensor_dim(raw.info)
+        temp_data = eeg_.T *1e+6
+        eeg_concatenated = eelbrain.NDVar(temp_data, (time, montage_x), name='EEG', info={'unit': 'µV'})
+        #print(eegNDVar)
         
-        #eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
-        #print(eeg)
+        # Fit the mTRF
+        trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
+        # Save the TRF for later analysis
+        eelbrain.save.pickle(trf, path)
         
-        
-        # Since trials are of unequal length, we will concatenate them for the TRF estimation.
-        #eeg_concatenated = eelbrain.concatenate(eeg)
-        #print(eeg_concatenated)
-        
-        for model, predictors in models.items():
-            path = trf_paths[model]
-            # Skip if this file already exists
-            #if path.exists():
-                #continue
-            print(f"Estimating: {subject} ~ {model}")
-            # Select and concetenate the predictors corresponding to the EEG trials
-            predictors_concatenated = []
-            for predictor in predictors:
-                #print(predictor)
-                predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
-            #print(predictors_concatenated)
-            
-            # Homemade NDVar instead of using .fiff.variable_length_epochs()
-            eeg_ = raw.get_data()
-            
-            #[<NDVar 'envelope': 5863 time>, <NDVar 'envelope': 6194 time>, <NDVar 'envelope': 6435 time>, <NDVar 'envelope': 7108 time>, 
-            # <NDVar 'envelope': 6737 time>, <NDVar 'envelope': 6487 time>, <NDVar 'envelope': 6399 time>, <NDVar 'envelope': 5840 time>, 
-            # <NDVar 'envelope': 5832 time>, <NDVar 'envelope': 6236 time>, <NDVar 'envelope': 5726 time>, <NDVar 'envelope': 4808 time>]
-            #[<NDVar 'envelope': 73665 time>]
-            
-            # Check if the data length is the same as the stimuli's length
-            if eeg_.shape[1] > 73665:
-                eeg_ = eeg_[:, :73665]
-            
-            # produce the time for NDVar production
-            tstep = 1. / raw.info["sfreq"]  # already resample to 100Hz
-            n_times = eeg_.shape[1] #audio.shape[0]
-            time = eelbrain.UTS(0, tstep, n_times)
-            #print(time)
-        
-            # NDVar production
-            montage_x = eelbrain.load.fiff.sensor_dim(raw.info)
-            temp_data = eeg_.T *1e+6
-            eeg_concatenated = eelbrain.NDVar(temp_data, (time, montage_x), name='EEG', info={'unit': 'µV'})
-            #print(eegNDVar)
-            
-            # Fit the mTRF
-            trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
-            # Save the TRF for later analysis
-            eelbrain.save.pickle(trf, path)
-            
