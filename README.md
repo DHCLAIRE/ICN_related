@@ -123,13 +123,11 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 
 ### 1 Introduction
 
-- [ ] 1.1 Text/speech comprehension  
-- [ ] 1.2 Bilingualism and second language learning  
-  - [ ] 1.2.1
-- [ ] 1.3 Auditory features(phonetics, envelope, word onset, sentence boundary, F0,instantaneous frequency)
-  - [ ] 1.3.1 Envelope
-- [ ] 1.4 Linguistic features(phonetics, semantics, syntactics, context, Verb types)
-- [ ] 1.5 Language model(Ngram, CFG, Fractality: Syntactic surprisal & Semantic Surprisal)
+- [ ] 1.1 Bilingualism and second language learning  
+- [ ] 1.2 Speech comprehension  
+- [ ] 1.3 Auditory features (envelope, word onset, F0, instantaneous frequency_IF)  
+- [ ] 1.4 Linguistic features (Lexicality, semantic surprisal, syntactic surprisal_POS tags)
+- [ ] 1.5 Language model (Ngram, CFG)
   - [ ] 1.5.1 N-gram model
   - [ ] 1.5.2 Context Free G model	
 - [ ] 1.6 Temporal Response Function (TRF) Analysis
@@ -137,29 +135,33 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 
 ### 2 Experiment 1
 
-- [ ] 2.1 Hypothesis (Fractality model => A useful indicator on neural activity prediction?)
+- [ ] 2.1 Intro  
 - [ ] 2.2 Methods and Materials
   - [x] 2.2.1 `(1st Draft_need to check on Natives)`Participants
   - [x] 2.2.2 `(1st Draft_need revised on REFs)` Stimuli
   - [x] 2.2.3 `(1st Draft)` Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
   - [x] 2.2.4 `(1st Draft_need revised on ESL-EEG)` EEG recording
   - [x] 2.2.5 `(1st Draft)_need to check refernces descriptions` EEG pre-processing
-- [ ] 2.3 Statistical analyses (TRF)
-- [ ] 2.4 Results (TRF)
-- [ ] 2.5 Discussion
+- [ ] 2.3 Results (TRF)
+  - [ ] 2.3.1 Auditory response functions (Env / onsetEnv / F0 / IF)  
+  - [ ] 2.3.2 Word class Categories: Function word and content word  
+  - [ ] 2.3.2 Language model: Ngram & CFG
+- [ ] 2.4 Summary
 
 ### 3 Experiment 2_LTTC
 
-- [ ] 3.1 Hypothesis (How ESL learners’ proficiency level affect their VP detection abilities? (Arai & Keller, 2013))
-- [ ] 3.2 Methods and Materials
+- [ ] 3.1 Intro  
+- [ ] 3.2 Methods and Materials  
   - [x] 3.2.1 `(1st Draft)` Participants
   - [ ] 3.2.2 Stimuli
   - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
   - [ ] 3.2.4 MEG recording
   - [ ] 3.2.5 MEG pre-processing
-- [ ] 3.3 Statistical analyses (ERPs_?? & TRF)
-- [ ] 3.4 Results (TRFs)
-- [ ] 3.5 Discussion
+- [ ] 3.3 Results (TRFs)  
+  - [ ] 3.3.1 Behavioral results (LDT)  
+  - [ ] 3.3.2 Sensor level of CD (ERP)  
+  - [ ] 3.3.3 Auditory response functions  (Env / onsetEnv)
+- [ ] 3.4 Summary
 
 ### 4 General Discussion and Conclusion
 
