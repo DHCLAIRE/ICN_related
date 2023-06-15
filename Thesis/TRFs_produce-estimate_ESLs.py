@@ -142,7 +142,7 @@ if __name__ == "__main__":
         
         # Extract the events marking the stimulus presentation from the EEG file
         events = eelbrain.load.fiff.events(raw)  # To check to events
-        #print(events)
+        print(events)
         # Not all subjects have all trials; determine which stimuli are present
         trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
         #print(trial_indexes)
