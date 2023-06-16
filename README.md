@@ -143,7 +143,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
   - [x] 2.2.4 `(1st Draft_need revised on ESL-EEG)` EEG recording
   - [x] 2.2.5 `(1st Draft)_need to check refernces descriptions` EEG pre-processing
 - [ ] 2.3 Results (TRF)
-  - [ ] 2.3.1 Auditory response functions (Env / onsetEnv / F0 / IF)  
+  - [x] 2.3.1 `First draft on Env & onsetEnv` Auditory response functions (Env / onsetEnv / F0 / IF)  
   - [ ] 2.3.2 Word class Categories: Function word and content word  
   - [ ] 2.3.2 Language model: Ngram & CFG
 - [ ] 2.4 Summary
