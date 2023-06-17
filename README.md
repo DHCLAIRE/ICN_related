@@ -155,7 +155,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
   - [x] 3.2.1 `(1st Draft)` Participants
   - [x] 3.2.2 `(1st Draft)` Stimuli
   - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
-  - [ ] 3.2.4 `(Need to revise)` MEG recording
+  - [x] 3.2.4 `(1st Draft)` MEG recording
   - [ ] 3.2.5 `(Need to revise)` MEG pre-processing
 - [ ] 3.3 Results (TRFs)  
   - [ ] 3.3.1 `(Need to revise + add content&graph+Stats)` Behavioral results (LDT)  
