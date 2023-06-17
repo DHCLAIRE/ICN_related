@@ -153,7 +153,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 - [ ] 3.1 `(Zero) 2 parts_summarize it from LTTC`Intro  
 - [ ] 3.2 Methods and Materials  
   - [x] 3.2.1 `(1st Draft)` Participants
-  - [ ] 3.2.2 `(Need to revise)` Stimuli
+  - [x] 3.2.2 `(1st Draft)` Stimuli
   - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
   - [ ] 3.2.4 `(Need to revise)` MEG recording
   - [ ] 3.2.5 `(Need to revise)` MEG pre-processing
