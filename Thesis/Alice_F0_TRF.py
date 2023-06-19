@@ -48,7 +48,14 @@ if __name__ == "__main__":
     #print(SUBJECTS)
     
     
-    for seqINT in range(1, 8):
+    #[<NDVar 'envelope': 5863 time>, <NDVar 'envelope': 6194 time>, <NDVar 'envelope': 6435 time>, <NDVar 'envelope': 7108 time>, 
+    # <NDVar 'envelope': 6737 time>, <NDVar 'envelope': 6487 time>, <NDVar 'envelope': 6399 time>, <NDVar 'envelope': 5840 time>, 
+    # <NDVar 'envelope': 5832 time>, <NDVar 'envelope': 6236 time>, <NDVar 'envelope': 5726 time>, <NDVar 'envelope': 4808 time>]
+    #[<NDVar 'envelope': 73665 time>]
+    
+    F0_lengthLIST = [5863, 6194, 6435, 7108, 6737, 6487, 6399, 5840, 5832, 6236, 5726, 4808]
+    F0_NDVar = []
+    for seqINT in range(1, 13):
         F0_seqINT = seqINT
         
         n_F0_LIST = []
@@ -59,34 +66,43 @@ if __name__ == "__main__":
             print(len(F0_fileLIST))
         
         pre_stimLIST = [0]*10  # = -0.100 ms 's timpoints
-        post_stimLIST = [0]*100  # = + 1 s 's timpoints
         
+        # Add zero on the biginning of F0
         n_F0_LIST.extend(pre_stimLIST)
         #print("1", n_F0_LIST)
         #print(len(n_F0_LIST))
+        
+        # Add the F0 after the 10 zeros
         n_F0_LIST.extend(F0_fileLIST)
         #print("2", n_F0_LIST)
         #print(len(n_F0_LIST))
-        n_F0_LIST.extend(post_stimLIST)
-        print("3", len(n_F0_LIST))
-        #print(len(n_F0_LIST))
         
+        # Add almost 1 s of timepoints after the F0
+        F0_lengthINT = F0_lengthLIST[seqINT-1]
+        #print(F0_lengthINT)
+        if len(n_F0_LIST) < F0_lengthINT:
+            left_F0_points = F0_lengthINT - len(n_F0_LIST)
+            #print(left_F0_points)
+            post_stimLIST = [0]*left_F0_points  # = + 1 s 's timpoints
+            n_F0_LIST.extend(post_stimLIST)
+            #print("3", len(n_F0_LIST))
+        else:
+            pass
+
+        # Create the F0 TRF
         
-        
-        """
-        F0_NDVar = []
         
         #for i in range(12):
         tstep = 1/100  # sampling rate's 倒數
-        n_times = len(F0_fileLIST)
-        time = eelbrain.UTS(-0.1, tstep=tstep, nsamples=n_times+100) # UTS(-0.1, tstep=tstep, nsamples=n_times+100)
-        tmpF0_ = eelbrain.NDVar(F0_fileLIST, (time,), name='F0')
+        n_times = len(n_F0_LIST)
+        time = eelbrain.UTS(0, tstep=tstep, nsamples=n_times) # UTS(-0.1, tstep=tstep, nsamples=n_times+100)
+        tmpF0_ = eelbrain.NDVar(n_F0_LIST, (time,), name='Fzero')
         #F0_ = trftools.pad(tmpF0_, tstart=-0.100, tstop=tmpF0_.time.tstop + 1, name='F0_1')
         F0_NDVar.append(tmpF0_)
     print(F0_NDVar)
-    print(type(F0_1_NDVar))
+    print(type(F0_NDVar))
     
     # save the F0 into pickle files
-    #F0_save_path = DATA_ROOT/ "TRFs_pridictors/F0_predictors" / Path("Alice_F0_all.pickle")
-    #eelbrain.save.pickle(F0_NDVar, F0_save_path)
-    """
+    F0_save_path = DATA_ROOT/ "TRFs_pridictors/F0_predictors" / Path("Alice_F0_all.pickle")
+    eelbrain.save.pickle(F0_NDVar, F0_save_path)
+    
