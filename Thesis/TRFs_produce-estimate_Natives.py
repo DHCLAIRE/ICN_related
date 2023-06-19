@@ -16,6 +16,7 @@ if __name__ == "__main__":
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
+    F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
     IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)]
     EEG_DIR = DATA_ROOT / 'EEG_Natives' / 'Alice_natives_ICAed_fif'
     SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d*', path.name[:4])]
@@ -66,23 +67,38 @@ if __name__ == "__main__":
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
     
     # Get the calculated IMFs
-    imf_1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])
-    imf_2 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])
-    imf_3 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[2])
-    imf_4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])
-    imf_5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])
-    imf_6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[5])
+    imf1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])
+    imf2 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])
+    imf3 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[2])
+    imf4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])
+    imf5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])
+    imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[5])
+    
+    # Get the calculated F0s
+    F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
+    
     # Models
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
-        
+        """
         # IFs
-        'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6],
+        'IMF1':[imf1],
+        'IMF_2':[imf2],
+        'IMF_3':[imf3],
+        'IMF_4':[imf4],
+        'IMF_5':[imf5],
+        'IMF_6':[imf6],
+        'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
+        """
+        # F0
+        'Fzero': [F_zero],
+        'Fzero+envelope': [envelope, onset_envelope, F_zero],
+
         # All auditory features model
-        'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
+        'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
         # All model
-        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
+        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6, F_zero]
     }
     """
     # Acoustic models
@@ -108,10 +124,14 @@ if __name__ == "__main__":
     'IMF_6':[imf_6],
     'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
     
+    # F0
+    'Fzero+envelope': [F_zero]
+    'Fzero+envelope': [envelope, onset_envelope, F_zero]
+
     # All auditory features model
-    'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6],
+    'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6, F_zero]
     # All model
-    #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
+    #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6, F_zero]
     """
     
     # Estimate TRFs
