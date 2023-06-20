@@ -143,7 +143,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
   - [x] 2.2.4 `(1st Draft_need revised on ESL-EEG)` EEG recording
   - [x] 2.2.5 `(1st Draft)_need to check refernces descriptions` EEG pre-processing
 - [ ] 2.3 Results (TRF)
-  - [x] 2.3.1 `1st_Env & onsetEnv//F0 & IF need to be analyzed` Auditory response functions (Env / onsetEnv / F0 / IF)  
+  - [x] 2.3.1 `1st_Env & onsetEnv//F0 & IF not included in here currently` Auditory response functions (Env / onsetEnv)  
   - [ ] 2.3.2 `(Zero) need description` Word class Categories: Function word and content word  
   - [ ] 2.3.2 `(Zero) need description` Language model: Ngram & CFG
 - [ ] 2.4 `(Zero) 2 parts_` Summary
@@ -160,7 +160,6 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 - [ ] 3.3 Results (TRFs)  
   - [ ] 3.3.1 `(Need to revise + add content&graph+Stats)` Behavioral results (LDT)  
   - [ ] 3.3.2 `(Need to revise + add content&graph+Stats)` Sensor level of CD (ERP)  
-  - [ ] 3.3.3 `(Zero) Env & onsetEnv need to be analyzed` Auditory response functions  (Env / onsetEnv)
 - [ ] 3.4 `(Zero) 2 parts_` Summary
 
 ### 4 General Discussion and Conclusion
