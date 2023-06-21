@@ -117,7 +117,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 - [ ] `(Zero) 2 parts_` Chinese Abstract---  
 - [ ] `(Zero) 2 parts_` English Abstract---  
 - [ ] `(Zero) 2 parts_` Aknoledgements--  
-- [ ] `(Done)` Content Table---  
+- [x] `(Done)` Content Table---  
 - [ ] `(Last to do)` List of Tables---  
 - [ ] `(Last to do)` List of Figures---  
 
@@ -136,7 +136,7 @@ Table of Contents(ALL Content needs to be rewrite!!!)
 ### 2 Experiment 1
 
 - [ ] 2.1 `(Zero) 2 parts_` Intro  
-- [ ] 2.2 Methods and Materials
+- [x] 2.2 `(1st Draft)` Methods and Materials
   - [x] 2.2.1 `(1st Draft_need to check on Natives)`Participants
   - [x] 2.2.2 `(1st Draft_need revised on REFs)` Stimuli
   - [x] 2.2.3 `(1st Draft)` Procedure (Same as Brennan & Hal, 2019 + Vocabulary Size Test)
@@ -157,10 +157,10 @@ Table of Contents(ALL Content needs to be rewrite!!!)
   - [x] 3.2.3 `(1st Draft)` Procedure (Same as LTTC)
   - [x] 3.2.4 `(1st Draft)` MEG recording
   - [ ] 3.2.5 `(Need to revise)` MEG pre-processing
-- [ ] 3.3 Results (TRFs)  
-  - [ ] 3.3.1 `(Need to revise + add content&graph+Stats)` Behavioral results (LDT)  
-  - [ ] 3.3.2 `(Need to revise + add content&graph+Stats)` Sensor level of CD (ERP)  
-- [ ] 3.4 `(Zero) 2 parts_` Summary
+- [x] 3.3 `(1st Draft)` Results (TRFs)  
+  - [x] 3.3.1 `(1st Draft)` Behavioral results (LDT)  
+  - [x] 3.3.2 `(1st Draft)` Sensor level of CD (ERP)  
+- [x] 3.4 `(1st Draft)` Summary
 
 ### 4 General Discussion and Conclusion
 
