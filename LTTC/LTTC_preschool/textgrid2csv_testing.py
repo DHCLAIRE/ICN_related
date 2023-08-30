@@ -11,8 +11,21 @@
 # Import modules
 
 import sys, re
-from pprint import pprint
 
+from pprint import pprint
+import csv
+import json
+import random
+from random import sample
+import os
+#from gtts import gTTS
+import pandas as pd
+import time
+from pathlib import Path
+#import nltk
+#import re
+#from nltk import sent_tokenize
+#from nltk import tokenize
 #-------------------------------------------------
 # Text file input / output
 
@@ -76,6 +89,22 @@ def main():
 
     return
 """
+
+def LISTblankEraser(rawLIST):
+    '''
+    Remove the blank that inside the list
+    '''
+    newrawLIST = []
+    for row in rawLIST:
+        if len(row) == 0:
+            rawLIST.pop(rawLIST.index(row))
+        else:
+            pass
+    newrawLIST = rawLIST
+    #print(len(newrawLIST))
+    return newrawLIST
+
+
 if __name__ == "__main__":
     
     textgrid_path = "/Users/ting-hsin/Downloads/Sound/"
@@ -90,3 +119,30 @@ if __name__ == "__main__":
     outputtext(csvname,textcsv)
 
     print("Output file: " + csvname)
+    
+    
+    # The predictor items
+    Word_LIST = []     #  = textgrid.csv_word
+    SegmentLIST = []   #  = the sequence of the story
+    OnsetLIST = []     #  = textgrid.csv_start
+    OffsetLIST = []    #  = textgrid.csv_end
+    OrderLIST = []     #  = count by the index of the word
+    #LogFreqLIST = []
+    #LogFreq_PrevLIST = []
+    #LogFreq_NextLIST = []
+    #SndPowerLIST = []
+    LengthLIST = []    #  = textgrid.csv_duration
+    PositionLIST = []  #  = count from the raw txt file (office word file)
+    SentenceLIST = []  #  = count from the raw txt file (office word file)
+    IsLexicalLIST = [] #  = textgrid.csv_POS (or universal pos)
+    #NGRAM_LIST = []
+    #CFG_LIST = []
+    #Fractality_LIST = []
+    
+    # Open the csv fule
+    with open (csvname, "r", encoding = "utf-8") as csvfile:
+        fileLIST = csvfile.read().split("\n")
+        fileLIST = LISTblankEraser(fileLIST)
+        #fileLIST.pop(0)
+        print(len(fileLIST)) # length Should be 30 
+        pprint(fileLIST)    
