@@ -104,6 +104,20 @@ def LISTblankEraser(rawLIST):
     #print(len(newrawLIST))
     return newrawLIST
 
+def WordCleaner(WordLIST):
+    '''
+    Remove redundant symbol in wordLIST
+    '''
+    newWordLIST = []
+    for word in WordLIST:
+        if len(word) != 1:
+            word = re.sub(r'[^\w]', '', word)
+            print(len(word), word)
+        else:
+            print("Here:", word)
+        newWordLIST.append(word)
+    return newWordLIST
+
 
 if __name__ == "__main__":
     
@@ -127,10 +141,10 @@ if __name__ == "__main__":
     OnsetLIST = []     #  = textgrid.csv_start
     OffsetLIST = []    #  = textgrid.csv_end
     OrderLIST = []     #  = count by the index of the word
-    #LogFreqLIST = []
-    #LogFreq_PrevLIST = []
-    #LogFreq_NextLIST = []
-    #SndPowerLIST = []
+    LogFreqLIST = []
+    LogFreq_PrevLIST = []
+    LogFreq_NextLIST = []
+    SndPowerLIST = []
     LengthLIST = []    #  = textgrid.csv_duration
     PositionLIST = []  #  = count from the raw txt file (office word file)
     SentenceLIST = []  #  = count from the raw txt file (office word file)
@@ -139,10 +153,10 @@ if __name__ == "__main__":
     #CFG_LIST = []
     #Fractality_LIST = []
     
+    # The List of unwanted Segmentation results 
     skipLIST = ['"SILPAUSE" ', '"\\" ', '"n" ']
     
-    
-    # Open the csv fule
+    # Open the csv file
     with open (csvname, "r", encoding = "utf-8") as csvfile:
         fileLIST = csvfile.read().split("\n")
         fileLIST = LISTblankEraser(fileLIST)
@@ -164,14 +178,18 @@ if __name__ == "__main__":
                     wordSTR = rowLIST[3]
                     if wordSTR not in skipLIST:  # '"SILPAUSE" ' and '"\\" ' and '"n" ':
                         # get the onset/offset/length of the word
-                        onsetFLOAT = float(rowLIST[4])
-                        offsetFLOAT = float(rowLIST[5])
-                        lengthFLOAT = float(rowLIST[6])
+                        onsetFLOAT = round(float(rowLIST[4]), 4)
+                        offsetFLOAT = round(float(rowLIST[5]), 4)
+                        lengthFLOAT = round(float(rowLIST[6]), 4)
                         Word_LIST.append(wordSTR)
                         SegmentLIST.append(1)  # because it is story 1
                         OnsetLIST.append(onsetFLOAT)
                         OffsetLIST.append(offsetFLOAT)
                         LengthLIST.append(lengthFLOAT)
+                        LogFreqLIST.append(0)
+                        LogFreq_NextLIST.append(0)
+                        LogFreq_PrevLIST.append(0)
+                        
                     else:
                         print(rowLIST[3])
                         
@@ -187,12 +205,18 @@ if __name__ == "__main__":
                 pass
         
         # Checking the results
+        WordLIST = WordCleaner(Word_LIST)
+        print(len(Word_LIST[0]), Word_LIST[0])
         print(len(Word_LIST), Word_LIST)
-        print(len(OnsetLIST), OnsetLIST)
-        print(len(OffsetLIST), OffsetLIST)
-        print(len(LengthLIST), LengthLIST)
+        #print(len(OnsetLIST), OnsetLIST)
+        #print(len(OffsetLIST), OffsetLIST)
+        #print(len(LengthLIST), LengthLIST)
+        #print(len(LogFreqLIST), LogFreqLIST)
+        #print(len(LogFreq_NextLIST), LogFreq_NextLIST)
+        #print(len(LogFreq_PrevLIST), LogFreq_PrevLIST)
+        
     
-    
+    """
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Word':Word_LIST,
                            'Segment':SegmentLIST,
@@ -215,3 +239,4 @@ if __name__ == "__main__":
     file_name = 'S%.3d_TRF_predictor_tables.csv' %sub_idINT
     save_path = Thesisroot_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+"""
