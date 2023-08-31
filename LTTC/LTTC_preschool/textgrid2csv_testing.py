@@ -158,15 +158,32 @@ if __name__ == "__main__":
             if len(rowLIST) > 2:
                 # Word 
                 if rowLIST[2] == '"Word" ':
-                    pass
-                # POS
+                    wordSTR = rowLIST[3]
+                    if wordSTR != '"SILPAUSE" ':
+                        # get the onset/offset/length of the word
+                        onsetFLOAT = float(rowLIST[4])
+                        offsetFLOAT = float(rowLIST[5])
+                        lengthFLOAT = float(rowLIST[6])
+                        Word_LIST.append(wordSTR)
+                        OnsetLIST.append(onsetFLOAT)
+                        OffsetLIST.append(offsetFLOAT)
+                        LengthLIST.append(lengthFLOAT)
+                    else:
+                        print(rowLIST[3])
+                        
+                # POS for Islexical(lexciality)
                 if rowLIST[2] == '"POS" ':
                     pass
-                # UniversalPOS >> What's the difference
+                # UniversalPOS >> What's the difference??
                 if rowLIST[2] == '"UniversalPOS" ':
+                    pass
                 else:
                     print(rowLIST[2])
-                
-                
             else:
                 pass
+        
+        # Checking the results
+        print(len(Word_LIST), Word_LIST)
+        print(len(OnsetLIST), OnsetLIST)
+        print(len(OffsetLIST), OffsetLIST)
+        print(len(LengthLIST), LengthLIST)
