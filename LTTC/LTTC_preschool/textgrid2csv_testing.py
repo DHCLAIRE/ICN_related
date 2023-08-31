@@ -145,4 +145,28 @@ if __name__ == "__main__":
         fileLIST = LISTblankEraser(fileLIST)
         #fileLIST.pop(0)
         print(len(fileLIST)) # length Should be 30 
-        pprint(fileLIST)    
+        #pprint(fileLIST)
+        
+        # find the word out of the textgrid file
+        for row in fileLIST:#[1000:110]:
+            #print(row)
+            #print(len(row))
+            rowLIST = row.split("\t")
+            print(rowLIST)
+            print(len(rowLIST))
+            #print(rowLIST[0])
+            if len(rowLIST) > 2:
+                # Word 
+                if rowLIST[2] == '"Word" ':
+                    pass
+                # POS
+                if rowLIST[2] == '"POS" ':
+                    pass
+                # UniversalPOS >> What's the difference
+                if rowLIST[2] == '"UniversalPOS" ':
+                else:
+                    print(rowLIST[2])
+                
+                
+            else:
+                pass
