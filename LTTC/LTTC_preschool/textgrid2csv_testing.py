@@ -139,6 +139,9 @@ if __name__ == "__main__":
     #CFG_LIST = []
     #Fractality_LIST = []
     
+    skipLIST = ['"SILPAUSE" ', '"\\" ', '"n" ']
+    
+    
     # Open the csv fule
     with open (csvname, "r", encoding = "utf-8") as csvfile:
         fileLIST = csvfile.read().split("\n")
@@ -159,12 +162,13 @@ if __name__ == "__main__":
                 # Word 
                 if rowLIST[2] == '"Word" ':
                     wordSTR = rowLIST[3]
-                    if wordSTR != '"SILPAUSE" ':
+                    if wordSTR not in skipLIST:  # '"SILPAUSE" ' and '"\\" ' and '"n" ':
                         # get the onset/offset/length of the word
                         onsetFLOAT = float(rowLIST[4])
                         offsetFLOAT = float(rowLIST[5])
                         lengthFLOAT = float(rowLIST[6])
                         Word_LIST.append(wordSTR)
+                        SegmentLIST.append(1)  # because it is story 1
                         OnsetLIST.append(onsetFLOAT)
                         OffsetLIST.append(offsetFLOAT)
                         LengthLIST.append(lengthFLOAT)
@@ -187,3 +191,27 @@ if __name__ == "__main__":
         print(len(OnsetLIST), OnsetLIST)
         print(len(OffsetLIST), OffsetLIST)
         print(len(LengthLIST), LengthLIST)
+    
+    
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Word':Word_LIST,
+                           'Segment':SegmentLIST,
+                           'Onset':OnsetLIST,
+                           'Offset':OffsetLIST,
+                           'Order':OrderLIST,
+                           'LogFreq':LogFreqLIST,
+                           'LogFreq_Prev':LogFreq_PrevLIST,
+                           'LogFreq_Next':LogFreq_NextLIST,
+                           'SndPower':SndPowerLIST,
+                           'Position':PositionLIST,
+                           'Sentence':SentenceLIST,
+                           'IsLexical':IsLexicalLIST
+                           #'NGRAM':NGRAM_LIST,
+                           #'CFG':CFG_LIST,
+                           #'Fractality':Fractality_LIST
+                           })
+                           
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'S%.3d_TRF_predictor_tables.csv' %sub_idINT
+    save_path = Thesisroot_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
