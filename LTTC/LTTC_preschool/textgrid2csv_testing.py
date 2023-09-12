@@ -205,13 +205,13 @@ if __name__ == "__main__":
                 pass
         
         # Checking the results
-        WordLIST = WordCleaner(Word_LIST)
-        print(len(Word_LIST[0]), Word_LIST[0])
-        print(len(Word_LIST), Word_LIST)
-        #print(len(OnsetLIST), OnsetLIST)
-        #print(len(OffsetLIST), OffsetLIST)
-        #print(len(LengthLIST), LengthLIST)
-        #print(len(LogFreqLIST), LogFreqLIST)
+        n_WordLIST = WordCleaner(Word_LIST)
+        print(len(n_WordLIST[0]), n_WordLIST[0])
+        print(len(n_WordLIST), n_WordLIST)
+        print(len(OnsetLIST), OnsetLIST)
+        print(len(OffsetLIST), OffsetLIST)
+        print(len(LengthLIST), LengthLIST)
+        #print(len(LogFreqLIST), LogFreqLIST)  # we might found this in the corpus of Academia Sinica
         #print(len(LogFreq_NextLIST), LogFreq_NextLIST)
         #print(len(LogFreq_PrevLIST), LogFreq_PrevLIST)
         
