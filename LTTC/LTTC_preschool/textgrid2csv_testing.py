@@ -195,10 +195,13 @@ if __name__ == "__main__":
                         
                 # POS for Islexical(lexciality)
                 if rowLIST[2] == '"POS" ':
+                    #detailed_word_posSTR = rowLIST[3]
                     pass
                 # UniversalPOS >> What's the difference??
                 if rowLIST[2] == '"UniversalPOS" ':
-                    pass
+                    simp_word_posSTR = rowLIST[3]
+                    IsLexicalLIST.append(simp_word_posSTR)
+                    #pass
                 else:
                     print(rowLIST[2])
             else:
@@ -211,6 +214,7 @@ if __name__ == "__main__":
         print(len(OnsetLIST), OnsetLIST)
         print(len(OffsetLIST), OffsetLIST)
         print(len(LengthLIST), LengthLIST)
+        print(len(IsLexicalLIST), IsLexicalLIST)
         #print(len(LogFreqLIST), LogFreqLIST)  # we might found this in the corpus of Academia Sinica
         #print(len(LogFreq_NextLIST), LogFreq_NextLIST)
         #print(len(LogFreq_PrevLIST), LogFreq_PrevLIST)
@@ -236,7 +240,7 @@ if __name__ == "__main__":
                            })
                            
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'S%.3d_TRF_predictor_tables.csv' %sub_idINT
-    save_path = Thesisroot_data_path / Path(file_name)
+    file_name = 'story1_predictor_tables.csv' 
+    save_path = textgrid_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 """
