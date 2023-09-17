@@ -176,6 +176,7 @@ if __name__ == "__main__":
                 # Word 
                 if rowLIST[2] == '"Word" ':
                     wordSTR = rowLIST[3]
+                    # exclude the skip information >> but I decided this step would be the last step
                     if wordSTR not in skipLIST:  # '"SILPAUSE" ' and '"\\" ' and '"n" ':
                         # get the onset/offset/length of the word
                         onsetFLOAT = round(float(rowLIST[4]), 4)
