@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-# To Change the backend setting to PTB
+###  To Change the original backend setting to PTB ###
+# >> set the preferences of the software for connecting the hardware, so that the psychopy would automatically select PTB (psychtoolbox) as the first choice
 from psychopy import prefs
 prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 import psychtoolbox as ptb
-from psychopy import sound, core, visual, event, gui, monitors, clock  #, parallel   # if you change the setting, this command must be put after the prefs's command
+from psychopy import sound, core, visual, event, gui, monitors, clock  #, parallel   # this command (line 10) must be put after the prefs's command (line 6)
 #import json
-print(sound.Sound)
+print(sound.Sound)  ### To know the version and the software that is used currently
 
 import scipy
 from scipy.io import wavfile
@@ -20,6 +21,7 @@ import pandas as pd
 from pprint import pprint
 
 """
+## Not used in this script ##
 # function to convert the information into
 # some readable format
 def output_duration(length):
@@ -32,8 +34,9 @@ def output_duration(length):
     return hours, mins, seconds
 """
 
-def display_ins(STR, keyPressLIST = None):
+def display_ins(STR, keyPressLIST=None):
     '''
+    >> self-defined function
     設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
     若未指定反應鍵，則任意鍵皆可換下一張刺激
     i.e display("啦啦啦", ['space'])
@@ -42,34 +45,36 @@ def display_ins(STR, keyPressLIST = None):
     keyPressLIST = keyPressLIST
 
     for t in instructionsLIST:
-        instructions = visual.TextStim(win = win, text = t)
+        instructions = visual.TextStim(win=win, text=t)
         instructions.draw()
         win.flip()
-        ansSTR = event.waitKeys(keyList = keyPressLIST)
+        ansSTR = event.waitKeys(keyList=keyPressLIST)
         print(ansSTR)
     win.flip()
     return ansSTR
 
 def display_fix():
     '''
+    >> self-defined function
     呈現"+"於螢幕中央
     '''
-    fixation = visual.TextStim(win = win, text = "+")
+    fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
 
 def display_start():
     '''
+    >> self-defined function
     呈現"Start"於螢幕中央，暗示音檔即將要播出了。
     '''
-    fixation = visual.TextStim(win = win, text = "Start")
+    fixation = visual.TextStim(win=win, text="Start")
     fixation.draw()
     win.flip()
 
 
 # For setting up the Trigger in NCU ICN Room608 EEG
 n = 0
-port = 'COM3'
+port = 'COM3' ## = which port the trigger box was plugged in
 baudRate = 115200
 InputBufferSize = 8
 readTimeout = 1
@@ -79,8 +84,9 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 
-
+###  if __name__ == "__main__": == The indication of the start of the script(program)  ###
 if __name__ == "__main__":
+    ### Set data path ###
     data_path = "E:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
     results_data_path = "E:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
 
@@ -91,6 +97,8 @@ if __name__ == "__main__":
 
     # display fixation
     #display_fix()
+    
+    ### Set up the display materials  ###
     instructions = """接下來你會聽到幾段故事，\n每段故事結束後會有一題單選題，\n請依照剛剛聽到的內容進行按鍵反應，\n當你準備好的時候，\n請按下空白鍵開始"""
     questionsLIST = [
         "When Alice peeked into her sister's book on the bank, what did it NOT* have?\n1. No sign of her sister’s name.\n2. No pictures or conversations.\n3. No pages at all.\n4. No interesting story.",
@@ -107,9 +115,11 @@ if __name__ == "__main__":
         "Where did Alice find the cake?\n1. Floating in the pond of her tears.\n2. In a little wooden box that was lying on the table.\n3. In a little glass box that was lying under the table.\n4. She did not find it -- the rabbit gave it to her."
     ]
     
+    ### Set up the response keypress list  ###
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
-
+    
+    ### Set up the behavioral response format and the detailed information
     # Answer 12Qs wanted data
     day = date.today()
     dateLIST = []
@@ -119,23 +129,28 @@ if __name__ == "__main__":
     #correctnessLIST = []
     responseLIST = []
     Q_numLIST = []
-
+    
+    ### Set up the display screen size  ###
+    # Full screen display 
+    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   
+    # Testing screen display (small screen)
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    
+    ### Set up the input place for key-in subject number  ###
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
-
-    # Full screen
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
-    # Testing small screen
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-
+    
+    ######## Experiment Starts  ########
+    
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
-    for i in range(12):
 
+    # display the stimuli audio and the procedure for collecting behavioral responses(=Set up the keyboard respond answers)
+    for i in range(12):
         # display "Start" to indicate the start of the audio
         display_start()
-        core.wait(1)
+        core.wait(1)  # so that the "Start" text will display on the screen for 1 second
 
         # display fixation for subject to look at when listening to the tape
         display_fix()
@@ -148,22 +163,22 @@ if __name__ == "__main__":
         print("SoundFile{} length = ".format(i+1), int(t+1))
 
         # Play the audio files section by section
-        Alice_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1)
-        Script_Sound = sound.Sound(Alice_stm)   #value=str(Alice_stm), secs = 60)
+        Alice_stm = data_path + "DownTheRabbitHoleFinal_SoundFile{}.wav".format(i+1) # get the audio file location
+        Script_Sound = sound.Sound(Alice_stm)   # preload the audio file  #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
-        Script_Sound.play()
+        Script_Sound.play() # play the audio stimuli file
 
 
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger >>np.uint8(int(i+1)) = set as the sequence of audio file
         core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger >> np.uint8(0) = close
 
         # set core wait time that match with the length of each audio files
         core.wait(int(t+1))
 
         # TO MARK THE AUDIO FILE ENDS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
+        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger  >> np.uint8(99) = set the end trigger as 99
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
 
