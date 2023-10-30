@@ -121,7 +121,7 @@ def WordCleaner(WordLIST):
 
 if __name__ == "__main__":
     
-    textgrid_path = "/Users/ting-hsin/Downloads/Sound/"
+    textgrid_path = "/Users/neuroling/Downloads/Sound/"
     
     textgridname = textgrid_path + "story1.TextGrid"
     csvname = textgridname + '.csv'
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     skipLIST = ['"SILPAUSE" ', '"\\" ', '"n" ']
     
     # Open the csv file
-    with open (csvname, "r", encoding = "utf-8") as csvfile:
+    with open (csvname, "r", encoding="utf-8") as csvfile:
         fileLIST = csvfile.read().split("\n")
         fileLIST = LISTblankEraser(fileLIST)
         #fileLIST.pop(0)
