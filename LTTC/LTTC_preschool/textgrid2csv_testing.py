@@ -121,7 +121,8 @@ def WordCleaner(WordLIST):
 
 if __name__ == "__main__":
     
-    textgrid_path = "/Users/neuroling/Downloads/Sound/"
+    #textgrid_path = "/Users/neuroling/Downloads/Sound/"
+    textgrid_path = "/Users/kevinhsu/Downloads/Sound/"
     
     textgridname = textgrid_path + "story1.TextGrid"
     csvname = textgridname + '.csv'
