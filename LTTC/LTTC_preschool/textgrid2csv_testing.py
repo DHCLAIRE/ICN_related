@@ -119,6 +119,11 @@ def WordCleaner(WordLIST):
     return newWordLIST
 
 
+"""
+add ckip2articut self-defined function
+add pos options for ckip or articut or others??
+"""
+
 if __name__ == "__main__":
     
     #textgrid_path = "/Users/neuroling/Downloads/Sound/"
