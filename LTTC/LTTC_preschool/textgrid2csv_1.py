@@ -121,13 +121,17 @@ def WordCleaner(WordLIST):
 
 """
 add ckip2articut self-defined function
-add pos options for ckip or articut or others??
+add pos options for ckip or articut (or others?)
+for TRF(continue to add it):
+add freq count
+
+
 """
 
 if __name__ == "__main__":
     
-    #textgrid_path = "/Users/neuroling/Downloads/Sound/"
-    textgrid_path = "/Users/kevinhsu/Downloads/Sound/"
+    textgrid_path = "/Users/neuroling/Downloads/Sound/"
+    #textgrid_path = "/Users/kevinhsu/Downloads/Sound/"
     
     textgridname = textgrid_path + "story1.TextGrid"
     csvname = textgridname + '.csv'
@@ -161,6 +165,18 @@ if __name__ == "__main__":
     
     # The List of unwanted Segmentation results 
     skipLIST = ['"SILPAUSE" ', '"\\" ', '"n" ']
+    TierTypeLIST = ['"Text" ', '"Word" ', '"POS" ', '"UniversalPOS" ', '"Syllable" ', '"Pinyin" ', '"Segment" ']  # 7 tiers
+    
+    
+    # Count the amount of each Tier type
+    TextCountINT = 0
+    WordCountINT = 0
+    POSCountINT = 0
+    UniPOSCountINT = 0
+    SyllCountINT = 0
+    PinyCountINT = 0
+    SegmentCountINT = 0
+    outliersINT = 0
     
     # Open the csv file
     with open (csvname, "r", encoding="utf-8") as csvfile:
@@ -170,14 +186,57 @@ if __name__ == "__main__":
         print(len(fileLIST)) # length Should be 30 
         #pprint(fileLIST)
         
-        # find the word out of the textgrid file
+        # Go through every Tier for wanted infos
         for row in fileLIST:#[1000:110]:
             #print(row)
             #print(len(row))
             rowLIST = row.split("\t")
-            print(rowLIST)
-            print(len(rowLIST))
+            #print(rowLIST)
+            #print(len(rowLIST))  # len = 7 items
             #print(rowLIST[0])
+            
+            # Count the quantity of every Tiers
+            if len(rowLIST) > 2:
+                # Text =len 1
+                if TierTypeLIST[0] == rowLIST[2]:
+                    TextCountINT +=1
+                # Word =len 938
+                if TierTypeLIST[1] == rowLIST[2]:
+                    WordCountINT +=1
+                # POS =len 938
+                if TierTypeLIST[2] == rowLIST[2]:
+                    POSCountINT +=1
+                # UniversalPOS =len 938
+                if TierTypeLIST[3] == rowLIST[2]:
+                    UniPOSCountINT +=1
+                # Syllable =len 1231
+                if TierTypeLIST[4] == rowLIST[2]:
+                    SyllCountINT +=1
+                # Pinyin =len 1231
+                if TierTypeLIST[5] == rowLIST[2]:
+                    PinyCountINT +=1
+                # Segment =len 2455
+                if TierTypeLIST[6] == rowLIST[2]:
+                    SegmentCountINT +=1
+                # Show outliers
+                else:
+                    #outliersINT +=1
+                    #print(rowLIST)
+                    pass
+                    
+            else:
+                pass
+        print(TextCountINT)
+        print(WordCountINT)
+        print(POSCountINT)
+        print(UniPOSCountINT)
+        print(SyllCountINT)
+        print(PinyCountINT)
+        print(SegmentCountINT)
+        
+        # We should save the counts into DICT
+
+    """
             if len(rowLIST) > 2:
                 # Word 
                 if rowLIST[2] == '"Word" ':
@@ -189,13 +248,13 @@ if __name__ == "__main__":
                         offsetFLOAT = round(float(rowLIST[5]), 4)
                         lengthFLOAT = round(float(rowLIST[6]), 4)
                         Word_LIST.append(wordSTR)
-                        SegmentLIST.append(1)  # because it is story 1
-                        OnsetLIST.append(onsetFLOAT)
-                        OffsetLIST.append(offsetFLOAT)
-                        LengthLIST.append(lengthFLOAT)
-                        LogFreqLIST.append(0)
-                        LogFreq_NextLIST.append(0)
-                        LogFreq_PrevLIST.append(0)
+                        #SegmentLIST.append(1)  # because it is story 1
+                        #OnsetLIST.append(onsetFLOAT)
+                        #OffsetLIST.append(offsetFLOAT)
+                        #LengthLIST.append(lengthFLOAT)
+                        #LogFreqLIST.append(0)
+                        #LogFreq_NextLIST.append(0)
+                        #LogFreq_PrevLIST.append(0)
                         
                     else:
                         print(rowLIST[3])
@@ -211,17 +270,21 @@ if __name__ == "__main__":
                     #pass
                 else:
                     print(rowLIST[2])
+                    
             else:
                 pass
+        """
+            
+            
         
         # Checking the results
-        n_WordLIST = WordCleaner(Word_LIST)
-        print(len(n_WordLIST[0]), n_WordLIST[0])
-        print(len(n_WordLIST), n_WordLIST)
-        print(len(OnsetLIST), OnsetLIST)
-        print(len(OffsetLIST), OffsetLIST)
-        print(len(LengthLIST), LengthLIST)
-        print(len(IsLexicalLIST), IsLexicalLIST)
+        #n_WordLIST = WordCleaner(Word_LIST)
+        #print(len(n_WordLIST[0]), n_WordLIST[0])
+        #print(len(n_WordLIST), n_WordLIST)
+        #print(len(OnsetLIST), OnsetLIST)
+        #print(len(OffsetLIST), OffsetLIST)
+        ##print(len(LengthLIST), LengthLIST)
+        #print(len(IsLexicalLIST), IsLexicalLIST)
         #print(len(LogFreqLIST), LogFreqLIST)  # we might found this in the corpus of Academia Sinica
         #print(len(LogFreq_NextLIST), LogFreq_NextLIST)
         #print(len(LogFreq_PrevLIST), LogFreq_PrevLIST)
