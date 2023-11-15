@@ -125,6 +125,8 @@ add pos options for ckip or articut (or others?)
 for TRF(continue to add it):
 add freq count
 
+POS = CKIP POS from Academia Sinica, Taiwan
+Universal POS = Universal Dependencies, an community for NLP, 
 
 """
 
@@ -234,7 +236,7 @@ if __name__ == "__main__":
         print(PinyCountINT)
         print(SegmentCountINT)
         
-        # We should save the counts into DICT
+        # We should save the counts into DICT!!!!  later >>
 
     """
             if len(rowLIST) > 2:
