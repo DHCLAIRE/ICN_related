@@ -121,7 +121,8 @@ def WordCleaner(WordLIST):
 
 """
 add ckip2articut self-defined function
-add pos options for ckip or articut (or others?)
+add pos options for ckip or articut (or others? Jeiba at least?)
+add problem solver for different parsing result between CKIP & Articut >> Is there a ultimate solution for different parsing results??
 for TRF(continue to add it):
 add freq count
 
