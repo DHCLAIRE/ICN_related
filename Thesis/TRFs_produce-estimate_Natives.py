@@ -77,7 +77,7 @@ if __name__ == "__main__":
     imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])  # old: IMFsLIST[5] = Alice_IF_IMF_3.pickle
     
     # Get the calculated F0s
-    F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
+    #F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
     
     # Models
     # ------
@@ -93,7 +93,7 @@ if __name__ == "__main__":
         'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
 
         # All auditory features model
-        'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
+        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]  >> already have, therefore don't run again
         #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
         # All model
         #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6, F_zero]
