@@ -112,12 +112,12 @@ if __name__ == "__main__":
     'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical],
     
     # IFs
-    'IMF1':[imf1],
+    'IMF1':[imf1],   # old name in file is >>'IMF_1':[imf_1]
     'IMF_12':[imf1, imf2],
     'IMF_123':[imf1, imf2, imf3],
     'IMF_1234':[imf1, imf2, imf3, imf4],
     'IMF_12345':[imf1, imf2, imf3, imf4, imf5],
-    'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
+    'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],   # old name in file is :'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
 
     # F0
     'Fzero+envelope': [F_zero]
