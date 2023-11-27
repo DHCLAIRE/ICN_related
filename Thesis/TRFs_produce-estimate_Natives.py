@@ -25,6 +25,7 @@ if __name__ == "__main__":
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
     print(len(SUBJECTS))
+    print(IMFsLIST)  # ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
     
     # Load stimuli
     # ------------
@@ -67,12 +68,13 @@ if __name__ == "__main__":
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
     
     # Get the calculated IMFs
-    imf1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])
-    imf2 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])
-    imf3 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[2])
-    imf4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])
-    imf5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])
-    imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[5])
+    # IMFsLIST : ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
+    imf1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])  # old: IMFsLIST[0] = Alice_IF_IMF_6.pickle
+    imf2 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[2])  # old: IMFsLIST[1] = Alice_IF_IMF_4.pickle
+    imf3 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[5])  # old: IMFsLIST[2] = Alice_IF_IMF_2.pickle
+    imf4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])  # old: IMFsLIST[3] = Alice_IF_IMF_5.pickle
+    imf5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])  # old: IMFsLIST[4] = Alice_IF_IMF_1.pickle
+    imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])  # old: IMFsLIST[5] = Alice_IF_IMF_3.pickle
     
     # Get the calculated F0s
     F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
@@ -84,10 +86,10 @@ if __name__ == "__main__":
         
         # IFs
         'IMF1':[imf1],
-        'IMF_12':[imf1, imf2],
-        'IMF_123':[imf1, imf2, imf3],
-        'IMF_1234':[imf1, imf2, imf3, imf4],
-        'IMF_12345':[imf1, imf2, imf3, imf4, imf5],
+        'IMF12':[imf1, imf2],
+        'IMF123':[imf1, imf2, imf3],
+        'IMF1234':[imf1, imf2, imf3, imf4],
+        'IMF12345':[imf1, imf2, imf3, imf4, imf5],
         'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
 
         # All auditory features model
@@ -112,11 +114,11 @@ if __name__ == "__main__":
     'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical],
     
     # IFs
-    'IMF1':[imf1],   # old name in file is >>'IMF_1':[imf_1]
-    'IMF_12':[imf1, imf2],
-    'IMF_123':[imf1, imf2, imf3],
-    'IMF_1234':[imf1, imf2, imf3, imf4],
-    'IMF_12345':[imf1, imf2, imf3, imf4, imf5],
+    'IMF1':[imf1], # old name in file is >>'IMF_1':[imf_1]
+    'IMF12':[imf1, imf2],
+    'IMF123':[imf1, imf2, imf3],
+    'IMF1234':[imf1, imf2, imf3, imf4],
+    'IMF12345':[imf1, imf2, imf3, imf4, imf5],
     'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],   # old name in file is :'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
 
     # F0
