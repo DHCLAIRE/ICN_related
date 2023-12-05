@@ -85,18 +85,18 @@ if __name__ == "__main__":
     models = {
         
         # IFs
-        'IMF1':[imf1],
-        'IMF12':[imf1, imf2],
-        'IMF123':[imf1, imf2, imf3],
-        'IMF1234':[imf1, imf2, imf3, imf4],
-        'IMF12345':[imf1, imf2, imf3, imf4, imf5],
-        'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
+        #'IMF1':[imf1],
+        #'IMF12':[imf1, imf2],
+        #'IMF123':[imf1, imf2, imf3],
+        #'IMF1234':[imf1, imf2, imf3, imf4],
+        #'IMF12345':[imf1, imf2, imf3, imf4, imf5],
+        #'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
 
         # All auditory features model
         #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]  >> already have, therefore don't run again
-        #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
+        #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6]
         # All model
-        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6, F_zero]
+        'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6]  #, F_zero
     }
     """
     # Acoustic models
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
     #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
     # All model
-    #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngramm, imf_1, imf_2, imf_3, imf_4, imf_5, imf_6, F_zero]
+    #'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
     }
     """
     
