@@ -142,6 +142,7 @@ if __name__ == "__main__":
     
     
     # The predictor items
+    SyllableLIST = []  #  = textgrid.csv_syllable
     Word_LIST = []     #  = textgrid.csv_word
     SegmentLIST = []   #  = the sequence of the story
     OnsetLIST = []     #  = textgrid.csv_start
@@ -179,6 +180,11 @@ if __name__ == "__main__":
             print(len(rowLIST))
             #print(rowLIST[0])
             if len(rowLIST) > 2:
+                # Syllable
+                if rowLIST[2] == '"Word" ':
+                    wordSTR = rowLIST[3]
+                    
+                
                 # Word 
                 if rowLIST[2] == '"Word" ':
                     wordSTR = rowLIST[3]
