@@ -142,24 +142,29 @@ if __name__ == "__main__":
     
     
     # The predictor items
-    SyllableLIST = []  #  = textgrid.csv_syllable
-    Word_LIST = []     #  = textgrid.csv_word
-    SegmentLIST = []   #  = the sequence of the story
-    OnsetLIST = []     #  = textgrid.csv_start
-    OffsetLIST = []    #  = textgrid.csv_end
-    OrderLIST = []     #  = count by the index of the word
-    LogFreqLIST = []
-    LogFreq_PrevLIST = []
-    LogFreq_NextLIST = []
-    SndPowerLIST = []
-    LengthLIST = []    #  = textgrid.csv_duration
-    PositionLIST = []  #  = count from the raw txt file (office word file)
-    SentenceLIST = []  #  = count from the raw txt file (office word file)
+    SyllableLIST = []       #  = textgrid.csv_syllable
+    SegmentLIST = []        #  = the sequence of the story
+    Sylb_OnsetLIST = []     #  = textgrid.csv_start from syllable
+    Sylb_OffsetLIST = []    #  = textgrid.csv_end from syllable
+    Sylb_OrderLIST = []     #  = count by the index of the syllable
+    Sylb_LogFreqLIST = []   #  = LogFreq by the index of the syllable
+    Sylb_LogFreq_PrevLIST = []
+    Sylb_LogFreq_NextLIST = []
+    #SndPowerLIST = []
+    HomophoneCountLIST = []  # = the count of homophone on syllable
+    LengthLIST = []    #  = textgrid.csv_duration of syllable
+    PositionLIST = []  #  = 
+    SentenceLIST = []  #  = 
+    POS_LIST = []
     IsLexicalLIST = [] #  = textgrid.csv_POS (or universal pos)
     #NGRAM_LIST = []
     #CFG_LIST = []
     #Fractality_LIST = []
-    
+    Word_LIST = []     #  = textgrid.csv_word
+    Word_OrderLIST = [] 
+    Word_LogFreqLIST = []
+    Word_OnsetLIST = []  
+
     # The List of unwanted Segmentation results 
     skipLIST = ['"SILPAUSE" ', '"\\" ', '"n" ']
     
@@ -181,8 +186,21 @@ if __name__ == "__main__":
             #print(rowLIST[0])
             if len(rowLIST) > 2:
                 # Syllable
-                if rowLIST[2] == '"Word" ':
-                    wordSTR = rowLIST[3]
+                if rowLIST[2] == '"Syllable" ':
+                    syllableSTR = rowLIST[3]
+                    onsetFLOAT = round(float(rowLIST[4]), 4)
+                    offsetFLOAT = round(float(rowLIST[5]), 4)
+                    lengthFLOAT = round(float(rowLIST[6]), 4)
+                    
+                    #SegmentLIST.append(1)  # because it is story 1
+                    OnsetLIST.append(onsetFLOAT)
+                    OffsetLIST.append(offsetFLOAT)
+                    LengthLIST.append(lengthFLOAT)
+                    
+                    
+                    LogFreqLIST.append(0)
+                    LogFreq_NextLIST.append(0)
+                    LogFreq_PrevLIST.append(0)
                     
                 
                 # Word 
@@ -191,17 +209,8 @@ if __name__ == "__main__":
                     # exclude the skip information >> but I decided this step would be the last step
                     if wordSTR not in skipLIST:  # '"SILPAUSE" ' and '"\\" ' and '"n" ':
                         # get the onset/offset/length of the word
-                        onsetFLOAT = round(float(rowLIST[4]), 4)
-                        offsetFLOAT = round(float(rowLIST[5]), 4)
-                        lengthFLOAT = round(float(rowLIST[6]), 4)
                         Word_LIST.append(wordSTR)
-                        SegmentLIST.append(1)  # because it is story 1
-                        OnsetLIST.append(onsetFLOAT)
-                        OffsetLIST.append(offsetFLOAT)
-                        LengthLIST.append(lengthFLOAT)
-                        LogFreqLIST.append(0)
-                        LogFreq_NextLIST.append(0)
-                        LogFreq_PrevLIST.append(0)
+
                         
                     else:
                         print(rowLIST[3])
