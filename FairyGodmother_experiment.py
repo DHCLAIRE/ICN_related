@@ -23,18 +23,15 @@ import re
 from pathlib import Path
 import serial
 
-'''
-key press: need to be set (we'll use 2 bottons in here')
-reaction time: need to be recorded
-'''
 
-# need to add feedbacks of scaling and texts records
-
-def display_ins(STR, keyPressLIST = None):
+def display_ins(STR, keyPressLIST=None):
     '''
-    設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
-    若未指定反應鍵，則任意鍵皆可換下一張刺激
-    i.e display("啦啦啦", ['space'])
+    *Self deifined function*
+    To display the required strings and its appointed keypress.
+    When the appointed strings and keypress were set, this function will display the strings.
+    Only the pre-arranged keypress will allow the string display to proceed onto the next string.
+    If no keypress was assigned, any keypress will continue the string display.
+    e.g display_ins("lalala", ['space'])
     '''
     instructionsLIST = STR.split("\\\\")
     keyPressLIST = keyPressLIST
@@ -48,19 +45,18 @@ def display_ins(STR, keyPressLIST = None):
 
 def display_fix():
     '''
-    呈現"+"於螢幕中央
+    *Self deifined function*
+    Display fixation in the central of the screen.
+    e.g. display_fix()
     '''
     fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
 
-"""
-1. instructions >> press 'space'?? or other button?
-2. Button press >> one for each side (choose wisely)
-"""
-
 # The EEG trigger port info
 # For setting up the Trigger in NCU ICN Room608 EEG
+# (Unnote the codes will activate the trigger port, thus to deactivate is to note the codes)
+"""
 n = 0
 port = 'COM3'
 baudRate = 115200
@@ -71,6 +67,7 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
+"""
 
 if __name__ == "__main__":
     # key in number for notifying which subject it is
