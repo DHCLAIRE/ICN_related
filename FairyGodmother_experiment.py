@@ -6,9 +6,9 @@ from psychopy import prefs
 #prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 #import psychtoolbox as ptb
-from psychopy import sound, core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
 import json
-print(sound.Sound)
+#print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -52,6 +52,17 @@ def display_fix():
     fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
+    
+def display_Image(ImageSTR):  #, keyPressLIST=None):
+    '''
+    *Self deifined function*
+    To present the pic in the central of the screen
+    '''
+    pic = visual.ImageStim(win=win, image=ImageSTR)
+    pic.draw()
+    win.flip()
+    #event.waitKeys(keyList=keyPressLIST)
+    #win.flip()
 
 # The EEG trigger port info
 # For setting up the Trigger in NCU ICN Room608 EEG
@@ -70,12 +81,14 @@ ptb.IOPort('Flush', handle)
 """
 
 if __name__ == "__main__":
-    # key in number for notifying which subject it is
+    #### Preparations for experiment variables ####
+    
+    ## key in number for notifying which subject it is
     sub_type = str(input("Group type: "))
     sub_id = str(input("Subject: "))
     sub_cond = str(input("Condition: "))
 
-    # Set up the data path (For Win)
+    ## Set up the data path (For Win)
     #root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
     #result_data_path = root_data_path / "LTTC_preschool_results"
     #result_data_path.mkdir(exist_ok=True)
@@ -86,12 +99,12 @@ if __name__ == "__main__":
     result_data_path = root_data_path / Path("LTTC_preschool_results/%s_Sub%s" %(sub_type, sub_id))
     result_data_path.mkdir(exist_ok=True)
     
-    # setting up usable dataLIST
+    ## Setting up usable dataLIST
     targetPseudoLIST = []
     pseudoLIST = []
     targetPseudoLIST = []
 
-    # Set up the pws' data path, and Call out the pw's LIST by the audios' names
+    ## Set up the pws' data path, and Call out the pw's LIST by the audios' names
     pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\D', path.name)]  #(both works)\D == any non-digits; \w == any characters(digits included)
     print(pw_stimLIST) # pw_stimLIST = ['bi4_ba2.wav', 'bo4_luo2.wav', 'chai2_fei1.wav', 'ge2_lu3.wav', 'ji3_an4.wav', 'pu2_zu2.wav', 'sheng1_chu4.wav', 'zhai1_tan2.wav']
     '''
@@ -101,20 +114,20 @@ if __name__ == "__main__":
             print(path.suffix)  # path.suffix == the file type of the file in the specfic location
             print(type(path.suffix))
     '''
-    # This the every pseudowords audio file name
+    ## This the every pseudowords audio file name
     #pseudoLIST = pw_stimLIST.copy()
     #print(pseudoLIST)
     for f_nameSTR in pw_stimLIST:
         pseudoLIST.append(f_nameSTR[:-4])  # exclude the file extension
     print(pseudoLIST)
     
-    # ALL target PWs
+    ## Set up the stimuli ALL target PWs
     targetPseudoLIST = ['bo4_luo2', 'ji3_an4', 'pu2_zu2', 'sheng1_chu4']   #[簸籮, 几案, 蹼足, 牲畜]
     # Paired target PWs
     pair_1pw_LIST = ['sheng1_chu4', 'ji3_an4']  #[牲畜, 几案] = Set_A's HCD / Set_B's LCD
     pair_2pw_LIST = ['bo4_luo2', 'pu2_zu2']  #[簸籮, 蹼足] = Set_A's LCD / Set_H's LCD
     
-    # LDT Wanted data
+    ## Presave the blank list for wanted results
     day = date.today()
     dateLIST = []
     sub_idLIST = []
@@ -131,7 +144,11 @@ if __name__ == "__main__":
 
     # key in number for notifying which subject it is
     #sub_id = str(input("Subject: "))
-
+    
+    #### Experiment Begins ####
+    ### Study Phase Start ###
+    
+    
     # Step_1: Show the instructions
     # Setting the presented window
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
@@ -140,12 +157,15 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions and the response key
-    instructions_1 = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n實驗將準備開始"""
-    instructions_2 = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
-    instructions_3 = """中場休息1分鐘"""
-    instructions_4 = """本實驗結束，謝謝！"""
+    instructions_study = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n實驗將準備開始"""
+    instructions_distraction = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
+    instructions_test = """中場休息1分鐘"""
+    instructions_end = """本實驗結束，謝謝！"""
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
+    keypressLIST_study = ["return"]
+    keypressLIST_text = ["return"]
+    keypressLIST_alt = ["return"]
     #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
 
     #core.wait(3)
@@ -296,6 +316,18 @@ if __name__ == "__main__":
     file_name = '%s_S%s_LDT_preschool_testing_results.csv' %(sub_type, sub_id)
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+
+    # close all the possible ongoing commands that could be running in the background
+    #core.quit()  # normally we would add it, in case that anything happen
+    
+    ### Study Phase Ends ###
+    ### Distractions Task ###
+    
+    ### Distractions Task Ends ###
+    ### Test Phase Starts ###
+    
+    
+    ### Test Phase Ends ###
 
     # close all the possible ongoing commands that could be running in the background
     core.quit()  # normally we would add it, in case that anything happen
