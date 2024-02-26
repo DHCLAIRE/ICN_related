@@ -157,11 +157,27 @@ if __name__ == "__main__":
     clock = core.Clock()
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
-    # Setting the instructions and the response key
-    instructions_study = """接下來你會聽到一連串的詞彙，\n請依照實驗指示進行按鍵反應，\n當你準備好的時候，\n實驗將準備開始"""
-    instructions_distraction = """將你的手指輕放在空白鍵\n\n聽過請按空白鍵，沒聽過請不要按\n\n當詞彙播放完畢時\n請盡快且正確的進行按鍵反應"""  # 按鍵號碼需要再修
-    instructions_test = """中場休息1分鐘"""
-    instructions_end = """本實驗結束，謝謝！"""
+    # Setting the instructions
+    instructions_welcome = """Welcome to the experiment.\n歡迎參與此實驗"""
+    instructions_study_Chi = """在第一階段裡，您將同時看到一張人臉及圖片背景。\n
+    請以觀看整張圖片的方式來看，而非僅聚焦在人臉或背景圖片上。\n\n
+    當看到人臉時，若為女性臉孔，請按下左邊的Alt鍵。\n
+    若為男性臉孔，則請按下右邊的Alt鍵。\n如下方圖片所示：\n
+    請依照實驗指示進行按鍵反應，\n\n當你準備好的時候，實驗將準備開始"""
+    
+    instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
+    圖片則將替換成數學乘法問題。（例如：5*5=25）。\n
+    若答案正確，請按左邊的alt 鍵；若答案錯誤，則請按右邊的 alt 鍵。\n\n
+    數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，故僅需按鍵回答一次即可。\n\n
+    請按空格鍵開始！"""
+
+    instructions_test_Chi = """在第三階段中，請根據之前看過的背景場景和人臉照片進行回答。\n
+    我們將先測試背景圖片又或是人臉的判斷，圖片會單獨出現。"""
+    
+    
+    instructions_end_Chi = """本實驗結束，謝謝！"""
+    
+    ## Set the response key
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
     keypressLIST_study = ["return"]
