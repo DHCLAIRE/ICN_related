@@ -84,7 +84,7 @@ if __name__ == "__main__":
     #### Preparations for experiment variables ####
     
     ## key in number for notifying which subject it is
-    sub_type = str(input("Group type: "))
+    #sub_type = str(input("Group type: "))
     sub_id = str(input("Subject: "))
     sub_cond = str(input("Condition: "))
 
@@ -93,11 +93,12 @@ if __name__ == "__main__":
     #result_data_path = root_data_path / "LTTC_preschool_results"
     #result_data_path.mkdir(exist_ok=True)
     
-    # the path for testing only (For Mac)
-    root_data_path = Path("/Volumes/Neurolang_1/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
-    target_w_stim_data_path = root_data_path / "LDT-8_target_words"
-    result_data_path = root_data_path / Path("LTTC_preschool_results/%s_Sub%s" %(sub_type, sub_id))
-    result_data_path.mkdir(exist_ok=True)
+    # Set up the data path (For Mac)
+    root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
+    face_data_path = root_data_path / "faces"
+    Bg_data_path = root_data_path / "Backgrounds"
+    result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
+    result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
     
     ## Setting up usable dataLIST
     targetPseudoLIST = []
@@ -313,7 +314,7 @@ if __name__ == "__main__":
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = '%s_S%s_LDT_preschool_testing_results.csv' %(sub_type, sub_id)
+    file_name = 'Sub%s_%s_studyPhase_results.csv' %(sub_id, sub_cond)
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
@@ -323,9 +324,50 @@ if __name__ == "__main__":
     ### Study Phase Ends ###
     ### Distractions Task ###
     
+    
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                           'Date':dateLIST,
+                           'Sets':sub_condLIST,
+                           'Round':roundLIST,
+                           'Stimuli':stimLIST,
+                           'CD_condition':CD_condLIST,
+                           'Keypress':resultKeyLIST,
+                           'Response':responseLIST,
+                           'LDT_RT':LDT_rtLIST,
+                           'Correctness':correctnessLIST
+                           })
+    
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
+    save_path = result_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    
     ### Distractions Task Ends ###
     ### Test Phase Starts ###
     
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                           'Date':dateLIST,
+                           'Condition':sub_condLIST,
+                           'Trial_num':trialLIST,
+                           'RT':rtLIST,
+                           'Keypress':resultKeyLIST,
+                           'Response':responseLIST,
+                           'Round':roundLIST,
+                           'Stimuli':stimLIST,
+                           'CD_condition':CD_condLIST,
+                           'face_path':pathLIST,
+                           'face_gender':genderLIST,
+                           'bg_path':BgLIST,
+                           
+                           'Correctness':correctnessLIST
+                           })
+    
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'Sub%s_%s_testPhase_results.csv' %(sub_id, sub_cond)
+    save_path = result_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
     ### Test Phase Ends ###
 
