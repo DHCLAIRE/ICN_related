@@ -301,16 +301,20 @@ if __name__ == "__main__":
 
 
     # Saving the self_paced_rt result into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                           'Date':dateLIST,
-                           'Sets':sub_condLIST,
-                           'Round':roundLIST,
-                           'Stimuli':stimLIST,
-                           'CD_condition':CD_condLIST,
-                           'Keypress':resultKeyLIST,
-                           'Response':responseLIST,
-                           'LDT_RT':LDT_rtLIST,
-                           'Correctness':correctnessLIST
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
+                           'Date':dateLIST,               # when did the experiment happen
+                           'Emo_Condition':sub_condLIST,  # emotion condition
+                           'Trial_num':trialLIST,         # which trial
+                           'RT':rtLIST,                   # the rt for memory reations
+                           'Keypress':resultKeyLIST,      # which key they press
+                           'Scale':scaleLIST,             # How confidence they thought themselves (=what does the keypress mean)
+                           'Emotion':faceEmoLIST,         # which emotion of the face pic
+                           'Gender':genderLIST,           # the gender of the face pic
+                           'Ethnic':ethnicLIST,           # the ethnic of the face pic
+                           'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
+                           'Face_path':pathLIST,          # the datapath of the face pic
+                           'Bg_path':BgLIST,              # the datapath of the background pic
+                           'Pic_Condition':old_newLIST    # the seen or not condition
                            })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
@@ -347,21 +351,20 @@ if __name__ == "__main__":
     ### Test Phase Starts ###
     
     # Saving the self_paced_rt result into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                           'Date':dateLIST,
-                           'Condition':sub_condLIST,
-                           'Trial_num':trialLIST,
-                           'RT':rtLIST,
-                           'Keypress':resultKeyLIST,
-                           'Response':responseLIST,
-                           'Round':roundLIST,
-                           'Stimuli':stimLIST,
-                           'CD_condition':CD_condLIST,
-                           'face_path':pathLIST,
-                           'face_gender':genderLIST,
-                           'bg_path':BgLIST,
-                           
-                           'Correctness':correctnessLIST
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
+                           'Date':dateLIST,               # when did the experiment happen
+                           'Emo_Condition':sub_condLIST,  # emotion condition
+                           'Trial_num':trialLIST,         # which trial
+                           'RT':rtLIST,                   # the rt for memory reations
+                           'Keypress':resultKeyLIST,      # which key they press
+                           'Scale':scaleLIST,             # How confidence they thought themselves (=what does the keypress mean)
+                           'Emotion':faceEmoLIST,         # which emotion of the face pic
+                           'Gender':genderLIST,           # the gender of the face pic
+                           'Ethnic':ethnicLIST,           # the ethnic of the face pic
+                           'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
+                           'Face_path':pathLIST,          # the datapath of the face pic
+                           'Bg_path':BgLIST,              # the datapath of the background pic
+                           'Pic_Condition':old_newLIST    # the seen or not condition
                            })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
