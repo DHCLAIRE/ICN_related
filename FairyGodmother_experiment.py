@@ -263,19 +263,19 @@ if __name__ == "__main__":
                 """
 
                 #setting up what keypress would allow the experiment to proceed
-                keys = event.waitKeys(maxWait=5, keyList=keypressLIST_space) # only press "space" when you have heard this word
-                event.getKeys(keyList=keypressLIST_space)
+                keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+                event.getKeys(keyList=keypressLIST_alt)
                 print(keys)
                 
                 # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
                 if keys == ["lalt"]:
                     conditionLIST = ["femael"]
                     end_time = clock.getTime()
-                    time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                    time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
                     print(time_duration)
                     #print(type(time_duration))
                     clock.reset()
-                if keys == ["ralt"]:
+                elif keys == ["ralt"]:
                     conditionLIST = ["male"]
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -285,35 +285,35 @@ if __name__ == "__main__":
 
                 else:
                     keys = ["None"]
-                    conditionLIST = ["unheard"]
+                    conditionLIST = ["N/A"]
                     time_duration = 0
                     print(time_duration)
                     clock.reset()
 
                 
-                # calculate the correctness of the LDT response
-                if stim_wordSTR in targetPseudoLIST:
-                    #conditionLIST = ["heard"]
-                    if keys == ["space"]:
+                # calculate the correctness of the gender determination response
+                if gen_ans == ["female"]:  ## Rivise this command
+                    # ans is "Correct"
+                    if keys == ["lalt"]:
                         correctLIST = ["True"]
-                    #conditionLIST = ["unheard"]
-                    elif keys == ["None"]:
+                    # ans is "Incorrect"
+                    elif keys == ["ralt"]:
                         correctLIST = ["False"]
                     else:
                         correctLIST = ["N/A"]
 
-                elif stim_wordSTR not in targetPseudoLIST:
-                    #conditionLIST = ["heard"]
-                    if keys == ["space"]:
-                        correctLIST = ["False"]
-                    #conditionLIST = ["unheard"]
-                    elif keys == ["None"]:
+                elif gen_ans == ["male"]:
+                    # ans is "Correct"
+                    if keys == ["ralt"]:
                         correctLIST = ["True"]
+                    # ans is "Incorrect"
+                    elif keys == ["lalt"]:
+                        correctLIST = ["False"]
                     else:
                         correctLIST = ["N/A"]
                 else:
                     pass
-                
+                """
                 # Collect the H/LCD of the words
                 ## FOR Set A H/LCD
                 if sub_cond == "A":
@@ -332,7 +332,7 @@ if __name__ == "__main__":
                         cdSTR = "H"
                     else:
                         cdSTR = "C"
-
+                        
                 # making the wanted info into the List form for future use
                 sub_idLIST.append(sub_id)
                 dateLIST.append(day)
@@ -354,6 +354,7 @@ if __name__ == "__main__":
 
             # close the window  at the end of the experiment
     win.close()
+    """
 
 
     # Saving the self_paced_rt result into csv file
@@ -384,7 +385,211 @@ if __name__ == "__main__":
     ### Study Phase Ends ###
     ### Distractions Task ###
     
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    clock = core.Clock()
+    #start_time = clock.getTime()  >>change position to make the calculation correct
+
+    # Setting the instructions
+    instructions_welcome_Chi = """歡迎參與此實驗"""
+    instructions_welcome_Eng = """Welcome to the experiment!"""
     
+    instructions_study_Chi = """在第一階段裡，您將同時看到一張人臉及圖片背景。\n
+    請以觀看整張圖片的方式來看，而非僅聚焦在人臉或背景圖片上。\n\n
+    當看到人臉時，若為女性臉孔，請按下左邊的Alt鍵。\n
+    若為男性臉孔，則請按下右邊的Alt鍵。\n如下方圖片所示：\n
+    即便您已按下按鍵做反應，圖片將會在螢幕停留一下，\n
+    故僅需按鍵回答一次即可。\n\n
+    請按空格鍵開始！
+    """
+    instructions_study_Eng = """In this experiment, you will be presented with faces embedded in the background.\n
+    Please see the picture hoslically without focus only on the faces or background.\n\n
+    WKey Response:\n
+    Press the left alt key if the face is a FEMALE\n
+    and\n
+    press the right alt key if the face is a MALE.\n
+    Press the key as fast as you can.\n\n
+    Picture would stay displayed on the screen even after key press.\n
+    Please press the key only once.\n\n
+    Please press “space” to proceed.
+    """
+    
+    instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
+    圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
+    若答案正確，請按左邊的alt 鍵；\n
+    若答案錯誤，則請按右邊的 alt 鍵。\n\n
+    數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
+    故僅需按鍵回答一次即可。\n\n
+    請按空格鍵開始！
+    """
+    instructions_distraction_Eng = """In this session of the experiment, \n
+    you will be presented with math multiplication problems. \n
+    (example:5*5=25).\n\n
+    Key Response:\n
+    Press the left alt key if the answer is TRUE\n
+    and\n
+    press the right alt key if the answer is FALSE.\n
+    Press the key as fast as you can.\n\n
+    Equation lasts 5 seconds on the screen even after key press.\n
+    Please press the key only once.\n\n
+    Please press “space” to proceed.
+    """
+    
+    instructions_test_Chi = """在第三階段中，請根據之前看過的背景場景和人臉照片進行回答。\n
+    我們將先測試背景圖片或人臉的判斷，圖片會單獨出現。"""
+    instructions_test_Eng = """In this phase, please answer based on your best recollection \n
+    of the previously seen background and faces.\n
+    We would test the , and the picture will display on its own."""
+    
+    instructions_end_Chi = """本實驗結束，謝謝！"""
+    instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
+
+    
+    ## Set the response key
+    keypressLIST_space = ['space']
+    keypressLIST_enter = ["return"]
+    keypressLIST_alt = ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
+
+    # Step_1: Show the instructions
+    # Welcome the participants
+    display_ins(instructions_welcome_Chi, keypressLIST_space)
+    # Display the instructions for experiment content and keypress
+    display_ins(instructions_study_Chi, keypressLIST_space)
+    
+
+    #core.wait(3)
+
+    # 假詞all重新排列後依序送出，整個LIST重複送2次
+    # Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
+    for round_ in range(1, 3):  # only 2 rounds
+        print("Please ready for Round", round_)
+        """
+        ## To mark the round number  ##
+        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+        core.wait(.01); # Stay for 10 ms
+        """        
+        for i in range(1):  #need to loop 6 times for 48 trials in one round (96 trials in total)
+
+            # randomly select the wanted pseudoword from the list
+            random.shuffle(pseudoLIST)
+            for stim_wordSTR in pseudoLIST:
+
+                # To refresh the win before play out the stim pw
+                win.flip()  # always add this after an item was presented
+                core.wait(2)
+                # start to record the time
+                start_time = clock.getTime()
+
+                # display fixation in the central of the screen
+                display_fix()
+
+
+                # Display the pw stimulus
+                LTTC_pw_stm = target_w_stim_data_path / Path('{}.wav'.format(stim_wordSTR))
+                pw_Sound = sound.Sound(LTTC_pw_stm)
+                pw_Sound.play()
+
+                """
+                # TO MARK THE PSEUDOWORD APPEARED
+                port.write(b'1') #This is the num_tag for opening the trigger
+                core.wait(.01); # Stay for 10 ms
+                """
+
+                #setting up what keypress would allow the experiment to proceed
+                keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+                event.getKeys(keyList=keypressLIST_alt)
+                print(keys)
+                
+                # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+                if keys == ["lalt"]:
+                    conditionLIST = ["femael"]
+                    end_time = clock.getTime()
+                    time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+                    print(time_duration)
+                    #print(type(time_duration))
+                    clock.reset()
+                elif keys == ["ralt"]:
+                    conditionLIST = ["male"]
+                    end_time = clock.getTime()
+                    time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                    print(time_duration)
+                    #print(type(time_duration))
+                    clock.reset()
+
+                else:
+                    keys = ["None"]
+                    conditionLIST = ["N/A"]
+                    time_duration = 0
+                    print(time_duration)
+                    clock.reset()
+
+                
+                # calculate the correctness of the gender determination response
+                if gen_ans == ["female"]:  ## Rivise this command
+                    # ans is "Correct"
+                    if keys == ["lalt"]:
+                        correctLIST = ["True"]
+                    # ans is "Incorrect"
+                    elif keys == ["ralt"]:
+                        correctLIST = ["False"]
+                    else:
+                        correctLIST = ["N/A"]
+
+                elif gen_ans == ["male"]:
+                    # ans is "Correct"
+                    if keys == ["ralt"]:
+                        correctLIST = ["True"]
+                    # ans is "Incorrect"
+                    elif keys == ["lalt"]:
+                        correctLIST = ["False"]
+                    else:
+                        correctLIST = ["N/A"]
+                else:
+                    pass
+                
+                # Collect the H/LCD of the words
+                ## FOR Set A H/LCD
+                if sub_cond == "A":
+                    if stim_wordSTR in pair_1pw_LIST:
+                        cdSTR = "H"
+                    elif stim_wordSTR in pair_2pw_LIST:
+                        cdSTR = "L"
+                    else:
+                        cdSTR = "C"
+                
+                ## FOR Set B H/LCD
+                if sub_cond == "B":
+                    if stim_wordSTR in pair_1pw_LIST:
+                        cdSTR = "L"
+                    elif stim_wordSTR in pair_2pw_LIST:
+                        cdSTR = "H"
+                    else:
+                        cdSTR = "C"
+                        
+                # making the wanted info into the List form for future use
+                sub_idLIST.append(sub_id)
+                dateLIST.append(day)
+                sub_condLIST.append(sub_cond)
+                roundLIST.append(round_)
+                stimLIST.append(stim_wordSTR)
+                CD_condLIST.append(cdSTR)
+                resultKeyLIST.append(keys)
+                responseLIST.append(conditionLIST)
+                LDT_rtLIST.append(time_duration)
+                correctnessLIST.append(correctLIST)
+            
+        #Display the instruction of the break in between Round 1 & Round 2
+        print("Round", round_, "is over.")
+        if round_ == 1:
+            display_ins(instructions_3, keypressLIST_enter)
+        else:
+            display_ins(instructions_4, keypressLIST_enter)
+
+            # close the window  at the end of the experiment
+    win.close()
+    
+
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                            'Date':dateLIST,
