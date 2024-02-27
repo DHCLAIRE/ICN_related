@@ -148,9 +148,8 @@ if __name__ == "__main__":
     
     #### Experiment Begins ####
     ### Study Phase Start ###
+    ## Parameters Ssetting ##
     
-    
-    # Step_1: Show the instructions
     # Setting the presented window
     win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
     #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
@@ -158,38 +157,72 @@ if __name__ == "__main__":
     #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions
-    instructions_welcome = """Welcome to the experiment.\n歡迎參與此實驗"""
+    instructions_welcome_Chi = """歡迎參與此實驗"""
+    instructions_welcome_Eng = """Welcome to the experiment!"""
+    
     instructions_study_Chi = """在第一階段裡，您將同時看到一張人臉及圖片背景。\n
     請以觀看整張圖片的方式來看，而非僅聚焦在人臉或背景圖片上。\n\n
     當看到人臉時，若為女性臉孔，請按下左邊的Alt鍵。\n
     若為男性臉孔，則請按下右邊的Alt鍵。\n如下方圖片所示：\n
-    請依照實驗指示進行按鍵反應，\n\n當你準備好的時候，實驗將準備開始"""
+    即便您已按下按鍵做反應，圖片將會在螢幕停留一下，\n
+    故僅需按鍵回答一次即可。\n\n
+    請按空格鍵開始！
+    """
+    instructions_study_Eng = """In this experiment, you will be presented with faces embedded in the background.\n
+    Please see the picture hoslically without focus only on the faces or background.\n\n
+    WKey Response:\n
+    Press the left alt key if the face is a FEMALE\n
+    and\n
+    press the right alt key if the face is a MALE.\n
+    Press the key as fast as you can.\n\n
+    Picture would stay displayed on the screen even after key press.\n
+    Please press the key only once.\n\n
+    Please press “space” to proceed.
+    """
     
     instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
-    圖片則將替換成數學乘法問題。（例如：5*5=25）。\n
-    若答案正確，請按左邊的alt 鍵；若答案錯誤，則請按右邊的 alt 鍵。\n\n
-    數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，故僅需按鍵回答一次即可。\n\n
-    請按空格鍵開始！"""
-
-    instructions_test_Chi = """在第三階段中，請根據之前看過的背景場景和人臉照片進行回答。\n
-    我們將先測試背景圖片又或是人臉的判斷，圖片會單獨出現。"""
+    圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
+    若答案正確，請按左邊的alt 鍵；\n
+    若答案錯誤，則請按右邊的 alt 鍵。\n\n
+    數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
+    故僅需按鍵回答一次即可。\n\n
+    請按空格鍵開始！
+    """
+    instructions_distraction_Eng = """In this session of the experiment, \n
+    you will be presented with math multiplication problems. \n
+    (example:5*5=25).\n\n
+    Key Response:\n
+    Press the left alt key if the answer is TRUE\n
+    and\n
+    press the right alt key if the answer is FALSE.\n
+    Press the key as fast as you can.\n\n
+    Equation lasts 5 seconds on the screen even after key press.\n
+    Please press the key only once.\n\n
+    Please press “space” to proceed.
+    """
     
+    instructions_test_Chi = """在第三階段中，請根據之前看過的背景場景和人臉照片進行回答。\n
+    我們將先測試背景圖片或人臉的判斷，圖片會單獨出現。"""
+    instructions_test_Eng = """In this phase, please answer based on your best recollection \n
+    of the previously seen background and faces.\n
+    We would test the , and the picture will display on its own."""
     
     instructions_end_Chi = """本實驗結束，謝謝！"""
+    instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
+
     
     ## Set the response key
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
-    keypressLIST_study = ["return"]
-    keypressLIST_text = ["return"]
-    keypressLIST_alt = ["return"]
-    #keypressLIST_ans = ['1', '6']  #'1' == Left_hand == unheard; '6' == Right_hand == heard
+    keypressLIST_alt = ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
 
-    #core.wait(3)
-
-    #Display the instructions
-    display_ins(instructions_1, keypressLIST_enter)
-    display_ins(instructions_2, keypressLIST_enter)
+    # Step_1: Show the instructions
+    # Welcome the participants
+    display_ins(instructions_welcome_Chi, keypressLIST_space)
+    # Display the instructions for experiment content and keypress
+    display_ins(instructions_study_Chi, keypressLIST_space)
+    
 
     #core.wait(3)
 
@@ -235,8 +268,15 @@ if __name__ == "__main__":
                 print(keys)
                 
                 # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-                if keys == ["space"]:
-                    conditionLIST = ["heard"]
+                if keys == ["lalt"]:
+                    conditionLIST = ["femael"]
+                    end_time = clock.getTime()
+                    time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                    print(time_duration)
+                    #print(type(time_duration))
+                    clock.reset()
+                if keys == ["ralt"]:
+                    conditionLIST = ["male"]
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
                     print(time_duration)
