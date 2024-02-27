@@ -25,45 +25,45 @@ from pathlib import Path
 import serial
 
 
-#def display_ins(STR, keyPressLIST=None):
-    #'''
-    #*Self deifined function*
-    #To display the required strings and its appointed keypress.
-    #When the appointed strings and keypress were set, this function will display the strings.
-    #Only the pre-arranged keypress will allow the string display to proceed onto the next string.
-    #If no keypress was assigned, any keypress will continue the string display.
-    #e.g display_ins("lalala", ['space'])
-    #'''
-    #instructionsLIST = STR.split("\\\\")
-    #keyPressLIST = keyPressLIST
+def display_ins(STR, keyPressLIST=None):
+    '''
+    *Self deifined function*
+    To display the required strings and its appointed keypress.
+    When the appointed strings and keypress were set, this function will display the strings.
+    Only the pre-arranged keypress will allow the string display to proceed onto the next string.
+    If no keypress was assigned, any keypress will continue the string display.
+    e.g display_ins("lalala", ['space'])
+    '''
+    instructionsLIST = STR.split("\\\\")
+    keyPressLIST = keyPressLIST
 
-    #for t in instructionsLIST:
-        #instructions = visual.TextStim(win=win, text=t)
-        #instructions.draw()
-        #win.flip()
-        #event.waitKeys(keyList=keyPressLIST)
-    #win.flip()
+    for t in instructionsLIST:
+        instructions = visual.TextStim(win=win, text=t)
+        instructions.draw()
+        win.flip()
+        event.waitKeys(keyList=keyPressLIST)
+    win.flip()
 
-#def display_fix():
-    #'''
-    #*Self deifined function*
-    #Display fixation in the central of the screen.
-    #e.g. display_fix()
-    #'''
-    #fixation = visual.TextStim(win=win, text="+")
-    #fixation.draw()
-    #win.flip()
+def display_fix():
+    '''
+    *Self deifined function*
+    Display fixation in the central of the screen.
+    e.g. display_fix()
+    '''
+    fixation = visual.TextStim(win=win, text="+")
+    fixation.draw()
+    win.flip()
     
-#def display_Image(ImageSTR):  #, keyPressLIST=None):
-    #'''
-    #*Self deifined function*
-    #To present the pic in the central of the screen
-    #'''
-    #pic = visual.ImageStim(win=win, image=ImageSTR)
-    #pic.draw()
+def display_Image(ImageSTR):  #, keyPressLIST=None):
+    '''
+    *Self deifined function*
+    To present the pic in the central of the screen
+    '''
+    pic = visual.ImageStim(win=win, image=ImageSTR)
+    pic.draw()
+    win.flip()
+    #event.waitKeys(keyList=keyPressLIST)
     #win.flip()
-    ##event.waitKeys(keyList=keyPressLIST)
-    ##win.flip()
 
 # The EEG trigger port info
 # For setting up the Trigger in NCU ICN Room608 EEG
@@ -422,11 +422,10 @@ if __name__ == "__main__":
     keypressLIST_alt = ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
     keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
 
-    # Step_1: Show the instructions
-    # Welcome the participants
-    #display_ins(instructions_welcome_Chi, keypressLIST_space)
+    # Show the instructions >> Welcome the participants
+    display_ins(instructions_welcome_Chi, keypressLIST_space)
     # Display the instructions for experiment content and keypress
-    #display_ins(instructions_distraction_Chi, keypressLIST_space)
+    display_ins(instructions_distraction_Chi, keypressLIST_space)
     
     # Load in the math problem for distraction task
     with open(root_data_path / 'Distraction_task_materials.csv', 'r', encoding = "utf-8") as csvf:
@@ -442,11 +441,7 @@ if __name__ == "__main__":
             mathLIST.append(tmpLIST)
         print(mathLIST)
 
-
-    ## Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    #for round_ in range(1, 3):  # only 2 rounds
-        #print("Please ready for Round", round_)
-    
+    ## Show the stimuli(equations), randomly
     """
     ## To mark the round number  ##
     port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
@@ -454,11 +449,23 @@ if __name__ == "__main__":
     """
     # Randomly select the formula from the list
     random.shuffle(mathLIST)
-    formulaLIST = sample(mathLIST, 20)
+    distr_mathLIST = sample(mathLIST, 20)
+    print(len(distr_mathLIST), distr_mathLIST)
+
+    ## Presave the blank list for wanted results
+    day = date.today()
+    dateLIST = []
+    sub_idLIST = []
+    stimLIST = []
+    answerLIST =[]
+    resultKeyLIST = []
+    key_conditionLIST = []
+    distr_rtLIST = []
+    correctnessLIST = []
+    correctLIST = []
+    conditionLIST = []
     
-    print(len(formulaLIST), formulaLIST)
-    
-    for itemLIST in formulaLIST:  #need to loop 6 times for 48 trials in one round (96 trials in total)
+    for itemLIST in distr_mathLIST:  #need to loop 6 times for 48 trials in one round (96 trials in total)
         ## To refresh the win before play out the stim pw
         win.flip()  # always add this after an item was presented
         #core.wait(2)
@@ -466,10 +473,13 @@ if __name__ == "__main__":
         start_time = clock.getTime()
 
         ## Display the math formula stimulus
-        formulaSTR = itemLIST[0]
+        equationSTR = itemLIST[0]
         answerSTR = itemLIST[1]
         #print(formulaLIST.index(itemLIST), formulaSTR, answerSTR)
-
+        
+        equaStim = visual.TextStim(win=win, text=equationSTR)
+        equaStim.draw()
+        
         """
         # TO MARK THE PSEUDOWORD APPEARED
         port.write(b'1') #This is the num_tag for opening the trigger
@@ -527,37 +537,16 @@ if __name__ == "__main__":
         else:
             pass
                 
-                ## Collect the H/LCD of the words
-                ### FOR Set A H/LCD
-                #if sub_cond == "A":
-                    #if stim_wordSTR in pair_1pw_LIST:
-                        #cdSTR = "H"
-                    #elif stim_wordSTR in pair_2pw_LIST:
-                        #cdSTR = "L"
-                    #else:
-                        #cdSTR = "C"
-                
-                ### FOR Set B H/LCD
-                #if sub_cond == "B":
-                    #if stim_wordSTR in pair_1pw_LIST:
-                        #cdSTR = "L"
-                    #elif stim_wordSTR in pair_2pw_LIST:
-                        #cdSTR = "H"
-                    #else:
-                        #cdSTR = "C"
-                        
-                ## making the wanted info into the List form for future use
-                #sub_idLIST.append(sub_id)
-                #dateLIST.append(day)
-                #sub_condLIST.append(sub_cond)
-                #roundLIST.append(round_)
-                #stimLIST.append(stim_wordSTR)
-                #CD_condLIST.append(cdSTR)
-                #resultKeyLIST.append(keys)
-                #responseLIST.append(conditionLIST)
-                #LDT_rtLIST.append(time_duration)
-                #correctnessLIST.append(correctLIST)
-            
+        # making the wanted info into the List form for future use
+        sub_idLIST.append(sub_id)
+        dateLIST.append(day)
+        stimLIST.append(formulaSTR)
+        answerLIST.append(answerSTR)
+        resultKeyLIST.append(keys)
+        key_conditionLIST.append(conditionLIST)
+        distr_rtLIST.append(time_duration)
+        correctnessLIST.append(correctLIST)
+    
         ##Display the instruction of the break in between Round 1 & Round 2
         #print("Round", round_, "is over.")
         #if round_ == 1:
@@ -569,23 +558,21 @@ if __name__ == "__main__":
     #win.close()
     
 
-    ## Saving the self_paced_rt result into csv file
-    #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                           #'Date':dateLIST,
-                           #'Sets':sub_condLIST,
-                           #'Round':roundLIST,
-                           #'Stimuli':stimLIST,
-                           #'CD_condition':CD_condLIST,
-                           #'Keypress':resultKeyLIST,
-                           #'Response':responseLIST,
-                           #'LDT_RT':LDT_rtLIST,
-                           #'Correctness':correctnessLIST
-                           #})
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                           'Date':dateLIST,
+                           'Equation':stimLIST,
+                           'Answers':answerLIST,
+                           'Keypress':resultKeyLIST,
+                           'Response':key_conditionLIST,
+                           'RT':distr_rtLIST,
+                           'Correctness':correctnessLIST
+                           })
     
-    ##data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    #file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
-    #save_path = result_data_path / Path(file_name)
-    #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
+    save_path = result_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
     #### Distractions Task Ends ###
     #### Test Phase Starts ###
