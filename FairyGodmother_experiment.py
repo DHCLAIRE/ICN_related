@@ -2,13 +2,13 @@
 # -*- coding:utf-8 -*-
 
 # To Change the backend setting to PTB
-#from psychopy import prefs
-##prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+from psychopy import prefs
+#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-##import psychtoolbox as ptb
-#from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-#import json
-##print(sound.Sound)
+#import psychtoolbox as ptb
+from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+import json
+#print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -381,198 +381,231 @@ if __name__ == "__main__":
     #"""
     
     ### Distractions Task Starts ###
+    try:
+        win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+        #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+        clock = core.Clock()
+        #start_time = clock.getTime()  >>change position to make the calculation correct
     
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    ##win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
-    #clock = core.Clock()
-    ##start_time = clock.getTime()  >>change position to make the calculation correct
-
-    # Setting the instructions
-    instructions_welcome_Chi = """歡迎參與此實驗"""
-    instructions_welcome_Eng = """Welcome to the experiment!"""
-    
-    instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
-    圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
-    若答案正確，請按左邊的alt 鍵；\n
-    若答案錯誤，則請按右邊的 alt 鍵。\n\n
-    數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
-    故僅需按鍵回答一次即可。\n\n
-    請按空格鍵開始！
-    """
-    instructions_distraction_Eng = """In this session of the experiment, \n
-    you will be presented with math multiplication problems. \n
-    (example:5*5=25).\n\n
-    Key Response:\n
-    Press the left alt key if the answer is TRUE\n
-    and\n
-    press the right alt key if the answer is FALSE.\n
-    Press the key as fast as you can.\n\n
-    Equation lasts 5 seconds on the screen even after key press.\n
-    Please press the key only once.\n\n
-    Please press “space” to proceed.
-    """
-
-    instructions_end_Chi = """本實驗結束，謝謝！"""
-    instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
-
-    
-    ## Set the response key
-    keypressLIST_space = ['space']
-    keypressLIST_enter = ["return"]
-    keypressLIST_alt = ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
-    keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
-
-    # Show the instructions >> Welcome the participants
-    display_ins(instructions_welcome_Chi, keypressLIST_space)
-    # Display the instructions for experiment content and keypress
-    display_ins(instructions_distraction_Chi, keypressLIST_space)
-    
-    # Load in the math problem for distraction task
-    with open(root_data_path / 'Distraction_task_materials.csv', 'r', encoding = "utf-8") as csvf:
-        distr_fileLIST = csvf.read().split("\n")
-        pprint(distr_fileLIST)
+        # Setting the instructions
+        instructions_welcome_Chi = """歡迎參與此實驗"""
+        instructions_welcome_Eng = """Welcome to the experiment!"""
         
-        # Extract the formula
-        mathLIST = []
-        for i in distr_fileLIST[1:]:
-            #print(i)
-            tmpLIST = i.split(",")
-            #print(itemLIST)
-            mathLIST.append(tmpLIST)
-        print(mathLIST)
-
-    ## Show the stimuli(equations), randomly
-    """
-    ## To mark the round number  ##
-    port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
-    core.wait(.01); # Stay for 10 ms
-    """
-    # Randomly select the formula from the list
-    random.shuffle(mathLIST)
-    distr_mathLIST = sample(mathLIST, 20)
-    print(len(distr_mathLIST), distr_mathLIST)
-
-    ## Presave the blank list for wanted results
-    day = date.today()
-    dateLIST = []
-    sub_idLIST = []
-    stimLIST = []
-    answerLIST =[]
-    resultKeyLIST = []
-    key_conditionLIST = []
-    distr_rtLIST = []
-    correctnessLIST = []
-    correctLIST = []
-    conditionLIST = []
-    sub_condLIST = []
-    
-    for itemLIST in distr_mathLIST:  #need to loop 6 times for 48 trials in one round (96 trials in total)
-        ## To refresh the win before play out the stim pw
-        win.flip()  # always add this after an item was presented
-        #core.wait(2)
-        ## Start to record the time
-        start_time = clock.getTime()
-
-        ## Display the math formula stimulus
-        equationSTR = itemLIST[0]
-        answerSTR = itemLIST[1]
-        #print(formulaLIST.index(itemLIST), formulaSTR, answerSTR)
-        
-        equaStim = visual.TextStim(win=win, text=equationSTR)
-        equaStim.draw()
-        
+        instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
+        圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
+        若答案正確，請按左邊的alt 鍵；\n
+        若答案錯誤，則請按右邊的 alt 鍵。\n\n
+        數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
+        故僅需按鍵回答一次即可。\n\n
+        請按空格鍵開始！
         """
-        # TO MARK THE PSEUDOWORD APPEARED
-        port.write(b'1') #This is the num_tag for opening the trigger
+        instructions_distraction_Eng = """In this session of the experiment, \n
+        you will be presented with math multiplication problems. \n
+        (example:5*5=25).\n\n
+        Key Response:\n
+        Press the left alt key if the answer is TRUE\n
+        and\n
+        press the right alt key if the answer is FALSE.\n
+        Press the key as fast as you can.\n\n
+        Equation lasts 5 seconds on the screen even after key press.\n
+        Please press the key only once.\n\n
+        Please press “space” to proceed.
+        """
+    
+        instructions_end_Chi = """本實驗結束，謝謝！"""
+        instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
+    
+        
+        ## Set the response key
+        keypressLIST_space = ['space']
+        keypressLIST_enter = ["return"]
+        keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+        keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
+        keypressLIST_esc = ["escape"]
+    
+        # Show the instructions >> Welcome the participants
+        display_ins(instructions_welcome_Chi, keypressLIST_space)
+        # Display the instructions for experiment content and keypress
+        display_ins(instructions_distraction_Chi, keypressLIST_space)
+        
+        # Load in the math problem for distraction task
+        with open(root_data_path / 'Distraction_task_materials.csv', 'r', encoding = "utf-8") as csvf:
+            distr_fileLIST = csvf.read().split("\n")
+            pprint(distr_fileLIST)
+            
+            # Extract the formula
+            mathLIST = []
+            for i in distr_fileLIST[1:]:
+                #print(i)
+                tmpLIST = i.split(",")
+                #print(itemLIST)
+                mathLIST.append(tmpLIST)
+            print(mathLIST)
+    
+        ## Show the stimuli(equations), randomly
+        """
+        ## To mark the round number  ##
+        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
         core.wait(.01); # Stay for 10 ms
         """
-
-        #setting up what keypress would allow the experiment to proceed
-        keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
-        event.getKeys(keyList=keypressLIST_alt)
-        print(keys)
+        # Randomly select the formula from the list
+        random.shuffle(mathLIST)
+        distr_mathLIST = sample(mathLIST, 20)
+        print(len(distr_mathLIST), distr_mathLIST)
+    
+        ## Presave the blank list for wanted results
+        day = date.today()
+        dateLIST = []
+        sub_idLIST = []
+        stimLIST = []
+        answerLIST =[]
+        resultKeyLIST = []
+        key_conditionLIST = []
+        distr_rtLIST = []
+        correctnessLIST = []
+        correctLIST = []
+        conditionLIST = []
+        sub_condLIST = []
         
-        # Add if-else condition to decide what to record in the results
-        if keys == ["lalt"]:
-            conditionLIST = ["True"]
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
-        elif keys == ["ralt"]:
-            conditionLIST = ["False"]
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
-        else:
-            keys = ["None"]
-            conditionLIST = ["N/A"]
-            time_duration = 0
-            print(time_duration)
-            clock.reset()
-
-                
-        # calculate the correctness of the gender determination response
-        if answerSTR == ["TRUE"]: 
-            # ans is "Correct"
-            if keys == ["lalt"]:
-                correctLIST = ["True"]
-            # ans is "Incorrect"
-            elif keys == ["ralt"]:
-                correctLIST = ["False"]
+        for itemLIST in distr_mathLIST[:5]:  #need to loop 6 times for 48 trials in one round (96 trials in total)
+            ## To refresh the win before play out the stim pw
+            win.flip()  # always add this after an item was presented
+            #core.wait(2)
+            ## Start to record the time
+            start_time = clock.getTime()
+    
+            ## Display the math formula stimulus
+            equationSTR = itemLIST[0]
+            answerSTR = itemLIST[1]
+            print(answerSTR)
+            
+            equaStim = visual.TextStim(win=win, text=equationSTR)
+            equaStim.draw()
+            
+            """
+            # TO MARK THE PSEUDOWORD APPEARED
+            port.write(b'1') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
+            """
+            win.flip()
+    
+            #setting up what keypress would allow the experiment to proceed
+            keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+            event.getKeys(keyList=keypressLIST_alt)
+            print(keys)
+            
+            # Add if-else condition to decide what to record in the results
+            if keys == ["loption"]: #["lalt"]:
+                conditionLIST = ["True"]
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                if answerLIST == ["TRUE"]:
+                    correctLIST = 1 #["correct"]
+                    print(correctLIST)
+                else:
+                    correctLIST = 0 #["incorrect"]
+            elif keys == ["roption"]: #["ralt"]:
+                conditionLIST = ["False"]
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                if answerLIST == ["TRUE"]:
+                    correctLIST = 0 #["incorrect"]
+                    print(correctLIST)
+                else:
+                    correctLIST = 1 #["correct"]
+                    
+            #elif keys == ["escape"]:
+                #win.close()
+                #core.quit()
             else:
-                correctLIST = ["N/A"]
-
-        elif answerSTR == ["FALSE"]:
-            # ans is "Correct"
-            if keys == ["ralt"]:
-                correctLIST = ["True"]
-            # ans is "Incorrect"
-            elif keys == ["lalt"]:
-                correctLIST = ["False"]
+                keys = ["None"]
+                conditionLIST = ["N/A"]
+                time_duration = 0
+                print(time_duration)
+                clock.reset()
+    
+            
+            # calculate the correctness of the gender determination response
+            if answerSTR == ["TRUE"]: 
+                # ans is "Correct"
+                if keys == ["loption"]: #["lalt"]:
+                    correctLIST = ["correct"]
+                    print(correctLIST)
+                # ans is "Incorrect"
+                elif keys == ["roption"]: #["ralt"]:
+                    correctLIST = ["incorrect"]
+                    print(correctLIST)
+                else:
+                    correctLIST = ["N/A"]
+                    print(correctLIST)
+    
+            elif answerSTR == ["FALSE"]:
+                # ans is "Correct"
+                if keys == ["roption"]: #["ralt"]:
+                    correctLIST = ["correct"]
+                    print(correctLIST)
+                # ans is "Incorrect"
+                elif keys == ["loption"]: #["lalt"]:
+                    correctLIST = ["incorrect"]
+                    print(correctLIST)
+                else:
+                    correctLIST = ["N/A"]
+                    print(correctLIST)
             else:
-                correctLIST = ["N/A"]
-        else:
-            pass
-                
-        # making the wanted info into the List form for future use
-        sub_idLIST.append(sub_id)
-        sub_condLIST.append(sub_cond)
-        dateLIST.append(day)
-        stimLIST.append(formulaSTR)
-        answerLIST.append(answerSTR)
-        resultKeyLIST.append(keys)
-        key_conditionLIST.append(conditionLIST)
-        distr_rtLIST.append(time_duration)
-        correctnessLIST.append(correctLIST)
+                pass
+            
+                    
+            # making the wanted info into the List form for future use
+            sub_idLIST.append(sub_id)
+            sub_condLIST.append(sub_cond)
+            dateLIST.append(day)
+            stimLIST.append(equationSTR)
+            answerLIST.append(answerSTR)
+            resultKeyLIST.append(keys)
+            key_conditionLIST.append(conditionLIST)
+            distr_rtLIST.append(time_duration)
+            correctnessLIST.append(correctLIST)  # 1 == correct; 0 == incorrect
     
         #Display the instruction of experiment ends
         display_ins(instructions_end_Chi, keypressLIST_space)
-
-    # close the window  at the end of the experiment
-    win.close()
     
-
-    # Saving the self_paced_rt result into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                             'EmoGroup':sub_condLIST,
-                             'Date':dateLIST,
-                             'Equation':stimLIST,
-                             'Answers':answerLIST,
-                             'Keypress':resultKeyLIST,
-                             'Response':key_conditionLIST,
-                             'RT':distr_rtLIST,
-                             'Correctness':correctnessLIST
-                             })
+        # close the window  at the end of the experiment
+        win.close()
+        
     
-    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
-    save_path = result_data_path / Path(file_name)
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+        # Saving the self_paced_rt result into csv file
+        dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                                 'Date':dateLIST,
+                                 'EmoGroup':sub_condLIST,
+                                 'Equation':stimLIST,
+                                 'Equa_Answers':answerLIST,
+                                 'Keypress':resultKeyLIST,
+                                 'Response':key_conditionLIST,
+                                 'RT':distr_rtLIST,
+                                 'Correctness':correctnessLIST
+                                 })
+        
+        #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+        file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
+        save_path = result_data_path / Path(file_name)
+        dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
+    except:
+        #setting up what keypress would allow the experiment to proceed
+        keys = event.waitKeys() #keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+        event.getKeys()#keyList=keypressLIST_alt)
+        #print(keys)
+        if keys == ["escape"]:
+            win.close()
+            core.quit()
+        
+        
     #### Distractions Task Ends ###
     #### Test Phase Starts ###
     
