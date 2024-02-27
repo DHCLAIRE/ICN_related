@@ -86,8 +86,8 @@ if __name__ == "__main__":
     
     ## key in number for notifying which subject it is
     #sub_type = str(input("Group type: "))
-    #sub_id = str(input("Subject: "))
-    #sub_cond = str(input("Condition: "))
+    sub_id = str(input("Subject: "))
+    sub_cond = str(input("Condition: "))  # Angry--A/Fearful--F/Neutral--N
 
     ## Set up the data path (For Win)
     #root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
@@ -98,8 +98,8 @@ if __name__ == "__main__":
     root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
     face_data_path = root_data_path / "faces"
     Bg_data_path = root_data_path / "Backgrounds"
-    #result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
-    #result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
+    result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
+    result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
     
     ## Setting up usable dataLIST
     targetPseudoLIST = []
@@ -464,6 +464,7 @@ if __name__ == "__main__":
     correctnessLIST = []
     correctLIST = []
     conditionLIST = []
+    sub_condLIST = []
     
     for itemLIST in distr_mathLIST:  #need to loop 6 times for 48 trials in one round (96 trials in total)
         ## To refresh the win before play out the stim pw
@@ -539,6 +540,7 @@ if __name__ == "__main__":
                 
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
+        sub_condLIST.append(sub_cond)
         dateLIST.append(day)
         stimLIST.append(formulaSTR)
         answerLIST.append(answerSTR)
@@ -547,27 +549,24 @@ if __name__ == "__main__":
         distr_rtLIST.append(time_duration)
         correctnessLIST.append(correctLIST)
     
-        ##Display the instruction of the break in between Round 1 & Round 2
-        #print("Round", round_, "is over.")
-        #if round_ == 1:
-            #display_ins(instructions_3, keypressLIST_enter)
-        #else:
-            #display_ins(instructions_4, keypressLIST_enter)
+        #Display the instruction of experiment ends
+        display_ins(instructions_end_Chi, keypressLIST_space)
 
-            ## close the window  at the end of the experiment
-    #win.close()
+    # close the window  at the end of the experiment
+    win.close()
     
 
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                           'Date':dateLIST,
-                           'Equation':stimLIST,
-                           'Answers':answerLIST,
-                           'Keypress':resultKeyLIST,
-                           'Response':key_conditionLIST,
-                           'RT':distr_rtLIST,
-                           'Correctness':correctnessLIST
-                           })
+                             'EmoGroup':sub_condLIST,
+                             'Date':dateLIST,
+                             'Equation':stimLIST,
+                             'Answers':answerLIST,
+                             'Keypress':resultKeyLIST,
+                             'Response':key_conditionLIST,
+                             'RT':distr_rtLIST,
+                             'Correctness':correctnessLIST
+                             })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
     file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
