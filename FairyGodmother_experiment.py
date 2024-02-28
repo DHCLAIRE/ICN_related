@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-# To Change the backend setting to PTB
-from psychopy import prefs
-#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+## To Change the backend setting to PTB
+#from psychopy import prefs
+##prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-#import psychtoolbox as ptb
-from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-import json
+##import psychtoolbox as ptb
+#from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+#import json
 #print(sound.Sound)
 
 import scipy
@@ -25,45 +25,45 @@ from pathlib import Path
 import serial
 
 
-def display_ins(STR, keyPressLIST=None):
-    '''
-    *Self deifined function*
-    To display the required strings and its appointed keypress.
-    When the appointed strings and keypress were set, this function will display the strings.
-    Only the pre-arranged keypress will allow the string display to proceed onto the next string.
-    If no keypress was assigned, any keypress will continue the string display.
-    e.g display_ins("lalala", ['space'])
-    '''
-    instructionsLIST = STR.split("\\\\")
-    keyPressLIST = keyPressLIST
+#def display_ins(STR, keyPressLIST=None):
+    #'''
+    #*Self deifined function*
+    #To display the required strings and its appointed keypress.
+    #When the appointed strings and keypress were set, this function will display the strings.
+    #Only the pre-arranged keypress will allow the string display to proceed onto the next string.
+    #If no keypress was assigned, any keypress will continue the string display.
+    #e.g display_ins("lalala", ['space'])
+    #'''
+    #instructionsLIST = STR.split("\\\\")
+    #keyPressLIST = keyPressLIST
 
-    for t in instructionsLIST:
-        instructions = visual.TextStim(win=win, text=t)
-        instructions.draw()
-        win.flip()
-        event.waitKeys(keyList=keyPressLIST)
-    win.flip()
-
-def display_fix():
-    '''
-    *Self deifined function*
-    Display fixation in the central of the screen.
-    e.g. display_fix()
-    '''
-    fixation = visual.TextStim(win=win, text="+")
-    fixation.draw()
-    win.flip()
-    
-def display_Image(ImageSTR):  #, keyPressLIST=None):
-    '''
-    *Self deifined function*
-    To present the pic in the central of the screen
-    '''
-    pic = visual.ImageStim(win=win, image=ImageSTR)
-    pic.draw()
-    win.flip()
-    #event.waitKeys(keyList=keyPressLIST)
+    #for t in instructionsLIST:
+        #instructions = visual.TextStim(win=win, text=t, color=[-1, -1, -1])
+        #instructions.draw()
+        #win.flip()
+        #event.waitKeys(keyList=keyPressLIST)
     #win.flip()
+
+#def display_fix():
+    #'''
+    #*Self deifined function*
+    #Display fixation in the central of the screen.
+    #e.g. display_fix()
+    #'''
+    #fixation = visual.TextStim(win=win, text="+")
+    #fixation.draw()
+    #win.flip()
+    
+#def display_Image(ImageSTR):  #, keyPressLIST=None):
+    #'''
+    #*Self deifined function*
+    #To present the pic in the central of the screen
+    #'''
+    #pic = visual.ImageStim(win=win, image=ImageSTR)
+    #pic.draw()
+    #win.flip()
+    ##event.waitKeys(keyList=keyPressLIST)
+    ##win.flip()
 
 # The EEG trigger port info
 # For setting up the Trigger in NCU ICN Room608 EEG
@@ -86,8 +86,8 @@ if __name__ == "__main__":
     
     ## key in number for notifying which subject it is
     #sub_type = str(input("Group type: "))
-    sub_id = str(input("Subject: "))
-    sub_cond = str(input("Condition: "))  # Angry--A/Fearful--F/Neutral--N
+    #sub_id = str(input("Subject: "))
+    #sub_cond = str(input("Condition: "))  # Angry--A/Fearful--F/Neutral--N
 
     ## Set up the data path (For Win)
     #root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
@@ -98,8 +98,8 @@ if __name__ == "__main__":
     root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
     face_data_path = root_data_path / "faces"
     Bg_data_path = root_data_path / "Backgrounds"
-    result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
-    result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
+    #result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
+    #result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
     
     ## Setting up usable dataLIST
     targetPseudoLIST = []
@@ -151,75 +151,69 @@ if __name__ == "__main__":
     #clock = core.Clock()
     ##start_time = clock.getTime()  >>change position to make the calculation correct
 
-    ## Setting the instructions
-    #instructions_welcome_Chi = """歡迎參與此實驗"""
-    #instructions_welcome_Eng = """Welcome to the experiment!"""
+    # Setting the instructions
+    instructions_welcome_Chi = """歡迎參與此實驗"""
+    instructions_welcome_Eng = """Welcome to the experiment!"""
     
-    #instructions_study_Chi = """在第一階段裡，您將同時看到一張人臉及圖片背景。\n
-    #請以觀看整張圖片的方式來看，而非僅聚焦在人臉或背景圖片上。\n\n
-    #當看到人臉時，若為女性臉孔，請按下左邊的Alt鍵。\n
-    #若為男性臉孔，則請按下右邊的Alt鍵。\n如下方圖片所示：\n
-    #即便您已按下按鍵做反應，圖片將會在螢幕停留一下，\n
-    #故僅需按鍵回答一次即可。\n\n
-    #請按空格鍵開始！
-    #"""
-    #instructions_study_Eng = """In this experiment, you will be presented with faces embedded in the background.\n
-    #Please see the picture hoslically without focus only on the faces or background.\n\n
-    #WKey Response:\n
-    #Press the left alt key if the face is a FEMALE\n
-    #and\n
-    #press the right alt key if the face is a MALE.\n
-    #Press the key as fast as you can.\n\n
-    #Picture would stay displayed on the screen even after key press.\n
-    #Please press the key only once.\n\n
-    #Please press “space” to proceed.
-    #"""
+    instructions_study_Chi = """在第一階段裡，您將同時看到一張人臉及圖片背景。\n
+    請以觀看整張圖片的方式來看，而非僅聚焦在人臉或背景圖片上。\n\n
+    當看到人臉時，若為女性臉孔，請按下左邊的Alt鍵。\n
+    若為男性臉孔，則請按下右邊的Alt鍵。\n如下方圖片所示：\n
+    即便您已按下按鍵做反應，圖片將會在螢幕停留一下，\n
+    故僅需按鍵回答一次即可。\n\n
+    請按空格鍵開始！
+    """
+    instructions_study_Eng = """In this experiment, you will be presented with faces embedded in the background.\n
+    Please see the picture hoslically without focus only on the faces or background.\n\n
+    WKey Response:\n
+    Press the left alt key if the face is a FEMALE\n
+    and\n
+    press the right alt key if the face is a MALE.\n
+    Press the key as fast as you can.\n\n
+    Picture would stay displayed on the screen even after key press.\n
+    Please press the key only once.\n\n
+    Please press “space” to proceed.
+    """
     
-    #instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
-    #圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
-    #若答案正確，請按左邊的alt 鍵；\n
-    #若答案錯誤，則請按右邊的 alt 鍵。\n\n
-    #數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
-    #故僅需按鍵回答一次即可。\n\n
-    #請按空格鍵開始！
-    #"""
-    #instructions_distraction_Eng = """In this session of the experiment, \n
-    #you will be presented with math multiplication problems. \n
-    #(example:5*5=25).\n\n
-    #Key Response:\n
-    #Press the left alt key if the answer is TRUE\n
-    #and\n
-    #press the right alt key if the answer is FALSE.\n
-    #Press the key as fast as you can.\n\n
-    #Equation lasts 5 seconds on the screen even after key press.\n
-    #Please press the key only once.\n\n
-    #Please press “space” to proceed.
-    #"""
-    
-    #instructions_test_Chi = """在第三階段中，請根據之前看過的背景場景和人臉照片進行回答。\n
-    #我們將先測試背景圖片或人臉的判斷，圖片會單獨出現。"""
-    #instructions_test_Eng = """In this phase, please answer based on your best recollection \n
-    #of the previously seen background and faces.\n
-    #We would test the , and the picture will display on its own."""
-    
-    #instructions_end_Chi = """本實驗結束，謝謝！"""
-    #instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
+    instructions_end_Chi = """本實驗結束，謝謝！"""
+    instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
 
     
-    ### Set the response key
-    #keypressLIST_space = ['space']
-    #keypressLIST_enter = ["return"]
-    #keypressLIST_alt = ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    ## Set the response key
+    keypressLIST_space = ['space']
+    keypressLIST_enter = ["return"]
+    keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
     #keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
-
-    ## Step_1: Show the instructions
-    ## Welcome the participants
+    #keypressLIST_esc = ["escape"]
+    
+    # Step_1: Show the instructions
+    # Welcome the participants
     #display_ins(instructions_welcome_Chi, keypressLIST_space)
     ## Display the instructions for experiment content and keypress
     #display_ins(instructions_study_Chi, keypressLIST_space)
     
 
-    ##core.wait(3)
+    #core.wait(3)
+    
+    
+    with open(root_data_path / 'n_material_files_faces_n_Bg.csv', 'r', encoding = "utf-8") as csvf:
+        pic_fileLIST = csvf.read().split("\n")
+        pprint(pic_fileLIST)
+    
+    pic_infoLIST = []
+    for pic_info in pic_fileLIST: #[1:50]:
+        pic_infoLIST = pic_info.split(",")
+        print(pic_infoLIST, len(pic_infoLIST))
+        
+        pic_pathSTR = pic_infoLIST[0]
+        pic_nameSTR = re.match(r'\w(.png)', pic_pathSTR)
+        print(pic_nameSTR)
+        #pic_nameLIST = [path.name for path in Path(pic_pathSTR).iterdir() if re.match(r'\*.png', path.name)]
+        #pprint(pic_nameLIST)
+        #print(pic_pathSTR, len(pic_pathSTR))
+        #print(pic_pathSTR[50:])  #e.g. \CFD-BM-016-042-A.png
+        
+        
 
     ## 假詞all重新排列後依序送出，整個LIST重複送2次
     ## Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
@@ -247,9 +241,7 @@ if __name__ == "__main__":
 
 
                 ## Display the pw stimulus
-                #LTTC_pw_stm = target_w_stim_data_path / Path('{}.wav'.format(stim_wordSTR))
-                #pw_Sound = sound.Sound(LTTC_pw_stm)
-                #pw_Sound.play()
+                #display_Image()
 
                 #"""
                 ## TO MARK THE PSEUDOWORD APPEARED
@@ -375,239 +367,284 @@ if __name__ == "__main__":
     #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
 
     ## close all the possible ongoing commands that could be running in the background
-    ##core.quit()  # normally we would add it, in case that anything happen
+    #core.quit()  # normally we would add it, in case that anything happen
     
-    #### Study Phase Ends ###
-    #"""
+    ### Study Phase Ends ###
     
-    ### Distractions Task Starts ###
-    try:
-        win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-        #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
-        clock = core.Clock()
-        #start_time = clock.getTime()  >>change position to make the calculation correct
     
-        # Setting the instructions
-        instructions_welcome_Chi = """歡迎參與此實驗"""
-        instructions_welcome_Eng = """Welcome to the experiment!"""
+    #### Distractions Task Starts ###
+    #try:
+        #win = visual.Window(size=[500, 500], color=[1, 1, 1], units ="pix")
+        ##win = visual.Window(color=[-1, -1, -1], units ="pix", fullscr = True)
+        #clock = core.Clock()
+        ##start_time = clock.getTime()  >>change position to make the calculation correct
+    
+        ## Setting the instructions
+        #instructions_welcome_Chi = """歡迎參與此實驗"""
+        #instructions_welcome_Eng = """Welcome to the experiment!"""
         
-        instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
-        圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
-        若答案正確，請按左邊的alt 鍵；\n
-        若答案錯誤，則請按右邊的 alt 鍵。\n\n
-        數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
-        故僅需按鍵回答一次即可。\n\n
-        請按空格鍵開始！
-        """
-        instructions_distraction_Eng = """In this session of the experiment, \n
-        you will be presented with math multiplication problems. \n
-        (example:5*5=25).\n\n
-        Key Response:\n
-        Press the left alt key if the answer is TRUE\n
-        and\n
-        press the right alt key if the answer is FALSE.\n
-        Press the key as fast as you can.\n\n
-        Equation lasts 5 seconds on the screen even after key press.\n
-        Please press the key only once.\n\n
-        Please press “space” to proceed.
-        """
+        #instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
+        #圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
+        #若答案正確，請按左邊的alt 鍵；\n
+        #若答案錯誤，則請按右邊的 alt 鍵。\n\n
+        #數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
+        #故僅需按鍵回答一次即可。\n\n
+        #請按空格鍵開始！
+        #"""
+        #instructions_distraction_Eng = """In this session of the experiment, \n
+        #you will be presented with math multiplication problems. \n
+        #(example:5*5=25).\n\n
+        #Key Response:\n
+        #Press the left alt key if the answer is TRUE\n
+        #and\n
+        #press the right alt key if the answer is FALSE.\n
+        #Press the key as fast as you can.\n\n
+        #Equation lasts 5 seconds on the screen even after key press.\n
+        #Please press the key only once.\n\n
+        #Please press “space” to proceed.
+        #"""
     
-        instructions_end_Chi = """本實驗結束，謝謝！"""
-        instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
+        #instructions_end_Chi = """本實驗結束，謝謝！"""
+        #instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
     
         
-        ## Set the response key
-        keypressLIST_space = ['space']
-        keypressLIST_enter = ["return"]
-        keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
-        keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
-        keypressLIST_esc = ["escape"]
+        ### Set the response key
+        #keypressLIST_space = ['space']
+        #keypressLIST_enter = ["return"]
+        #keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+        #keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
+        #keypressLIST_esc = ["escape"]
     
-        # Show the instructions >> Welcome the participants
-        display_ins(instructions_welcome_Chi, keypressLIST_space)
-        # Display the instructions for experiment content and keypress
-        display_ins(instructions_distraction_Chi, keypressLIST_space)
+        ## Show the instructions >> Welcome the participants
+        #display_ins(instructions_welcome_Chi, keypressLIST_space)
+        ## Display the instructions for experiment content and keypress
+        #display_ins(instructions_distraction_Chi, keypressLIST_space)
         
-        # Load in the math problem for distraction task
-        with open(root_data_path / 'Distraction_task_materials.csv', 'r', encoding = "utf-8") as csvf:
-            distr_fileLIST = csvf.read().split("\n")
-            pprint(distr_fileLIST)
+        ## Load in the math problem for distraction task
+        #with open(root_data_path / 'Distraction_task_materials.csv', 'r', encoding = "utf-8") as csvf:
+            #distr_fileLIST = csvf.read().split("\n")
+            #pprint(distr_fileLIST)
             
-            # Extract the formula
-            mathLIST = []
-            for i in distr_fileLIST[1:]:
-                #print(i)
-                tmpLIST = i.split(",")
-                #print(itemLIST)
-                mathLIST.append(tmpLIST)
-            print(mathLIST)
+            ## Extract the formula
+            #mathLIST = []
+            #for i in distr_fileLIST[1:]:
+                ##print(i)
+                #tmpLIST = i.split(",")
+                ##print(itemLIST)
+                #mathLIST.append(tmpLIST)
+            #print(mathLIST)
     
-        ## Show the stimuli(equations), randomly
-        """
-        ## To mark the round number  ##
-        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
-        core.wait(.01); # Stay for 10 ms
-        """
-        # Randomly select the formula from the list
-        random.shuffle(mathLIST)
-        distr_mathLIST = sample(mathLIST, 20)
-        print(len(distr_mathLIST), distr_mathLIST)
+        ### Show the stimuli(equations), randomly
+        #"""
+        ### To mark the round number  ##
+        #port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+        #core.wait(.01); # Stay for 10 ms
+        #"""
+        ## Randomly select the formula from the list
+        #random.shuffle(mathLIST)
+        #distr_mathLIST = sample(mathLIST, 20)
+        #print(len(distr_mathLIST), distr_mathLIST)
     
-        ## Presave the blank list for wanted results
-        day = date.today()
-        dateLIST = []
-        sub_idLIST = []
-        stimLIST = []
-        answerLIST =[]
-        resultKeyLIST = []
-        key_conditionLIST = []
-        distr_rtLIST = []
-        correctnessLIST = []
-        correctLIST = []
-        conditionLIST = []
-        sub_condLIST = []
+        ### Presave the blank list for wanted results
+        #day = date.today()
+        #dateLIST = []
+        #sub_idLIST = []
+        #stimLIST = []
+        #answerLIST =[]
+        #resultKeyLIST = []
+        #key_conditionLIST = []
+        #distr_rtLIST = []
+        #correctnessLIST = []
+        #correctLIST = []
+        #conditionLIST = []
+        #sub_condLIST = []
         
-        for itemLIST in distr_mathLIST[:5]:  #need to loop 6 times for 48 trials in one round (96 trials in total)
-            ## To refresh the win before play out the stim pw
-            win.flip()  # always add this after an item was presented
-            #core.wait(2)
-            ## Start to record the time
-            start_time = clock.getTime()
+        #for itemLIST in distr_mathLIST[:5]:  #need to loop 6 times for 48 trials in one round (96 trials in total)
+            ### To refresh the win before play out the stim pw
+            #win.flip()  # always add this after an item was presented
+            ##core.wait(2)
+            ### Start to record the time
+            #start_time = clock.getTime()
     
-            ## Display the math formula stimulus
-            equationSTR = itemLIST[0]
-            answerSTR = itemLIST[1]
-            print(answerSTR)
+            ### Display the math formula stimulus
+            #equationSTR = itemLIST[0]
+            #answerSTR = itemLIST[1]
+            #print(answerSTR)
             
-            equaStim = visual.TextStim(win=win, text=equationSTR)
-            equaStim.draw()
+            #equaStim = visual.TextStim(win=win, text=equationSTR, color=[-1, -1, -1])
+            #equaStim.draw()
             
-            """
-            # TO MARK THE PSEUDOWORD APPEARED
-            port.write(b'1') #This is the num_tag for opening the trigger
-            core.wait(.01); # Stay for 10 ms
-            """
-            win.flip()
+            #"""
+            ## TO MARK THE PSEUDOWORD APPEARED
+            #port.write(b'1') #This is the num_tag for opening the trigger
+            #core.wait(.01); # Stay for 10 ms
+            #"""
+            #win.flip()
     
-            #setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
-            event.getKeys(keyList=keypressLIST_alt)
-            print(keys)
+            ##setting up what keypress would allow the experiment to proceed
+            #keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+            #event.getKeys(keyList=keypressLIST_alt)
+            #print(keys)
             
-            # Add if-else condition to decide what to record in the results
-            if keys == ["loption"]: #["lalt"]:
-                conditionLIST = ["True"]
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-                print(time_duration)
-                #print(type(time_duration))
-                clock.reset()
-                if answerLIST == ["TRUE"]:
-                    correctLIST = 1 #["correct"]
-                    print(correctLIST)
-                else:
-                    correctLIST = 0 #["incorrect"]
-            elif keys == ["roption"]: #["ralt"]:
-                conditionLIST = ["False"]
-                end_time = clock.getTime()
-                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                print(time_duration)
-                #print(type(time_duration))
-                clock.reset()
-                if answerLIST == ["TRUE"]:
-                    correctLIST = 0 #["incorrect"]
-                    print(correctLIST)
-                else:
-                    correctLIST = 1 #["correct"]
+            ## Add if-else condition to decide what to record in the results
+            #if keys == ["loption"]: #["lalt"]:
+                #conditionLIST = ["True"]
+                #end_time = clock.getTime()
+                #time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+                #print(time_duration)
+                ##print(type(time_duration))
+                #clock.reset()
+                #if answerLIST == ["TRUE"]:
+                    #correctLIST = 1 #["correct"]
+                    #print(correctLIST)
+                #else:
+                    #correctLIST = 0 #["incorrect"]
+            #elif keys == ["roption"]: #["ralt"]:
+                #conditionLIST = ["False"]
+                #end_time = clock.getTime()
+                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                #print(time_duration)
+                ##print(type(time_duration))
+                #clock.reset()
+                #if answerLIST == ["TRUE"]:
+                    #correctLIST = 0 #["incorrect"]
+                    #print(correctLIST)
+                #else:
+                    #correctLIST = 1 #["correct"]
                     
-            #elif keys == ["escape"]:
-                #win.close()
-                #core.quit()
-            else:
-                keys = ["None"]
-                conditionLIST = ["N/A"]
-                time_duration = 0
-                print(time_duration)
-                clock.reset()
-    
-            
-            # calculate the correctness of the gender determination response
-            if answerSTR == ["TRUE"]: 
-                # ans is "Correct"
-                if keys == ["loption"]: #["lalt"]:
-                    correctLIST = ["correct"]
-                    print(correctLIST)
-                # ans is "Incorrect"
-                elif keys == ["roption"]: #["ralt"]:
-                    correctLIST = ["incorrect"]
-                    print(correctLIST)
-                else:
-                    correctLIST = ["N/A"]
-                    print(correctLIST)
-    
-            elif answerSTR == ["FALSE"]:
-                # ans is "Correct"
-                if keys == ["roption"]: #["ralt"]:
-                    correctLIST = ["correct"]
-                    print(correctLIST)
-                # ans is "Incorrect"
-                elif keys == ["loption"]: #["lalt"]:
-                    correctLIST = ["incorrect"]
-                    print(correctLIST)
-                else:
-                    correctLIST = ["N/A"]
-                    print(correctLIST)
-            else:
-                pass
-            
+            ##elif keys == ["escape"]:
+                ##win.close()
+                ##core.quit()
+            #else:
+                #keys = ["None"]
+                #conditionLIST = ["N/A"]
+                #time_duration = 0
+                #print(time_duration)
+                #clock.reset()
                     
-            # making the wanted info into the List form for future use
-            sub_idLIST.append(sub_id)
-            sub_condLIST.append(sub_cond)
-            dateLIST.append(day)
-            stimLIST.append(equationSTR)
-            answerLIST.append(answerSTR)
-            resultKeyLIST.append(keys)
-            key_conditionLIST.append(conditionLIST)
-            distr_rtLIST.append(time_duration)
-            correctnessLIST.append(correctLIST)  # 1 == correct; 0 == incorrect
+            ## making the wanted info into the List form for future use
+            #sub_idLIST.append(sub_id)
+            #sub_condLIST.append(sub_cond)
+            #dateLIST.append(day)
+            #stimLIST.append(equationSTR)
+            #answerLIST.append(answerSTR)
+            #resultKeyLIST.append(keys)
+            #key_conditionLIST.append(conditionLIST)
+            #distr_rtLIST.append(time_duration)
+            #correctnessLIST.append(correctLIST)  # 1 == correct; 0 == incorrect
     
-        #Display the instruction of experiment ends
-        display_ins(instructions_end_Chi, keypressLIST_space)
+        ##Display the instruction of experiment ends
+        #display_ins(instructions_end_Chi, keypressLIST_space)
     
-        # close the window  at the end of the experiment
-        win.close()
+        ## close the window  at the end of the experiment
+        #win.close()
         
     
-        # Saving the self_paced_rt result into csv file
-        dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
-                                 'Date':dateLIST,
-                                 'EmoGroup':sub_condLIST,
-                                 'Equation':stimLIST,
-                                 'Equa_Answers':answerLIST,
-                                 'Keypress':resultKeyLIST,
-                                 'Response':key_conditionLIST,
-                                 'RT':distr_rtLIST,
-                                 'Correctness':correctnessLIST
-                                 })
+        ## Saving the self_paced_rt result into csv file
+        #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
+                                 #'Date':dateLIST,
+                                 #'EmoGroup':sub_condLIST,
+                                 #'Equation':stimLIST,
+                                 #'Equa_Answers':answerLIST,
+                                 #'Keypress':resultKeyLIST,
+                                 #'Response':key_conditionLIST,
+                                 #'RT':distr_rtLIST,
+                                 #'Correctness':correctnessLIST
+                                 #})
         
-        #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-        file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
-        save_path = result_data_path / Path(file_name)
-        dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+        ##data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+        #file_name = 'Sub%s_%s_distraction_results.csv' %(sub_id, sub_cond)
+        #save_path = result_data_path / Path(file_name)
+        #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
-    except:
-        #setting up what keypress would allow the experiment to proceed
-        keys = event.waitKeys() #keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
-        event.getKeys()#keyList=keypressLIST_alt)
-        #print(keys)
-        if keys == ["escape"]:
-            win.close()
-            core.quit()
+    #except:
+        ##setting up what keypress would allow the experiment to proceed
+        #keys = event.waitKeys() #keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+        #event.getKeys()#keyList=keypressLIST_alt)
+        ##print(keys)
+        #if keys == ["escape"]:
+            #win.close()
+            #core.quit()
         
         
     #### Distractions Task Ends ###
     #### Test Phase Starts ###
+    # Setting the presented window
+    
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    ##win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    #clock = core.Clock()
+    ##start_time = clock.getTime()  >>change position to make the calculation correct
+
+    ## Setting the instructions
+    #instructions_welcome_Chi = """歡迎參與此實驗"""
+    #instructions_welcome_Eng = """Welcome to the experiment!"""
+    
+    #instructions_study_Chi = """在第一階段裡，您將同時看到一張人臉及圖片背景。\n
+    #請以觀看整張圖片的方式來看，而非僅聚焦在人臉或背景圖片上。\n\n
+    #當看到人臉時，若為女性臉孔，請按下左邊的Alt鍵。\n
+    #若為男性臉孔，則請按下右邊的Alt鍵。\n如下方圖片所示：\n
+    #即便您已按下按鍵做反應，圖片將會在螢幕停留一下，\n
+    #故僅需按鍵回答一次即可。\n\n
+    #請按空格鍵開始！
+    #"""
+    #instructions_study_Eng = """In this experiment, you will be presented with faces embedded in the background.\n
+    #Please see the picture hoslically without focus only on the faces or background.\n\n
+    #WKey Response:\n
+    #Press the left alt key if the face is a FEMALE\n
+    #and\n
+    #press the right alt key if the face is a MALE.\n
+    #Press the key as fast as you can.\n\n
+    #Picture would stay displayed on the screen even after key press.\n
+    #Please press the key only once.\n\n
+    #Please press “space” to proceed.
+    #"""
+    
+    #instructions_distraction_Chi = """在第二階段中，實驗流程如第一階段，\n
+    #圖片則將替換成數學乘法問題。（例如：5*5=25）。\n\n
+    #若答案正確，請按左邊的alt 鍵；\n
+    #若答案錯誤，則請按右邊的 alt 鍵。\n\n
+    #數學乘法問題將會在螢幕停留5秒，即便您已按下按鍵做反應，\n
+    #故僅需按鍵回答一次即可。\n\n
+    #請按空格鍵開始！
+    #"""
+    #instructions_distraction_Eng = """In this session of the experiment, \n
+    #you will be presented with math multiplication problems. \n
+    #(example:5*5=25).\n\n
+    #Key Response:\n
+    #Press the left alt key if the answer is TRUE\n
+    #and\n
+    #press the right alt key if the answer is FALSE.\n
+    #Press the key as fast as you can.\n\n
+    #Equation lasts 5 seconds on the screen even after key press.\n
+    #Please press the key only once.\n\n
+    #Please press “space” to proceed.
+    #"""
+    
+    #instructions_test_Chi = """在第三階段中，請根據之前看過的背景場景和人臉照片進行回答。\n
+    #我們將先測試背景圖片或人臉的判斷，圖片會單獨出現。"""
+    #instructions_test_Eng = """In this phase, please answer based on your best recollection \n
+    #of the previously seen background and faces.\n
+    #We would test the , and the picture will display on its own."""
+    
+    #instructions_end_Chi = """本實驗結束，謝謝！"""
+    #instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
+
+    
+    ### Set the response key
+    #keypressLIST_space = ['space']
+    #keypressLIST_enter = ["return"]
+    #keypressLIST_alt = ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    #keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
+
+    ## Step_1: Show the instructions
+    ## Welcome the participants
+    #display_ins(instructions_welcome_Chi, keypressLIST_space)
+    ## Display the instructions for experiment content and keypress
+    #display_ins(instructions_study_Chi, keypressLIST_space)
+    
+    
+    
     
     ## Saving the self_paced_rt result into csv file
     #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
