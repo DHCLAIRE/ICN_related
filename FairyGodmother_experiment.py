@@ -2,12 +2,12 @@
 # -*- coding:utf-8 -*-
 
 ## To Change the backend setting to PTB
-from psychopy import prefs
-#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+#from psychopy import prefs
+##prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-#import psychtoolbox as ptb
-from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-#print(sound.Sound)
+##import psychtoolbox as ptb
+#from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+##print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -85,8 +85,8 @@ if __name__ == "__main__":
     
     ## key in number for notifying which subject it is
     #sub_type = str(input("Group type: "))
-    sub_id = str(input("Subject: "))
-    sub_cond = str(input("Condition: "))  # Angry--A/Fearful--F/Neutral--N
+    #sub_id = str(input("Subject: "))
+    #sub_cond = str(input("Condition: "))  # Angry--A/Fearful--F/Neutral--N
 
     ## Set up the data path (For Win)
     #root_data_path = Path("D:/Project_Assistant/2021_Ongoing/2020_LTTC/Experiment_materials/LTTC_preschool")
@@ -145,10 +145,10 @@ if __name__ == "__main__":
     # Parameters Ssetting ##
     
     # Setting the presented window
-    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
-    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
-    clock = core.Clock()
-    #start_time = clock.getTime()  >>change position to make the calculation correct
+    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    ##win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    #clock = core.Clock()
+    ##start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions
     instructions_welcome_Chi = """歡迎參與此實驗"""
@@ -198,6 +198,7 @@ if __name__ == "__main__":
     with open(root_data_path / 'n_material_files_faces_n_Bg.csv', 'r', encoding = "utf-8") as csvf:
         pic_fileLIST = csvf.read().split("\n")
         pprint(pic_fileLIST)
+        pic_fileLIST.pop(0)
     
     pic_infoLIST = []
     for pic_info in pic_fileLIST: #[1:50]:
@@ -205,16 +206,21 @@ if __name__ == "__main__":
         print(pic_infoLIST, len(pic_infoLIST))
         
         pic_pathSTR = pic_infoLIST[0]
-        pic_nameSTR = re.match(r'\w(.png)', pic_pathSTR)
-        print(pic_nameSTR)
-        pic_nameLIST = [path.name for path in Path(pic_pathSTR).iterdir() if re.match(r'\*.png', path.name)]
-        pprint(pic_nameLIST)
-        print(pic_pathSTR, len(pic_pathSTR))
-        print(pic_pathSTR[50:])  #e.g. \CFD-BM-016-042-A.png
+        print(pic_pathSTR)
+        #pic_typeSTR = pic_infoLIST[1]
+        #basic_data_path = Path("C:\\Users\\User\\Documents\\New Design\\materials\\")
+        #pic_pathSTR.replace("/", " \")
+        #print(basic_data_path)
+        #print(pic_typeSTR)
+        #print(basic_data_path / Path(pic_typeSTR))
+        #pic_nameSTR = re.search(r'^C:\\Users\\User\\Documents\\New Design\\materials\\', pic_pathSTR)
+        #print(pic_nameSTR)
+        #pic_nameLIST = [path.name for path in Path(pic_pathSTR).iterdir() if re.match(r'\*.png', path.name)]
+        #pprint(pic_nameLIST)
+        #print(pic_pathSTR, len(pic_pathSTR))
+        #print(pic_pathSTR[50:])  #e.g. \CFD-BM-016-042-A.png
         
         
-
-    ## 假詞all重新排列後依序送出，整個LIST重複送2次
     ## Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
     #for round_ in range(1, 3):  # only 2 rounds
         #print("Please ready for Round", round_)
