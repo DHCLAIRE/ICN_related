@@ -51,20 +51,42 @@ if __name__ == "__main__":
         pic_infoLIST[6] = emotion  e.g. angry & fearful & neutral   (A/F/M)
         """
         
-        # Regroup the pics based on the emotions
+        ## Regroup the pics based on the emotions
+        # Determine the emotion category
         if pic_infoLIST[6] == "angry":
+            sub_emoSTR = "A"
+        if pic_infoLIST[6] == "fearful":
+            sub_emoSTR = "F"
+        if pic_infoLIST[6] == "neutral":
+            sub_emoSTR = "N"
+        else:
+            pass
+        
+        # Determine the gender category
+        if pic_infoLIST[4] == "female":
+            sub_genderSTR = "F"
+        if pic_infoLIST[4] == "male":
+            sub_genderSTR = "M"
+        else:
+            pass
+        
+        # Determine the race category
+        if pic_infoLIST[5] == "black":
+            sub_raceSTR = "B"
+        if pic_infoLIST[5] == "caucasion":
+            sub_raceSTR = "C"
+        if pic_infoLIST[5] == "asion":
+            sub_raceSTR = "A"
+        else:
+            pass
             
-        if pic_infoLIST[6] == "Black":
+            
+        new_picnameSTR = "%s_%s%s_%d" %(sub_emoSTR, sub_genderSTR, sub_raceSTR, "loop_num") # put in the real loop_num first
         
-        if pic_infoLIST[6] == "Black":
-        
-        else: 
-        
-        
-        
-        
-        n_picFolder_path = root_data_path / "faces" / Path("Sub_%s_%s" %(sub_id, sub_cond))
-        n_picFolder_path.mkdir(exist_ok=True)
-        src = face_data_path
-        dst = n_picFolder_path
-        os.rename(src, dst, src_dir_fd=None, dst_dir_fd=None)
+        # Put the pics into different folder based on emotion types
+        if sub_emoSTR == "A":
+            n_picFolder_path = root_data_path / "faces" / Path("Angry_emotion" %(sub_id, sub_cond))
+            n_picFolder_path.mkdir(exist_ok=True)
+            src = face_data_path  # old file name
+            dst = n_picFolder_path # new file name
+            os.rename(src, dst, src_dir_fd=None, dst_dir_fd=None)
