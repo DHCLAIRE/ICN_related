@@ -205,11 +205,13 @@ if __name__ == "__main__":
         pic_infoLIST = pic_info.split(",")
         print(pic_infoLIST, len(pic_infoLIST))
         
+        # Extract the pic name out of the data path
         pic_pathSTR = pic_infoLIST[0]
         print(pic_pathSTR)
+        # To change the backward slash('\\') into forward slash('/'), so that the Path(datapath) may be easily found in both Windows & Mac system
+        pic_pathSTR = pic_pathSTR.replace('\\', "/", 30)
         #pic_typeSTR = pic_infoLIST[1]
-        #basic_data_path = Path("C:\\Users\\User\\Documents\\New Design\\materials\\")
-        #pic_pathSTR.replace("/", " \")
+        
         #print(basic_data_path)
         #print(pic_typeSTR)
         #print(basic_data_path / Path(pic_typeSTR))
