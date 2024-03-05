@@ -53,12 +53,12 @@ def display_fix():
     fixation.draw()
     win.flip()
     
-def display_Image(ImageSTR):  #, keyPressLIST=None):
+def display_Image(ImageSTR, widthINT=None, heightINT=None):  #, keyPressLIST=None):
     '''
     *Self deifined function*
     To present the pic in the central of the screen
     '''
-    pic = visual.ImageStim(win=win, image=ImageSTR)
+    pic = visual.ImageStim(win=win, image=ImageSTR, size=[widthINT, heightINT])
     pic.draw()
     win.flip()
     #event.waitKeys(keyList=keyPressLIST)
@@ -243,6 +243,14 @@ if __name__ == "__main__":
     #responseLIST = []
     #correctLIST = []
     #roundLIST = []
+    
+    facestimLIST = []
+    bgstimLIST = []
+    faceNameLIST = []
+    faceGenLIST = []
+    faceRaceLIST = []
+    bgstimLIST = []
+    pic_seqLIST = []
 
     # key in number for notifying which subject it is
     #sub_id = str(input("Subject: "))
@@ -409,8 +417,10 @@ if __name__ == "__main__":
         # Display the pic stimulus
         face_imageSTR = face_stimLIST[i][0]
         bg_imageSTR = background_stimLIST[i][0]
+        
+        #display_Image(bg_imageSTR, 1.3, 1.3)
         #display_Image(face_imageSTR)
-        #display_Image(bg_imageSTR)
+
         
         #core.wait(3) # stim for 3000 ms
 
@@ -430,155 +440,77 @@ if __name__ == "__main__":
         
         
         # Add if-else condition to decide what to record in the results
-                    #if keys == ["loption"]: #["lalt"]:
-                        #conditionLIST = ["True"]
-                        #end_time = clock.getTime()
-                        #time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-                        #print(time_duration)
-                        ##print(type(time_duration))
-                        #clock.reset()
-                        ## To determine whether the participants answers are correct or not
-                        #if answerLIST == ["TRUE"]:
-                            #correctLIST = 1 #["correct"]
-                            #print(correctLIST)
-                        #else:
-                            #correctLIST = 0 #["incorrect"]
-                    #elif keys == ["roption"]: #["ralt"]:
-                        #conditionLIST = ["False"]
-                        #end_time = clock.getTime()
-                        #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                        #print(time_duration)
-                        ##print(type(time_duration))
-                        #clock.reset()
-                        #if answerLIST == ["TRUE"]:
-                            #correctLIST = 0 #["incorrect"]
-                            #print(correctLIST)
-                        #else:
-                            #correctLIST = 1 #["correct"]
-                            
-                    ##elif keys == ["escape"]:
-                        ##win.close()
-                        ##core.quit()
-                    #else:
-                        #keys = ["None"]
-                        #conditionLIST = ["N/A"]
-                        #time_duration = 0
-                        #print(time_duration)
-                        #clock.reset()        
-        ## 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-        #if keys == ["loption"]: #["lalt"]:
-            #conditionLIST = ["female"]
-            #end_time = clock.getTime()
-            #time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-            #print(time_duration)
-            ##print(type(time_duration))
-            #clock.reset()
-        #elif keys == ["roption"]: #["ralt"]:
-            #conditionLIST = ["male"]
-            #end_time = clock.getTime()
-            #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            #print(time_duration)
-            ##print(type(time_duration))
-            #clock.reset()
+        if keys == ["loption"]: #["lalt"]:
+            conditionLIST = ["female"]
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
+        elif keys == ["roption"]: #["ralt"]:
+            conditionLIST = ["male"]
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
 
-        #else:
-            #keys = ["None"]
-            #conditionLIST = ["N/A"]
-            #time_duration = 0
-            #print(time_duration)
-            #clock.reset()
-
+        else:
+            keys = ["None"]
+            conditionLIST = ["N/A"]
+            time_duration = 0
+            print(time_duration)
+            clock.reset()
         
-        ## calculate the correctness of the gender determination response
-        #if gen_ans == ["female"]:  ## Rivise this command
-            ## ans is "Correct"
-            #if keys == ["lalt"]:
-                #correctLIST = ["True"]
-            ## ans is "Incorrect"
-            #elif keys == ["ralt"]:
-                #correctLIST = ["False"]
-            #else:
-                #correctLIST = ["N/A"]
-
-        #elif gen_ans == ["male"]:
-            ## ans is "Correct"
-            #if keys == ["ralt"]:
-                #correctLIST = ["True"]
-            ## ans is "Incorrect"
-            #elif keys == ["lalt"]:
-                #correctLIST = ["False"]
-            #else:
-                #correctLIST = ["N/A"]
-        #else:
-            #pass
         
-        ## Collect the H/LCD of the words
-        ### FOR Set A H/LCD
-        #if sub_cond == "A":
-            #if stim_wordSTR in pair_1pw_LIST:
-                #cdSTR = "H"
-            #elif stim_wordSTR in pair_2pw_LIST:
-                #cdSTR = "L"
-            #else:
-                #cdSTR = "C"
+        face_pic_seqINT = int(facestimLIST[i][2])
+        face_genSTR = str(facestimLIST[i][3])
+        face_raceSTR = str(facestimLIST[i][4])
+        bg_pic_seqINT = int(bgstimLIST[i][2])
         
-        ### FOR Set B H/LCD
-        #if sub_cond == "B":
-            #if stim_wordSTR in pair_1pw_LIST:
-                #cdSTR = "L"
-            #elif stim_wordSTR in pair_2pw_LIST:
-                #cdSTR = "H"
-            #else:
-                #cdSTR = "C"
-                
         ## making the wanted info into the List form for future use
-        #sub_idLIST.append(sub_id)
-        #dateLIST.append(day)
-        #sub_condLIST.append(sub_cond)
-        #roundLIST.append(round_)
-        #stimLIST.append(stim_wordSTR)
-        #CD_condLIST.append(cdSTR)
-        #resultKeyLIST.append(keys)
-        #responseLIST.append(conditionLIST)
-        #LDT_rtLIST.append(time_duration)
-        #correctnessLIST.append(correctLIST)
+        sub_idLIST.append(sub_id)
+        sub_condLIST.append(sub_cond)
+        dateLIST.append(day)
+        faceNameLIST.append(face_imageSTR)
+        faceGenLIST.append(face_genSTR)
+        faceRaceLIST.append(face_raceSTR)
+        bgstimLIST.append(bg_imageSTR)
+        pic_seqLIST.append([face_pic_seqINT, bg_pic_seqINT])
+        resultKeyLIST.append(keys)
+        rtLIST.append(time_duration)
         
-        ##Display the instruction of the break in between Round 1 & Round 2
-        #print("Round", round_, "is over.")
-        #if round_ == 1:
-            #display_ins(instructions_3, keypressLIST_enter)
-        #else:
-            #display_ins(instructions_4, keypressLIST_enter)
-    
-    ## close the window  at the end of the experiment
-    #win.close()
+        
+    #Display the instruction of experiment ends
+    display_ins(instructions_end_Chi, keypressLIST_space)
+
+    # close the window  at the end of the experiment
+    win.close()        
     
     
     
     ## Saving the self_paced_rt result into csv file
-    #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
-                           #'Date':dateLIST,               # when did the experiment happen
-                           #'Emo_Condition':sub_condLIST,  # emotion condition
-                           #'Trial_num':trialLIST,         # which trial
-                           #'RT':rtLIST,                   # the rt for memory reations
-                           #'Keypress':resultKeyLIST,      # which key they press
-                           #'Scale':scaleLIST,             # How confidence they thought themselves (=what does the keypress mean)
-                           #'Emotion':faceEmoLIST,         # which emotion of the face pic
-                           #'Gender':genderLIST,           # the gender of the face pic
-                           #'Ethnic':ethnicLIST,           # the ethnic of the face pic
-                           #'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
-                           #'Face_path':pathLIST,          # the datapath of the face pic
-                           #'Bg_path':BgLIST,              # the datapath of the background pic
-                           #'Pic_Condition':old_newLIST    # the seen or not condition
-                           #})
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
+                           'Date':dateLIST,               # when did the experiment happen
+                           'Emo_Condition':sub_condLIST,  # emotion condition
+                           'RT':rtLIST,                   # the rt for memory reations
+                           'Keypress':resultKeyLIST,      # which key they press
+                           'Emotion':faceEmoLIST,         # which emotion of the face pic
+                           'Gender':genderLIST,           # the gender of the face pic
+                           'Ethnic':ethnicLIST,           # the ethnic of the face pic
+                           'Face_path':pathLIST,          # the datapath of the face pic
+                           'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
+                           'Bg_path':BgLIST,              # the datapath of the background pic
+                           'Pic_Condition':old_newLIST    # the seen or not condition
+                           })
     
-    ##data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    #file_name = 'Sub%s_%s_studyPhase_results.csv' %(sub_id, sub_cond)
-    #save_path = result_data_path / Path(file_name)
-    #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'Sub%s_%s_studyPhase_results.csv' %(sub_id, sub_cond)
+    save_path = result_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
-    ## close all the possible ongoing commands that could be running in the background
-    #core.quit()  # normally we would add it, in case that anything happen
+    # close all the possible ongoing commands that could be running in the background
+    core.quit()  # normally we would add it, in case that anything happen
     
     ### Study Phase Ends ###
     
