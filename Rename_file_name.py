@@ -79,10 +79,19 @@ if __name__ == "__main__":
         pprint(pic_fileLIST)
         pic_fileLIST.pop(0)
     
+    ## Wanted  variables
+    count_FB_INT = 0
+    count_FW_INT = 0
+    count_FA_INT = 0
+    count_MB_INT = 0
+    count_MW_INT = 0
+    count_MA_INT = 0
+    count_backgroundINT = 0
     pic_infoLIST = []
+    
     for pic_info in pic_fileLIST: #[1:50]:
         pic_infoLIST = pic_info.split(",")
-        print(pic_infoLIST, len(pic_infoLIST))
+        #print(pic_infoLIST, len(pic_infoLIST))
         
         # Extract the pic name out of the data path
         pic_pathSTR = pic_infoLIST[0]
@@ -90,11 +99,8 @@ if __name__ == "__main__":
         # To change the backward slash('\\') into forward slash('/'), so that the Path(datapath) may be easily found in both Windows & Mac system
         pic_pathSTR = pic_pathSTR.replace('\\', "/", 30)
         #pic_typeSTR = pic_infoLIST[1]
-        print(pic_pathSTR)
+        #print(pic_pathSTR)
         
-        # Rename the file
-        # src: The source file path (the existing file to be renamed).
-        # dst: The destination file path (the new filename for the file).
         """
         pic_infoLIST[4] = gender   e.g. female & male               (F/M)
         pic_infoLIST[5] = race     e.g. black & caucasion & asian   (B/C/A)
@@ -105,33 +111,48 @@ if __name__ == "__main__":
         #print(pic_infoLIST[5])
         #print(pic_infoLIST[6])
         
-        count_FB_INT = 0
-        count_FW_INT = 0
-        count_FA_INT = 0
-        count_MB_INT = 0
-        count_MW_INT = 0
-        count_MA_INT = 0
+        # extract the group type and relabel
         genderSTR = gender(pic_infoLIST[4])
         raceSTR = race(pic_infoLIST[5])
         emotionSTR = emotion(pic_infoLIST[6])
         
         tmpSTR = raceSTR+genderSTR
+        
         if tmpSTR == "FB":
-            count_FB_INT=+1
-        if tmpSTR == "FB":
-            count_FB_INT=+1
-        if tmpSTR == "FB":
-                count_FB_INT=+1
+            count_FB_INT+=1
+            new_picnameSTR = "%s_%s%s_%d" %(emotionSTR, genderSTR, raceSTR, count_FB_INT)
+        if tmpSTR == "FW":
+            count_FW_INT+=1
+            new_picnameSTR = "%s_%s%s_%d" %(emotionSTR, genderSTR, raceSTR, count_FW_INT)
+        if tmpSTR == "FA":
+            count_FA_INT+=1
+            new_picnameSTR = "%s_%s%s_%d" %(emotionSTR, genderSTR, raceSTR, count_FA_INT)
+        if tmpSTR == "MB":
+            count_MB_INT+=1
+            new_picnameSTR = "%s_%s%s_%d" %(emotionSTR, genderSTR, raceSTR, count_MB_INT)
+        if tmpSTR == "MW":
+            count_MW_INT+=1
+            new_picnameSTR = "%s_%s%s_%d" %(emotionSTR, genderSTR, raceSTR, count_MW_INT)
+        if tmpSTR == "MA":
+            count_MA_INT+=1
+            new_picnameSTR = "%s_%s%s_%d" %(emotionSTR, genderSTR, raceSTR, count_MA_INT) 
+        if pic_infoLIST[2] == "background":
+            count_backgroundINT+=1
+            new_picnameSTR = "background_%d" %count_backgroundINT
+        else:
+            print("error")
+        print(new_picnameSTR)
+    
         
         
-        #tmp_picnameSTR = "%s_%s%s" %(emotionSTR, genderSTR, raceSTR) #, count_A_INT) # put in the real loop_num first
-        #print(tmp_picnameSTR)
-
-        
-        #print(new_picnameSTR)
         
         """
+        
+                # Rename the file
+        # src: The source file path (the existing file to be renamed).
+        # dst: The destination file path (the new filename for the file).
         # Put the pics into different folder based on emotion types
+        
         if sub_emoSTR == "A":
             n_picFolder_path = root_data_path / "faces" / Path("Angry_face" %(sub_id, sub_cond))
             n_picFolder_path.mkdir(exist_ok=True)
