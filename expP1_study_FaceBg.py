@@ -389,8 +389,8 @@ if __name__ == "__main__":
 
         # display fixation in the central of the screen
         display_fix()
-        core.wait(0.5) # fixation for 500 ms
-
+        #core.wait(0.5) # fixation for 500 ms
+        
         # Display the pic stimulus
         face_imageSTR = str(face_data_path / Path(face_stimLIST[i][0]))
         bg_imageSTR = str(Bg_data_path / Path(background_stimLIST[i][0]))
@@ -409,8 +409,6 @@ if __name__ == "__main__":
         face_pic.overlaps = True
         face_pic.draw()
         
-
-        
         core.wait(3) # stim for 3000 ms
 
         """
@@ -426,7 +424,6 @@ if __name__ == "__main__":
         keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
         event.getKeys(keyList=keypressLIST_alt)
         print(keys)
-        
         
         # Add if-else condition to decide what to record in the results
         if keys == ["loption"]: #["lalt"]:
