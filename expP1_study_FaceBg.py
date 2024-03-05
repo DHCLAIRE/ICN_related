@@ -227,6 +227,7 @@ if __name__ == "__main__":
     faceRaceLIST = []
     bgstimLIST = []
     pic_seqLIST = []
+    keyRepLIST = []
 
     # key in number for notifying which subject it is
     #sub_id = str(input("Subject: "))
@@ -467,6 +468,7 @@ if __name__ == "__main__":
         pic_seqLIST.append([face_pic_seqINT, bg_pic_seqINT])
         resultKeyLIST.append(keys)
         responseLIST.append(time_duration)
+        keyRepLIST.append(conditionLIST)
         
         
     #Display the instruction of experiment ends
@@ -481,13 +483,14 @@ if __name__ == "__main__":
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
                            'Date':dateLIST,               # when did the experiment happen
                            'Emo_Condition':sub_condLIST,  # emotion condition
-                           'RT':responseLIST,             # the rt for memory reations
+                           'RT':responseLIST,             # the rt for memory reactions
                            'Keypress':resultKeyLIST,      # which key they press
-                           'Face_path':faceNameLIST,           # the file name of the face pic
+                           'Key_rep':keyRepLIST,          # what does the keypress means
+                           'Face_path':faceNameLIST,      # the file name of the face pic
+                           'Bg_path':bgstimLIST,          # the file name of the bg pic
                            'Gender':faceGenLIST,          # the gender of the face pic
                            'Ethnic':faceRaceLIST,         # the ethnic of the face pic
-                           'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
-                           'Bg_path':bgstimLIST           # the file name of the bg pic
+                           'Pic_seq':pic_seqLIST          # the sequence of the pic (no matter it is Bg or face)
                            })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
