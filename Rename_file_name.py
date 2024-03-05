@@ -146,6 +146,12 @@ if __name__ == "__main__":
         
         
         
+        '''
+        # Just want to save this for later use
+        # To change the backward slash('\\') into forward slash('/'), so that the Path(datapath) may be easily found in both Windows & Mac system
+        #pic_pathSTR = pic_pathSTR.replace('\\', "/", 30)
+        '''
+        
         """
         
                 # Rename the file
