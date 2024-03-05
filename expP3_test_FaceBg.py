@@ -166,9 +166,12 @@ def stim_collection(inputDICT, sampleINT):
     allstimLIST = []
     stimLIST = []
     for key, value in inputDICT.items():
-        stimLIST = random.sample(value, sampleINT)
-        allstimLIST.extend(stimLIST)
-    
+        if sampleINT == 0:
+            stimLIST.extend(value)
+        else:
+            stimLIST = random.sample(value, sampleINT)
+            allstimLIST.extend(stimLIST)
+            
     return allstimLIST
 
 # The EEG trigger port info
@@ -259,7 +262,7 @@ if __name__ == "__main__":
     ## Set the response key
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
-    keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    #keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
     keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
     #keypressLIST_esc = ["escape"]
     
@@ -267,12 +270,12 @@ if __name__ == "__main__":
     # Welcome the participants
     display_ins(instructions_welcome_Chi, keypressLIST_space)
     # Display the instructions for experiment content and keypress
-    display_ins(instructions_study_Chi, keypressLIST_space)
+    display_ins(instructions_test_Chi, keypressLIST_space)
     
 
     #core.wait(3)
     
-    
+    # Open the materials
     with open(root_data_path / 'n_material_files_faces_n_Bg.csv', 'r', encoding = "utf-8") as csvf:
         pic_fileLIST = csvf.read().split("\n")
         #pprint(pic_fileLIST)
@@ -285,7 +288,6 @@ if __name__ == "__main__":
     pic_neutralLIST = []
     pic_bgLIST = []
 
-    
     for pic_info in pic_fileLIST:
         pic_infoLIST = pic_info.split(",")
         #print(pic_infoLIST, len(pic_infoLIST))
@@ -333,29 +335,31 @@ if __name__ == "__main__":
     fearfulDICT = raceNgender(pic_fearfulLIST, 4, 3)
     neutralDICT = raceNgender(pic_neutralLIST, 4, 3)
     
+    
     ## Randomly select the stims
     background_stimLIST = random.sample(pic_bgLIST, 30)
     random.shuffle(background_stimLIST)
     # Get the randomly selected stim out of the emotion pic database
     if sub_cond == "A":
-        face_stimLIST = stim_collection(angryDICT, 5)
+        face_stimLIST = stim_collection(angryDICT, 0)
         random.shuffle(face_stimLIST)
         resultDICT = {"face":face_stimLIST,
                       "background": background_stimLIST}
     if sub_cond == "F":
-        face_stimLIST = stim_collection(fearfulDICT, 5)
+        face_stimLIST = stim_collection(fearfulDICT, 0)
         random.shuffle(face_stimLIST)
         resultDICT = {"face":face_stimLIST,
                       "background": background_stimLIST}
     if sub_cond == "N":
-        face_stimLIST = stim_collection(neutralDICT, 5)
+        face_stimLIST = stim_collection(neutralDICT, 0)
         random.shuffle(face_stimLIST)
         resultDICT = {"face":face_stimLIST,
                       "background": background_stimLIST}
     else:
         pass
-
-    with open(result_data_path / Path('Sub%s_%s_study_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
+    
+    # Open the saved json so that we would know that what was seen and what unseen
+    with open(result_data_path / Path('Sub%s_%s_test_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
         json.dump(resultDICT, jsonfile, ensure_ascii=False)
     
     
@@ -375,7 +379,7 @@ if __name__ == "__main__":
 
         # display fixation in the central of the screen
         display_fix()
-        core.wait(0.5) # fixation for 500 ms
+        #core.wait(0.5) # fixation for 500 ms
 
         # Display the pic stimulus
         face_imageSTR = str(face_data_path / Path(face_stimLIST[i][0]))
@@ -390,12 +394,12 @@ if __name__ == "__main__":
         #print(bg_imageSTR)
         bg_pic = visual.ImageStim(win=win, image=bg_imageSTR, size=[bg_widthINT, bg_heightINT])
         face_pic = visual.ImageStim(win=win, image=face_imageSTR, size=[face_widthINT, face_heightINT])
+        face_pic.size += (-200, -200)  # smaller in overall
+        bg_pic.size += (100, 100)  # wider 10 & heighter 10
         bg_pic.overlaps = True
         bg_pic.draw()
         face_pic.overlaps = True
         face_pic.draw()
-        
-
         
         core.wait(3) # stim for 3000 ms
 
@@ -415,24 +419,49 @@ if __name__ == "__main__":
         
         
         # Add if-else condition to decide what to record in the results
-        if keys == ["loption"]: #["lalt"]:
-            conditionLIST = ["female"]
+        if keys == ["space"]:  #"h", "j", "k", "l"
+            scaleINT = 1
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
             print(time_duration)
             #print(type(time_duration))
             clock.reset()
-        elif keys == ["roption"]: #["ralt"]:
-            conditionLIST = ["male"]
+            
+        if keys == ["h"]:
+            scaleINT = 2
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
             print(time_duration)
             #print(type(time_duration))
             clock.reset()
-
+            
+        if keys == ["j"]: #["ralt"]:
+            scaleINT = 3
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
+            
+        if keys == ["k"]:
+            scaleINT = 4
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
+            
+        if keys == ["l"]:
+            scaleINT = 5
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
+            
         else:
             keys = ["None"]
-            conditionLIST = ["N/A"]
+            scaleINT = ["N/A"]
             time_duration = 0
             print(time_duration)
             clock.reset()
@@ -454,6 +483,7 @@ if __name__ == "__main__":
         pic_seqLIST.append([face_pic_seqINT, bg_pic_seqINT])
         resultKeyLIST.append(keys)
         responseLIST.append(time_duration)
+        scaleLIST.append(scaleINT)
         
         
     #Display the instruction of experiment ends
@@ -470,7 +500,7 @@ if __name__ == "__main__":
                            'Emo_Condition':sub_condLIST,  # emotion condition
                            'RT':responseLIST,             # the rt for memory reactions
                            'Keypress':resultKeyLIST,      # which key they press
-                           'Key_rep':keyRepLIST,          # what does the keypress means
+                           'Scale':scaleLIST,           # what does the keypress means
                            'Face_path':faceNameLIST,      # the file name of the face pic
                            'Bg_path':bgstimLIST,          # the file name of the bg pic
                            'Gender':faceGenLIST,          # the gender of the face pic
@@ -479,7 +509,7 @@ if __name__ == "__main__":
                            })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'Sub%s_%s_studyPhase_results.csv' %(sub_id, sub_cond)
+    file_name = 'Sub%s_%s_testPhase_results.csv' %(sub_id, sub_cond)
     save_path = result_data_path / Path(file_name)
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
