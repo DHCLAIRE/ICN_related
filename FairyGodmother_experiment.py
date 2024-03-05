@@ -2,12 +2,12 @@
 # -*- coding:utf-8 -*-
 
 ## To Change the backend setting to PTB
-#from psychopy import prefs
-##prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+from psychopy import prefs
+#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
 ##import psychtoolbox as ptb
-#from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-##print(sound.Sound)
+from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+#print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -49,7 +49,7 @@ def display_fix():
     Display fixation in the central of the screen.
     e.g. display_fix()
     '''
-    fixation = visual.TextStim(win=win, text="+")
+    fixation = visual.TextStim(win=win, text="+", color=[-1, -1, -1])
     fixation.draw()
     win.flip()
     
@@ -204,48 +204,24 @@ if __name__ == "__main__":
     root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
     face_data_path = root_data_path / "faces"
     Bg_data_path = root_data_path / "Backgrounds"
-    #result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
-    #result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
-    
-    ## Setting up usable dataLIST
-    #targetPseudoLIST = []
-    #pseudoLIST = []
-    #targetPseudoLIST = []
-
-    ### Set up the pws' data path, and Call out the pw's LIST by the audios' names
-    #pw_stimLIST = [path.name for path in target_w_stim_data_path.iterdir() if re.match(r'\D', path.name)]  #(both works)\D == any non-digits; \w == any characters(digits included)
-    #print(pw_stimLIST) # pw_stimLIST = ['bi4_ba2.wav', 'bo4_luo2.wav', 'chai2_fei1.wav', 'ge2_lu3.wav', 'ji3_an4.wav', 'pu2_zu2.wav', 'sheng1_chu4.wav', 'zhai1_tan2.wav']
-    #'''
-    ## This is just for testing the re commands
-    #for path in target_w_stim_data_path.iterdir():
-        #if re.match(r'\w', path.name):  # path.name == the name of the file in the specfic location
-            #print(path.suffix)  # path.suffix == the file type of the file in the specfic location
-            #print(type(path.suffix))
-    #'''
-    ### This the every pseudowords audio file name
-    ##pseudoLIST = pw_stimLIST.copy()
-    ##print(pseudoLIST)
-    #for f_nameSTR in pw_stimLIST:
-        #pseudoLIST.append(f_nameSTR[:-4])  # exclude the file extension
-    #print(pseudoLIST)
+    result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
+    result_data_path.mkdir(exist_ok=True) # if the folder wasn't created, this command will create the folder for you.
     
     ## Presave the blank list for wanted results
-    #day = date.today()
-    #dateLIST = []
-    #sub_idLIST = []
-    #sub_condLIST = []
-    #resultKeyLIST = []
-    #stimLIST = []
-    #CD_condLIST = []
-    #conditionLIST = []
-    #LDT_rtLIST = []
-    #correctnessLIST = []
-    #responseLIST = []
-    #correctLIST = []
-    #roundLIST = []
+    day = date.today()
+    dateLIST = []
+    sub_idLIST = []
+    sub_condLIST = []
+    resultKeyLIST = []
+    stimLIST = []
+    conditionLIST = []
+    correctnessLIST = []
+    responseLIST = []
+    correctLIST = []
+    roundLIST = []
     
-    facestimLIST = []
-    bgstimLIST = []
+    face_stimLIST = []
+    background_stimLIST = []
     faceNameLIST = []
     faceGenLIST = []
     faceRaceLIST = []
@@ -260,9 +236,9 @@ if __name__ == "__main__":
     # Parameters Ssetting ##
     
     # Setting the presented window
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(size = [500, 500],color = [1, 1, 1], units ="pix")
     ##win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
-    #clock = core.Clock()
+    clock = core.Clock()
     ##start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions
@@ -302,9 +278,9 @@ if __name__ == "__main__":
     
     # Step_1: Show the instructions
     # Welcome the participants
-    #display_ins(instructions_welcome_Chi, keypressLIST_space)
-    ## Display the instructions for experiment content and keypress
-    #display_ins(instructions_study_Chi, keypressLIST_space)
+    display_ins(instructions_welcome_Chi, keypressLIST_space)
+    # Display the instructions for experiment content and keypress
+    display_ins(instructions_study_Chi, keypressLIST_space)
     
 
     #core.wait(3)
@@ -392,45 +368,57 @@ if __name__ == "__main__":
     else:
         pass
 
-    with open(root_data_path / Path('Sub%s_%s_study_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
+    with open(result_data_path / Path('Sub%s_%s_study_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
         json.dump(resultDICT, jsonfile, ensure_ascii=False)
     
     
     ## The presentation of study starts
-    for i in range(30):
+    for i in range(5):  # total is 30 round
         """
         ## To mark the round number  ##
         port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
         core.wait(.01); # Stay for 10 ms
         """
         ## To refresh the win before play out the stim
-        #win.flip()  # always add this after an item was presented
+        win.flip()  # always add this after an item was presented
         #core.wait(0.5) # blank for 500 ms
         
-        ## start to record the time
-        #start_time = clock.getTime()
+        # start to record the time
+        start_time = clock.getTime()
 
         # display fixation in the central of the screen
-        #display_fix()
-        #core.wait(0.5) # fixation for 500 ms
+        display_fix()
+        core.wait(0.5) # fixation for 500 ms
 
         # Display the pic stimulus
-        face_imageSTR = face_stimLIST[i][0]
-        bg_imageSTR = background_stimLIST[i][0]
+        face_imageSTR = str(face_data_path / Path(face_stimLIST[i][0]))
+        bg_imageSTR = str(Bg_data_path / Path(background_stimLIST[i][0]))
+        face_widthINT = int(face_stimLIST[i][6])
+        face_heightINT = int(face_stimLIST[i][7])
+        bg_widthINT = int(face_stimLIST[i][6])
+        bg_heightINT = int(face_stimLIST[i][7])
+        #print(widthINT)
+        #print(heightINT)
+        #print(face_imageSTR)
+        #print(bg_imageSTR)
+        bg_pic = visual.ImageStim(win=win, image=bg_imageSTR, size=[bg_widthINT, bg_heightINT])
+        face_pic = visual.ImageStim(win=win, image=face_imageSTR, size=[face_widthINT, face_heightINT])
+        bg_pic.overlaps = True
+        bg_pic.draw()
+        face_pic.overlaps = True
+        face_pic.draw()
         
-        #display_Image(bg_imageSTR, 1.3, 1.3)
-        #display_Image(face_imageSTR)
 
         
-        #core.wait(3) # stim for 3000 ms
+        core.wait(3) # stim for 3000 ms
 
         """
         # TO MARK THE PSEUDOWORD APPEARED
         port.write(b'1') #This is the num_tag for opening the trigger
         core.wait(.01); # Stay for 10 ms
         """
-        #win.flip()  # always add this after an item was presented
-        #core.wait(0.5) # blank for 500 ms?
+        win.flip()  # always add this after an item was presented
+        core.wait(0.5) # blank for 500 ms?
 
 
         ##setting up what keypress would allow the experiment to proceed
@@ -463,10 +451,10 @@ if __name__ == "__main__":
             clock.reset()
         
         
-        face_pic_seqINT = int(facestimLIST[i][2])
-        face_genSTR = str(facestimLIST[i][3])
-        face_raceSTR = str(facestimLIST[i][4])
-        bg_pic_seqINT = int(bgstimLIST[i][2])
+        face_pic_seqINT = int(face_stimLIST[i][2])
+        face_genSTR = str(face_stimLIST[i][3])
+        face_raceSTR = str(face_stimLIST[i][4])
+        bg_pic_seqINT = int(background_stimLIST[i][2])
         
         ## making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
@@ -478,14 +466,14 @@ if __name__ == "__main__":
         bgstimLIST.append(bg_imageSTR)
         pic_seqLIST.append([face_pic_seqINT, bg_pic_seqINT])
         resultKeyLIST.append(keys)
-        rtLIST.append(time_duration)
+        responseLIST.append(time_duration)
         
         
     #Display the instruction of experiment ends
     display_ins(instructions_end_Chi, keypressLIST_space)
 
     # close the window  at the end of the experiment
-    win.close()        
+    win.close()
     
     
     
@@ -493,15 +481,13 @@ if __name__ == "__main__":
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
                            'Date':dateLIST,               # when did the experiment happen
                            'Emo_Condition':sub_condLIST,  # emotion condition
-                           'RT':rtLIST,                   # the rt for memory reations
+                           'RT':responseLIST,             # the rt for memory reations
                            'Keypress':resultKeyLIST,      # which key they press
-                           'Emotion':faceEmoLIST,         # which emotion of the face pic
-                           'Gender':genderLIST,           # the gender of the face pic
-                           'Ethnic':ethnicLIST,           # the ethnic of the face pic
-                           'Face_path':pathLIST,          # the datapath of the face pic
+                           'Face_path':faceNameLIST,           # the file name of the face pic
+                           'Gender':faceGenLIST,          # the gender of the face pic
+                           'Ethnic':faceRaceLIST,         # the ethnic of the face pic
                            'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
-                           'Bg_path':BgLIST,              # the datapath of the background pic
-                           'Pic_Condition':old_newLIST    # the seen or not condition
+                           'Bg_path':bgstimLIST           # the file name of the bg pic
                            })
     
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
