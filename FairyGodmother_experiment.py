@@ -63,6 +63,113 @@ def display_Image(ImageSTR):  #, keyPressLIST=None):
     win.flip()
     #event.waitKeys(keyList=keyPressLIST)
     #win.flip()
+    
+def gender(inputSTR):
+    '''
+    Determine the gender category
+    '''
+    sub_genderSTR = str()
+    if inputSTR == "female":
+        sub_genderSTR = "F"
+    if inputSTR == "male":
+        sub_genderSTR = "M"
+    else:
+        pass #print("No gender")
+    
+    return sub_genderSTR
+
+def race(inputSTR):
+    '''
+    Determine the race category
+    '''
+    sub_raceSTR = str()
+    if inputSTR == "black":
+        sub_raceSTR = "B"
+    if inputSTR == "caucasian":
+        sub_raceSTR = "W"
+    if inputSTR == "asian":
+        sub_raceSTR = "A"
+    else:
+        pass #print("No race")
+    
+    return sub_raceSTR
+
+def emotion(inputSTR):
+    '''
+    Determine the emotion category
+    '''
+    sub_emoSTR = str()
+    if inputSTR == "angry":
+        sub_emoSTR = "angry"
+    if inputSTR == "fearful":
+        sub_emoSTR = "fearful"
+    if inputSTR == "neutral":
+        sub_emoSTR = "neutral"
+    else:
+        pass #print("No emotion")
+    
+    return sub_emoSTR
+
+
+def raceNgender(inputLIST, race_colINT, gen_colINT):
+    '''
+    Separate the group based on gender and race
+    '''
+    FB_LIST  = []
+    FW_LIST = []
+    FA_LIST = []
+    MB_LIST = []
+    MW_LIST = []
+    MA_LIST = []
+    for i in range(len(inputLIST)):
+        raceSTR = race(pic_angryLIST[i][race_colINT])
+        genderSTR = gender(pic_angryLIST[i][gen_colINT])
+        # determine the race
+        if genderSTR == "F":
+            # Asian
+            if raceSTR == "A":
+                FA_LIST.append(pic_angryLIST[i])
+            # Black
+            if raceSTR == "B":
+                FB_LIST.append(pic_angryLIST[i])
+            # Caucasian
+            if raceSTR == "W":
+                FW_LIST.append(pic_angryLIST[i])
+            else:
+                pass
+        else:
+            # Asian
+            if raceSTR == "A":
+                MA_LIST.append(pic_angryLIST[i])
+            # Black
+            if raceSTR == "B":
+                MB_LIST.append(pic_angryLIST[i])
+            # Caucasian
+            if raceSTR == "W":
+                MW_LIST.append(pic_angryLIST[i])
+            else:
+                pass
+    resultDICT = {"Female_Asian": FA_LIST,
+                 "Female_Black": FB_LIST,
+                 "Female_Caucasian": FW_LIST,
+                 "Male_Asian": MA_LIST,
+                 "Male_Black": MB_LIST,
+                 "Male_Caucasian": MW_LIST
+                 }
+    
+    return resultDICT
+
+def stim_collection(inputDICT, sampleINT):
+    '''
+    # Randomly select the stimuli from files
+    '''
+    allstimLIST = []
+    stimLIST = []
+    for key, value in inputDICT.items():
+        stimLIST = random.sample(value, sampleINT)
+        allstimLIST.extend(stimLIST)
+    
+    return allstimLIST
 
 # The EEG trigger port info
 # For setting up the Trigger in NCU ICN Room608 EEG
@@ -197,184 +304,217 @@ if __name__ == "__main__":
     
     with open(root_data_path / 'n_material_files_faces_n_Bg.csv', 'r', encoding = "utf-8") as csvf:
         pic_fileLIST = csvf.read().split("\n")
-        pprint(pic_fileLIST)
+        #pprint(pic_fileLIST)
         pic_fileLIST.pop(0)
     
     pic_infoLIST = []
-    for pic_info in pic_fileLIST: #[1:50]:
+    
+    pic_angryLIST = []
+    pic_fearfulLIST = []
+    pic_neutralLIST = []
+    pic_bgLIST = []
+
+    
+    for pic_info in pic_fileLIST:
         pic_infoLIST = pic_info.split(",")
-        print(pic_infoLIST, len(pic_infoLIST))
+        #print(pic_infoLIST, len(pic_infoLIST))
         
         # Extract the pic name out of the data path
-        pic_pathSTR = pic_infoLIST[0]
-        print(pic_pathSTR)
-        # To change the backward slash('\\') into forward slash('/'), so that the Path(datapath) may be easily found in both Windows & Mac system
-        pic_pathSTR = pic_pathSTR.replace('\\', "/", 30)
-        #pic_typeSTR = pic_infoLIST[1]
-        
-        #print(basic_data_path)
-        #print(pic_typeSTR)
-        #print(basic_data_path / Path(pic_typeSTR))
-        #pic_nameSTR = re.search(r'^C:\\Users\\User\\Documents\\New Design\\materials\\', pic_pathSTR)
+        pic_nameSTR = str(pic_infoLIST[0])
         #print(pic_nameSTR)
-        #pic_nameLIST = [path.name for path in Path(pic_pathSTR).iterdir() if re.match(r'\*.png', path.name)]
-        #pprint(pic_nameLIST)
-        #print(pic_pathSTR, len(pic_pathSTR))
-        #print(pic_pathSTR[50:])  #e.g. \CFD-BM-016-042-A.png
         
         
-    ## Step_4: show the stimuli(real words or pseudowords), and remain the stimuli for 400ms  # randomly display would also be crucial!!
-    #for round_ in range(1, 3):  # only 2 rounds
-        #print("Please ready for Round", round_)
-        #"""
-        ### To mark the round number  ##
-        #port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
-        #core.wait(.01); # Stay for 10 ms
-        #"""        
-        #for i in range(1):  #need to loop 6 times for 48 trials in one round (96 trials in total)
-
-            ## randomly select the wanted pseudoword from the list
-            #random.shuffle(pseudoLIST)
-            #for stim_wordSTR in pseudoLIST:
-
-                ## To refresh the win before play out the stim pw
-                #win.flip()  # always add this after an item was presented
-                #core.wait(2)
-                ## start to record the time
-                #start_time = clock.getTime()
-
-                ## display fixation in the central of the screen
-                #display_fix()
-
-
-                ## Display the pw stimulus
-                #display_Image()
-
-                #"""
-                ## TO MARK THE PSEUDOWORD APPEARED
-                #port.write(b'1') #This is the num_tag for opening the trigger
-                #core.wait(.01); # Stay for 10 ms
-                #"""
-
-                ##setting up what keypress would allow the experiment to proceed
-                #keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
-                #event.getKeys(keyList=keypressLIST_alt)
-                #print(keys)
-                
-                ## 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
-                #if keys == ["lalt"]:
-                    #conditionLIST = ["femael"]
-                    #end_time = clock.getTime()
-                    #time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-                    #print(time_duration)
-                    ##print(type(time_duration))
-                    #clock.reset()
-                #elif keys == ["ralt"]:
-                    #conditionLIST = ["male"]
-                    #end_time = clock.getTime()
-                    #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                    #print(time_duration)
-                    ##print(type(time_duration))
-                    #clock.reset()
-
-                #else:
-                    #keys = ["None"]
-                    #conditionLIST = ["N/A"]
-                    #time_duration = 0
-                    #print(time_duration)
-                    #clock.reset()
-
-                
-                ## calculate the correctness of the gender determination response
-                #if gen_ans == ["female"]:  ## Rivise this command
-                    ## ans is "Correct"
-                    #if keys == ["lalt"]:
-                        #correctLIST = ["True"]
-                    ## ans is "Incorrect"
-                    #elif keys == ["ralt"]:
-                        #correctLIST = ["False"]
-                    #else:
-                        #correctLIST = ["N/A"]
-
-                #elif gen_ans == ["male"]:
-                    ## ans is "Correct"
-                    #if keys == ["ralt"]:
-                        #correctLIST = ["True"]
-                    ## ans is "Incorrect"
-                    #elif keys == ["lalt"]:
-                        #correctLIST = ["False"]
-                    #else:
-                        #correctLIST = ["N/A"]
-                #else:
-                    #pass
-                
-                ## Collect the H/LCD of the words
-                ### FOR Set A H/LCD
-                #if sub_cond == "A":
-                    #if stim_wordSTR in pair_1pw_LIST:
-                        #cdSTR = "H"
-                    #elif stim_wordSTR in pair_2pw_LIST:
-                        #cdSTR = "L"
-                    #else:
-                        #cdSTR = "C"
-                
-                ### FOR Set B H/LCD
-                #if sub_cond == "B":
-                    #if stim_wordSTR in pair_1pw_LIST:
-                        #cdSTR = "L"
-                    #elif stim_wordSTR in pair_2pw_LIST:
-                        #cdSTR = "H"
-                    #else:
-                        #cdSTR = "C"
-                        
-                ## making the wanted info into the List form for future use
-                #sub_idLIST.append(sub_id)
-                #dateLIST.append(day)
-                #sub_condLIST.append(sub_cond)
-                #roundLIST.append(round_)
-                #stimLIST.append(stim_wordSTR)
-                #CD_condLIST.append(cdSTR)
-                #resultKeyLIST.append(keys)
-                #responseLIST.append(conditionLIST)
-                #LDT_rtLIST.append(time_duration)
-                #correctnessLIST.append(correctLIST)
+        pic_typeSTR = str(pic_infoLIST[1])
+        pic_seqINT = int(pic_infoLIST[2])
+        #pic_genderSTR = gender(str(pic_infoLIST[3]))
+        #pic_raceSTR = race(str(pic_infoLIST[4]))
+        pic_emoSTR = emotion(str(pic_infoLIST[5]))
+        
+        #print(pic_typeSTR)
+        #print(pic_seqINT)
+        #print(pic_genderSTR)
+        #print(pic_raceSTR)
+        #print(pic_emoSTR)
+        
+        # Group into the new group based on emotions
+        if pic_typeSTR == "face":
             
-        ##Display the instruction of the break in between Round 1 & Round 2
-        #print("Round", round_, "is over.")
-        #if round_ == 1:
-            #display_ins(instructions_3, keypressLIST_enter)
-        #else:
-            #display_ins(instructions_4, keypressLIST_enter)
+            # Angry group
+            if pic_emoSTR == "angry":
+                pic_angryLIST.append(pic_infoLIST)
+            if pic_emoSTR == "fearful":
+                pic_fearfulLIST.append(pic_infoLIST)
+            if pic_emoSTR == "neutral":
+                pic_neutralLIST.append(pic_infoLIST)
+        if pic_typeSTR == "background":
+            pic_bgLIST.append(pic_infoLIST)
+        else:
+            pass
+    
+    #pprint(pic_angryLIST)
+    #pprint(pic_fearfulLIST)
+    #pprint(pic_neutralLIST)
+    #pprint(pic_bgLIST)
+    #print(len(pic_angryLIST), len(pic_fearfulLIST))
+    
+    # Separate the race & gender
+    angryDICT = raceNgender(pic_angryLIST, 4, 3)
+    fearfulDICT = raceNgender(pic_fearfulLIST, 4, 3)
+    neutralDICT = raceNgender(pic_neutralLIST, 4, 3)
+    
+    # Get the randomly selected stim out of the emotion pic database
+    angry_stimLIST = random.shuffle(stim_collection(angryDICT))]
+    fearful_stimLIST = random.shuffle(stim_collection(fearfulDICT))
+    neutral_stimLIST = random.shuffle(stim_collection(neutralDICT))
+    background_stimLIST = random.suffle(random.sample(pic_bgLIST, 30))
+        
+    ## The presentation of study starts
+    for i in range(30):
+        """
+        ## To mark the round number  ##
+        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+        core.wait(.01); # Stay for 10 ms
+        """
+        # To refresh the win before play out the stim pw
+        win.flip()  # always add this after an item was presented
+        #core.wait(2)
+        # start to record the time
+        start_time = clock.getTime()
 
-            ## close the window  at the end of the experiment
-    #win.close()
+        # display fixation in the central of the screen
+        display_fix()
+        core.wait(0.5) # fixation for 500 ms
 
+        # Display the pic stimulus
+        imageSTR = str(angry_stimLIST[i][0])
+        pprint(imageSTR)
+        display_Image()
 
+        """
+        # TO MARK THE PSEUDOWORD APPEARED
+        port.write(b'1') #This is the num_tag for opening the trigger
+        core.wait(.01); # Stay for 10 ms
+        """
 
-    ## Saving the self_paced_rt result into csv file
-    #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
-                           #'Date':dateLIST,               # when did the experiment happen
-                           #'Emo_Condition':sub_condLIST,  # emotion condition
-                           #'Trial_num':trialLIST,         # which trial
-                           #'RT':rtLIST,                   # the rt for memory reations
-                           #'Keypress':resultKeyLIST,      # which key they press
-                           #'Scale':scaleLIST,             # How confidence they thought themselves (=what does the keypress mean)
-                           #'Emotion':faceEmoLIST,         # which emotion of the face pic
-                           #'Gender':genderLIST,           # the gender of the face pic
-                           #'Ethnic':ethnicLIST,           # the ethnic of the face pic
-                           #'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
-                           #'Face_path':pathLIST,          # the datapath of the face pic
-                           #'Bg_path':BgLIST,              # the datapath of the background pic
-                           #'Pic_Condition':old_newLIST    # the seen or not condition
-                           #})
+        #setting up what keypress would allow the experiment to proceed
+        keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+        event.getKeys(keyList=keypressLIST_alt)
+        print(keys)
+        
+        # 再加上if else的判斷決定是否要收或是要怎麼紀錄這反應
+        if keys == ["lalt"]:
+            conditionLIST = ["femael"]
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
+        elif keys == ["ralt"]:
+            conditionLIST = ["male"]
+            end_time = clock.getTime()
+            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            print(time_duration)
+            #print(type(time_duration))
+            clock.reset()
 
-    ##data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    #file_name = 'Sub%s_%s_studyPhase_results.csv' %(sub_id, sub_cond)
-    #save_path = result_data_path / Path(file_name)
-    #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+        else:
+            keys = ["None"]
+            conditionLIST = ["N/A"]
+            time_duration = 0
+            print(time_duration)
+            clock.reset()
 
-    ## close all the possible ongoing commands that could be running in the background
-    #core.quit()  # normally we would add it, in case that anything happen
+        
+        # calculate the correctness of the gender determination response
+        if gen_ans == ["female"]:  ## Rivise this command
+            # ans is "Correct"
+            if keys == ["lalt"]:
+                correctLIST = ["True"]
+            # ans is "Incorrect"
+            elif keys == ["ralt"]:
+                correctLIST = ["False"]
+            else:
+                correctLIST = ["N/A"]
+
+        elif gen_ans == ["male"]:
+            # ans is "Correct"
+            if keys == ["ralt"]:
+                correctLIST = ["True"]
+            # ans is "Incorrect"
+            elif keys == ["lalt"]:
+                correctLIST = ["False"]
+            else:
+                correctLIST = ["N/A"]
+        else:
+            pass
+        
+        # Collect the H/LCD of the words
+        ## FOR Set A H/LCD
+        if sub_cond == "A":
+            if stim_wordSTR in pair_1pw_LIST:
+                cdSTR = "H"
+            elif stim_wordSTR in pair_2pw_LIST:
+                cdSTR = "L"
+            else:
+                cdSTR = "C"
+        
+        ## FOR Set B H/LCD
+        if sub_cond == "B":
+            if stim_wordSTR in pair_1pw_LIST:
+                cdSTR = "L"
+            elif stim_wordSTR in pair_2pw_LIST:
+                cdSTR = "H"
+            else:
+                cdSTR = "C"
+                
+        # making the wanted info into the List form for future use
+        sub_idLIST.append(sub_id)
+        dateLIST.append(day)
+        sub_condLIST.append(sub_cond)
+        roundLIST.append(round_)
+        stimLIST.append(stim_wordSTR)
+        CD_condLIST.append(cdSTR)
+        resultKeyLIST.append(keys)
+        responseLIST.append(conditionLIST)
+        LDT_rtLIST.append(time_duration)
+        correctnessLIST.append(correctLIST)
+        
+        #Display the instruction of the break in between Round 1 & Round 2
+        print("Round", round_, "is over.")
+        if round_ == 1:
+            display_ins(instructions_3, keypressLIST_enter)
+        else:
+            display_ins(instructions_4, keypressLIST_enter)
+    
+    # close the window  at the end of the experiment
+    win.close()
+    
+    
+    
+    # Saving the self_paced_rt result into csv file
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
+                           'Date':dateLIST,               # when did the experiment happen
+                           'Emo_Condition':sub_condLIST,  # emotion condition
+                           'Trial_num':trialLIST,         # which trial
+                           'RT':rtLIST,                   # the rt for memory reations
+                           'Keypress':resultKeyLIST,      # which key they press
+                           'Scale':scaleLIST,             # How confidence they thought themselves (=what does the keypress mean)
+                           'Emotion':faceEmoLIST,         # which emotion of the face pic
+                           'Gender':genderLIST,           # the gender of the face pic
+                           'Ethnic':ethnicLIST,           # the ethnic of the face pic
+                           'Pic_seq':pic_seqLIST,         # the sequence of the pic (no matter it is Bg or face)
+                           'Face_path':pathLIST,          # the datapath of the face pic
+                           'Bg_path':BgLIST,              # the datapath of the background pic
+                           'Pic_Condition':old_newLIST    # the seen or not condition
+                           })
+    
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'Sub%s_%s_studyPhase_results.csv' %(sub_id, sub_cond)
+    save_path = result_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    
+    # close all the possible ongoing commands that could be running in the background
+    core.quit()  # normally we would add it, in case that anything happen
     
     ### Study Phase Ends ###
     
