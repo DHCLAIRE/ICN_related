@@ -274,7 +274,7 @@ if __name__ == "__main__":
     ## Set the response key
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
-    keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    keypressLIST_alt = ["lalt", "ralt"]#["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
     #keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
     #keypressLIST_esc = ["escape"]
     
@@ -429,14 +429,14 @@ if __name__ == "__main__":
         print(keys)
         
         # Add if-else condition to decide what to record in the results
-        if keys == ["lshift"]: #["loption"]: #["lalt"]:
+        if keys == ["lalt"]: #["loption"]: #["lalt"]:
             conditionLIST = ["female"]
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
             print(time_duration)
             #print(type(time_duration))
             clock.reset()
-        elif keys == ["rshift"]: #["roption"]: #["ralt"]:
+        elif keys == ["ralt"]: #["roption"]: #["ralt"]:
             conditionLIST = ["male"]
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
