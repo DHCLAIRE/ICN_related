@@ -201,7 +201,8 @@ if __name__ == "__main__":
     #result_data_path.mkdir(exist_ok=True)
     
     # Set up the data path (For Mac)
-    root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
+    #root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
+    root_data_path = Path("C:\Users\User\Downloads\MaterialsExp2\MaterialsExp2")
     face_data_path = root_data_path / "faces"
     Bg_data_path = root_data_path / "Backgrounds"
     result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
@@ -428,14 +429,14 @@ if __name__ == "__main__":
         print(keys)
         
         # Add if-else condition to decide what to record in the results
-        if keys == ["loption"]: #["lalt"]:
+        if keys == ["lalt"]: #["loption"]: #["lalt"]:
             conditionLIST = ["female"]
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
             print(time_duration)
             #print(type(time_duration))
             clock.reset()
-        elif keys == ["roption"]: #["ralt"]:
+        elif keys == ["ralt"]: #["roption"]: #["ralt"]:
             conditionLIST = ["male"]
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
