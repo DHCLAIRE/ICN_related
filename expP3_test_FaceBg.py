@@ -255,6 +255,15 @@ if __name__ == "__main__":
     of the previously seen background and faces.\n
     We would test the , and the picture will display on its own."""
     
+    instructions_mid_Chi = """本實驗第一階段結束，準備進入第二階段。\n
+    請根據之前看過的背景場景和人臉照片進行回答。\n
+    我們將先測試背景圖片或人臉的判斷，圖片會單獨出現。"""
+    
+    instructions_mid_Eng = """This is the end of the first block.\n The second block is the same as the previous.\n\n
+    In this phase, please answer based on your best recollection \n
+    of the previously seen background and faces.\n
+    We would test the , and the picture will display on its own."""
+    
     instructions_end_Chi = """本實驗結束，謝謝！"""
     instructions_end_Eng = """This is the End of the experiment.\nThank You!"""
 
@@ -380,6 +389,7 @@ if __name__ == "__main__":
             port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
             core.wait(.01); # Stay for 10 ms
             """
+            
             for i in range(5):  # total stim display should be 60
                 ## To refresh the win before play out the stim
                 win.flip()  # always add this after an item was presented
@@ -516,6 +526,11 @@ if __name__ == "__main__":
                 scaleLIST.append(scaleINT)
                 stimConditionLIST.append(stim_condtionSTR)
                 stimPicTypeLIST.append(stim_typeSTR)   # whether it's the face or the Bg
+                
+            if block_INT == 0:
+                display_ins(instructions_mid_Chi, keypressLIST_space)
+            else:
+                continue
                 
         #Display the instruction of experiment ends
         display_ins(instructions_end_Chi, keypressLIST_space)
@@ -703,6 +718,11 @@ if __name__ == "__main__":
                 scaleLIST.append(scaleINT)
                 stimConditionLIST.append(stim_condtionSTR)
                 stimPicTypeLIST.append(stim_typeSTR)   # whether it's the face or the Bg
+                
+            if block_INT == 0:
+                display_ins(instructions_mid_Chi, keypressLIST_space)
+            else:
+                continue
                 
         #Display the instruction of experiment ends
         display_ins(instructions_end_Chi, keypressLIST_space)
