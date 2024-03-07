@@ -201,8 +201,8 @@ if __name__ == "__main__":
     #result_data_path.mkdir(exist_ok=True)
     
     # Set up the data path (For Mac)
-    #root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
-    root_data_path = Path(r"C:\Users\User\Downloads\MaterialsExp2\MaterialsExp2")
+    root_data_path = Path("/Users/ting-hsin/Downloads/MaterialsExp2")
+    #root_data_path = Path(r"C:\Users\User\Downloads\MaterialsExp2\MaterialsExp2") # For Noncedo Win
     face_data_path = root_data_path / "faces"
     Bg_data_path = root_data_path / "Backgrounds"
     result_data_path = root_data_path / "data" / Path("Sub_%s_%s" %(sub_id, sub_cond))
@@ -274,7 +274,7 @@ if __name__ == "__main__":
     ## Set the response key
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
-    keypressLIST_alt = ["lalt", "ralt"]#["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
+    keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
     #keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
     #keypressLIST_esc = ["escape"]
     
@@ -429,14 +429,14 @@ if __name__ == "__main__":
         print(keys)
         
         # Add if-else condition to decide what to record in the results
-        if keys == ["lalt"]: #["loption"]: #["lalt"]:
+        if keys == ["loption"]: #["lalt"]:
             conditionLIST = ["female"]
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
             print(time_duration)
             #print(type(time_duration))
             clock.reset()
-        elif keys == ["ralt"]: #["roption"]: #["ralt"]:
+        elif keys == ["roption"]: #["ralt"]:
             conditionLIST = ["male"]
             end_time = clock.getTime()
             time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
