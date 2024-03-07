@@ -225,12 +225,15 @@ if __name__ == "__main__":
     
     face_stimLIST = []
     background_stimLIST = []
-    faceNameLIST = []
-    faceGenLIST = []
-    faceRaceLIST = []
-    bgstimLIST = []
+    picNameLIST = []
+    picGenLIST = []
+    picRaceLIST = []
     pic_seqLIST = []
     keyRepLIST = []
+    stimConditionLIST = []
+    scaleLIST = []
+    stimPicTypeLIST = []
+
     
     pic_foundBOOL = True
     
@@ -369,113 +372,115 @@ if __name__ == "__main__":
     print("face_or_bg_INT:", face_or_bg_INT)
     
     ### The presentation of test starts
-    # 1 == face goes first, bg second
+    ## Present all faces or bgs based on the emo conditions
+    ## face_or_bg_INT == 1: face goes first, Bg second; face_or_bg_INT == 0: Bg goes first, face second; 
+
     #if face_or_bg_INT == 1:
-    # Present all face or the bg based on the emo conditions
-    for round_INT in range(2):
+    
+    ## if face_or_bg_INT == 1, the face would be block 1 & Bg would be block 2
+    for block_INT in range(2):
         """
         ## To mark the round number  ##
         port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
         core.wait(.01); # Stay for 10 ms
         """
-        test_stimLIST = [face_stimLIST, pic_bgLIST]
         stim_datapathLIST = [face_data_path, Bg_data_path]
+        test_stimLIST = [face_stimLIST, pic_bgLIST]
         seenStimLIST = [seenFaceLIST, seenBgLIST]
         
-        #pprint(test_stimLIST[round_INT])
-        #pprint(stim_datapathLIST[round_INT])
-        #print(len(test_stimLIST[round_INT]))
+        #pprint(test_stimLIST[block_INT])
+        #pprint(stim_datapathLIST[block_INT])
+        #print(len(test_stimLIST[block_INT]))
         
-        
-        for i in range(10):  # total stim should be 60
+        for i in range(10):  # total stim display should be 60
             ## To refresh the win before play out the stim
-            #win.flip()  # always add this after an item was presented
-            #core.wait(0.5) # blank for 500 ms
+            win.flip()  # always add this after an item was presented
+            core.wait(0.5) # blank for 500 ms
             
             # start to record the time
-            #start_time = clock.getTime()
+            start_time = clock.getTime()
     
             # display fixation in the central of the screen
-            #display_fix()
-            #core.wait(0.5) # fixation for 500 ms
+            display_fix()
+            core.wait(0.5) # fixation for 500 ms
     
             # Display the pic stimulus
-            stim_imageSTR = str(stim_datapathLIST[round_INT] / Path(test_stimLIST[round_INT][i][0]))
-            stim_widthINT = int(test_stimLIST[round_INT][i][6])
-            stim_heightINT = int(test_stimLIST[round_INT][i][7])
+            stim_imageSTR = str(stim_datapathLIST[block_INT] / Path(test_stimLIST[block_INT][i][0]))
+            stim_widthINT = int(test_stimLIST[block_INT][i][6])
+            stim_heightINT = int(test_stimLIST[block_INT][i][7])
             #print(pic_widthINT)
             #print(pic_heightINT)
             #print(pic_imageSTR)
-            #stim_pic = visual.ImageStim(win=win, image=stim_imageSTR, size=[stim_widthINT, stim_heightINT])
-            #stim_pic.size += (-200, -200)  # smaller in overall
-            #bg_pic.size += (100, 100)  # wider 10 & heighter 10
-            #stim_pic.draw()
-            #core.wait(3) # stim for 3000 ms
+            stim_pic = visual.ImageStim(win=win, image=stim_imageSTR, size=[stim_widthINT, stim_heightINT])
+            stim_pic.size += (-200, -200)  # smaller in overall
+            bg_pic.size += (100, 100)  # wider 10 & heighter 10
+            stim_pic.draw()
+            core.wait(3) # stim for 3000 ms
     
-            ##"""
-            ### TO MARK THE PSEUDOWORD APPEARED
-            ##port.write(b'1') #This is the num_tag for opening the trigger
-            ##core.wait(.01); # Stay for 10 ms
-            ##"""
-            #win.flip()  # always add this after an item was presented
-            #core.wait(0.5) # blank for 500 ms?
+            """
+            # TO MARK THE PSEUDOWORD APPEARED
+            port.write(b'1') #This is the num_tag for opening the trigger
+            core.wait(.01); # Stay for 10 ms
+            """
+            win.flip()  # always add this after an item was presented
+            core.wait(0.5) # blank for 500 ms?
     
         
-            ####setting up what keypress would allow the experiment to proceed
-            #keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
-            #event.getKeys(keyList=keypressLIST_alt)
-            #print(keys)
+            ###setting up what keypress would allow the experiment to proceed
+            keys = event.waitKeys(maxWait=5, keyList=keypressLIST_scale) # press the buttons of scales
+            event.getKeys(keyList=keypressLIST_scale)
+            print(keys)
                 
                 
-            ### Add if-else condition to decide what to record in the results
-            #if keys == ["space"]:  #"h", "j", "k", "l"
-                #scaleINT = 1
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
+            ## Add if-else condition to decide what to record in the results
+            if keys == ["space"]:  #"h", "j", "k", "l"
+                scaleINT = 1
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
                 
-            #if keys == ["h"]:
-                #scaleINT = 2
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
+            if keys == ["h"]:
+                scaleINT = 2
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
                 
-            #if keys == ["j"]: #["ralt"]:
-                #scaleINT = 3
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
+            if keys == ["j"]: #["ralt"]:
+                scaleINT = 3
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
                 
-            #if keys == ["k"]:
-                #scaleINT = 4
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
+            if keys == ["k"]:
+                scaleINT = 4
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
                 
-            #if keys == ["l"]:
-                #scaleINT = 5
-                #end_time = clock.getTime()
-                #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-                #print(time_duration)
-                ##print(type(time_duration))
-                #clock.reset()
+            if keys == ["l"]:
+                scaleINT = 5
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
                 
-            #else:
-                #keys = ["None"]
-                #scaleINT = ["N/A"]
-                #time_duration = 0
-                #print(time_duration)
-                #clock.reset()
+            else:
+                keys = ["None"]
+                scaleINT = ["N/A"]
+                time_duration = 0
+                print(time_duration)
+                clock.reset()
                 
-            print("Round_count:", round_INT)
+            print("Round_count:", block_INT)
             print("==========================================")
             print("Stim Num:", i)
             ## Add if-else condition to decide what pic is seen(old) or unseen(new) to record in the results(look from both face & Bg list)
@@ -502,22 +507,31 @@ if __name__ == "__main__":
                 else:
                     pic_foundBOOL = False
                 print("Seen status:", bool(pic_foundBOOL))
+            
             # Check if the stim pic is seen(old) or unseen(new)
             if pic_foundBOOL == True:
                 stim_condtionSTR = "old"
             else:
                 stim_condtionSTR = "new"
-                    
-
-            pic_seqINT = int(test_stimLIST[round_INT][i][2])
-            pic_genSTR = str(test_stimLIST[round_INT][i][3])
-            pic_raceSTR = str(test_stimLIST[round_INT][i][4])
+            ## Assign the stored values of the stims for the result form
+            pic_seqINT = int(test_stimLIST[block_INT][i][2])
+            pic_genSTR = str(test_stimLIST[block_INT][i][3])
+            pic_raceSTR = str(test_stimLIST[block_INT][i][4])
+            
+            # Determine the pic type based on the display order of the stim type (either face first or Bg first, change this when in different order)
+            # face_or_bg_INT == 1 >> 1 == face goes first, bg second
+            if block_INT == 0:
+                pic_typeSTR = "face"
+            if block_INT == 1:
+                pic_typeSTR = "background"
+            else:
+                print("Error.")
             
             ## making the wanted info into the List form for future use
             sub_idLIST.append(sub_id)
-            sub_condLIST.append(sub_cond)
+            sub_condLIST.append(sub_cond)   # the emo group of the participants
             dateLIST.append(day)
-            picNameLIST.append(stim_imageSTR)
+            picNameLIST.append(stim_imageSTR)  # include the data path of the stim picture
             picGenLIST.append(stim_genSTR)
             picRaceLIST.append(stim_raceSTR)
             pic_seqLIST.append(pic_seqINT)
@@ -525,10 +539,11 @@ if __name__ == "__main__":
             responseLIST.append(time_duration)
             scaleLIST.append(scaleINT)
             stimConditionLIST.append(stim_condtionSTR)
+            stimPicTypeLIST.append(pic_typeSTR)   # whether it's the face or the Bg
 
     # 0 == display bg first and then face
     #else:
-        #for round_INT in range(2):
+        #for block_INT in range(2):
             #"""
             ### To mark the round number  ##
             #port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
@@ -661,23 +676,24 @@ if __name__ == "__main__":
     
     
     ### Saving the self_paced_rt result into csv file
-    #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
-                           #'Date':dateLIST,               # when did the experiment happen
-                           #'Emo_Condition':sub_condLIST,  # emotion condition
-                           #'RT':responseLIST,             # the rt for memory reactions
-                           #'Keypress':resultKeyLIST,      # which key they press
-                           #'Scale':scaleLIST,           # what does the keypress means
-                           #'Face_path':faceNameLIST,      # the file name of the face pic
-                           #'Bg_path':bgstimLIST,          # the file name of the bg pic
-                           #'Gender':faceGenLIST,          # the gender of the face pic
-                           #'Ethnic':faceRaceLIST,         # the ethnic of the face pic
-                           #'Pic_seq':pic_seqLIST          # the sequence of the pic (no matter it is Bg or face)
-                           #})
+    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,              # subject number
+                           'Date':dateLIST,                    # when did the experiment happen
+                           'Emo_Condition':sub_condLIST,       # emotion condition
+                           'Pic_seq':pic_seqLIST,              # the sequence of the pic (no matter it is Bg or face)
+                           'Pic_type':stimPicTypeLIST,         # the type of the presented stim pic
+                           'RT':responseLIST,                  # the rt for memory reactions
+                           'Keypress':resultKeyLIST,           # which key they press
+                           'Scale':scaleLIST,                  # what does the keypress means
+                           'Pic_condition':stimConditionLIST,  # seen(old)/unseen(new) status of the stim pics
+                           'Gender':picGenLIST,                # the gender of the face pic
+                           'Ethnic':picRaceLIST,               # the ethnic of the face pic
+                           'Path':picNameLIST,                 # the file name of the face pic
+                           })
     
-    ##data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    #file_name = 'Sub%s_%s_testPhase_results.csv' %(sub_id, sub_cond)
-    #save_path = result_data_path / Path(file_name)
-    #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    file_name = 'Sub%s_%s_testPhase_results.csv' %(sub_id, sub_cond)
+    save_path = result_data_path / Path(file_name)
+    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
-    ## close all the possible ongoing commands that could be running in the background
-    #core.quit()  # normally we would add it, in case that anything happen
+    # close all the possible ongoing commands that could be running in the background
+    core.quit()  # normally we would add it, in case that anything happen
