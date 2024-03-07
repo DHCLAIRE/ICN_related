@@ -122,31 +122,31 @@ def raceNgender(inputLIST, race_colINT, gen_colINT):
     MW_LIST = []
     MA_LIST = []
     for i in range(len(inputLIST)):
-        raceSTR = race(pic_angryLIST[i][race_colINT])
-        genderSTR = gender(pic_angryLIST[i][gen_colINT])
+        raceSTR = race(inputLIST[i][race_colINT])
+        genderSTR = gender(inputLIST[i][gen_colINT])
         # determine the race
         if genderSTR == "F":
             # Asian
             if raceSTR == "A":
-                FA_LIST.append(pic_angryLIST[i])
+                FA_LIST.append(inputLIST[i])
             # Black
             if raceSTR == "B":
-                FB_LIST.append(pic_angryLIST[i])
+                FB_LIST.append(inputLIST[i])
             # Caucasian
             if raceSTR == "W":
-                FW_LIST.append(pic_angryLIST[i])
+                FW_LIST.append(inputLIST[i])
             else:
                 pass
         else:
             # Asian
             if raceSTR == "A":
-                MA_LIST.append(pic_angryLIST[i])
+                MA_LIST.append(inputLIST[i])
             # Black
             if raceSTR == "B":
-                MB_LIST.append(pic_angryLIST[i])
+                MB_LIST.append(inputLIST[i])
             # Caucasian
             if raceSTR == "W":
-                MW_LIST.append(pic_angryLIST[i])
+                MW_LIST.append(inputLIST[i])
             else:
                 pass
     resultDICT = {"Female_Asian": FA_LIST,

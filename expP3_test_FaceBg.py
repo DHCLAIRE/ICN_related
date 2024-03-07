@@ -2,12 +2,12 @@
 # -*- coding:utf-8 -*-
 
 ## To Change the backend setting to PTB
-from psychopy import prefs
-#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+#from psychopy import prefs
+##prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-##import psychtoolbox as ptb
-from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-#print(sound.Sound)
+###import psychtoolbox as ptb
+#from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+##print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -122,31 +122,31 @@ def raceNgender(inputLIST, race_colINT, gen_colINT):
     MW_LIST = []
     MA_LIST = []
     for i in range(len(inputLIST)):
-        raceSTR = race(pic_angryLIST[i][race_colINT])
-        genderSTR = gender(pic_angryLIST[i][gen_colINT])
+        raceSTR = race(inputLIST[i][race_colINT])
+        genderSTR = gender(inputLIST[i][gen_colINT])
         # determine the race
         if genderSTR == "F":
             # Asian
             if raceSTR == "A":
-                FA_LIST.append(pic_angryLIST[i])
+                FA_LIST.append(inputLIST[i])
             # Black
             if raceSTR == "B":
-                FB_LIST.append(pic_angryLIST[i])
+                FB_LIST.append(inputLIST[i])
             # Caucasian
             if raceSTR == "W":
-                FW_LIST.append(pic_angryLIST[i])
+                FW_LIST.append(inputLIST[i])
             else:
                 pass
         else:
             # Asian
             if raceSTR == "A":
-                MA_LIST.append(pic_angryLIST[i])
+                MA_LIST.append(inputLIST[i])
             # Black
             if raceSTR == "B":
-                MB_LIST.append(pic_angryLIST[i])
+                MB_LIST.append(inputLIST[i])
             # Caucasian
             if raceSTR == "W":
-                MW_LIST.append(pic_angryLIST[i])
+                MW_LIST.append(inputLIST[i])
             else:
                 pass
     resultDICT = {"Female_Asian": FA_LIST,
@@ -231,18 +231,14 @@ if __name__ == "__main__":
     bgstimLIST = []
     pic_seqLIST = []
     keyRepLIST = []
-
-    # key in number for notifying which subject it is
-    #sub_id = str(input("Subject: "))
     
     #### Experiment Begins ####
-    ## Study Phase Start ###
     # Parameters Ssetting ##
     
     # Setting the presented window
-    win = visual.Window(size = [500, 500],color = [1, 1, 1], units ="pix")
-    ##win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
-    clock = core.Clock()
+    #win = visual.Window(size = [500, 500],color = [1, 1, 1], units ="pix")
+    ###win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    #clock = core.Clock()
     ##start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions
@@ -268,9 +264,9 @@ if __name__ == "__main__":
     
     # Step_1: Show the instructions
     # Welcome the participants
-    display_ins(instructions_welcome_Chi, keypressLIST_space)
+    #display_ins(instructions_welcome_Chi, keypressLIST_space)
     # Display the instructions for experiment content and keypress
-    display_ins(instructions_test_Chi, keypressLIST_space)
+    #display_ins(instructions_test_Chi, keypressLIST_space)
     
 
     #core.wait(3)
@@ -358,160 +354,164 @@ if __name__ == "__main__":
     else:
         pass
     
-    # Open the saved json so that we would know that what was seen and what unseen
-    with open(result_data_path / Path('Sub%s_%s_test_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
-        json.dump(resultDICT, jsonfile, ensure_ascii=False)
+    
+    pprint(resultDICT)
     
     
-    ## The presentation of study starts
-    for i in range(5):  # total is 30 round
-        """
-        ## To mark the round number  ##
-        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
-        core.wait(.01); # Stay for 10 ms
-        """
-        ## To refresh the win before play out the stim
-        win.flip()  # always add this after an item was presented
-        #core.wait(0.5) # blank for 500 ms
+    ## Open the saved json so that we would know that what was seen and what unseen
+    #with open(result_data_path / Path('Sub%s_%s_test_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
+        #json.dump(resultDICT, jsonfile, ensure_ascii=False)
+    
+    
+    ### The presentation of study starts
+    #for i in range(5):  # total is 30 round
+        #"""
+        ### To mark the round number  ##
+        #port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+        #core.wait(.01); # Stay for 10 ms
+        #"""
+        ### To refresh the win before play out the stim
+        #win.flip()  # always add this after an item was presented
+        ##core.wait(0.5) # blank for 500 ms
         
-        # start to record the time
-        start_time = clock.getTime()
+        ## start to record the time
+        #start_time = clock.getTime()
 
-        # display fixation in the central of the screen
-        display_fix()
-        #core.wait(0.5) # fixation for 500 ms
+        ## display fixation in the central of the screen
+        #display_fix()
+        ##core.wait(0.5) # fixation for 500 ms
 
-        # Display the pic stimulus
-        face_imageSTR = str(face_data_path / Path(face_stimLIST[i][0]))
-        bg_imageSTR = str(Bg_data_path / Path(background_stimLIST[i][0]))
-        face_widthINT = int(face_stimLIST[i][6])
-        face_heightINT = int(face_stimLIST[i][7])
-        bg_widthINT = int(face_stimLIST[i][6])
-        bg_heightINT = int(face_stimLIST[i][7])
-        #print(widthINT)
-        #print(heightINT)
-        #print(face_imageSTR)
-        #print(bg_imageSTR)
-        bg_pic = visual.ImageStim(win=win, image=bg_imageSTR, size=[bg_widthINT, bg_heightINT])
-        face_pic = visual.ImageStim(win=win, image=face_imageSTR, size=[face_widthINT, face_heightINT])
-        face_pic.size += (-200, -200)  # smaller in overall
-        bg_pic.size += (100, 100)  # wider 10 & heighter 10
-        bg_pic.overlaps = True
-        bg_pic.draw()
-        face_pic.overlaps = True
-        face_pic.draw()
+        ## Display the pic stimulus
+        #face_imageSTR = str(face_data_path / Path(face_stimLIST[i][0]))
+        #bg_imageSTR = str(Bg_data_path / Path(background_stimLIST[i][0]))
+        #face_widthINT = int(face_stimLIST[i][6])
+        #face_heightINT = int(face_stimLIST[i][7])
+        #bg_widthINT = int(face_stimLIST[i][6])
+        #bg_heightINT = int(face_stimLIST[i][7])
+        ##print(widthINT)
+        ##print(heightINT)
+        ##print(face_imageSTR)
+        ##print(bg_imageSTR)
+        #bg_pic = visual.ImageStim(win=win, image=bg_imageSTR, size=[bg_widthINT, bg_heightINT])
+        #face_pic = visual.ImageStim(win=win, image=face_imageSTR, size=[face_widthINT, face_heightINT])
+        #face_pic.size += (-200, -200)  # smaller in overall
+        #bg_pic.size += (100, 100)  # wider 10 & heighter 10
+        #bg_pic.overlaps = True
+        #bg_pic.draw()
+        #face_pic.overlaps = True
+        #face_pic.draw()
         
-        core.wait(3) # stim for 3000 ms
+        #core.wait(3) # stim for 3000 ms
 
-        """
-        # TO MARK THE PSEUDOWORD APPEARED
-        port.write(b'1') #This is the num_tag for opening the trigger
-        core.wait(.01); # Stay for 10 ms
-        """
-        win.flip()  # always add this after an item was presented
-        core.wait(0.5) # blank for 500 ms?
+        #"""
+        ## TO MARK THE PSEUDOWORD APPEARED
+        #port.write(b'1') #This is the num_tag for opening the trigger
+        #core.wait(.01); # Stay for 10 ms
+        #"""
+        #win.flip()  # always add this after an item was presented
+        #core.wait(0.5) # blank for 500 ms?
 
 
-        ##setting up what keypress would allow the experiment to proceed
-        keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
-        event.getKeys(keyList=keypressLIST_alt)
-        print(keys)
+        ###setting up what keypress would allow the experiment to proceed
+        #keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+        #event.getKeys(keyList=keypressLIST_alt)
+        #print(keys)
         
         
-        # Add if-else condition to decide what to record in the results
-        if keys == ["space"]:  #"h", "j", "k", "l"
-            scaleINT = 1
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
+        ## Add if-else condition to decide what to record in the results
+        #if keys == ["space"]:  #"h", "j", "k", "l"
+            #scaleINT = 1
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+            #print(time_duration)
+            ##print(type(time_duration))
+            #clock.reset()
             
-        if keys == ["h"]:
-            scaleINT = 2
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
+        #if keys == ["h"]:
+            #scaleINT = 2
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            #print(time_duration)
+            ##print(type(time_duration))
+            #clock.reset()
             
-        if keys == ["j"]: #["ralt"]:
-            scaleINT = 3
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
+        #if keys == ["j"]: #["ralt"]:
+            #scaleINT = 3
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            #print(time_duration)
+            ##print(type(time_duration))
+            #clock.reset()
             
-        if keys == ["k"]:
-            scaleINT = 4
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
+        #if keys == ["k"]:
+            #scaleINT = 4
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            #print(time_duration)
+            ##print(type(time_duration))
+            #clock.reset()
             
-        if keys == ["l"]:
-            scaleINT = 5
-            end_time = clock.getTime()
-            time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
-            print(time_duration)
-            #print(type(time_duration))
-            clock.reset()
+        #if keys == ["l"]:
+            #scaleINT = 5
+            #end_time = clock.getTime()
+            #time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+            #print(time_duration)
+            ##print(type(time_duration))
+            #clock.reset()
             
-        else:
-            keys = ["None"]
-            scaleINT = ["N/A"]
-            time_duration = 0
-            print(time_duration)
-            clock.reset()
+        #else:
+            #keys = ["None"]
+            #scaleINT = ["N/A"]
+            #time_duration = 0
+            #print(time_duration)
+            #clock.reset()
         
         
-        face_pic_seqINT = int(face_stimLIST[i][2])
-        face_genSTR = str(face_stimLIST[i][3])
-        face_raceSTR = str(face_stimLIST[i][4])
-        bg_pic_seqINT = int(background_stimLIST[i][2])
+        #face_pic_seqINT = int(face_stimLIST[i][2])
+        #face_genSTR = str(face_stimLIST[i][3])
+        #face_raceSTR = str(face_stimLIST[i][4])
+        #bg_pic_seqINT = int(background_stimLIST[i][2])
         
-        ## making the wanted info into the List form for future use
-        sub_idLIST.append(sub_id)
-        sub_condLIST.append(sub_cond)
-        dateLIST.append(day)
-        faceNameLIST.append(face_imageSTR)
-        faceGenLIST.append(face_genSTR)
-        faceRaceLIST.append(face_raceSTR)
-        bgstimLIST.append(bg_imageSTR)
-        pic_seqLIST.append([face_pic_seqINT, bg_pic_seqINT])
-        resultKeyLIST.append(keys)
-        responseLIST.append(time_duration)
-        scaleLIST.append(scaleINT)
+        ### making the wanted info into the List form for future use
+        #sub_idLIST.append(sub_id)
+        #sub_condLIST.append(sub_cond)
+        #dateLIST.append(day)
+        #faceNameLIST.append(face_imageSTR)
+        #faceGenLIST.append(face_genSTR)
+        #faceRaceLIST.append(face_raceSTR)
+        #bgstimLIST.append(bg_imageSTR)
+        #pic_seqLIST.append([face_pic_seqINT, bg_pic_seqINT])
+        #resultKeyLIST.append(keys)
+        #responseLIST.append(time_duration)
+        #scaleLIST.append(scaleINT)
         
         
-    #Display the instruction of experiment ends
-    display_ins(instructions_end_Chi, keypressLIST_space)
+    ##Display the instruction of experiment ends
+    #display_ins(instructions_end_Chi, keypressLIST_space)
 
-    # close the window  at the end of the experiment
-    win.close()
+    ## close the window  at the end of the experiment
+    #win.close()
     
     
     
-    ## Saving the self_paced_rt result into csv file
-    dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
-                           'Date':dateLIST,               # when did the experiment happen
-                           'Emo_Condition':sub_condLIST,  # emotion condition
-                           'RT':responseLIST,             # the rt for memory reactions
-                           'Keypress':resultKeyLIST,      # which key they press
-                           'Scale':scaleLIST,           # what does the keypress means
-                           'Face_path':faceNameLIST,      # the file name of the face pic
-                           'Bg_path':bgstimLIST,          # the file name of the bg pic
-                           'Gender':faceGenLIST,          # the gender of the face pic
-                           'Ethnic':faceRaceLIST,         # the ethnic of the face pic
-                           'Pic_seq':pic_seqLIST          # the sequence of the pic (no matter it is Bg or face)
-                           })
+    ### Saving the self_paced_rt result into csv file
+    #dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,         # subject number
+                           #'Date':dateLIST,               # when did the experiment happen
+                           #'Emo_Condition':sub_condLIST,  # emotion condition
+                           #'RT':responseLIST,             # the rt for memory reactions
+                           #'Keypress':resultKeyLIST,      # which key they press
+                           #'Scale':scaleLIST,           # what does the keypress means
+                           #'Face_path':faceNameLIST,      # the file name of the face pic
+                           #'Bg_path':bgstimLIST,          # the file name of the bg pic
+                           #'Gender':faceGenLIST,          # the gender of the face pic
+                           #'Ethnic':faceRaceLIST,         # the ethnic of the face pic
+                           #'Pic_seq':pic_seqLIST          # the sequence of the pic (no matter it is Bg or face)
+                           #})
     
-    #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = 'Sub%s_%s_testPhase_results.csv' %(sub_id, sub_cond)
-    save_path = result_data_path / Path(file_name)
-    dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    ##data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
+    #file_name = 'Sub%s_%s_testPhase_results.csv' %(sub_id, sub_cond)
+    #save_path = result_data_path / Path(file_name)
+    #dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
     
-    # close all the possible ongoing commands that could be running in the background
-    core.quit()  # normally we would add it, in case that anything happen
+    ## close all the possible ongoing commands that could be running in the background
+    #core.quit()  # normally we would add it, in case that anything happen
