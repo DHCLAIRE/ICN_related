@@ -375,7 +375,7 @@ if __name__ == "__main__":
     
     
     ## The presentation of study starts
-    for i in range(5):  # total is 30 round
+    for i in range(10):  # total is 30 round
         """
         ## To mark the round number  ##
         port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
