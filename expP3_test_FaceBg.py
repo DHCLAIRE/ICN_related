@@ -423,7 +423,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["h"]:
+                elif keys == ["h"]:
                     scaleINT = 2
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -431,7 +431,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["j"]: #["ralt"]:
+                elif keys == ["j"]: #["ralt"]:
                     scaleINT = 3
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -439,7 +439,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["k"]:
+                elif keys == ["k"]:
                     scaleINT = 4
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -447,7 +447,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["l"]:
+                elif keys == ["l"]:
                     scaleINT = 5
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -471,7 +471,6 @@ if __name__ == "__main__":
                 for c in range(2):
                     #print("Seen Pic LIST:", c)
                     for seenPicInfoLIST in seenStimLIST[c]:
-                        #print(seenPicInfoLIST[0])
                         ## Check the face path  (face == column[6])
                         if seenPicInfoLIST[0] in stim_imageSTR:
                             #print("Pic Found")
@@ -479,13 +478,13 @@ if __name__ == "__main__":
                         else:
                             pass
                             #print("404 Not Found")
-                    ## Use the accumulated pic_foundINT value to determine pic_found status (pic_foundBOOL)
-                    if pic_foundINT > 0:
-                        pic_foundBOOL = True
-                    else:
-                        pic_foundBOOL = False
-                    #print("Database:",c ,"Seen status:", bool(pic_foundBOOL))
-                
+                ## Use the accumulated pic_foundINT value to determine pic_found status (pic_foundBOOL)
+                if pic_foundINT > 0:
+                    pic_foundBOOL = True
+                else:
+                    pic_foundBOOL = False
+                #print("Database:",c ,"Seen status:", bool(pic_foundBOOL))
+            
                 # Check if the stim pic is seen(old) or unseen(new) using pic_foundBOOL
                 if pic_foundBOOL == True:
                     stim_condtionSTR = "old"
@@ -611,7 +610,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["h"]:
+                elif keys == ["h"]:
                     scaleINT = 2
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -619,7 +618,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["j"]: #["ralt"]:
+                elif keys == ["j"]: #["ralt"]:
                     scaleINT = 3
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -627,7 +626,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["k"]:
+                elif keys == ["k"]:
                     scaleINT = 4
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -635,7 +634,7 @@ if __name__ == "__main__":
                     #print(type(time_duration))
                     clock.reset()
                     
-                if keys == ["l"]:
+                elif keys == ["l"]:
                     scaleINT = 5
                     end_time = clock.getTime()
                     time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
@@ -659,7 +658,6 @@ if __name__ == "__main__":
                 for c in range(2):
                     #print("Seen Pic LIST:", c)
                     for seenPicInfoLIST in seenStimLIST[c]:
-                        #print(seenPicInfoLIST[0])
                         ## Check the face path  (face == column[6])
                         if seenPicInfoLIST[0] in stim_imageSTR:
                             #print("Pic Found")
@@ -667,13 +665,13 @@ if __name__ == "__main__":
                         else:
                             pass
                             #print("404 Not Found")
-                    ## Use the accumulated pic_foundINT value to determine pic_found status (pic_foundBOOL)
-                    if pic_foundINT > 0:
-                        pic_foundBOOL = True
-                    else:
-                        pic_foundBOOL = False
-                    #print("Database:",c ,"Seen status:", bool(pic_foundBOOL))
-                
+                ## Use the accumulated pic_foundINT value to determine pic_found status (pic_foundBOOL)
+                if pic_foundINT > 0:
+                    pic_foundBOOL = True
+                else:
+                    pic_foundBOOL = False
+                #print("Database:",c ,"Seen status:", bool(pic_foundBOOL))
+            
                 # Check if the stim pic is seen(old) or unseen(new) using pic_foundBOOL
                 if pic_foundBOOL == True:
                     stim_condtionSTR = "old"
