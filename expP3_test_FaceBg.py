@@ -276,14 +276,13 @@ if __name__ == "__main__":
         pic_fileLIST = csvf.read().split("\n")
         #pprint(pic_fileLIST)
         pic_fileLIST.pop(0)
-    
     pic_infoLIST = []
     
     pic_angryLIST = []
     pic_fearfulLIST = []
     pic_neutralLIST = []
     pic_bgLIST = []
-
+    
     for pic_info in pic_fileLIST:
         pic_infoLIST = pic_info.split(",")
         #print(pic_infoLIST, len(pic_infoLIST))
@@ -307,7 +306,6 @@ if __name__ == "__main__":
         
         # Group into the new group based on emotions
         if pic_typeSTR == "face":
-            
             # Angry group
             if pic_emoSTR == "angry":
                 pic_angryLIST.append(pic_infoLIST)
@@ -326,56 +324,188 @@ if __name__ == "__main__":
     #pprint(pic_bgLIST)
     #print(len(pic_angryLIST), len(pic_fearfulLIST))
     
-    # Separate the race & gender
-    angryDICT = raceNgender(pic_angryLIST, 4, 3)
-    fearfulDICT = raceNgender(pic_fearfulLIST, 4, 3)
-    neutralDICT = raceNgender(pic_neutralLIST, 4, 3)
-    
+    # Separate the race & gender  >> No need for this step cause all 60 stim of each emo group are going to be seen by every participants.
+    #angryDICT = raceNgender(pic_angryLIST, 4, 3)
+    #fearfulDICT = raceNgender(pic_fearfulLIST, 4, 3)
+    #neutralDICT = raceNgender(pic_neutralLIST, 4, 3)
     
     ## Randomly select the stims
-    background_stimLIST = random.sample(pic_bgLIST, 30)
-    random.shuffle(background_stimLIST)
+    #background_stimLIST = random.sample(pic_bgLIST, 30)  >> No need to select 30 out of 60
+    random.shuffle(pic_bgLIST)
     # Get the randomly selected stim out of the emotion pic database
     if sub_cond == "A":
-        face_stimLIST = stim_collection(angryDICT, 0)
+        face_stimLIST = pic_angryLIST
         random.shuffle(face_stimLIST)
         resultDICT = {"face":face_stimLIST,
-                      "background": background_stimLIST}
+                      "background": pic_bgLIST}
     if sub_cond == "F":
-        face_stimLIST = stim_collection(fearfulDICT, 0)
+        face_stimLIST = pic_fearfulLIST
         random.shuffle(face_stimLIST)
         resultDICT = {"face":face_stimLIST,
-                      "background": background_stimLIST}
+                      "background": pic_bgLIST}
     if sub_cond == "N":
-        face_stimLIST = stim_collection(neutralDICT, 0)
+        face_stimLIST = pic_neutralLIST
         random.shuffle(face_stimLIST)
         resultDICT = {"face":face_stimLIST,
-                      "background": background_stimLIST}
+                      "background": pic_bgLIST}
     else:
         pass
     
+    #pprint(resultDICT)
     
-    pprint(resultDICT)
+    ## Decide whether the face or bg goes first
+    # randomly choose one of it to decide which type of pics they are going see first
+    face_or_bgLIST = [0,1]  # 1== face goes first, bg goes second; 0 == display in reverse (bg first and then face second)
     
+    face_or_bg_INT = random.choice(face_or_bgLIST)
+    print(face_or_bg_INT)
     
-    ## Open the saved json so that we would know that what was seen and what unseen
-    #with open(result_data_path / Path('Sub%s_%s_test_Allstims.json'%(sub_id, sub_cond)), 'w', newline='') as jsonfile:
-        #json.dump(resultDICT, jsonfile, ensure_ascii=False)
+    ### The presentation of test starts
+    # 1 == face goes first, bg second
+    #if face_or_bg_INT == 1:
+    # Present all face or the bg based on the emo conditions
+    for round_INT in range(2):
+        """
+        ## To mark the round number  ##
+        port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+        core.wait(.01); # Stay for 10 ms
+        """
+        test_stimLIST = [face_stimLIST, pic_bgLIST]
+        stim_datapathLIST = [face_data_path, Bg_data_path]
+        
+        #pprint(test_stimLIST[round_INT])
+        #pprint(stim_datapathLIST[round_INT])
+        #print(len(test_stimLIST[round_INT]))
+        
+        
+        for i in range(60):
+            ## To refresh the win before play out the stim
+            #win.flip()  # always add this after an item was presented
+            #core.wait(0.5) # blank for 500 ms
+            
+            # start to record the time
+            #start_time = clock.getTime()
     
+            # display fixation in the central of the screen
+            #display_fix()
+            #core.wait(0.5) # fixation for 500 ms
     
-    ### The presentation of study starts
-    #for i in range(5):  # total is 30 round
-        #"""
-        ### To mark the round number  ##
-        #port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
-        #core.wait(.01); # Stay for 10 ms
-        #"""
+            # Display the pic stimulus
+            pic_imageSTR = str(stim_datapathLIST[round_INT] / Path(test_stimLIST[round_INT][i][0]))
+            pic_widthINT = int(test_stimLIST[round_INT][i][6])
+            pic_heightINT = int(test_stimLIST[round_INT][i][7])
+            #print(pic_widthINT)
+            #print(pic_heightINT)
+            #print(pic_imageSTR)
+            stim_pic = visual.ImageStim(win=win, image=face_imageSTR, size=[pic_widthINT, pic_heightINT])
+            #stim_pic.size += (-200, -200)  # smaller in overall
+            #bg_pic.size += (100, 100)  # wider 10 & heighter 10
+            stim_pic.draw()
+            core.wait(3) # stim for 3000 ms
+    
+            #"""
+            ## TO MARK THE PSEUDOWORD APPEARED
+            #port.write(b'1') #This is the num_tag for opening the trigger
+            #core.wait(.01); # Stay for 10 ms
+            #"""
+            win.flip()  # always add this after an item was presented
+            core.wait(0.5) # blank for 500 ms?
+    
+        
+            ###setting up what keypress would allow the experiment to proceed
+            keys = event.waitKeys(maxWait=5, keyList=keypressLIST_alt) # press "lalt" or "ralt" to determine the gender
+            event.getKeys(keyList=keypressLIST_alt)
+            print(keys)
+                
+                
+            ## Add if-else condition to decide what to record in the results
+            if keys == ["space"]:  #"h", "j", "k", "l"
+                scaleINT = 1
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally we use 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                
+            if keys == ["h"]:
+                scaleINT = 2
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                
+            if keys == ["j"]: #["ralt"]:
+                scaleINT = 3
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                
+            if keys == ["k"]:
+                scaleINT = 4
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                
+            if keys == ["l"]:
+                scaleINT = 5
+                end_time = clock.getTime()
+                time_duration = round(end_time - start_time, 3)*1000    # normally 以毫秒作為單位
+                print(time_duration)
+                #print(type(time_duration))
+                clock.reset()
+                
+            else:
+                keys = ["None"]
+                scaleINT = ["N/A"]
+                time_duration = 0
+                print(time_duration)
+                clock.reset()
+                
+                
+            
+            ## Add if-else condition to decide what pic is seen(old) or unseen(new) to record in the results
+            
+            
+            
+            
+            pic_seqINT = int(test_stimLIST[round_INT][i][2])
+            pic_genSTR = str(test_stimLIST[round_INT][i][3])
+            pic_raceSTR = str(test_stimLIST[round_INT][i][4])
+            #bg_pic_seqINT = int(background_stimLIST[i][2])
+            
+            ## making the wanted info into the List form for future use
+            sub_idLIST.append(sub_id)
+            sub_condLIST.append(sub_cond)
+            dateLIST.append(day)
+            picNameLIST.append(pic_imageSTR)
+            picGenLIST.append(pic_genSTR)
+            picRaceLIST.append(pic_raceSTR)
+            pic_seqLIST.append(pic_seqINT)
+            resultKeyLIST.append(keys)
+            responseLIST.append(time_duration)
+            scaleLIST.append(scaleINT)
+    
+    # 0 == display bg first and then face
+    #else:
+        #for round_INT in range(2):
+            #"""
+            ### To mark the round number  ##
+            #port.write(b'2') #This is the num_tag for opening the trigger  #編號要用幾號再討論
+            #core.wait(.01); # Stay for 10 ms
+            #"""
+            #for i in range(60):
+
         ### To refresh the win before play out the stim
-        #win.flip()  # always add this after an item was presented
+        ##win.flip()  # always add this after an item was presented
         ##core.wait(0.5) # blank for 500 ms
         
         ## start to record the time
-        #start_time = clock.getTime()
+        ##start_time = clock.getTime()
 
         ## display fixation in the central of the screen
         #display_fix()
