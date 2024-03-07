@@ -336,22 +336,26 @@ if __name__ == "__main__":
     if sub_cond == "A":
         face_stimLIST = pic_angryLIST
         random.shuffle(face_stimLIST)
-        resultDICT = {"face":face_stimLIST,
-                      "background": pic_bgLIST}
+        #resultDICT = {"face":face_stimLIST,
+                      #"background": pic_bgLIST}
     if sub_cond == "F":
         face_stimLIST = pic_fearfulLIST
         random.shuffle(face_stimLIST)
-        resultDICT = {"face":face_stimLIST,
-                      "background": pic_bgLIST}
+        #resultDICT = {"face":face_stimLIST,
+                      #"background": pic_bgLIST}
     if sub_cond == "N":
         face_stimLIST = pic_neutralLIST
         random.shuffle(face_stimLIST)
-        resultDICT = {"face":face_stimLIST,
-                      "background": pic_bgLIST}
+        #resultDICT = {"face":face_stimLIST,
+                      #"background": pic_bgLIST}
     else:
         pass
-    
     #pprint(resultDICT)
+    
+    with open(result_data_path / Path('Sub%s_%s_study_Allstims.json'%(sub_id, sub_cond)), 'r', newline='') as jsonfile:
+        study_stimDICT = json.load(jsonfile) #, ensure_ascii=False) #no encode into ascii
+        pprint(study_stimDICT)
+        
     
     ## Decide whether the face or bg goes first
     # randomly choose one of it to decide which type of pics they are going see first
