@@ -2,12 +2,12 @@
 # -*- coding:utf-8 -*-
 
 ## To Change the backend setting to PTB
-#from psychopy import prefs
-##prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+from psychopy import prefs
+#prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 
-###import psychtoolbox as ptb
-#from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
-##print(sound.Sound)
+##import psychtoolbox as ptb
+from psychopy import core, visual, event, gui, monitors, clock, parallel  #, parallel   # if you change the setting, this command must be put after the prefs's command
+#print(sound.Sound)
 
 import scipy
 from scipy.io import wavfile
@@ -241,10 +241,10 @@ if __name__ == "__main__":
     # Parameters Ssetting ##
     
     # Setting the presented window
-    #win = visual.Window(size = [500, 500],color = [1, 1, 1], units ="pix")
-    ###win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
-    #clock = core.Clock()
-    ##start_time = clock.getTime()  >>change position to make the calculation correct
+    win = visual.Window(size = [500, 500],color = [1, 1, 1], units ="pix")
+    ##win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)
+    clock = core.Clock()
+    #start_time = clock.getTime()  >>change position to make the calculation correct
 
     # Setting the instructions
     instructions_welcome_Chi = """歡迎參與此實驗"""
@@ -264,14 +264,14 @@ if __name__ == "__main__":
     keypressLIST_space = ['space']
     keypressLIST_enter = ["return"]
     #keypressLIST_alt = ["loption", "roption"] # In Mac == ["roption", "loptions"] # In win == ["lalt, ralt"]  # lalt = left Alt; ralt = right Alt
-    keypressLIST_scale = ["space", "h", "j", "k", "l"]  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
+    keypressLIST_scale = ['space', 'h', 'j', 'k', 'l']  # "space"==1, "h"==2, "j"==3, "k"==4, "l"==5  # use right hand for these keypress 
     #keypressLIST_esc = ["escape"]
     
     # Step_1: Show the instructions
     # Welcome the participants
-    #display_ins(instructions_welcome_Chi, keypressLIST_space)
+    display_ins(instructions_welcome_Chi, keypressLIST_space)
     # Display the instructions for experiment content and keypress
-    #display_ins(instructions_test_Chi, keypressLIST_space)
+    display_ins(instructions_test_Chi, keypressLIST_space)
     
 
     #core.wait(3)
@@ -392,13 +392,10 @@ if __name__ == "__main__":
         #pprint(stim_datapathLIST[block_INT])
         #print(len(test_stimLIST[block_INT]))
         
-        for i in range(10):  # total stim display should be 60
+        for i in range(5):  # total stim display should be 60
             ## To refresh the win before play out the stim
             win.flip()  # always add this after an item was presented
             core.wait(0.5) # blank for 500 ms
-            
-            # start to record the time
-            start_time = clock.getTime()
     
             # display fixation in the central of the screen
             display_fix()
@@ -411,9 +408,12 @@ if __name__ == "__main__":
             #print(pic_widthINT)
             #print(pic_heightINT)
             #print(pic_imageSTR)
+            ## start to record the time
+            start_time = clock.getTime()
+            ## Display the stim
             stim_pic = visual.ImageStim(win=win, image=stim_imageSTR, size=[stim_widthINT, stim_heightINT])
-            stim_pic.size += (-200, -200)  # smaller in overall
-            bg_pic.size += (100, 100)  # wider 10 & heighter 10
+            #stim_pic.size += (-200, -200)  # smaller in overall
+            #bg_pic.size += (100, 100)  # wider 10 & heighter 10
             stim_pic.draw()
             core.wait(3) # stim for 3000 ms
     
@@ -423,12 +423,12 @@ if __name__ == "__main__":
             core.wait(.01); # Stay for 10 ms
             """
             win.flip()  # always add this after an item was presented
-            core.wait(0.5) # blank for 500 ms?
+            #core.wait(0.5) # blank for 500 ms?
     
         
             ###setting up what keypress would allow the experiment to proceed
-            keys = event.waitKeys(maxWait=5, keyList=keypressLIST_scale) # press the buttons of scales
-            event.getKeys(keyList=keypressLIST_scale)
+            keys = event.waitKeys(maxWait=5)#, keyList=keypressLIST_scale) # press the buttons of scales
+            event.getKeys() #keyList=keypressLIST_scale)
             print(keys)
                 
                 
@@ -480,33 +480,34 @@ if __name__ == "__main__":
                 print(time_duration)
                 clock.reset()
                 
-            print("Round_count:", block_INT)
-            print("==========================================")
-            print("Stim Num:", i)
+            #print("Round_count:", block_INT)
+            #print("==========================================")
+            #print("Stim Num:", i)
             ## Add if-else condition to decide what pic is seen(old) or unseen(new) to record in the results(look from both face & Bg list)
             pic_foundINT = 0
             for c in range(2):
-                print("Seen Pic LIST:", c)
+                #print("Seen Pic LIST:", c)
                 for seenPicInfoLIST in seenStimLIST[c]:
                     #print(seenPicInfoLIST[0])
                     ## Check the face path  (face == column[6])
                     if seenPicInfoLIST[0] in stim_imageSTR:
-                        print("Pic Found")
+                        #print("Pic Found")
                         pic_foundINT += 1
-                        print(stim_imageSTR)
-                        print(seenPicInfoLIST[1])
-                        print(seenPicInfoLIST[0])
-                    else:
-                        print("404 Not Found")
                         #print(stim_imageSTR)
                         #print(seenPicInfoLIST[1])
                         #print(seenPicInfoLIST[0])
-                    print("==========")
+                    else:
+                        pass
+                        #print("404 Not Found")
+                        #print(stim_imageSTR)
+                        #print(seenPicInfoLIST[1])
+                        #print(seenPicInfoLIST[0])
+                    #print("==========")
                 if pic_foundINT > 0:
                     pic_foundBOOL = True
                 else:
                     pic_foundBOOL = False
-                print("Seen status:", bool(pic_foundBOOL))
+                print("Database:",c ,"Seen status:", bool(pic_foundBOOL))
             
             # Check if the stim pic is seen(old) or unseen(new)
             if pic_foundBOOL == True:
@@ -514,16 +515,16 @@ if __name__ == "__main__":
             else:
                 stim_condtionSTR = "new"
             ## Assign the stored values of the stims for the result form
-            pic_seqINT = int(test_stimLIST[block_INT][i][2])
-            pic_genSTR = str(test_stimLIST[block_INT][i][3])
-            pic_raceSTR = str(test_stimLIST[block_INT][i][4])
+            stim_seqINT = int(test_stimLIST[block_INT][i][2])
+            stim_genSTR = str(test_stimLIST[block_INT][i][3])
+            stim_raceSTR = str(test_stimLIST[block_INT][i][4])
             
             # Determine the pic type based on the display order of the stim type (either face first or Bg first, change this when in different order)
             # face_or_bg_INT == 1 >> 1 == face goes first, bg second
             if block_INT == 0:
-                pic_typeSTR = "face"
+                stim_typeSTR = "face"
             if block_INT == 1:
-                pic_typeSTR = "background"
+                stim_typeSTR = "background"
             else:
                 print("Error.")
             
@@ -534,12 +535,12 @@ if __name__ == "__main__":
             picNameLIST.append(stim_imageSTR)  # include the data path of the stim picture
             picGenLIST.append(stim_genSTR)
             picRaceLIST.append(stim_raceSTR)
-            pic_seqLIST.append(pic_seqINT)
+            pic_seqLIST.append(stim_seqINT)
             resultKeyLIST.append(keys)
             responseLIST.append(time_duration)
             scaleLIST.append(scaleINT)
             stimConditionLIST.append(stim_condtionSTR)
-            stimPicTypeLIST.append(pic_typeSTR)   # whether it's the face or the Bg
+            stimPicTypeLIST.append(stim_typeSTR)   # whether it's the face or the Bg
 
     # 0 == display bg first and then face
     #else:
@@ -667,11 +668,11 @@ if __name__ == "__main__":
         #scaleLIST.append(scaleINT)
         
         
-    ##Display the instruction of experiment ends
-    #display_ins(instructions_end_Chi, keypressLIST_space)
+    #Display the instruction of experiment ends
+    display_ins(instructions_end_Chi, keypressLIST_space)
 
-    ## close the window  at the end of the experiment
-    #win.close()
+    # close the window  at the end of the experiment
+    win.close()
     
     
     
