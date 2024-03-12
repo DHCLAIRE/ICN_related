@@ -385,8 +385,7 @@ if __name__ == "__main__":
         win.flip()  # always add this after an item was presented
         #core.wait(0.5) # blank for 500 ms
         
-        # start to record the time
-        start_time = clock.getTime()
+
 
         # display fixation in the central of the screen
         display_fix()
@@ -403,10 +402,17 @@ if __name__ == "__main__":
         #print(heightINT)
         #print(face_imageSTR)
         #print(bg_imageSTR)
+        
+        # start to record the time
+        start_time = clock.getTime()
+        
+        # Setting the pic stim
         bg_pic = visual.ImageStim(win=win, image=bg_imageSTR, size=[bg_widthINT, bg_heightINT])
         face_pic = visual.ImageStim(win=win, image=face_imageSTR, size=[face_widthINT, face_heightINT])
-        face_pic.size += (-200, -200)  # smaller in overall
+        # Adjust the size of the pic based on its original pic size
         bg_pic.size += (100, 100)  # wider 10 & heighter 10
+        face_pic.size += (-200, -200)  # smaller in overall
+        # To show two pics at the same time (hence the overlaps)
         bg_pic.overlaps = True
         bg_pic.draw()
         face_pic.overlaps = True
