@@ -85,7 +85,7 @@ if __name__ == "__main__":
     models = {
         
         # F0
-        'Fzero+envelope': [F_zero],
+        'Fzero': [F_zero],
         'Fzero+envelope': [F_zero, envelope],
         'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]
         
