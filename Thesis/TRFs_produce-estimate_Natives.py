@@ -167,8 +167,8 @@ if __name__ == "__main__":
         for model, predictors in models.items():
             path = trf_paths[model]
             # Skip if this file already exists
-            #if path.exists():
-                #continue
+            if path.exists():
+                continue
             print(f"Estimating: {subject[:3]} ~ {model}")
             # Select and concetenate the predictors corresponding to the EEG trials
             predictors_concatenated = []
