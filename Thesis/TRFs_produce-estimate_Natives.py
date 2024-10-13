@@ -7,7 +7,7 @@ import re
 
 import eelbrain
 import mne
-import trftools
+#import trftools
 
 if __name__ == "__main__":
     
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
     print(len(SUBJECTS))
-    print(IMFsLIST)  # ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
+    #print(IMFsLIST)  # ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
     
     # Load stimuli
     # ------------
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # Load word tables and convert tables into continuous time-series with matching time dimension
     word_tables = [eelbrain.load.unpickle(PREDICTOR_word_DIR / f'{stimulus}~Ngram-CFG_word.pickle') for stimulus in STIMULI]
     word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)] # not sure why they could get the word onset this way
-    
+    """
     # Function and content word impulses based on the boolean variables in the word-tables
     word_lexical = [eelbrain.event_impulse_predictor(gt.time, value='lexical', ds=ds, name='lexical') for gt, ds in zip(gammatone, word_tables)]
     word_nlexical = [eelbrain.event_impulse_predictor(gt.time, value='nlexical', ds=ds, name='non_lexical') for gt, ds in zip(gammatone, word_tables)]
@@ -63,10 +63,10 @@ if __name__ == "__main__":
     # NGRAM/CFG word impulses based on the values in the word-tables
     word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
     word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
-    
+    """
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
-    
+    """
     # Get the calculated IMFs
     # IMFsLIST : ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
     imf1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])  # old: IMFsLIST[0] = Alice_IF_IMF_6.pickle
@@ -75,14 +75,19 @@ if __name__ == "__main__":
     imf4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])  # old: IMFsLIST[3] = Alice_IF_IMF_5.pickle
     imf5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])  # old: IMFsLIST[4] = Alice_IF_IMF_1.pickle
     imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])  # old: IMFsLIST[5] = Alice_IF_IMF_3.pickle
-    
+    """
     # Get the calculated F0s
-    #F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
+    F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
     
     # Models
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
+        
+        # F0
+        'Fzero+envelope': [F_zero],
+        'Fzero+envelope': [F_zero, envelope],
+        'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]
         
         # IFs
         #'IMF1':[imf1],
@@ -96,7 +101,7 @@ if __name__ == "__main__":
         #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]  >> already have, therefore don't run again
         #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6]
         # All model
-        'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6]  #, F_zero
+        #'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6]  #, F_zero
     }
     """
     # Acoustic models
