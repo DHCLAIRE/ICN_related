@@ -29,6 +29,21 @@ def LISTblankEraser(rawLIST):
     #print(len(newrawLIST))
     return newrawLIST
 
+"""
+def str2float(rawLIST):
+    '''
+    Turn the float(in str type) into actual float and save it into a LIST
+    '''
+    n_LIST = []
+    for row in rawLIST:
+        if float(row) ==True:
+            n_float = float(row)
+            n_LIST.append(n_float)
+        else:
+            print("This is not a float")
+    n_LIST = rawLIST
+    return n_LIST
+"""
 
 if __name__ == "__main__":
     
@@ -60,15 +75,19 @@ if __name__ == "__main__":
         F0_seqINT = seqINT
         
         #F0_array = np.array()
+        n_F0_fileLIST = []
         n_F0_LIST = []
         with open (F0_DIR / Path("Alice_%s_F0.csv" %str(F0_seqINT)), "r", encoding = "utf-8") as F0_csvFile:
             F0_fileLIST = F0_csvFile.read().split("\n")
             F0_fileLIST = LISTblankEraser(F0_fileLIST)
-            #F0_array = np.array(F0_fileLIST) # turn the str list into array
-            #print(F0_array)
-            #print(type(F0_array))
-            #pprint(F0_fileLIST)
-            print(len(F0_fileLIST))
+            for F_zero_str in F0_fileLIST:
+                F_zero_float = float(F_zero_str)
+                n_F0_fileLIST.append(F_zero_float)
+            #print(n_F0_fileLIST)
+            #print(type(n_F0_fileLIST[3]))
+            F0_fileLIST = n_F0_fileLIST
+            print(F0_fileLIST)
+            print(type(F0_fileLIST[3]))
         
         pre_stimLIST = [0]*10  # = -0.100 ms 's timpoints
         
@@ -80,7 +99,6 @@ if __name__ == "__main__":
         # Add the F0 after the 10 zeros
         n_F0_LIST.extend(F0_fileLIST)
         #print("2", n_F0_LIST)
-        #print(len(n_F0_LIST))
         
         # Add almost 1 s of timepoints after the F0
         F0_lengthINT = F0_lengthLIST[seqINT-1]
@@ -97,21 +115,29 @@ if __name__ == "__main__":
         # Create the F0 TRF
         # Turn the list into array so that the following TRF would contain num instead of str
         n_F0_array = np.array(n_F0_LIST) # turn the str list into array
+        pprint(n_F0_array)
+        print(len(n_F0_array))
+        #print(len(n_F0_LIST))
+        #print(n_F0_LIST[seqINT-1])
         
         #for i in range(12):
         tstep = 1/100  # sampling rate's 倒數
-        n_times = len(n_F0_LIST)
+        n_times = len(n_F0_array)  #original: len(n_F0_LIST)
         time = eelbrain.UTS(0, tstep=tstep, nsamples=n_times) # UTS(-0.1, tstep=tstep, nsamples=n_times+100)
-        tmpF0_ = eelbrain.NDVar(n_F0_LIST, (time,), name='Fzero')
+        print(time)
+        print(type(time))
+        tmpF0_ = eelbrain.NDVar(n_F0_array, (time,), name='Fzero') #Original: eelbrain.NDVar(n_F0_LIST, (time,), name='Fzero')
         #F0_ = eelbrain.pad(tmpF0_, tstart=-0.100, tstop=tmpF0_.time.tstop + 1, name='F0_1')
         F0_NDVar.append(tmpF0_)
+        print(type(tmpF0_))
+        print(np.shape(tmpF0_))
     print(F0_NDVar)
     print(type(F0_NDVar))
     
     # save the F0 into pickle files
     F0_save_path = DATA_ROOT/ "TRFs_pridictors/F0_predictors" / Path("n_Alice_F0_all.pickle")
     eelbrain.save.pickle(F0_NDVar, F0_save_path)
-    
+    #"""
     """
     ## Check the saved csv
     #with open (F0_DIR / f'Alice_1_F0.csv') as F_zero_csv:
@@ -124,7 +150,12 @@ if __name__ == "__main__":
     """
     """
     # Check the datatype of the F0 saved in the pickle file
-    F_zero_pickle = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
+    F_zero_pickle = eelbrain.load.unpickle(F0_DIR / f'n_Alice_F0_all.pickle')
+    for tmp in F_zero_pickle:
+        ##n_tmp = np.array(tmp)
+        n_tmp = eelbrain.NDVar(tmp, time, name='Fzero')
+        pprint(n_tmp)
+        print(type(n_tmp))
     pprint(F_zero_pickle)
     pprint(type(F_zero_pickle)) # str672 >> where went wrong?
-    """
+    #"""
