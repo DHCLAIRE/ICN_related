@@ -64,11 +64,11 @@ if __name__ == "__main__":
         with open (F0_DIR / Path("Alice_%s_F0.csv" %str(F0_seqINT)), "r", encoding = "utf-8") as F0_csvFile:
             F0_fileLIST = F0_csvFile.read().split("\n")
             F0_fileLIST = LISTblankEraser(F0_fileLIST)
-            F0_array = np.array(F0_fileLIST) # turn the str list into array
-            print(F0_array)
-            print(type(F0_array))
+            #F0_array = np.array(F0_fileLIST) # turn the str list into array
+            #print(F0_array)
+            #print(type(F0_array))
             #pprint(F0_fileLIST)
-            #print(len(F0_fileLIST))
+            print(len(F0_fileLIST))
         
         pre_stimLIST = [0]*10  # = -0.100 ms 's timpoints
         
@@ -95,7 +95,8 @@ if __name__ == "__main__":
             pass
 
         # Create the F0 TRF
-        
+        # Turn the list into array so that the following TRF would contain num instead of str
+        n_F0_array = np.array(n_F0_LIST) # turn the str list into array
         
         #for i in range(12):
         tstep = 1/100  # sampling rate's 倒數
@@ -108,10 +109,10 @@ if __name__ == "__main__":
     print(type(F0_NDVar))
     
     # save the F0 into pickle files
-    F0_save_path = DATA_ROOT/ "TRFs_pridictors/F0_predictors" / Path("Alice_F0_all.pickle")
+    F0_save_path = DATA_ROOT/ "TRFs_pridictors/F0_predictors" / Path("n_Alice_F0_all.pickle")
     eelbrain.save.pickle(F0_NDVar, F0_save_path)
-    """
     
+    """
     ## Check the saved csv
     #with open (F0_DIR / f'Alice_1_F0.csv') as F_zero_csv:
         #tmpF0_LIST = F_zero_csv.read().split("\n")
@@ -120,6 +121,7 @@ if __name__ == "__main__":
             #print(type(F_zero_num))
         #pprint(tmpF0_LIST)
         
+    """
     """
     # Check the datatype of the F0 saved in the pickle file
     F_zero_pickle = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
