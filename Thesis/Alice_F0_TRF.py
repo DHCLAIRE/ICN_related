@@ -12,7 +12,7 @@ import numpy as np
 
 import eelbrain
 import mne
-import trftools
+#import trftools
 
 
 def LISTblankEraser(rawLIST):
@@ -53,17 +53,22 @@ if __name__ == "__main__":
     # <NDVar 'envelope': 5832 time>, <NDVar 'envelope': 6236 time>, <NDVar 'envelope': 5726 time>, <NDVar 'envelope': 4808 time>]
     #[<NDVar 'envelope': 73665 time>]
     
+    
     F0_lengthLIST = [5863, 6194, 6435, 7108, 6737, 6487, 6399, 5840, 5832, 6236, 5726, 4808]
     F0_NDVar = []
     for seqINT in range(1, 13):
         F0_seqINT = seqINT
         
+        #F0_array = np.array()
         n_F0_LIST = []
         with open (F0_DIR / Path("Alice_%s_F0.csv" %str(F0_seqINT)), "r", encoding = "utf-8") as F0_csvFile:
             F0_fileLIST = F0_csvFile.read().split("\n")
             F0_fileLIST = LISTblankEraser(F0_fileLIST)
+            F0_array = np.array(F0_fileLIST) # turn the str list into array
+            print(F0_array)
+            print(type(F0_array))
             #pprint(F0_fileLIST)
-            print(len(F0_fileLIST))
+            #print(len(F0_fileLIST))
         
         pre_stimLIST = [0]*10  # = -0.100 ms 's timpoints
         
@@ -97,7 +102,7 @@ if __name__ == "__main__":
         n_times = len(n_F0_LIST)
         time = eelbrain.UTS(0, tstep=tstep, nsamples=n_times) # UTS(-0.1, tstep=tstep, nsamples=n_times+100)
         tmpF0_ = eelbrain.NDVar(n_F0_LIST, (time,), name='Fzero')
-        #F0_ = trftools.pad(tmpF0_, tstart=-0.100, tstop=tmpF0_.time.tstop + 1, name='F0_1')
+        #F0_ = eelbrain.pad(tmpF0_, tstart=-0.100, tstop=tmpF0_.time.tstop + 1, name='F0_1')
         F0_NDVar.append(tmpF0_)
     print(F0_NDVar)
     print(type(F0_NDVar))
@@ -105,4 +110,19 @@ if __name__ == "__main__":
     # save the F0 into pickle files
     F0_save_path = DATA_ROOT/ "TRFs_pridictors/F0_predictors" / Path("Alice_F0_all.pickle")
     eelbrain.save.pickle(F0_NDVar, F0_save_path)
+    """
     
+    ## Check the saved csv
+    #with open (F0_DIR / f'Alice_1_F0.csv') as F_zero_csv:
+        #tmpF0_LIST = F_zero_csv.read().split("\n")
+        #for F_zero_num in tmpF0_LIST[:20]:
+            #print(F_zero_num)
+            #print(type(F_zero_num))
+        #pprint(tmpF0_LIST)
+        
+    """
+    # Check the datatype of the F0 saved in the pickle file
+    F_zero_pickle = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
+    pprint(F_zero_pickle)
+    pprint(type(F_zero_pickle)) # str672 >> where went wrong?
+    """
