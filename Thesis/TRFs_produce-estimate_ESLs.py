@@ -20,6 +20,7 @@ if __name__ == "__main__":
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
     IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
+    F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
     IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)]    
     SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
