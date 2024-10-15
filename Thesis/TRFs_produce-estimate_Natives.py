@@ -77,7 +77,9 @@ if __name__ == "__main__":
     imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])  # old: IMFsLIST[5] = Alice_IF_IMF_3.pickle
     """
     # Get the calculated F0s
-    F_zero = eelbrain.load.unpickle(F0_DIR / f'Alice_F0_all.pickle')
+    F_zero = eelbrain.load.unpickle(F0_DIR / f'n_Alice_F0_all.pickle')
+    #for F0_str in F_zero:
+        
     
     # Models
     # ------
