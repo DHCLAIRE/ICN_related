@@ -7,7 +7,7 @@ import re
 
 import eelbrain
 import mne
-import trftools
+import eelbrain
 
 import numpy as np
 
@@ -38,25 +38,25 @@ if __name__ == "__main__":
     gammatone = [x.bin(0.01, dim='time', label='start') for x in gammatone]
     
     # Pad onset with 100 ms and offset with 1 second; make sure to give the predictor a unique name as that will make it easier to identify the TRF later
-    gammatone = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
+    gammatone = [eelbrain.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='gammatone') for x in gammatone]
     
     # Load the broad-band envelope and process it in the same way
     envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-1.pickle') for stimulus in STIMULI]  # Load in the data
     envelope = [x.bin(0.01, dim='time', label='start') for x in envelope]
-    envelope = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='envelope') for x in envelope]
+    envelope = [eelbrain.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='envelope') for x in envelope]
     onset_envelope = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-on-1.pickle') for stimulus in STIMULI]
     onset_envelope = [x.bin(0.01, dim='time', label='start') for x in onset_envelope]
-    onset_envelope = [trftools.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='onset') for x in onset_envelope]
+    onset_envelope = [eelbrain.pad(x, tstart=-0.100, tstop=x.time.tstop + 1, name='onset') for x in onset_envelope]
     
     # Load onset spectrograms and make sure the time dimension is equal to the gammatone spectrograms
     gammatone_onsets = [eelbrain.load.unpickle(PREDICTOR_audio_DIR / f'{stimulus}~gammatone-on-8.pickle') for stimulus in STIMULI]
     gammatone_onsets = [x.bin(0.01, dim='time', label='start') for x in gammatone_onsets]
     gammatone_onsets = [eelbrain.set_time(x, gt.time, name='gammatone_on') for x, gt in zip(gammatone_onsets, gammatone)]
-
+    
     # Load word tables and convert tables into continuous time-series with matching time dimension
     word_tables = [eelbrain.load.unpickle(PREDICTOR_word_DIR / f'{stimulus}~Ngram-CFG_word.pickle') for stimulus in STIMULI]
     word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)]
-    
+    """
     # Function and content word impulses based on the boolean variables in the word-tables
     word_lexical = [eelbrain.event_impulse_predictor(gt.time, value='lexical', ds=ds, name='lexical') for gt, ds in zip(gammatone, word_tables)]
     word_nlexical = [eelbrain.event_impulse_predictor(gt.time, value='nlexical', ds=ds, name='non_lexical') for gt, ds in zip(gammatone, word_tables)]
@@ -64,11 +64,11 @@ if __name__ == "__main__":
     # NGRAM/CFG word impulses based on the values in the word-tables
     word_Ngram = [eelbrain.event_impulse_predictor(gt.time, value='NGRAM', ds=ds, name='n-gram') for gt, ds in zip(gammatone, word_tables)]
     word_CFG = [eelbrain.event_impulse_predictor(gt.time, value='CFG', ds=ds, name='cfg') for gt, ds in zip(gammatone, word_tables)]
-    
+    """
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
     #print(durations)
-    
+    """
     # Get the calculated IMFs
     # IMFsLIST : ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
     imf1 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[4])  # old: IMFsLIST[0] = Alice_IF_IMF_6.pickle
@@ -77,11 +77,20 @@ if __name__ == "__main__":
     imf4 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[1])  # old: IMFsLIST[3] = Alice_IF_IMF_5.pickle
     imf5 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[3])  # old: IMFsLIST[4] = Alice_IF_IMF_1.pickle
     imf6 = eelbrain.load.unpickle(IMF_DIR / IMFsLIST[0])  # old: IMFsLIST[5] = Alice_IF_IMF_3.pickle
+    """
+    # Get the calculated F0s
+    F_zero = eelbrain.load.unpickle(F0_DIR / f'n_Alice_F0_all.pickle')
+    #for F0_str in F_zero:
     
     # Models
     # ------
     # Pre-define models here to have easier access during estimation. In the future, additional models could be added here and the script re-run to generate additional TRFs.
     models = {
+        
+        # F0
+        'Fzero': [F_zero],
+        'Fzero+envelope': [F_zero, envelope],
+        'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]        
         # IFs
         #'IMF1':[imf1],
         #'IMF12':[imf1, imf2],
@@ -94,7 +103,7 @@ if __name__ == "__main__":
         #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
         #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
         # All model
-        'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6]  #, F_zero
+        #'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6]  #, F_zero
     }
     
     """
@@ -122,8 +131,9 @@ if __name__ == "__main__":
         'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
         
         # F0
-        'Fzero+envelope': [F_zero],
-        'Fzero+envelope': [envelope, onset_envelope, F_zero],
+        'Fzero': [F_zero],
+        'Fzero+envelope': [F_zero, envelope],
+        'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope],
 
         # All auditory features model
         'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
