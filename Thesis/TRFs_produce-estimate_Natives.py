@@ -129,8 +129,9 @@ if __name__ == "__main__":
     'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],   # old name in file is :'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
 
     # F0
-    'Fzero+envelope': [F_zero]
-    'Fzero+envelope': [envelope, onset_envelope, F_zero]
+    'Fzero': [F_zero],
+    'Fzero+envelope': [F_zero, envelope],
+    'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]
 
     # All auditory features model
     'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
