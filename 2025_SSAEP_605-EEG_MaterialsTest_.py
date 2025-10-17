@@ -18,6 +18,7 @@ import json
 import numpy as np
 import pandas as pd
 from pprint import pprint
+import random
 
 """
 # function to convert the information into
@@ -136,7 +137,7 @@ if __name__ == "__main__":
     for i in range(10):
 
         # display "Start" to indicate the start of the audio
-        display_start()
+        #display_start()
         core.wait(1)
 
         # display fixation for subject to look at when listening to the tape
@@ -163,10 +164,10 @@ if __name__ == "__main__":
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
         # display fixation for subject to look at when listening to the tape
-        display_fix()
+        #display_fix()
         
         # set core wait time that match with the length of each audio files
-        core.wait(1)
+        core.wait(int(t))
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
@@ -185,6 +186,8 @@ if __name__ == "__main__":
         """
         win.flip()
 
+        # Custimize the ISI from 200 ms to 1000 ms, with a 50 ms as the interval
+        
         # Display the quesitons for each tape
         #ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
         
