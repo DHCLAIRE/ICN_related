@@ -126,14 +126,14 @@ if __name__ == "__main__":
     sub_id = str(input("Subject: "))
 
     # Full screen
-    win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
+    #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
     # Testing small screen
-    #win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
+    win = visual.Window(size = [500, 500],color = [-1, -1, -1], units ="pix")
 
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
-    for i in range(70):
+    for i in range(10):
 
         # display "Start" to indicate the start of the audio
         display_start()
@@ -162,8 +162,11 @@ if __name__ == "__main__":
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
+        # display fixation for subject to look at when listening to the tape
+        display_fix()
+        
         # set core wait time that match with the length of each audio files
-        #core.wait(int(t+1))
+        core.wait(1)
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
@@ -210,7 +213,7 @@ if __name__ == "__main__":
     # close the window  at the end of the experiment
     win.close()
 
-
+    """
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
@@ -225,6 +228,7 @@ if __name__ == "__main__":
     file_name = sub_id + '_12Qs_results.csv'
     save_path = results_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
+    """
 
     # close all the Psychopy application
     core.quit()
