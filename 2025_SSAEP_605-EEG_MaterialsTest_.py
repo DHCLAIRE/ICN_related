@@ -83,7 +83,7 @@ ptb.IOPort('Flush', handle)
 
 if __name__ == "__main__":
     data_path = "/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/"
-    #results_data_path = "E:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
+    results_data_path = "/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/SSAEP_results/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -117,11 +117,8 @@ if __name__ == "__main__":
     day = date.today()
     dateLIST = []
     sub_idLIST = []
-    Ques_textLIST = []
-    resultKeyLIST = []
-    #correctnessLIST = []
-    responseLIST = []
-    Q_numLIST = []
+    ISI_FLOAT_LIST = []
+    Trial_numLIST = []
 
     # key in number for notifying which subject it is
     sub_id = str(input("Subject: "))
@@ -138,7 +135,7 @@ if __name__ == "__main__":
 
         # display "Start" to indicate the start of the audio
         #display_start()
-        core.wait(1)
+        #core.wait(1)
 
         # display fixation for subject to look at when listening to the tape
         display_fix()
@@ -187,7 +184,9 @@ if __name__ == "__main__":
         win.flip()
 
         # Custimize the ISI from 200 ms to 1000 ms, with a 50 ms as the interval
-        ISI_INT = float(random.randrange(200, 1000, 50)*0.001, 4)
+        ISI_FLOAT = round(float(random.randrange(200, 1050, 50)*0.001), 4)
+        print(ISI_FLOAT)
+        core.wait(ISI_FLOAT)
         # Display the quesitons for each tape
         #ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
         
@@ -197,14 +196,12 @@ if __name__ == "__main__":
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
-        """
+        
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
         dateLIST.append(day)
-        Ques_textLIST.append(questionsLIST[i])
-        responseLIST.append(ans_keypressSTR)
-        Q_numLIST.append(int(i+1))
-        #correctnessLIST.append(correctLIST)
+        ISI_FLOAT_LIST.append(ISI_FLOAT)
+        Trial_numLIST.append(i+1)
         """
         # the Gap between each audio files
         #core.wait(5)
@@ -220,18 +217,19 @@ if __name__ == "__main__":
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
                              'Date':dateLIST,
-                             'Q_num':Q_numLIST,
-                             'Stimuli':Ques_textLIST,
-                             'Response':responseLIST,
+                             'Trial_num':Trial_numLIST,
+                             'ISI_second':ISI_FLOAT_LIST,
+                             #'Stimuli':Ques_textLIST,
+                             #'Response':responseLIST,
                              #'LDT_RT':LDT_rtLIST,
                              #'Correctness':correctnessLIST
                              })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
-    file_name = sub_id + '_12Qs_results.csv'
+    file_name = sub_id + '_40Hz_results.csv'
     save_path = results_data_path + file_name
     dataDICT.to_csv(save_path, sep = "," ,index = False , header = True, encoding = "UTF-8")
-    """
+    
 
     # close all the Psychopy application
     core.quit()
