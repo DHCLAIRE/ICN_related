@@ -167,14 +167,14 @@ if __name__ == "__main__":
         #display_fix()
         
         # set core wait time that match with the length of each audio files
-        core.wait(int(t))
+        core.wait(int(t)) # second not milisecond
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
         core.wait(0.01) # Stay for 10 ms
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
         """
-
+        
         #print("SoundFile{}".format(i+1), "DONE")
         #print("Pause for 5 seconds.")
         #core.wait(0.5)
@@ -187,7 +187,7 @@ if __name__ == "__main__":
         win.flip()
 
         # Custimize the ISI from 200 ms to 1000 ms, with a 50 ms as the interval
-        
+        ISI_INT = float(random.randrange(200, 1000, 50)*0.001, 4)
         # Display the quesitons for each tape
         #ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
         
