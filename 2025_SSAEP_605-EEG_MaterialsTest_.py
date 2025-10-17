@@ -219,10 +219,6 @@ if __name__ == "__main__":
                              'Date':dateLIST,
                              'Trial_num':Trial_numLIST,
                              'ISI_second':ISI_FLOAT_LIST,
-                             #'Stimuli':Ques_textLIST,
-                             #'Response':responseLIST,
-                             #'LDT_RT':LDT_rtLIST,
-                             #'Correctness':correctnessLIST
                              })
 
     #data_path = "/Users/ting-hsin/Docs/Github/ICN_related/"
