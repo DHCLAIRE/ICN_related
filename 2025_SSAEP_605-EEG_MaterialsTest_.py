@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-
+"""
 # To Change the backend setting to PTB
 from psychopy import prefs
 prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+"""
+from psychopy import prefs
+# Option 1: Try a different library (e.g., 'pygame')
+prefs.general['audioLib'] = ['pygame']
 
 import psychtoolbox as ptb
 from psychopy import sound, core, visual, event, gui, monitors, clock  #, parallel   # if you change the setting, this command must be put after the prefs's command
@@ -80,10 +84,14 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 """
-
+"""
+# This is the trigger port for R605 EEG
+port = parallel.ParallelPort(address='0xE030')
+port.setData(0)  # set all pins low
+"""
 if __name__ == "__main__":
-    data_path = "/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/"
-    results_data_path = "/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/SSAEP_results/"
+    data_path = "C:/Users/user/Desktop/Ting_R605 EEG Demo/" #"/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/"
+    results_data_path = "C:/Users/user/Desktop/Ting_R605 EEG Demo/SSAEP_results/" #"/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/SSAEP_results/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -94,26 +102,11 @@ if __name__ == "__main__":
     #display_fix()
     
     instructions = """接下來你會聽到一連串相同的單音重複出現，\n中間間隔將會隨機調整，\n請專心聆聽即可，\n當你準備好的時候，\n請按下空白鍵開始"""
-    """
-    questionsLIST = [
-        "When Alice peeked into her sister's book on the bank, what did it NOT* have?\n1. No sign of her sister’s name.\n2. No pictures or conversations.\n3. No pages at all.\n4. No interesting story.",
-        "What two things are immediately most striking to Alice about the rabbit?\n1. It is talking and won't respond to her.\n2. It has a waistcoast-pocket and a watch.\n3. It is running late and yelling loudly.\n4. It walks and talks just as a human.",
-        "When Alice fell down the well, she took down a jar from one of the shelves as she passed. What was it labeled?\n1. Orange Marmalade\n2. Strawberry Marmalade\n3. Blueberry Jam\n4. Apricot Jam",
-        "When Alice thinks she might have fallen right through the earth and come out among people that walk backwards, what countries does she think they are from?\n1. Argentina\n2. United States and Canada\n3. India\n4. Australia and New Zealand",
-        "What is the name of Alice's cat?\n1. Selima\n2. Chester\n3. Dinah\n4. Felix",
-        "What does Alice land on at the bottom of the well?\n1. The hard stone floor\n2. An overstuffed armchair\n3. A heap of sticks and dry leaves\n4. A large, purple couch",
-        "What material is the key which Alice finds made of?\n1. Brass\n2. Silver\n3. Bronze\n4. Gold",
-        "What device does Alice 'shut up like'?\n1. A telescope\n2. A clam\n3. A bite\n4. A lantern",
-        "Drinking from the bottle has a variety of tastes. What does it NOT* taste like?\n1. Cherry tart\n2. Pineapple\n3. Tea\n4. Roast turkey",
-        "What are the effects of drinking from the bottle and eating the cake?\n1. Drinking makes Alice smaller and eating makes her larger.\n2. Drinking makes Alice larger and eating makes her smaller.\n3. Both drinking and eating make her smaller.\n4. Both drinking and eating make her larger.",
-        "Why did Alice box her own ears once?\n1. For checking out her new boxing gloves.\n2. For cheating herself in a game of croquet.\n3. For not knowing the capital of Bulgaria.\n4. For forgetting to give Dina her milk at tea-time.",
-        "Where did Alice find the cake?\n1. Floating in the pond of her tears.\n2. In a little wooden box that was lying on the table.\n3. In a little glass box that was lying under the table.\n4. She did not find it -- the rabbit gave it to her."
-    ]
-    """
+
     keypressLIST_space = ["space"]
     keypressLIST_ans = ["1", "2", "3", "4"]
     
-    # Answer 12Qs wanted data
+    # SSAEP wanted data
     day = date.today()
     dateLIST = []
     sub_idLIST = []
@@ -139,7 +132,7 @@ if __name__ == "__main__":
 
         # display fixation for subject to look at when listening to the tape
         display_fix()
-
+        """
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'am_40Hz.wav')
         len_data = len(data) # holds length of the numpy array
@@ -153,6 +146,22 @@ if __name__ == "__main__":
         Script_Sound = sound.Sound(fourtyHz_2s_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
         Script_Sound.play()
+        """
+        # Produce 40 Hz Pure Tone that last 2s in numpy
+        # Set parameters
+        freq_Hz = 40
+        duration_s = 2.0
+        sample_rate_Hz = 44100
+
+        # Set time axis
+        t = np.linsapce(0, duration_s, int(sample_rate_Hz*duration_s), endpoint=False)
+
+        # Generate a sine waves
+        tone = np.sin(2*np.pi*freq_Hz*t)
+        
+        # Let Psychopy play that tone
+        sound_40Hz = sound.Sound(value=tone, sampleRate=sample_rate_Hz)
+        sound_40Hz.play()
 
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
