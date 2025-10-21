@@ -197,7 +197,7 @@ if __name__ == "__main__":
         #display_fix()
         
         # set core wait time that match with the length of each audio files
-        core.wait(int(duration_s)) # second not milisecond
+        core.wait(int(t)) # second not milisecond
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
