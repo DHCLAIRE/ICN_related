@@ -5,10 +5,36 @@
 from psychopy import prefs
 prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
 """
-from psychopy import prefs
-# Option 1: Try a different library (e.g., 'pygame')
-prefs.general['audioLib'] = ['pygame']
+# Get a dictionary of all playback devices >> do this everytime we run the audio experiments
+from psychopy.tools.systemtools import getAudioPlaybackDevices
+from pprint import pprint 
+device_list = getAudioPlaybackDevices()
 
+print("\n--- Available Audio Playback Devices (via systemtools) ---")
+pprint(device_list)
+print("----------------------------------------------------------\n")
+
+# For R605 audio experiment setting
+from psychopy import prefs
+
+# 1. Set the preferred audio library to PTB (or the one you want to use)
+prefs.hardware['audioLib'] = ['PTB'] 
+prefs.hardware['audioLatencyMode'] = 3
+
+# 2. Assign the exact device name
+# Note: Ensure you are using the correct characters (喇叭)
+prefs.hardware['audioDevice'] = '喇叭 (Realtek(R) Audio)' 
+
+# 3. Now you can import the sound module
+#from psychopy import sound 
+
+# Example: play a sound
+# tone = sound.Sound(440, secs=0.5) 
+# tone.play()
+
+
+
+# Import ptb and other psychopy packages
 import psychtoolbox as ptb
 from psychopy import sound, core, visual, event, gui, monitors, clock  #, parallel   # if you change the setting, this command must be put after the prefs's command
 #import json
@@ -21,7 +47,7 @@ from datetime import datetime,date
 import json
 import numpy as np
 import pandas as pd
-from pprint import pprint
+#from pprint import pprint
 import random
 
 """
@@ -102,9 +128,7 @@ if __name__ == "__main__":
     #display_fix()
     
     instructions = """接下來你會聽到一連串相同的單音重複出現，\n中間間隔將會隨機調整，\n請專心聆聽即可，\n當你準備好的時候，\n請按下空白鍵開始"""
-
     keypressLIST_space = ["space"]
-    keypressLIST_ans = ["1", "2", "3", "4"]
     
     # SSAEP wanted data
     day = date.today()
@@ -132,7 +156,7 @@ if __name__ == "__main__":
 
         # display fixation for subject to look at when listening to the tape
         display_fix()
-        """
+        
         # get the length of each audio files of Alice in the Wonderland Chapter one
         sample_rate, data = wavfile.read(data_path + 'am_40Hz.wav')
         len_data = len(data) # holds length of the numpy array
@@ -154,7 +178,7 @@ if __name__ == "__main__":
         sample_rate_Hz = 44100
 
         # Set time axis
-        t = np.linsapce(0, duration_s, int(sample_rate_Hz*duration_s), endpoint=False)
+        t = np.linspace(0, duration_s, int(sample_rate_Hz*duration_s), endpoint=False)
 
         # Generate a sine waves
         tone = np.sin(2*np.pi*freq_Hz*t)
@@ -162,7 +186,7 @@ if __name__ == "__main__":
         # Let Psychopy play that tone
         sound_40Hz = sound.Sound(value=tone, sampleRate=sample_rate_Hz)
         sound_40Hz.play()
-
+        """
         """
         # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
@@ -173,7 +197,7 @@ if __name__ == "__main__":
         #display_fix()
         
         # set core wait time that match with the length of each audio files
-        core.wait(int(t)) # second not milisecond
+        core.wait(int(duration_s)) # second not milisecond
         """
         # TO MARK THE AUDIO FILE ENDS
         ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
