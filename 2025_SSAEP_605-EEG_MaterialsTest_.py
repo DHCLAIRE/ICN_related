@@ -36,7 +36,8 @@ prefs.hardware['audioDevice'] = '喇叭 (Realtek(R) Audio)'
 
 # Import ptb and other psychopy packages
 import psychtoolbox as ptb
-from psychopy import sound, core, visual, event, gui, monitors, clock  #, parallel   # if you change the setting, this command must be put after the prefs's command
+from psychopy import sound, core, visual, event, parallel, gui, monitors, clock   
+#, parallel   # if you change the setting, this command must be put after the prefs's command
 #import json
 print(sound.Sound)
 
@@ -110,11 +111,11 @@ portSettings = 'BaudRate=%d InputBufferSize=%d Terminator=0 ReceiveTimeout=%f Re
 [handle, errmsg] = ptb.IOPort('OpenSerialPort', port, portSettings)
 ptb.IOPort('Flush', handle)
 """
-"""
+
 # This is the trigger port for R605 EEG
 port = parallel.ParallelPort(address='0xE030')
 port.setData(0)  # set all pins low
-"""
+
 if __name__ == "__main__":
     data_path = "C:/Users/user/Desktop/Ting_R605 EEG Demo/" #"/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/"
     results_data_path = "C:/Users/user/Desktop/Ting_R605 EEG Demo/SSAEP_results/" #"/Users/ting-hsin/Downloads/R605_EEG_SSAEP_MaterialsTest/SSAEP_results/"
@@ -148,12 +149,7 @@ if __name__ == "__main__":
     # display instructions
     display_ins(instructions, keypressLIST_space)
 
-    for i in range(10):
-
-        # display "Start" to indicate the start of the audio
-        #display_start()
-        #core.wait(1)
-
+    for i in range(70):
         # display fixation for subject to look at when listening to the tape
         display_fix()
         
@@ -162,14 +158,14 @@ if __name__ == "__main__":
         len_data = len(data) # holds length of the numpy array
         t = len_data / sample_rate # returns duration but in floats
         
-        #print("SoundFile{} length = ".format(i+1), t)
-        #print("SoundFile{} length = ".format(i+1), int(t+1))
-
+        port.setData(0)  # set all pins low
         # Play the audio files section by section
         fourtyHz_2s_stm = data_path + "am_40Hz.wav"
         Script_Sound = sound.Sound(fourtyHz_2s_stm)   #value=str(Alice_stm), secs = 60)
         #now = ptb.GetSecs()
+        port.setData(i+1)  # set all pins low
         Script_Sound.play()
+        
         """
         # Produce 40 Hz Pure Tone that last 2s in numpy
         # Set parameters
@@ -187,48 +183,20 @@ if __name__ == "__main__":
         sound_40Hz = sound.Sound(value=tone, sampleRate=sample_rate_Hz)
         sound_40Hz.play()
         """
-        """
-        # TO MARK THE AUDIO FILE BEGINS  # This is the trigger_marker for marking the start of the audio file
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+1)),np.uint8(0)]))  #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
-        # display fixation for subject to look at when listening to the tape
-        #display_fix()
-        
+
         # set core wait time that match with the length of each audio files
         core.wait(int(t)) # second not milisecond
-        """
-        # TO MARK THE AUDIO FILE ENDS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(99),np.uint8(0)]))  #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
-        
-        #print("SoundFile{}".format(i+1), "DONE")
-        #print("Pause for 5 seconds.")
-        #core.wait(0.5)
-        """
-        # TO MARK THE QUESTION BEGINS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(i+51)),np.uint8(0)]))  #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
-        win.flip()
+        port.setData(0)  # set all pins low
 
+        win.flip()
+        port.setData(i+1)  # set all pins low
         # Custimize the ISI from 200 ms to 1000 ms, with a 50 ms as the interval
         ISI_FLOAT = round(float(random.randrange(200, 1050, 50)*0.001), 4)
         print(ISI_FLOAT)
         core.wait(ISI_FLOAT)
-        # Display the quesitons for each tape
-        #ans_keypressSTR = display_ins(questionsLIST[i], keypressLIST_ans)
+        port.setData(i+1)  # set all pins low
         
-        """
-        # TO MARK THE QUESTION ENDS
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(int(99)),np.uint8(0)]))  #This is open the trigger
-        core.wait(0.01) # Stay for 10 ms
-        ptb.IOPort('Write', handle, np.uint8([109,104,np.uint8(0),np.uint8(0)])) #This is close the trigger
-        """
+        #port.setData(0)  # set all pins low
         
         # making the wanted info into the List form for future use
         sub_idLIST.append(sub_id)
@@ -236,16 +204,7 @@ if __name__ == "__main__":
         ISI_FLOAT_LIST.append(ISI_FLOAT)
         Trial_numLIST.append(i+1)
         """
-        # the Gap between each audio files
-        #core.wait(5)
-        #print("Continue for the SoundFile{}".format(i+2))
-
         # Add ESC could core.quit() function in the middle of the experiments process
-
-    print("FINISHIED!")
-    # close the window  at the end of the experiment
-    win.close()
-
     """
     # Saving the self_paced_rt result into csv file
     dataDICT = pd.DataFrame({'Sub_id':sub_idLIST,
