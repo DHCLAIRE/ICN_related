@@ -10,7 +10,7 @@ import re
 # ==========================================
 # 🟢 CONFIGURATION & PROCESSING
 # ==========================================
-DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results")#Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")
+DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")#Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")
 OUTPUT_FILE = "all_subjects_trf.npz"
 
 TRF_Group_typesLIST = ["Natives", "ESLs"]
