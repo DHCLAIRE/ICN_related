@@ -7,26 +7,27 @@ import re
 
 import eelbrain
 import mne
-from pprint import pprint
-#import trftools
+import eelbrain
+
+import numpy as np
 
 if __name__ == "__main__":
     
     STIMULI = [str(i) for i in range(1, 13)]
-    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results") #Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
+    EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
     IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
     F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
-    IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)]
-    EEG_DIR = DATA_ROOT / 'EEG_Natives' / 'Alice_natives_ICAed_fif'
-    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d*', path.name[:4])]
+    IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)]    
+    SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d', path.name)]  #S01_alice-raw.fif
     # Define a target directory for TRF estimates and make sure the directory is created
-    TRF_DIR = DATA_ROOT / 'TRFs_Natives'
+    TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
     TRF_DIR.mkdir(exist_ok=True)
     print(SUBJECTS)
-    print(len(SUBJECTS))
-    #print(IMFsLIST)  # ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
+    print(IMFsLIST) # ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
     
     # Load stimuli
     # ------------
@@ -55,9 +56,7 @@ if __name__ == "__main__":
     
     # Load word tables and convert tables into continuous time-series with matching time dimension
     word_tables = [eelbrain.load.unpickle(PREDICTOR_word_DIR / f'{stimulus}~Ngram-CFG_word.pickle') for stimulus in STIMULI]
-    word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)] # not sure why they could get the word onset this way
-    print("word_onsets", eelbrain.get_data(word_onsets[1]))
-    print("word_tables", word_tables)
+    word_onsets = [eelbrain.event_impulse_predictor(gt.time, ds=ds, name='word') for gt, ds in zip(gammatone, word_tables)]
     """
     # Function and content word impulses based on the boolean variables in the word-tables
     word_lexical = [eelbrain.event_impulse_predictor(gt.time, value='lexical', ds=ds, name='lexical') for gt, ds in zip(gammatone, word_tables)]
@@ -69,6 +68,7 @@ if __name__ == "__main__":
     """
     # Extract the duration of the stimuli, so we can later match the EEG to the stimuli
     durations = [gt.time.tmax for stimulus, gt in zip(STIMULI, gammatone)]
+    #print(durations)
     """
     # Get the calculated IMFs
     # IMFsLIST : ['Alice_IF_IMF_6.pickle', 'Alice_IF_IMF_4.pickle', 'Alice_IF_IMF_2.pickle', 'Alice_IF_IMF_5.pickle', 'Alice_IF_IMF_1.pickle', 'Alice_IF_IMF_3.pickle']
@@ -82,7 +82,6 @@ if __name__ == "__main__":
     # Get the calculated F0s
     F_zero = eelbrain.load.unpickle(F0_DIR / f'n_Alice_F0_all.pickle')
     #for F0_str in F_zero:
-        
     
     # Models
     # ------
@@ -92,8 +91,7 @@ if __name__ == "__main__":
         # F0
         'Fzero': [F_zero],
         'Fzero+envelope': [F_zero, envelope],
-        'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]
-        
+        'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]        
         # IFs
         #'IMF1':[imf1],
         #'IMF12':[imf1, imf2],
@@ -103,92 +101,128 @@ if __name__ == "__main__":
         #'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
 
         # All auditory features model
-        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]  >> already have, therefore don't run again
-        #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6]
+        #'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
+        #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
         # All model
         #'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6]  #, F_zero
     }
-    """
-    # Acoustic models
-    'envelope': [envelope],
-    'envelope+onset': [envelope, onset_envelope],
-    'acoustic': [gammatone, gammatone_onsets],
-    # Models with word-onsets and word-class
-    'words': [word_onsets],
-    'words+lexical': [word_onsets, word_lexical, word_nlexical],
-    'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
-    'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
-    # Language Models
-    'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
-    'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
-    'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical],
     
-    # IFs
-    'IMF1':[imf1], # old name in file is >>'IMF_1':[imf_1]
-    'IMF12':[imf1, imf2],
-    'IMF123':[imf1, imf2, imf3],
-    'IMF1234':[imf1, imf2, imf3, imf4],
-    'IMF12345':[imf1, imf2, imf3, imf4, imf5],
-    'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],   # old name in file is :'IMF_All':[imf_1, imf_2, imf_3, imf_4, imf_5, imf_6]
+    """
+    models = {
+        # Acoustic models
+        'envelope': [envelope],
+        'envelope+onset': [envelope, onset_envelope],
+        'acoustic': [gammatone, gammatone_onsets],
+        # Models with word-onsets and word-class
+        'words': [word_onsets],
+        'words+lexical': [word_onsets, word_lexical, word_nlexical],
+        'acoustic+words': [gammatone, gammatone_onsets, word_onsets],
+        'acoustic+words+lexical': [gammatone, gammatone_onsets, word_onsets, word_lexical, word_nlexical],
+        # Language Models
+        'Ngram': [word_Ngram, word_onsets, word_lexical, word_nlexical],
+        'CFG': [word_CFG, word_onsets, word_lexical, word_nlexical],
+        'Ngram-CFG_all': [word_Ngram, word_CFG, word_onsets, word_lexical, word_nlexical],
+        
+        # IFs
+        'IMF1':[imf1],
+        'IMF_12':[imf1, imf2],
+        'IMF_123':[imf1, imf2, imf3],
+        'IMF_1234':[imf1, imf2, imf3, imf4],
+        'IMF_12345':[imf1, imf2, imf3, imf4, imf5],
+        'IMFAll':[imf1, imf2, imf3, imf4, imf5, imf6],
+        
+        # F0
+        'Fzero': [F_zero],
+        'Fzero+envelope': [F_zero, envelope],
+        'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope],
 
-    # F0
-    'Fzero': [F_zero],
-    'Fzero+envelope': [F_zero, envelope],
-    'Fzero+envelope+env_onset': [F_zero, envelope, onset_envelope]
-
-    # All auditory features model
-    'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
-    #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
-    # All model
-    #'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
+        # All auditory features model
+        'All_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical]
+        #'All_Aud_model':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
+        # All model
+        #'All_model_new':[envelope, onset_envelope, word_onsets, word_lexical, word_nlexical, word_CFG, word_Ngram, imf1, imf2, imf3, imf4, imf5, imf6, F_zero]
+        
     }
     """
-    
     # Estimate TRFs
     # -------------
     # Loop through subjects to estimate TRFs
-    for subject in SUBJECTS:
-        subject_trf_dir = TRF_DIR / subject[:3]
+    for subject in SUBJECTS:  #type(subject) == str
+        subject_trf_dir = TRF_DIR / subject[4:8]
         subject_trf_dir.mkdir(exist_ok=True)
         # Generate all TRF paths so we can check whether any new TRFs need to be estimated
-        trf_paths = {model: subject_trf_dir / f'{subject[:3]} {model}.pickle' for model in models}
+        trf_paths = {model: subject_trf_dir / f'{subject[4:8]} {model}.pickle' for model in models}
         # Skip this subject if all files already exist
         #if all(path.exists() for path in trf_paths.values()):
             #continue
         # Load the EEG data
-        raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)  # subject /
+        raw = mne.io.read_raw_fif(EEG_DIR / f'{subject}', preload=True)
         # Band-pass filter the raw data between 0.5 and 20 Hz
-        raw.filter(0.5, 20)
-        # Interpolate bad channels
-        raw.interpolate_bads()
-        # Extract the events marking the stimulus presentation from the EEG file
-        events = eelbrain.load.fiff.events(raw)
-        # Not all subjects have all trials; determine which stimuli are present
-        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event']]
-        # Extract the EEG data segments corresponding to the stimuli
-        trial_durations = [durations[i] for i in trial_indexes]
-        eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, connectivity='auto')  #, decim=5 #decim=5 meaning to resample to sfreq=100Hz
-        # Since trials are of unequal length, we will concatenate them for the TRF estimation.
-        eeg_concatenated = eelbrain.concatenate(eeg)
+        raw.filter(0.5, 20)  #.resample(sfreq=100)  # >> already resample to sfreq=100
         
-        pprint(models.items)
+        # Interpolate bad channels  
+        #raw.interpolate_bads()  #>> to rewrite if there're no bad channels to interpolate, skip it
+        
+        # Extract the events marking the stimulus presentation from the EEG file
+        events = eelbrain.load.fiff.events(raw)  # To check to events
+        print(events)
+        # Not all subjects have all trials; determine which stimuli are present
+        trial_indexes = [STIMULI.index(stimulus) for stimulus in events['event'] if stimulus in STIMULI]  # type(trial_indexes)==LIST
+        print(trial_indexes)
+        
+        # Extract the EEG data segments corresponding to the stimuli
+        trial_durations = [durations[i] for i in trial_indexes]  # needs modification for having questions inbetween the tapes
+        #print(trial_durations)
+        
+        #all_trial_durations = np.sum(np.array(trial_durations))
+        #print(all_trial_durations)
+        
+        #eeg = eelbrain.load.fiff.variable_length_epochs(events, -0.100, trial_durations, decim=5, connectivity='auto')  #, decim=5  #trial_durations >> figure out how to cut on the right time
+        #print(eeg)
+        
+        
+        # Since trials are of unequal length, we will concatenate them for the TRF estimation.
+        #eeg_concatenated = eelbrain.concatenate(eeg)
+        #print(eeg_concatenated)
         
         for model, predictors in models.items():
             path = trf_paths[model]
             # Skip if this file already exists
-            if path.exists():
-                continue
-            print(f"Estimating: {subject[:3]} ~ {model}")
+            #if path.exists():
+                #continue
+            print(f"Estimating: {subject} ~ {model}")
             # Select and concetenate the predictors corresponding to the EEG trials
             predictors_concatenated = []
             for predictor in predictors:
                 #print(predictor)
                 predictors_concatenated.append(eelbrain.concatenate([predictor[i] for i in trial_indexes]))
             #print(predictors_concatenated)
+            
+            # Homemade NDVar instead of using .fiff.variable_length_epochs()
+            eeg_ = raw.get_data()
+            
+            #[<NDVar 'envelope': 5863 time>, <NDVar 'envelope': 6194 time>, <NDVar 'envelope': 6435 time>, <NDVar 'envelope': 7108 time>, 
+            # <NDVar 'envelope': 6737 time>, <NDVar 'envelope': 6487 time>, <NDVar 'envelope': 6399 time>, <NDVar 'envelope': 5840 time>, 
+            # <NDVar 'envelope': 5832 time>, <NDVar 'envelope': 6236 time>, <NDVar 'envelope': 5726 time>, <NDVar 'envelope': 4808 time>]
+            #[<NDVar 'envelope': 73665 time>]
+            
+            # Check if the data length is the same as the stimuli's length
+            if eeg_.shape[1] > 73665:
+                eeg_ = eeg_[:, :73665]
+            
+            # produce the time for NDVar production
+            tstep = 1. / raw.info["sfreq"]  # already resample to 100Hz
+            n_times = eeg_.shape[1] #audio.shape[0]
+            time = eelbrain.UTS(0, tstep, n_times)
+            #print(time)
+        
+            # NDVar production
+            montage_x = eelbrain.load.fiff.sensor_dim(raw.info)
+            temp_data = eeg_.T *1e+6
+            eeg_concatenated = eelbrain.NDVar(temp_data, (time, montage_x), name='EEG', info={'unit': 'µV'})
+            #print(eegNDVar)
+            
             # Fit the mTRF
             trf = eelbrain.boosting(eeg_concatenated, predictors_concatenated, -0.100, 1.000, error='l1', basis=0.050, partitions=5, test=1, selective_stopping=True)
-            #p = eelbrain.plot.TopoButterfly(trf.h_scaled) # to check the boosted trf is not None
-            #p
-            
             # Save the TRF for later analysis
             eelbrain.save.pickle(trf, path)
