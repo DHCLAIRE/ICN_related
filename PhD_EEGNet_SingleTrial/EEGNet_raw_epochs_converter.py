@@ -34,6 +34,245 @@ DIRS_TO_PROCESS = [
 # ==========================================
 all_epochs_data = []
 all_labels = []
+
+print(f"Starting processing...")
+
+# --- STEP 1: Establish the "Master" Channel Names from ESL Group ---
+# We use ESL as the 'Standard' because they have 10-20 names (Fz, Cz, etc.)
+# Natives have numbers (1, 2, 3...), so we will rename Natives to match ESL.
+print("🔍 Step 1: extracting standard channel names from an ESL file...")
+master_channel_names = None
+
+# Find an ESL file to serve as the template
+esl_files = [f for f in os.listdir(wOnset_DIR_ESLs) if f.endswith('epochs_allTapes_raw.fif')]
+if not esl_files:
+	print("❌ No ESL files found to establish channel names.")
+	exit()
+
+template_path = wOnset_DIR_ESLs / esl_files[0]
+temp_info = mne.io.read_info(template_path, verbose=False)
+# Strip spaces just in case
+master_channel_names = [ch.strip() for ch in temp_info['ch_names']]
+print(f"✅ Template established from {esl_files[0]}")
+print(f"   Count: {len(master_channel_names)} channels")
+print(f"   Names: {master_channel_names[:5]} ...")
+
+
+# --- STEP 2: Load and Harmonize All Files ---
+print(f"\n🚀 Step 2: Loading, Renaming, and Stacking...")
+
+for folder_path, label, group_name in DIRS_TO_PROCESS:
+	if not folder_path.exists():
+		print(f"⚠️ Directory not found: {folder_path}")
+		continue
+
+	files = [f for f in os.listdir(folder_path) if f.endswith('epochs_allTapes_raw.fif')]
+	files.sort()
+
+	for fname in files:
+		file_path = folder_path / fname
+
+		try:
+			epochs = mne.read_epochs(file_path, verbose=False, preload=True)
+
+			# --- CHANNEL HARMONIZATION LOGIC ---
+
+			# Case A: ESL Files (Already have correct names, check count)
+			if group_name == "ESL":
+				# Just ensure names are clean
+				current_map = {ch: ch.strip() for ch in epochs.info['ch_names']}
+				epochs.rename_channels(current_map)
+
+				# Check if it matches master list exactly
+				if len(epochs.ch_names) != len(master_channel_names):
+					print(f"⚠️ Skipping {fname}: ESL file has {len(epochs.ch_names)} channels, expected {len(master_channel_names)}.")
+					continue
+
+			# Case B: Native Files (Numbers 1-59 -> Needs to become Names)
+			elif group_name == "Native":
+				# 1. Handle the Count Mismatch (59 vs 57)
+				# Assumption: The first 57 channels correspond to the 57 ESL channels.
+				# The extra 2 (58, 59) are likely EOG/AUX and are dropped.
+				if len(epochs.ch_names) > len(master_channel_names):
+					# Pick only the first N channels
+					keep_indices = np.arange(len(master_channel_names))
+					# Map indices to current numeric names
+					keep_names = [epochs.ch_names[i] for i in keep_indices]
+					epochs.pick_channels(keep_names, ordered=True)
+
+				# 2. Rename to match Master List
+				# This assumes the ORDER of electrodes is the same (e.g., Ch1=Fp1 in both caps)
+				if len(epochs.ch_names) == len(master_channel_names):
+					rename_map = dict(zip(epochs.ch_names, master_channel_names))
+					epochs.rename_channels(rename_map)
+				else:
+					print(f"⚠️ Skipping {fname}: Native file has {len(epochs.ch_names)} chans, cannot map to {len(master_channel_names)}.")
+					continue
+
+			# --- END HARMONIZATION ---
+
+			# Double check alignment before extracting data
+			# Ensure strictly ordered selection to match the master list
+			epochs.pick_channels(master_channel_names, ordered=True)
+
+			data = epochs.get_data(copy=False)
+			n_epochs = data.shape[0]
+			labels = np.full(n_epochs, label, dtype=np.longlong)
+
+			all_epochs_data.append(data)
+			all_labels.append(labels)
+
+			print(f"   ✅ Loaded {fname} ({group_name}) | Renamed & Stacked | Epochs: {n_epochs}")
+
+		except Exception as e:
+			print(f"   ❌ Error loading {fname}: {e}")
+
+# --- STEP 3: Save ---
+if all_epochs_data:
+	X = np.concatenate(all_epochs_data, axis=0)
+	y = np.concatenate(all_labels, axis=0)
+	X = X.astype(np.float32)
+
+	print(f"\n✨ COMPLETED ✨")
+	print(f"Total Epochs: {X.shape[0]}")
+	print(f"Channels:     {X.shape[1]}")
+	print(f"Time Points:  {X.shape[2]}")
+	print(f"Labels:       {np.unique(y)} (0=Native, 1=ESL)")
+
+	np.savez_compressed(OUTPUT_FILE, X=X, y=y)
+	print(f"Saved to '{OUTPUT_FILE}'")
+else:
+	print("\n❌ No data loaded.")
+
+""" VERSION FOUR: Channels name not aligned
+# ==========================================
+# ⚙️ PROCESSING
+# ==========================================
+all_epochs_data = []
+all_labels = []
+all_file_paths = []
+
+print(f"Starting processing...")
+
+# --- 1. Collect Valid Files ---
+print(f"🔍 Pass 1: Indexing files and determining common channels...")
+for folder_path, label, group_name in DIRS_TO_PROCESS:
+	if not folder_path.exists():
+		print(f"⚠️ Directory not found: {folder_path}")
+		continue
+
+	files = [f for f in os.listdir(folder_path) if f.endswith('epochs_allTapes_raw.fif')]
+	files.sort()
+
+	for fname in files:
+		all_file_paths.append({
+	        'path': folder_path / fname,
+	    'label': label,
+	    'group': group_name,
+	    'fname': fname
+	})
+
+if not all_file_paths:
+	print("❌ No files found in any directory.")
+	exit()
+
+# --- 2. Determine Common Channels (With Sanitation) ---
+common_channels = None
+debug_sample_prev = None
+
+for item in all_file_paths:
+	try:
+		info = mne.io.read_info(item['path'], verbose=False)
+		# SANITIZE: Strip whitespace from channel names (e.g., "Cz " -> "Cz")
+		current_ch = set([c.strip() for c in info['ch_names']])
+
+		if common_channels is None:
+			common_channels = current_ch
+			debug_sample_prev = list(current_ch)[:5]
+			print(f"   Reference file ({item['fname']}) has {len(common_channels)} channels.")
+		else:
+			prev_len = len(common_channels)
+			common_channels = common_channels.intersection(current_ch)
+			new_len = len(common_channels)
+
+			# DEBUGGING: If intersection drops to 0, show why
+			if new_len == 0 and prev_len > 0:
+				print(f"\n❌ CRITICAL MISMATCH at file: {item['fname']}")
+				print(f"   Channels remaining before this file: {len(common_channels)}")
+				print(f"   Sample of Expected: {debug_sample_prev}")
+				print(f"   Sample of Current:  {list(current_ch)[:5]}")
+				print("   The intersection is empty. Check if naming conventions (e.g., 'Cz' vs '1') differ.")
+				exit()
+
+	except Exception as e:
+		print(f"⚠️ Warning reading info from {item['fname']}: {e}")
+
+if common_channels is None or len(common_channels) == 0:
+	print("❌ No common channels found. Cannot combine.")
+	exit()
+
+target_channels = sorted(list(common_channels))
+print(f"✅ Found {len(target_channels)} common channels across {len(all_file_paths)} files.")
+
+# --- 3. Pass 2: Load and Stack ---
+print(f"\n🚀 Pass 2: Loading data...")
+
+for item in all_file_paths:
+	fname = item['fname']
+	file_path = item['path']
+	label = item['label']
+
+	try:
+		epochs = mne.read_epochs(file_path, verbose=False, preload=True)
+
+		# SANITIZE: Rename channels in the loaded object to match the stripped versions
+		# This ensures 'Cz ' becomes 'Cz' so pick_channels works
+		rename_map = {ch: ch.strip() for ch in epochs.info['ch_names']}
+		epochs.rename_channels(rename_map)
+
+		# Select common channels
+		epochs.pick_channels(target_channels, ordered=True)
+
+		data = epochs.get_data(copy=False)
+
+		if data.shape[1] != len(target_channels):
+			print(f"⚠️ Skipping {fname}: Channel mismatch.")
+			continue
+
+		n_epochs = data.shape[0]
+		labels = np.full(n_epochs, label, dtype=np.longlong)
+
+		all_epochs_data.append(data)
+		all_labels.append(labels)
+
+		print(f"   ✅ Loaded {fname} | Epochs: {n_epochs} | Chans: {data.shape[1]}")
+
+	except Exception as e:
+		print(f"   ❌ Error loading {fname}: {e}")
+
+# --- 4. Save ---
+if all_epochs_data:
+	X = np.concatenate(all_epochs_data, axis=0)
+	y = np.concatenate(all_labels, axis=0)
+	X = X.astype(np.float32)
+
+	print(f"\n✨ COMPLETED ✨")
+	print(f"Total Epochs: {X.shape[0]}")
+	print(f"Channels:     {X.shape[1]}")
+	print(f"Time Points:  {X.shape[2]}")
+
+	np.savez_compressed(OUTPUT_FILE, X=X, y=y)
+	print(f"Saved to '{OUTPUT_FILE}'")
+else:
+	print("\n❌ No data loaded.")
+"""
+
+"""VERSION THREE: Channel length not aligned
+# ==========================================
+# ⚙️ PROCESSING
+# ==========================================
+all_epochs_data = []
+all_labels = []
 all_file_paths = []
 
 print(f"Starting processing...")
@@ -146,6 +385,7 @@ if all_epochs_data:
 else:
 	print("\n❌ No data loaded. Please check your paths.")
 	
+"""
 
 """ VERSION TWO
 # ==========================================
