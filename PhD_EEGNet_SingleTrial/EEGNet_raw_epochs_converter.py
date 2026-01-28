@@ -6,7 +6,14 @@ import mne
 import os
 from pathlib import Path
 
-# VERSION seven: considering different epoch length
+
+import numpy as np
+import mne
+import os
+from pathlib import Path
+
+
+# VERSION 8: add sub-num into the labeling. 
 # ==========================================
 # 🟢 CONFIGURATION
 # ==========================================
@@ -16,6 +23,129 @@ wOnset_DIR_Natives = DATA_ROOT / 'EEG_Natives' / 'Alice_Natives_wOnset_raw_epoch
 wOnset_DIR_ESLs = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESLs_wOnset_raw_epochs'
 
 OUTPUT_FILE = "all_subjects_epochs.npz"
+
+# Updated Labels: Native=0, ESL=1 (Standard 0-based index)
+DIRS_TO_PROCESS = [
+        (wOnset_DIR_Natives, 0, "Native"), 
+    (wOnset_DIR_ESLs, 1, "ESL")
+]
+
+# ==========================================
+# ⚙️ PROCESSING
+# ==========================================
+all_epochs_data = []
+all_labels = []
+all_subject_ids = [] # New: Track Subject ID
+
+print(f"Starting processing...")
+
+# --- STEP 1: Establish Master Channel Names from ESL ---
+print("🔍 Step 1: Extracting standard channel names from an ESL file...")
+master_channel_names = None
+
+esl_files = [f for f in os.listdir(wOnset_DIR_ESLs) if f.endswith('epochs_allTapes_raw.fif')]
+if not esl_files:
+	print("❌ No ESL files found.")
+	exit()
+
+template_path = wOnset_DIR_ESLs / esl_files[0]
+temp_info = mne.io.read_info(template_path, verbose=False)
+master_channel_names = [ch.strip() for ch in temp_info['ch_names']] 
+print(f"✅ Template: {len(master_channel_names)} channels")
+
+
+# --- STEP 2: Load and Harmonize ---
+print(f"\n🚀 Step 2: Harmonizing and Loading...")
+
+# Generate a unique integer ID for every file/subject processed
+subject_counter = 0
+
+for folder_path, label, group_name in DIRS_TO_PROCESS:
+	if not folder_path.exists():
+		continue
+
+	files = [f for f in os.listdir(folder_path) if f.endswith('epochs_allTapes_raw.fif')]
+	files.sort()
+
+	for fname in files:
+		file_path = folder_path / fname
+
+		try:
+			epochs = mne.read_epochs(file_path, verbose=False, preload=True)
+
+			# --- CHANNEL FIX LOGIC ---
+			if group_name == "ESL":
+				epochs.rename_channels({ch: ch.strip() for ch in epochs.info['ch_names']})
+			elif group_name == "Native":
+				if len(epochs.ch_names) > len(master_channel_names):
+					keep_indices = np.arange(len(master_channel_names)) 
+					keep_names = [epochs.ch_names[i] for i in keep_indices]
+					epochs.pick_channels(keep_names, ordered=True)
+
+				if len(epochs.ch_names) == len(master_channel_names):
+					rename_map = dict(zip(epochs.ch_names, master_channel_names))
+					epochs.rename_channels(rename_map)
+				else:
+					print(f"⚠️ Skipping {fname}: Channel count mismatch.")
+					continue
+
+			epochs.pick_channels(master_channel_names, ordered=True)
+
+			# Extract
+			data = epochs.get_data(copy=False)
+			n_epochs = data.shape[0]
+
+			# Create Labels (0 or 1)
+			labels = np.full(n_epochs, label, dtype=np.longlong)
+
+			# Create Subject IDs (Every epoch gets the current subject_counter)
+			sub_ids = np.full(n_epochs, subject_counter, dtype=np.longlong)
+
+			all_epochs_data.append(data)
+			all_labels.append(labels)
+			all_subject_ids.append(sub_ids) # Store IDs
+
+			print(f"   ✅ {fname} | SubjectID {subject_counter} | Shape {data.shape}")
+
+			# Increment counter for next file
+			subject_counter += 1
+
+		except Exception as e:
+			print(f"   ❌ Error {fname}: {e}")
+
+# --- STEP 3: Time Harmonization & Save ---
+if all_epochs_data:
+	time_dims = [d.shape[2] for d in all_epochs_data]
+	min_time = min(time_dims)
+
+	all_epochs_data = [d[:, :, :min_time] for d in all_epochs_data]
+
+	# Concatenate
+	X = np.concatenate(all_epochs_data, axis=0).astype(np.float32)
+	y = np.concatenate(all_labels, axis=0).astype(np.longlong)
+	z = np.concatenate(all_subject_ids, axis=0).astype(np.longlong) # The Subject IDs
+
+	print(f"\n✨ DONE. Final Shape: {X.shape}")
+	print(f"Subjects Tracked: {len(np.unique(z))}")
+
+	# Save 'z' (subjects) along with X and y
+	np.savez_compressed(OUTPUT_FILE, X=X, y=y, subjects=z)
+	print(f"Saved to {OUTPUT_FILE}")
+else:
+	print("❌ No data loaded.")
+
+
+"""
+# VERSION seven: considering different epoch length
+# ==========================================
+# 🟢 CONFIGURATION
+# ==========================================
+DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
+
+wOnset_DIR_Natives = DATA_ROOT / 'EEG_Natives' / 'Alice_Natives_wOnset_raw_epochs'
+wOnset_DIR_ESLs = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESLs_wOnset_raw_epochs'
+
+OUTPUT_FILE = DATA_ROOT / "all_subjects_epochs.npz"
 
 # Updated Labels: Native=1, ESL=2
 DIRS_TO_PROCESS = [
@@ -129,6 +259,7 @@ if all_epochs_data:
 	print(f"Saved to {OUTPUT_FILE}")
 else:
 	print("❌ No data loaded.")
+"""
 
 """
 # Version SIX: Retry everything
