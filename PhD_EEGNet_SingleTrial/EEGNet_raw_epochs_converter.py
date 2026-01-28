@@ -4,9 +4,133 @@
 import numpy as np
 import mne
 import os
-import re
 from pathlib import Path
 
+# VERSION seven: considering different epoch length
+# ==========================================
+# 🟢 CONFIGURATION
+# ==========================================
+DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
+
+wOnset_DIR_Natives = DATA_ROOT / 'EEG_Natives' / 'Alice_Natives_wOnset_raw_epochs'
+wOnset_DIR_ESLs = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESLs_wOnset_raw_epochs'
+
+OUTPUT_FILE = "all_subjects_epochs.npz"
+
+# Updated Labels: Native=1, ESL=2
+DIRS_TO_PROCESS = [
+        (wOnset_DIR_Natives, 1, "Native"), 
+    (wOnset_DIR_ESLs, 2, "ESL")
+]
+
+# ==========================================
+# ⚙️ PROCESSING
+# ==========================================
+all_epochs_data = []
+all_labels = []
+
+print(f"Starting processing...")
+
+# --- STEP 1: Establish Master Channel Names from ESL ---
+# ESLs have the correct 57 channel names (10-20 system)
+print("🔍 Step 1: Extracting standard channel names from an ESL file...")
+master_channel_names = None
+
+esl_files = [f for f in os.listdir(wOnset_DIR_ESLs) if f.endswith('epochs_allTapes_raw.fif')]
+if not esl_files:
+	print("❌ No ESL files found.")
+	exit()
+
+template_path = wOnset_DIR_ESLs / esl_files[0]
+temp_info = mne.io.read_info(template_path, verbose=False)
+master_channel_names = [ch.strip() for ch in temp_info['ch_names']] # Clean names
+print(f"✅ Template: {len(master_channel_names)} channels (e.g., {master_channel_names[:3]}...)")
+
+
+# --- STEP 2: Load and Harmonize ---
+print(f"\n🚀 Step 2: Harmonizing and Loading...")
+
+for folder_path, label, group_name in DIRS_TO_PROCESS:
+	if not folder_path.exists():
+		continue
+
+	files = [f for f in os.listdir(folder_path) if f.endswith('epochs_allTapes_raw.fif')]
+	files.sort()
+
+	for fname in files:
+		file_path = folder_path / fname
+
+		try:
+			epochs = mne.read_epochs(file_path, verbose=False, preload=True)
+
+			# --- CHANNEL FIX LOGIC ---
+
+			# Case A: ESL (Standard)
+			if group_name == "ESL":
+				# Sanitize current names
+				epochs.rename_channels({ch: ch.strip() for ch in epochs.info['ch_names']})
+
+			# Case B: Native (Numeric 1-59 -> Needs to map to ESL names)
+			elif group_name == "Native":
+				# 1. Drop the extra channels (58, 59)
+				if len(epochs.ch_names) > len(master_channel_names):
+					# Keep only the first 57
+					keep_indices = np.arange(len(master_channel_names)) 
+					keep_names = [epochs.ch_names[i] for i in keep_indices]
+					epochs.pick_channels(keep_names, ordered=True)
+
+				# 2. Rename the remaining 57 numbers to the 57 ESL names
+				# Assumes consistent electrode order
+				if len(epochs.ch_names) == len(master_channel_names):
+					rename_map = dict(zip(epochs.ch_names, master_channel_names))
+					epochs.rename_channels(rename_map)
+				else:
+					print(f"⚠️ Skipping {fname}: Channel count mismatch.")
+					continue
+
+			# Ensure exact order matches Master
+			epochs.pick_channels(master_channel_names, ordered=True)
+
+			# Extract
+			data = epochs.get_data(copy=False)
+			n_epochs = data.shape[0]
+			n_times = data.shape[2]
+
+			# Create Labels (1 or 2)
+			labels = np.full(n_epochs, label, dtype=np.longlong)
+
+			all_epochs_data.append(data)
+			all_labels.append(labels)
+			print(f"   ✅ {fname} ({group_name}) | Label {label} | Shape {data.shape}")
+
+		except Exception as e:
+			print(f"   ❌ Error {fname}: {e}")
+
+# --- STEP 3: Time Harmonization & Save ---
+if all_epochs_data:
+	# Check for time dimension mismatches
+	time_dims = [d.shape[2] for d in all_epochs_data]
+	min_time = min(time_dims)
+	max_time = max(time_dims)
+
+	if min_time != max_time:
+		print(f"\n⚠️ TIME MISMATCH DETECTED: Lengths vary from {min_time} to {max_time} samples.")
+		print(f"✂️ Cropping all subjects to the shortest length: {min_time} samples...")
+
+		# Crop all arrays to the minimum length to allow concatenation
+		all_epochs_data = [d[:, :, :min_time] for d in all_epochs_data]
+
+	# Concatenate
+	X = np.concatenate(all_epochs_data, axis=0).astype(np.float32)
+	y = np.concatenate(all_labels, axis=0).astype(np.longlong)
+
+	print(f"\n✨ DONE. Final Shape: {X.shape}, Labels: {np.unique(y)}")
+	np.savez_compressed(OUTPUT_FILE, X=X, y=y)
+	print(f"Saved to {OUTPUT_FILE}")
+else:
+	print("❌ No data loaded.")
+
+"""
 # Version SIX: Retry everything
 # ==========================================
 # 🟢 CONFIGURATION
@@ -116,7 +240,7 @@ if all_epochs_data:
 	print(f"Saved to {OUTPUT_FILE}")
 else:
 	print("❌ No data loaded.")
-    
+"""
     
 """ VERSION FIVE: Turn Natives 59 ch-names into ESL's 57 channels (exclude the 2 extra one) >> which I think is wrong doing. 
 # ==========================================
