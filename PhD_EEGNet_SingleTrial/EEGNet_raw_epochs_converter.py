@@ -22,7 +22,7 @@ DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_
 wOnset_DIR_Natives = DATA_ROOT / 'EEG_Natives' / 'Alice_Natives_wOnset_raw_epochs'
 wOnset_DIR_ESLs = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESLs_wOnset_raw_epochs'
 
-OUTPUT_FILE = "all_subjects_epochs.npz"
+OUTPUT_FILE = DATA_ROOT / "ALice_all_subjects_raw_epochs.npz"
 
 # Updated Labels: Native=0, ESL=1 (Standard 0-based index)
 DIRS_TO_PROCESS = [
