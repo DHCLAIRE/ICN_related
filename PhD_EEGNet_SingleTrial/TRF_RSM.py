@@ -136,8 +136,27 @@ if __name__ == "__main__":
     ## Alice_ESLs ##
     
     #STIMULI = [str(i) for i in range(1, 13)]
-    DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results") #("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results") #("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     #PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
+    #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
+    EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
+    IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
+    F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
+    IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)] 
+    ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
+    
+    # Define a target directory for TRF estimates and make sure the directory is created
+    TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
+    TRF_DIR.mkdir(exist_ok=True)
+    print(ESL_SUBJECTS)
+    print(len(ESL_SUBJECTS))  # 26
+    DST = TRF_DIR / 'ESLs_figures'
+    DST.mkdir(exist_ok=True)
+    
+    """
+    #PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors' 
     #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
     ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
@@ -149,7 +168,7 @@ if __name__ == "__main__":
     
     DST = TRF_DIR / 'ESLs_figures'
     DST.mkdir(exist_ok=True)
-    
+    """
     
     ## TRFs Envelope  ##
     #subj_sLIST = []
@@ -159,11 +178,19 @@ if __name__ == "__main__":
     all_ESL_subj_rsmsLIST = []
     for subj in  ESL_SUBJECTS:
         ESL_subj = int(subj[5:8])
-        res = eelbrain.load.unpickle(TRF_DIR / Path('S%.3d/S%.3d envelope.pickle'%(ESL_subj, ESL_subj)))
+        res = eelbrain.load.unpickle(TRF_DIR / Path('S%.3d/S%.3d Fzero+envelope+env_onset.pickle'%(ESL_subj, ESL_subj))) #envelope
         #rowsLIST.append([subj, res.proportion_explained, res.h[0]])#.abs()])
+
         
         # 2. Extract the NDVar for the envelope predictor
-        ESL_trf_ndvar = res.h[0]
+        # (For those have more than one NDVar in one pickle files) Find the index of the 'Fzero' predictor in the model
+        # Note: Make sure the string matches exactly what is printed by n_trf.x 
+        # (e.g., 'Fzero' or 'f0' depending on how you named it)
+        res.x = ['f0', 'f0env', 'f0envenvon']
+        predictor_name = 'f0'
+        f0_index = res.x.index(predictor_name)
+        
+        ESL_trf_ndvar = res.h[f0_index] #[0]
         
         # 3. Extract the NumPy array for the RSM
         # By specifying dims=('time', 'sensor'), Eelbrain returns an array of shape (timepoints, channels).
@@ -203,11 +230,11 @@ if __name__ == "__main__":
         plt.xticks(np.arange(0, len(time_axis), 10), np.round(time_axis[::10], 2))
         plt.yticks(np.arange(0, len(time_axis), 10), np.round(time_axis[::10], 2))
         
-        plt.title(f"ESL_S{ESL_subj} Envelope TRF Representational Similarity Matrix")
+        plt.title(f"ESL_S{ESL_subj} {predictor_name} TRF Representational Similarity Matrix")
         plt.xlabel("Time Lag (s)")
         plt.ylabel("Time Lag (s)")
         plt.gca().invert_yaxis()
         
         #plt.show() #(change it into save)
-        plt.savefig(DST / f'ESLs_S{ESL_subj}_envelope_TRF_RSM.png')
+        plt.savefig(DST / f'ESLs_S{ESL_subj}_{predictor_name}_TRF_RSM.png')
         #"""
