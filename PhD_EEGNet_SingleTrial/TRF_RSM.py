@@ -18,7 +18,7 @@ import numpy as np
 
 if __name__ == "__main__":
     STIMULI = [str(i) for i in range(1, 13)]
-    """
+    
     ## Alice_Natives ##
     DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results")#("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
@@ -70,7 +70,8 @@ if __name__ == "__main__":
         ##Step 5: Visualize the RSM
         # Set up the plot
         # Extract the time axis values directly from the NDVar to label your plot nicely
-        time_axis = trf_ndvar.time.times 
+        time_axis = trf_ndvar.time.times
+        print("natives sensors: ", trf_ndvar.sensor.names)
         
         plt.figure(figsize=(8, 6))
         sns.heatmap(grand_average_rsm, 
@@ -91,7 +92,7 @@ if __name__ == "__main__":
         plt.gca().invert_yaxis()
         
         #plt.show() #(change it into save)
-        plt.savefig(DST / f'Natives_S{n_subj}_envelope_TRF_RSM.png')
+        #plt.savefig(DST / f'Natives_S{n_subj}_envelope_TRF_RSM.png')
         
         '''
         ## (Useless)OLD CODES ##
@@ -158,7 +159,7 @@ if __name__ == "__main__":
     DST = TRF_DIR / 'ESLs_figures'
     DST.mkdir(exist_ok=True)
     
-    """
+    
     #PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors' 
     #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
     EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
@@ -241,7 +242,7 @@ if __name__ == "__main__":
         
         #plt.show() #(change it into save)
         plt.savefig(DST / f'ESLs_S{ESL_subj}_{predictor_name}_TRF_RSM.png')
-        """
+        
     ## To arrange the ESL according to the VST scores.
     ## VST score of each sub ##
     VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
@@ -359,7 +360,7 @@ if __name__ == "__main__":
     # ==========================================
     
     time_axis = f0_ndvar.time.times 
-    target_time_sec = 0.700 
+    target_time_sec = -0.100 
     
     t_index = np.argmin(np.abs(time_axis - target_time_sec))
     actual_time = time_axis[t_index]
@@ -384,3 +385,130 @@ if __name__ == "__main__":
     plt.tight_layout() 
     # plt.show()    
     plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM_SortedVST.png')
+    
+    
+    print(native_ndvar.sensor.names)
+    print(esl_ndvar.sensor.names)
+    
+    ## Compute Between groups' RSM? ##
+    #import numpy as np
+    #import pandas as pd
+    #import matplotlib.pyplot as plt
+    #import seaborn as sns
+    #import eelbrain
+    #from pathlib import Path
+    TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
+    TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
+    
+    # --- [Assume VST_df is already created and sorted here] ---
+    VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
+    sorted_esl_ids = VST_df_sorted['id'].tolist()
+    sorted_esl_vsts = VST_df_sorted['VST'].tolist()
+    
+    # Create a dictionary to easily look up ESL folder/file strings by their ID
+    esl_subj_dict = {int(subj[5:8]): subj for subj in ESL_SUBJECTS}
+    
+    all_subjects_data = []
+    combined_labels = []
+    
+    # ==========================================
+    # 1. DEFINE COMMON SENSORS (61 vs 64 fix)
+    # ==========================================
+    # (You will need to manually define this list based on the intersection 
+    # of your Native and ESL cap montages. For example:)
+    # common_sensors = ['Fz', 'Cz', 'Pz', 'O1', 'O2', ...] 
+    # For now, assuming you have this list:
+    common_sensors = [...] # INSERT YOUR COMMON SENSOR STRINGS HERE
+    
+    
+    # ==========================================
+    # 2. LOAD NATIVE SUBJECTS (Group 1)
+    # ==========================================
+    for subj in Native_SUBJECTS:
+        n_subj = int(subj[1:3])
+        combined_labels.append(f"Nat_{n_subj}") 
+        
+        # NOTE: Ensure this path correctly points to the Native TRFs containing Fzero
+        # Assuming it's formatted similarly to the ESLs:
+        n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
+        
+        f0_index = n_trf.x.index('Fzero')
+        f0_ndvar = n_trf.h[f0_index]
+        
+        # Sub-select only the common sensors so the shapes match!
+        f0_common = f0_ndvar.sub(sensor=common_sensors)
+        X_f0 = f0_common.get_data(dims=('time', 'sensor'))
+        all_subjects_data.append(X_f0)
+    
+    num_natives = len(Native_SUBJECTS) # Save this number to draw the quadrant lines later
+    
+    # ==========================================
+    # 3. LOAD SORTED ESL SUBJECTS (Group 2)
+    # ==========================================
+    # By loading them in sorted order, we don't have to sort the array later!
+    for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
+        if esl_id in esl_subj_dict:
+            subject_str = esl_subj_dict[esl_id]
+            combined_labels.append(f"ESL_{esl_id} ({vst})")
+            
+            n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
+            
+            f0_index = n_trf.x.index('Fzero')
+            f0_ndvar = n_trf.h[f0_index]
+            
+            # Sub-select common sensors
+            f0_common = f0_ndvar.sub(sensor=common_sensors)
+            X_f0 = f0_common.get_data(dims=('time', 'sensor'))
+            all_subjects_data.append(X_f0)
+    
+    
+    # ==========================================
+    # 4. COMPUTE THE COMBINED RSM
+    # ==========================================
+    # Shape becomes: (Natives + ESLs, Timepoints, Common_Sensors)
+    group_data = np.array(all_subjects_data)
+    n_subjects, n_timepoints, n_sensors = group_data.shape
+    
+    print(f"Combined group data assembled with shape: {group_data.shape}")
+    
+    time_by_time_rsms = []
+    
+    for t in range(n_timepoints):
+        spatial_pattern_at_t = group_data[:, t, :] 
+        subj_rsm = np.corrcoef(spatial_pattern_at_t)
+        time_by_time_rsms.append(subj_rsm)
+    
+    time_by_time_rsms = np.array(time_by_time_rsms)
+    
+    
+    # ==========================================
+    # 5. PLOT WITH QUADRANT DIVIDERS
+    # ==========================================
+    time_axis = f0_common.time.times 
+    target_time_sec = 0.700 
+    t_index = np.argmin(np.abs(time_axis - target_time_sec))
+    actual_time = time_axis[t_index]
+    
+    rsm_to_plot = time_by_time_rsms[t_index]
+    
+    plt.figure(figsize=(14, 12))
+    
+    sns.heatmap(rsm_to_plot, 
+                cmap='RdBu_r', 
+                center=0, 
+                vmin=-1, vmax=1, 
+                square=True,
+                xticklabels=combined_labels,  
+                yticklabels=combined_labels)
+    
+    # Draw lines to separate Natives and ESLs into 4 distinct quadrants
+    plt.axhline(num_natives, color='black', linewidth=2)
+    plt.axvline(num_natives, color='black', linewidth=2)
+    
+    plt.title(f"Native vs ESL (Sorted by VST) RSM for 'Fzero' at {actual_time * 1000:.0f} ms")
+    plt.xlabel("Subject ID")
+    plt.ylabel("Subject ID")
+    
+    plt.tight_layout() 
+    plt.savefig(DST / f'Combined_time{target_time_sec}_Fzero_TRF_RSM.png')
+    """
