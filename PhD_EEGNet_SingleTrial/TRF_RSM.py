@@ -9,9 +9,12 @@ import eelbrain
 import mne
 #import trftools
 import seaborn as sns
+import pandas as pd
 
 from pprint import pprint
 import numpy as np
+
+
 
 if __name__ == "__main__":
     STIMULI = [str(i) for i in range(1, 13)]
@@ -239,6 +242,46 @@ if __name__ == "__main__":
         #plt.show() #(change it into save)
         plt.savefig(DST / f'ESLs_S{ESL_subj}_{predictor_name}_TRF_RSM.png')
         """
+    ## To arrange the ESL according to the VST scores.
+    ## VST score of each sub ##
+    VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
+                     , '5.1', '6.1', '7.9', '8.7', '8.0', '8.8', '6.4', '7.0', '7.4', '6.6', '7.2'
+                     , '7.0', '7.3', '7.3', '7.7']  # 26 subs
+    VST_Score_float_LIST = [6.7, 7.3, 7.8, 8.2, 8.4, 6.4, 7.5, 6.7
+                            , 5.2, 5.3, 6.5, 5.1, 6.1, 7.9, 8.7, 8.0
+                            , 8.8, 6.4, 7.0, 7.4, 6.6, 7.2, 7.0, 7.3, 7.3, 7.7]
+    # exclude sub: 14 / 18 / 33 / 37
+    sub_idLIST = [10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27
+                  , 28, 29, 30, 31, 32, 34, 35, 36, 38, 39]
+    # Female = 1; Male = 2
+    sub_SexLIST = ["F", "M", "M", "F", "F", "M", "F", "M", "M", "F", "M", "F", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M"]
+     
+    # dictionary of lists 
+    VST_df = pd.DataFrame({'id': sub_idLIST, 'VST': VST_Score_float_LIST, 'gender':sub_SexLIST})
+       
+    #VST_df = pd.DataFrame(id_VST_DICT)
+       
+    print(VST_df) 
+    #print(type(VST_df["VST"][0]))
+    #print(VST_df.loc[0])
+    
+    
+    # ... [Insert your VST_df creation code here] ...
+    
+    # 1. Sort the DataFrame by VST score in descending order (High to Low)
+    VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
+    print(VST_df_sorted)
+    
+    # 2. Extract the original indices of the sorted subjects
+    # This tells us how to shuffle the rows/columns of the RSM array
+    sorted_indices = VST_df_sorted.index.to_numpy()
+    
+    # 3. Create new labels for plotting so we can see the VST score next to the Subject ID
+    sorted_labels = [f"S{row['id']} ({row['VST']})" for _, row in VST_df_sorted.iterrows()]
+    
+    print(f"New Subject Order by Index: {sorted_indices}")
+    
+    
     
     ## To compute the intersubject RSM based on timepoints ##
     
@@ -291,7 +334,7 @@ if __name__ == "__main__":
     time_axis = f0_ndvar.time.times 
     
     # Choose a time point of interest to visualize (e.g., 100 ms / 0.1 seconds)
-    target_time_sec = 0.300 
+    target_time_sec = 0.700 
     
     # Find the index of the time point closest to our target
     t_index = np.argmin(np.abs(time_axis - target_time_sec))
@@ -320,3 +363,4 @@ if __name__ == "__main__":
     plt.tight_layout() 
     #plt.show()    
     plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM.png')
+    """
