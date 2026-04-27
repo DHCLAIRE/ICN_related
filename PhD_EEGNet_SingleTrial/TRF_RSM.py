@@ -282,16 +282,17 @@ if __name__ == "__main__":
     print(f"New Subject Order by Index: {sorted_indices}")
     
     
-    
     ## To compute the intersubject RSM based on timepoints ##
     
     all_subjects_data = []
     subject_labels = []
+    original_subject_ids = [] # Keep track of the raw IDs for matching later
     
     # 1. Gather the data across all subjects
     for subject in ESL_SUBJECTS:
         n_subj = int(subject[5:8])
         subject_labels.append(f"S{n_subj}") # Save labels for plotting later
+        original_subject_ids.append(n_subj)
         
         n_trf = eelbrain.load.unpickle(TRF_DIR / subject[4:8] / f'{subject[4:8]} Fzero+envelope+env_onset.pickle')
         
@@ -314,13 +315,10 @@ if __name__ == "__main__":
     
     for t in range(n_timepoints):
         # Slice the data at time point 't'
-        # This yields a 2D array of shape (Subjects, Sensors)
         spatial_pattern_at_t = group_data[:, t, :] 
         
-        # np.corrcoef correlates the ROWS of a matrix. 
-        # Since our rows are subjects, this gives a (Subjects x Subjects) correlation matrix.
+        # Compute correlation matrix
         subj_rsm = np.corrcoef(spatial_pattern_at_t)
-        
         time_by_time_rsms.append(subj_rsm)
     
     # Convert the result to a 3D numpy array: Shape (Timepoints, Subjects, Subjects)
@@ -328,39 +326,61 @@ if __name__ == "__main__":
     print(f"Final RSM array shape: {time_by_time_rsms.shape} (Time, Subject, Subject)")
     
     
-    # 4. Convert the list of RSMs into a final 3D array
-    # Shape: (n_timepoints, n_subjects, n_subjects)
-    # Get the actual time axis (in seconds) from the NDVar
-    time_axis = f0_ndvar.time.times 
+    # ==========================================
+    # 3.5 SORTING BY VST SCORE (NEWLY ADDED)
+    # ==========================================
     
-    # Choose a time point of interest to visualize (e.g., 100 ms / 0.1 seconds)
+    # Sort the DataFrame from High to Low VST
+    VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
+    
+    sorted_indices = []
+    sorted_labels = []
+    
+    # Match the sorted DataFrame IDs to the original array index order
+    for _, row in VST_df_sorted.iterrows():
+        subj_id = int(row['id'])
+        if subj_id in original_subject_ids:
+            # Find where this subject is in our 3D array
+            idx = original_subject_ids.index(subj_id)
+            sorted_indices.append(idx)
+            # Create a new label combining ID and VST score for the plot
+            sorted_labels.append(f"S{subj_id} ({row['VST']})")
+    
+    # Convert to numpy array for advanced indexing
+    sorted_indices = np.array(sorted_indices)
+    
+    # Reorder the rows and columns of the entire 3D RSM array
+    sorted_time_by_time_rsms = time_by_time_rsms[:, sorted_indices, :] # Reorder rows
+    sorted_time_by_time_rsms = sorted_time_by_time_rsms[:, :, sorted_indices] # Reorder columns
+    
+    
+    # ==========================================
+    # 4. PLOTTING THE SORTED RSM
+    # ==========================================
+    
+    time_axis = f0_ndvar.time.times 
     target_time_sec = 0.700 
     
-    # Find the index of the time point closest to our target
     t_index = np.argmin(np.abs(time_axis - target_time_sec))
     actual_time = time_axis[t_index]
     
-    # Extract the RSM for that specific time point
-    rsm_to_plot = time_by_time_rsms[t_index]
+    # Extract the SORTED RSM for that specific time point
+    rsm_to_plot = sorted_time_by_time_rsms[t_index]
     
-    # Set up the plot
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(12, 10)) # Slightly wider to accommodate longer labels
     
-    # Plot the heatmap
     sns.heatmap(rsm_to_plot, 
                 cmap='RdBu_r', 
                 center=0, 
                 vmin=-1, vmax=1, 
                 square=True,
-                xticklabels=subject_labels,  # Label axes with Subject IDs
-                yticklabels=subject_labels)
+                xticklabels=sorted_labels,  # Use the new VST labels
+                yticklabels=sorted_labels)
     
-    plt.title(f"Subject x Subject RSM for 'Fzero' at {actual_time * 1000:.0f} ms")
-    plt.xlabel("Subject")
-    plt.ylabel("Subject")
+    plt.title(f"ESL Subject x Subject RSM (Sorted by VST) for 'Fzero' at {actual_time * 1000:.0f} ms")
+    plt.xlabel("Subject ID (VST Score)")
+    plt.ylabel("Subject ID (VST Score)")
     
-    # Optional: Adjust layout so labels fit nicely
     plt.tight_layout() 
-    #plt.show()    
-    plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM.png')
-    """
+    # plt.show()    
+    plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM_SortedVST.png')
