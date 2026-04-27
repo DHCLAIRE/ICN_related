@@ -387,10 +387,107 @@ if __name__ == "__main__":
     # plt.show()    
     plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM_SortedVST.png')
     """
-    ## Calculate Between group RSM regardless the chn montages ##
+    ## VERSION 2 : Calculate Between group RSM regardless the chn montages ##
+    
+    ## Calculate Between group RSM using a Time Window ##
     TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
     TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
     
+    # --- [Assume VST_df is already created and sorted here] ---
+    VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
+    sorted_esl_ids = VST_df_sorted['id'].tolist()
+    sorted_esl_vsts = VST_df_sorted['VST'].tolist()
+    
+    esl_subj_dict = {int(subj[5:8]): subj for subj in ESL_SUBJECTS}
+    
+    all_subject_vectors = []
+    combined_labels = []
+    
+    # ==========================================
+    # NEW: DEFINE YOUR TIME WINDOW 
+    # ==========================================
+    # Instead of one target time, define a window (e.g., 0.650s to 0.750s)
+    tmin = 0.200
+    tmax = 0.250
+    
+    
+    # ==========================================
+    # 1. LOAD NATIVES & COMPUTE TIME x TIME RSM
+    # ==========================================
+    for subj in Native_SUBJECTS:
+        n_subj = int(subj[1:3])
+        combined_labels.append(f"Nat_{n_subj}") 
+        
+        n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
+        f0_index = n_trf.x.index('Fzero')
+        f0_ndvar = n_trf.h[f0_index]
+        
+        # MODIFICATION: Use .sub(time=...) to extract only the specific time window
+        windowed_ndvar = f0_ndvar.sub(time=(tmin, tmax))
+        X_f0 = windowed_ndvar.get_data(dims=('time', 'sensor'))
+        
+        time_time_rsm = np.corrcoef(X_f0)
+        upper_triangle_vector = time_time_rsm[np.triu_indices_from(time_time_rsm, k=1)]
+        all_subject_vectors.append(upper_triangle_vector)
+    
+    num_natives = len(Native_SUBJECTS)
+    
+    
+    # ==========================================
+    # 2. LOAD ESLs & COMPUTE TIME x TIME RSM
+    # ==========================================
+    for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
+        if esl_id in esl_subj_dict:
+            subject_str = esl_subj_dict[esl_id]
+            combined_labels.append(f"ESL_{esl_id} ({vst})")
+            
+            n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
+            f0_index = n_trf.x.index('Fzero')
+            f0_ndvar = n_trf.h[f0_index]
+            
+            # MODIFICATION: Use .sub(time=...) to extract only the specific time window
+            windowed_ndvar = f0_ndvar.sub(time=(tmin, tmax))
+            X_f0 = windowed_ndvar.get_data(dims=('time', 'sensor'))
+            
+            time_time_rsm = np.corrcoef(X_f0)
+            upper_triangle_vector = time_time_rsm[np.triu_indices_from(time_time_rsm, k=1)]
+            all_subject_vectors.append(upper_triangle_vector)
+    
+    
+    # ==========================================
+    # 3. COMPUTE THE SECOND-ORDER GROUP RSM
+    # ==========================================
+    group_temporal_data = np.array(all_subject_vectors)
+    second_order_rsm = np.corrcoef(group_temporal_data)
+    
+    
+    # ==========================================
+    # 4. PLOT THE NATIVE VS ESL MATRIX
+    # ==========================================
+    plt.figure(figsize=(14, 12))
+    
+    sns.heatmap(second_order_rsm, 
+                cmap='RdBu_r', 
+                center=0, 
+                vmin=-1, vmax=1, 
+                square=True,
+                xticklabels=combined_labels,  
+                yticklabels=combined_labels)
+    
+    plt.axhline(num_natives, color='black', linewidth=2)
+    plt.axvline(num_natives, color='black', linewidth=2)
+    
+    # MODIFICATION: Update the title to reflect the time window
+    plt.title(f"Second-Order Inter-Subject RSM: F0 Processing ({tmin*1000:.0f} ms to {tmax*1000:.0f} ms)")
+    plt.xlabel("Subject ID")
+    plt.ylabel("Subject ID")
+    
+    plt.tight_layout() 
+    plt.savefig(DST / f'Combined_SecondOrder_Fzero_TRF_RSM_{tmin*1000:.0f}to{tmax*1000:.0f}ms.png')
+    
+    
+    """
+    ## VERSION one of between groups (F0 dynamics)
     # --- [Assume VST_df is already created and sorted here] ---
     VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
     sorted_esl_ids = VST_df_sorted['id'].tolist()
@@ -481,7 +578,7 @@ if __name__ == "__main__":
     
     plt.tight_layout() 
     plt.savefig(DST / 'Combined_SecondOrder_Fzero_TRF_RSM.png')
-    
+    """
     
     """
     
