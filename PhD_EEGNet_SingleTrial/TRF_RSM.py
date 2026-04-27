@@ -32,7 +32,7 @@ if __name__ == "__main__":
     DST.mkdir(exist_ok=True)
     print(Native_SUBJECTS)
     print(len(Native_SUBJECTS))
-    
+    """
     ##Step 1: Load in the TRF .pickle files so that later the RSM of each timpoint can be extracted.
     n_rowsLIST = []
     all_subj_rsms = []
@@ -136,7 +136,7 @@ if __name__ == "__main__":
         '''
     
     """
-
+    
     ## Alice_ESLs ##
     
     #STIMULI = [str(i) for i in range(1, 13)]
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     DST = TRF_DIR / 'ESLs_figures'
     DST.mkdir(exist_ok=True)
     """
-    """
+    
     ## Compute the RSM of each subject on the timepoint ##
     ## TRFs Envelope  ##
     #subj_sLIST = []
@@ -242,7 +242,8 @@ if __name__ == "__main__":
         
         #plt.show() #(change it into save)
         plt.savefig(DST / f'ESLs_S{ESL_subj}_{predictor_name}_TRF_RSM.png')
-        
+    
+    """
     ## To arrange the ESL according to the VST scores.
     ## VST score of each sub ##
     VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
@@ -265,8 +266,8 @@ if __name__ == "__main__":
     print(VST_df) 
     #print(type(VST_df["VST"][0]))
     #print(VST_df.loc[0])
-    
-    
+    """
+    ## ESL's within group's RSM based on VST ##
     # ... [Insert your VST_df creation code here] ...
     
     # 1. Sort the DataFrame by VST score in descending order (High to Low)
@@ -385,10 +386,104 @@ if __name__ == "__main__":
     plt.tight_layout() 
     # plt.show()    
     plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM_SortedVST.png')
+    """
+    ## Calculate Between group RSM regardless the chn montages ##
+    TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
+    TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
+    
+    # --- [Assume VST_df is already created and sorted here] ---
+    VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
+    sorted_esl_ids = VST_df_sorted['id'].tolist()
+    sorted_esl_vsts = VST_df_sorted['VST'].tolist()
+    
+    esl_subj_dict = {int(subj[5:8]): subj for subj in ESL_SUBJECTS}
+    
+    all_subject_vectors = []
+    combined_labels = []
+    
+    # ==========================================
+    # 1. LOAD NATIVES & COMPUTE TIME x TIME RSM
+    # ==========================================
+    for subj in Native_SUBJECTS:
+        n_subj = int(subj[1:3])
+        combined_labels.append(f"Nat_{n_subj}") 
+        
+        n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
+        f0_index = n_trf.x.index('Fzero')
+        f0_ndvar = n_trf.h[f0_index]
+        
+        # Shape: (Timepoints, 61 Sensors)
+        X_f0 = f0_ndvar.get_data(dims=('time', 'sensor'))
+        
+        # np.corrcoef correlates rows. X_f0 is (Time, Sensor), so this yields (Time, Time)
+        time_time_rsm = np.corrcoef(X_f0)
+        
+        # Extract the upper triangle (excluding the diagonal) and flatten to a 1D vector
+        upper_triangle_vector = time_time_rsm[np.triu_indices_from(time_time_rsm, k=1)]
+        all_subject_vectors.append(upper_triangle_vector)
+    
+    num_natives = len(Native_SUBJECTS)
+    
+    # ==========================================
+    # 2. LOAD ESLs & COMPUTE TIME x TIME RSM
+    # ==========================================
+    for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
+        if esl_id in esl_subj_dict:
+            subject_str = esl_subj_dict[esl_id]
+            combined_labels.append(f"ESL_{esl_id} ({vst})")
+            
+            n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
+            f0_index = n_trf.x.index('Fzero')
+            f0_ndvar = n_trf.h[f0_index]
+            
+            # Shape: (Timepoints, 64 Sensors)
+            X_f0 = f0_ndvar.get_data(dims=('time', 'sensor'))
+            
+            # Yields (Time, Time)
+            time_time_rsm = np.corrcoef(X_f0)
+            
+            # Extract the upper triangle and flatten to a 1D vector
+            upper_triangle_vector = time_time_rsm[np.triu_indices_from(time_time_rsm, k=1)]
+            all_subject_vectors.append(upper_triangle_vector)
+    
+    # ==========================================
+    # 3. COMPUTE THE SECOND-ORDER GROUP RSM
+    # ==========================================
+    # Stack all 1D temporal fingerprint vectors. 
+    # Shape: (Total Subjects, Number of Temporal Relationships)
+    group_temporal_data = np.array(all_subject_vectors)
+    
+    # Correlate the subjects' temporal fingerprints against each other
+    # Yields a final (Total Subjects, Total Subjects) matrix
+    second_order_rsm = np.corrcoef(group_temporal_data)
     
     
-    print(native_ndvar.sensor.names)
-    print(esl_ndvar.sensor.names)
+    # ==========================================
+    # 4. PLOT THE NATIVE VS ESL MATRIX
+    # ==========================================
+    plt.figure(figsize=(14, 12))
+    
+    sns.heatmap(second_order_rsm, 
+                cmap='RdBu_r', 
+                center=0, 
+                vmin=-1, vmax=1, 
+                square=True,
+                xticklabels=combined_labels,  
+                yticklabels=combined_labels)
+    
+    # Draw lines to separate Natives and ESLs into 4 quadrants (L1-L1, L2-L2, L1-L2)
+    plt.axhline(num_natives, color='black', linewidth=2)
+    plt.axvline(num_natives, color='black', linewidth=2)
+    
+    plt.title("Second-Order Inter-Subject RSM: Temporal Dynamics of F0 Processing")
+    plt.xlabel("Subject ID")
+    plt.ylabel("Subject ID")
+    
+    plt.tight_layout() 
+    plt.savefig(DST / 'Combined_SecondOrder_Fzero_TRF_RSM.png')
+    
+    
+    """
     
     ## Compute Between groups' RSM? ##
     #import numpy as np
