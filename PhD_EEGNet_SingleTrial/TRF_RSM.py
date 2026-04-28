@@ -803,7 +803,7 @@ if __name__ == "__main__":
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
     step = 0.050  # 50 ms interval
-    start_times = np.arange(0, 1.000, step)  # Creates [0.0, 0.05, 0.1, ..., 0.95]
+    start_times = np.arange(0, 1.000, step)  
     
     # ==========================================
     # 2. THE MAIN TEMPORAL LOOP
@@ -812,9 +812,6 @@ if __name__ == "__main__":
         tmax = tmin + step
         print(f"--- Processing Window: {tmin*1000:.0f}ms to {tmax*1000:.0f}ms ---")
         
-        # ==========================================
-        # 2. LOAD DATA & APPLY INTERPOLATION
-        # ==========================================
         all_subjects_spatial_data = []
         combined_labels = []
         
@@ -824,25 +821,25 @@ if __name__ == "__main__":
             combined_labels.append(f"Nat_{n_subj}") 
             
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
-            f0_ndvar = n_trf.h[n_trf.x.index('Fzero')]
             
-            # Extract shape: (61 Sensors, Timepoints)
-            native_data = f0_ndvar.get_data(dims=('sensor', 'time'))
+            # --- MODIFICATION: Slice the time window immediately! ---
+            f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
+            
+            native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
             n_times = native_data.shape[1]
             
-            # Create the 125-channel array (Native data on top, 64 rows of Zeros on bottom)
             combined_data = np.vstack((native_data, np.zeros((len(esl_chs), n_times))))
             
-            # Interpolate
             evoked = mne.EvokedArray(combined_data, info_combined)
-            evoked.info['bads'] = esl_chs # Tell MNE the zeros are "broken"
+            evoked.info['bads'] = esl_chs 
             evoked.interpolate_bads(reset_bads=True, verbose=False)
             
-            # Extract ONLY the 64 newly generated ESL channels. Shape: (64, Timepoints)
             interpolated_data = evoked.copy().pick_channels(esl_chs).data
             
-            # Transpose back to (Timepoints, 64 Sensors) to match Eelbrain format
-            all_subjects_spatial_data.append(interpolated_data.T)
+            # --- MODIFICATION: Average across the time window to get 1 spatial map ---
+            # Shape goes from (64 Sensors, n_times) to just (64 Sensors,)
+            mean_spatial_map = interpolated_data.mean(axis=1)
+            all_subjects_spatial_data.append(mean_spatial_map)
         
         num_natives = len(Native_SUBJECTS)
         
@@ -853,62 +850,43 @@ if __name__ == "__main__":
                 combined_labels.append(f"ESL_{esl_id} ({vst})")
                 
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
-                f0_ndvar = n_trf.h[n_trf.x.index('Fzero')]
                 
-                # Get the actual channel names present in this specific ESL subject
-                esl_actual_chs = list(f0_ndvar.sensor.names)
+                # --- MODIFICATION: Slice the time window immediately! ---
+                f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
                 
-                # Figure out exactly which channels are missing compared to our 64-channel template
+                esl_actual_chs = list(f0_ndvar_window.sensor.names)
                 missing_chs = [ch for ch in esl_chs if ch not in esl_actual_chs]
                 
                 if len(missing_chs) > 0:
-                    # --- INTERPOLATE MISSING ESL CHANNELS ---
-                    # 1. Extract what data they DO have
-                    actual_data = f0_ndvar.get_data(dims=('sensor', 'time'))
+                    actual_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
                     n_times = actual_data.shape[1]
                     
-                    # 2. Add rows of zeros for the missing channels
                     combined_data = np.vstack((actual_data, np.zeros((len(missing_chs), n_times))))
                     
-                    # 3. Create a temporary MNE Info object just for this subject
                     current_all_chs = esl_actual_chs + missing_chs
                     info_esl = mne.create_info(ch_names=current_all_chs, sfreq=500, ch_types=['eeg'] * len(current_all_chs))
-                    info_esl.set_montage(esl_montage) # esl_montage is already the standard 10-20
+                    info_esl.set_montage(esl_montage) 
                     
-                    # 4. Interpolate
                     evoked = mne.EvokedArray(combined_data, info_esl)
                     evoked.info['bads'] = missing_chs
                     evoked.interpolate_bads(reset_bads=True, verbose=False)
                     
-                    # 5. Extract channels in the EXACT order of our standard 'esl_chs' list
-                    esl_data_final = evoked.copy().pick_channels(esl_chs).data.T
-                    
+                    esl_data_final = evoked.copy().pick_channels(esl_chs).data
                 else:
-                    # --- NO INTERPOLATION NEEDED ---
-                    # Even if they have all 64, we MUST force Eelbrain to output them 
-                    # in the exact same alphabetical order as our 'esl_chs' list.
-                    esl_data_final = f0_ndvar.sub(sensor=esl_chs).get_data(dims=('time', 'sensor'))
-                    
-                all_subjects_spatial_data.append(esl_data_final)
+                    esl_data_final = f0_ndvar_window.sub(sensor=esl_chs).get_data(dims=('sensor', 'time'))
+                
+                # --- MODIFICATION: Average across the time window ---
+                mean_spatial_map = esl_data_final.mean(axis=1)
+                all_subjects_spatial_data.append(mean_spatial_map)
         
         # ==========================================
         # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
         # ==========================================
-        # Stack everything into a 3D array: Shape (Total Subjects, Timepoints, 64 Sensors)
+        # Shape is now perfectly (Total Subjects, 64 Sensors)
         group_data = np.array(all_subjects_spatial_data)
         
-        # Define your target time (e.g., 100 ms)
-        target_time_sec = 0.100 
-        time_axis = f0_ndvar.time.times 
-        t_index = np.argmin(np.abs(time_axis - target_time_sec))
-        
-        # Slice out the spatial topography at that exact millisecond
-        # Shape becomes: (Total Subjects, 64 Sensors)
-        spatial_pattern_at_t = group_data[:, t_index, :]
-        
-        # Correlate the subjects' spatial patterns against each other
-        # np.corrcoef correlates rows, so this yields a (Subjects x Subjects) matrix
-        spatial_rsm = np.corrcoef(spatial_pattern_at_t)
+        # We no longer need t_index! Just correlate the spatial maps directly.
+        spatial_rsm = np.corrcoef(group_data)
         
         # ==========================================
         # 4. PLOT THE SPATIAL RSM
@@ -923,16 +901,14 @@ if __name__ == "__main__":
                     xticklabels=combined_labels,  
                     yticklabels=combined_labels)
         
-        # Draw quadrants
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
         
-        plt.title(f"First-Order Spatial RSM: Fzero Topography at {tmin*1000:.0f}-{tmax*1000:.0f} ms") #{time_axis[t_index] * 1000:.0f} ms")
+        plt.title(f"First-Order Spatial RSM: Fzero Topography ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'FirstOrder_Spatial_Fzero_RSM_({tmin*1000:.0f}-{tmax*1000:.0f} ms).png'
+        filename = f'FirstOrder_Spatial_Fzero_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         plt.savefig(DST_ESLs / filename)
-        plt.close() # Important: Close plot to free up memory during the loop
-        
+        plt.close()
