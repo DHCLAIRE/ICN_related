@@ -17,21 +17,45 @@ import numpy as np
 
 
 if __name__ == "__main__":
+    ## Setting the stim length ##
     STIMULI = [str(i) for i in range(1, 13)]
     
+    ## Set path of Natives & ESLs ##
     ## Alice_Natives ##
-    DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results")#("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results")
+    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
     PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
     PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    EEG_DIR = DATA_ROOT / 'EEG_Natives' / 'Alice_natives_ICAed_fif'
-    Native_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'S\d*', path.name)]
-    # Define a target directory for TRF estimates and make sure the directory is created
-    TRF_DIR = DATA_ROOT / 'TRFs_Natives'
-    TRF_DIR.mkdir(exist_ok=True)
-    DST = TRF_DIR / 'Natives_figures'
-    DST.mkdir(exist_ok=True)
+    EEG_DIR_NATs = DATA_ROOT / 'EEG_Natives' / 'Alice_natives_ICAed_fif'
+    EEG_DIR_ESLs = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
+    
+    ## Setting the Predictors Path ##
+    IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
+    F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
+    IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)]
+    
+    ## Finding the SUBJs files according to Groups ##
+    Native_SUBJECTS = [path.name for path in EEG_DIR_NATs.iterdir() if re.match(r'S\d*', path.name)]
+    ESL_SUBJECTS = [path.name for path in EEG_DIR_ESLs.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
+    
+    ## Define a target directory for TRF estimates and make sure the directory is created ##
+    ## ESLs
+    TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
+    TRF_DIR_NATs.mkdir(exist_ok=True)
+    DST_NATs = TRF_DIR_NATs / 'Natives_figures'
+    DST_NATs.mkdir(exist_ok=True)
     print(Native_SUBJECTS)
     print(len(Native_SUBJECTS))
+    
+    ## ESLs
+    TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
+    TRF_DIR_ESLs.mkdir(exist_ok=True)
+    DST_ESLs = TRF_DIR_ESLs / 'ESLs_figures'
+    DST_ESLs.mkdir(exist_ok=True)    
+    print(ESL_SUBJECTS)
+    print(len(ESL_SUBJECTS))  # 26
+    
+    
     """
     ##Step 1: Load in the TRF .pickle files so that later the RSM of each timpoint can be extracted.
     n_rowsLIST = []
@@ -112,8 +136,8 @@ if __name__ == "__main__":
         # dissimilarity_matrix = 1 - similarity_matrix
         
         print(f"RSM Shape: {similarity_matrix.shape}")
-        '''
-        '''
+        
+        
         ##Step 5: Visualize the RSM
         # Set up the plot
         plt.figure(figsize=(8, 6))
@@ -137,38 +161,38 @@ if __name__ == "__main__":
     
     """
     
-    ## Alice_ESLs ##
+    ### Alice_ESLs ##
     
-    #STIMULI = [str(i) for i in range(1, 13)]
-    #DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results") #("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
-    #DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
-    DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
-    #PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
-    #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
-    F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
-    IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)] 
-    ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
+    ##STIMULI = [str(i) for i in range(1, 13)]
+    ##DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results") #("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    ##DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
+    #DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
+    ##PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
+    ##PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
+    #EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
+    #IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
+    #F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
+    #IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)] 
+    #ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
     
-    # Define a target directory for TRF estimates and make sure the directory is created
-    TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
-    TRF_DIR.mkdir(exist_ok=True)
-    print(ESL_SUBJECTS)
-    print(len(ESL_SUBJECTS))  # 26
-    DST = TRF_DIR / 'ESLs_figures'
-    DST.mkdir(exist_ok=True)
+    ## Define a target directory for TRF estimates and make sure the directory is created
+    #TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
+    #TRF_DIR.mkdir(exist_ok=True)
+    #print(ESL_SUBJECTS)
+    #print(len(ESL_SUBJECTS))  # 26
+    #DST = TRF_DIR / 'ESLs_figures'
+    #DST.mkdir(exist_ok=True)
     
     
-    #PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors' 
-    #PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
-    # Define a target directory for TRF estimates and make sure the directory is created
-    TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
-    TRF_DIR.mkdir(exist_ok=True)
-    print(ESL_SUBJECTS)
-    print(len(ESL_SUBJECTS))  # 26
+    ##PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors' 
+    ##PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
+    #EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
+    #ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
+    ## Define a target directory for TRF estimates and make sure the directory is created
+    #TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
+    #TRF_DIR.mkdir(exist_ok=True)
+    #print(ESL_SUBJECTS)
+    #print(len(ESL_SUBJECTS))  # 26
     
     DST = TRF_DIR / 'ESLs_figures'
     DST.mkdir(exist_ok=True)
@@ -433,7 +457,7 @@ if __name__ == "__main__":
             combined_labels.append(f"Nat_{n_subj}") 
             
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
-            f0_index = n_trf.x.index('envelope')
+            f0_index = n_trf.x.index('onset')
             f0_ndvar = n_trf.h[f0_index]
             
             # MODIFICATION: Use .sub(time=...) to extract only the specific time window
@@ -456,7 +480,7 @@ if __name__ == "__main__":
                 combined_labels.append(f"ESL_{esl_id} ({vst})")
                 
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
-                f0_index = n_trf.x.index('envelope')
+                f0_index = n_trf.x.index('onset')
                 f0_ndvar = n_trf.h[f0_index]
                 
                 # MODIFICATION: Use .sub(time=...) to extract only the specific time window
@@ -485,10 +509,10 @@ if __name__ == "__main__":
         plt.axhline(num_natives, color='black', linewidth=2) #len(Native_SUBJECTS), color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2) #len(Native_SUBJECTS), color='black', linewidth=2)
         
-        plt.title(f"Second-Order Inter-Subject RSM: Envelope ({tmin*1000:.0f}-{tmax*1000:.0f} ms)")
+        plt.title(f"Second-Order Inter-Subject RSM: EnvOnset ({tmin*1000:.0f}-{tmax*1000:.0f} ms)")
         
         # Save each plot with a unique name
-        filename = f'Combined_Envelope_RSM_{int(tmin*1000):04d}_{int(tmax*1000):04d}ms.png'
+        filename = f'Combined_EnvOnset_RSM_{int(tmin*1000):04d}_{int(tmax*1000):04d}ms.png'
         plt.savefig(DST / filename)
         plt.close() # Important: Close plot to free up memory during the loop        
     
