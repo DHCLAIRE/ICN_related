@@ -756,18 +756,28 @@ if __name__ == "__main__":
     esl_subj_dict = {int(subj[5:8]): subj for subj in ESL_SUBJECTS}
     
     # ==========================================
-    # 1. SETUP: MNE "SUPER-CAP" INTERPOLATION
+    # 1. SETUP: DYNAMIC MNE "SUPER-CAP" INTERPOLATION
     # ==========================================
-    # Load the 61-channel Native montage
+    # Load the raw 61-channel Native montage coordinates
     native_montage = mne.channels.read_custom_montage('/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results/TRFs_pridictors/easycapM10-acti61_elec.sfp')
-    native_chs = native_montage.ch_names
-    native_chs_safe = [f"NAT_{ch}" for ch in native_chs] # Avoid name overlap
     
-    # Define the 64-channel ESL montage (Replace with your specific ESL .sfp if you have one)
+    # --- MODIFICATION START ---
+    # Load the FIRST Native subject temporarily just to see which 59 sensors survived preprocessing
+    sample_subj = int(Native_SUBJECTS[0][1:3])
+    sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} Fzero+envelope+env_onset.pickle')
+    
+    # Extract the exact 59 channel names actually present in your data
+    actual_native_chs = sample_trf.h[sample_trf.x.index('Fzero')].sensor.names
+    
+    # Create safe names ONLY for those 59 channels
+    native_chs_safe = [f"NAT_{ch}" for ch in actual_native_chs]
+    # --- MODIFICATION END ---
+    
+    # Define the 64-channel ESL montage
     esl_montage = mne.channels.make_standard_montage('standard_1020') 
-    esl_chs = esl_montage.ch_names[:64] # Ensure exactly 64 channels are extracted
+    esl_chs = esl_montage.ch_names[:64] 
     
-    # Build the 125-channel combined Info object
+    # Build the 123-channel combined Info object (59 Native + 64 ESL)
     all_chs = native_chs_safe + esl_chs
     info_combined = mne.create_info(ch_names=all_chs, sfreq=500, ch_types=['eeg'] * len(all_chs))
     
@@ -776,13 +786,17 @@ if __name__ == "__main__":
     native_positions = native_montage.get_positions()['ch_pos']
     esl_positions = esl_montage.get_positions()['ch_pos']
     
-    for i, ch in enumerate(native_chs):
+    # Only extract coordinates for the 59 channels that actually exist
+    for i, ch in enumerate(actual_native_chs):
         combined_positions[native_chs_safe[i]] = native_positions[ch]
+    
     for ch in esl_chs:
         combined_positions[ch] = esl_positions[ch]
     
     combined_montage = mne.channels.make_dig_montage(ch_pos=combined_positions)
     info_combined.set_montage(combined_montage)
+    
+    print(f"Success! Super-montage created with {len(info_combined.ch_names)} channels.")    
     
     
     # ==========================================
@@ -832,7 +846,7 @@ if __name__ == "__main__":
         
         num_natives = len(Native_SUBJECTS)
         
-        # --- B. Process ESLs (No Interpolation Needed) ---
+        # --- B. Process ESLs (With Dynamic Interpolation & Sorting) ---
         for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
             if esl_id in esl_subj_dict:
                 subject_str = esl_subj_dict[esl_id]
@@ -841,9 +855,41 @@ if __name__ == "__main__":
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
                 f0_ndvar = n_trf.h[n_trf.x.index('Fzero')]
                 
-                # Already 64 channels. Shape: (Timepoints, 64 Sensors)
-                esl_data = f0_ndvar.get_data(dims=('time', 'sensor'))
-                all_subjects_spatial_data.append(esl_data)
+                # Get the actual channel names present in this specific ESL subject
+                esl_actual_chs = list(f0_ndvar.sensor.names)
+                
+                # Figure out exactly which channels are missing compared to our 64-channel template
+                missing_chs = [ch for ch in esl_chs if ch not in esl_actual_chs]
+                
+                if len(missing_chs) > 0:
+                    # --- INTERPOLATE MISSING ESL CHANNELS ---
+                    # 1. Extract what data they DO have
+                    actual_data = f0_ndvar.get_data(dims=('sensor', 'time'))
+                    n_times = actual_data.shape[1]
+                    
+                    # 2. Add rows of zeros for the missing channels
+                    combined_data = np.vstack((actual_data, np.zeros((len(missing_chs), n_times))))
+                    
+                    # 3. Create a temporary MNE Info object just for this subject
+                    current_all_chs = esl_actual_chs + missing_chs
+                    info_esl = mne.create_info(ch_names=current_all_chs, sfreq=500, ch_types=['eeg'] * len(current_all_chs))
+                    info_esl.set_montage(esl_montage) # esl_montage is already the standard 10-20
+                    
+                    # 4. Interpolate
+                    evoked = mne.EvokedArray(combined_data, info_esl)
+                    evoked.info['bads'] = missing_chs
+                    evoked.interpolate_bads(reset_bads=True, verbose=False)
+                    
+                    # 5. Extract channels in the EXACT order of our standard 'esl_chs' list
+                    esl_data_final = evoked.copy().pick_channels(esl_chs).data.T
+                    
+                else:
+                    # --- NO INTERPOLATION NEEDED ---
+                    # Even if they have all 64, we MUST force Eelbrain to output them 
+                    # in the exact same alphabetical order as our 'esl_chs' list.
+                    esl_data_final = f0_ndvar.sub(sensor=esl_chs).get_data(dims=('time', 'sensor'))
+                    
+                all_subjects_spatial_data.append(esl_data_final)
         
         # ==========================================
         # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
