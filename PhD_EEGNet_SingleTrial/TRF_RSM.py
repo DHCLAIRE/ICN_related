@@ -15,7 +15,6 @@ from pprint import pprint
 import numpy as np
 
 
-
 if __name__ == "__main__":
     ## Setting the stim length ##
     STIMULI = [str(i) for i in range(1, 13)]
@@ -57,6 +56,7 @@ if __name__ == "__main__":
     
     
     """
+    ## Natives RSM (within subjs) ##
     ##Step 1: Load in the TRF .pickle files so that later the RSM of each timpoint can be extracted.
     n_rowsLIST = []
     all_subj_rsms = []
@@ -161,43 +161,9 @@ if __name__ == "__main__":
     
     """
     
-    ### Alice_ESLs ##
-    
-    ##STIMULI = [str(i) for i in range(1, 13)]
-    ##DATA_ROOT = Path("/Volumes/DH_4GB/Neurolang_1_Copy(ver20231203)/Master Program/New_Thesis_topic/Experiments_Results") #("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
-    ##DATA_ROOT = Path("/Volumes/Neurolang_1/Master Program/New_Thesis_topic/Experiments_Results")  #Path("~").expanduser() / 'Data' / 'Alice'
-    #DATA_ROOT = Path("/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results")
-    ##PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors'
-    ##PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    #EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    #IMF_DIR = DATA_ROOT/ "TRFs_pridictors/IF_predictors"
-    #F0_DIR = DATA_ROOT/ "TRFs_pridictors/F0_predictors"
-    #IMFsLIST = [path.name for path in IMF_DIR.iterdir() if re.match(r'Alice_IF_IMF_*', path.name)] 
-    #ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
-    
-    ## Define a target directory for TRF estimates and make sure the directory is created
-    #TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
-    #TRF_DIR.mkdir(exist_ok=True)
-    #print(ESL_SUBJECTS)
-    #print(len(ESL_SUBJECTS))  # 26
-    #DST = TRF_DIR / 'ESLs_figures'
-    #DST.mkdir(exist_ok=True)
-    
-    
-    ##PREDICTOR_audio_DIR = DATA_ROOT / 'TRFs_pridictors/audio_predictors' 
-    ##PREDICTOR_word_DIR = DATA_ROOT / 'TRFs_pridictors/word_predictors'
-    #EEG_DIR = DATA_ROOT / 'EEG_ESLs' / 'Alice_ESL_ICAed_fif'
-    #ESL_SUBJECTS = [path.name for path in EEG_DIR.iterdir() if re.match(r'n_2_S\d*', path.name)]  #S01_alice-raw.fif
-    ## Define a target directory for TRF estimates and make sure the directory is created
-    #TRF_DIR = DATA_ROOT / 'TRFs_ESLs'
-    #TRF_DIR.mkdir(exist_ok=True)
-    #print(ESL_SUBJECTS)
-    #print(len(ESL_SUBJECTS))  # 26
-    
-    DST = TRF_DIR / 'ESLs_figures'
-    DST.mkdir(exist_ok=True)
+
     """
-    
+    ## ESLs pre-VST RSM (within subjs) on Env/F0/EnvOnset
     ## Compute the RSM of each subject on the timepoint ##
     ## TRFs Envelope  ##
     #subj_sLIST = []
@@ -268,8 +234,10 @@ if __name__ == "__main__":
         plt.savefig(DST / f'ESLs_S{ESL_subj}_{predictor_name}_TRF_RSM.png')
     
     """
+    
+    ## Include VST as proficiency level indicator##
     ## To arrange the ESL according to the VST scores.
-    ## VST score of each sub ##
+    ## VST score of each sub of ESL ##
     VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
                      , '5.1', '6.1', '7.9', '8.7', '8.0', '8.8', '6.4', '7.0', '7.4', '6.6', '7.2'
                      , '7.0', '7.3', '7.3', '7.7']  # 26 subs
@@ -411,11 +379,13 @@ if __name__ == "__main__":
     # plt.show()    
     plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM_SortedVST.png')
     """
+    """
+    ## RSM of Between Groups only on Time X Time RSMs##
     ## VERSION 2 : Calculate Between group RSM regardless the chn montages ##
     
     ## Calculate Between group RSM using a Time Window ##
-    TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
-    TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
+    #TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
+    #TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
     
     # --- [Assume VST_df is already created and sorted here] ---
     VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
@@ -428,7 +398,7 @@ if __name__ == "__main__":
     combined_labels = []
     
     ## ==========================================
-    ## NEW: DEFINE YOUR TIME WINDOW 
+    ## NEW: DEFINE YOUR TIME WINDOW (Seperately)
     ## ==========================================
     ## Instead of one target time, define a window (e.g., 0.650s to 0.750s)
     #tmin = 0.950
@@ -513,9 +483,9 @@ if __name__ == "__main__":
         
         # Save each plot with a unique name
         filename = f'Combined_EnvOnset_RSM_{int(tmin*1000):04d}_{int(tmax*1000):04d}ms.png'
-        plt.savefig(DST / filename)
+        plt.savefig(DST_ESLs / filename)
         plt.close() # Important: Close plot to free up memory during the loop        
-    
+        """
         """
         ## BEFORE LOOP ##
         # ==========================================
@@ -771,3 +741,149 @@ if __name__ == "__main__":
     plt.tight_layout() 
     plt.savefig(DST / f'Combined_time{target_time_sec}_Fzero_TRF_RSM.png')
     """
+    
+
+    ## Interpolate the Native's 61 channels ##
+    # ==========================================
+    # 0. SETUP: DIRECTORIES & ESL SORTING
+    # ==========================================
+    #TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
+    #TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
+    
+    VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
+    sorted_esl_ids = VST_df_sorted['id'].tolist()
+    sorted_esl_vsts = VST_df_sorted['VST'].tolist()
+    esl_subj_dict = {int(subj[5:8]): subj for subj in ESL_SUBJECTS}
+    
+    # ==========================================
+    # 1. SETUP: MNE "SUPER-CAP" INTERPOLATION
+    # ==========================================
+    # Load the 61-channel Native montage
+    native_montage = mne.channels.read_custom_montage('/Users/neuroling/Downloads/DINGHSIN_Results/Alice_Experiments_Results/TRFs_pridictors/easycapM10-acti61_elec.sfp')
+    native_chs = native_montage.ch_names
+    native_chs_safe = [f"NAT_{ch}" for ch in native_chs] # Avoid name overlap
+    
+    # Define the 64-channel ESL montage (Replace with your specific ESL .sfp if you have one)
+    esl_montage = mne.channels.make_standard_montage('standard_1020') 
+    esl_chs = esl_montage.ch_names[:64] # Ensure exactly 64 channels are extracted
+    
+    # Build the 125-channel combined Info object
+    all_chs = native_chs_safe + esl_chs
+    info_combined = mne.create_info(ch_names=all_chs, sfreq=500, ch_types=['eeg'] * len(all_chs))
+    
+    # Map the 3D coordinates
+    combined_positions = {}
+    native_positions = native_montage.get_positions()['ch_pos']
+    esl_positions = esl_montage.get_positions()['ch_pos']
+    
+    for i, ch in enumerate(native_chs):
+        combined_positions[native_chs_safe[i]] = native_positions[ch]
+    for ch in esl_chs:
+        combined_positions[ch] = esl_positions[ch]
+    
+    combined_montage = mne.channels.make_dig_montage(ch_pos=combined_positions)
+    info_combined.set_montage(combined_montage)
+    
+    
+    # ==========================================
+    # 1. DEFINE THE TIME PARAMETERS
+    # ==========================================
+    step = 0.050  # 50 ms interval
+    start_times = np.arange(0, 1.000, step)  # Creates [0.0, 0.05, 0.1, ..., 0.95]
+    
+    # ==========================================
+    # 2. THE MAIN TEMPORAL LOOP
+    # ==========================================
+    for tmin in start_times:
+        tmax = tmin + step
+        print(f"--- Processing Window: {tmin*1000:.0f}ms to {tmax*1000:.0f}ms ---")
+        
+        # ==========================================
+        # 2. LOAD DATA & APPLY INTERPOLATION
+        # ==========================================
+        all_subjects_spatial_data = []
+        combined_labels = []
+        
+        # --- A. Process Natives (Requires Interpolation) ---
+        for subj in Native_SUBJECTS:
+            n_subj = int(subj[1:3])
+            combined_labels.append(f"Nat_{n_subj}") 
+            
+            n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
+            f0_ndvar = n_trf.h[n_trf.x.index('Fzero')]
+            
+            # Extract shape: (61 Sensors, Timepoints)
+            native_data = f0_ndvar.get_data(dims=('sensor', 'time'))
+            n_times = native_data.shape[1]
+            
+            # Create the 125-channel array (Native data on top, 64 rows of Zeros on bottom)
+            combined_data = np.vstack((native_data, np.zeros((len(esl_chs), n_times))))
+            
+            # Interpolate
+            evoked = mne.EvokedArray(combined_data, info_combined)
+            evoked.info['bads'] = esl_chs # Tell MNE the zeros are "broken"
+            evoked.interpolate_bads(reset_bads=True, verbose=False)
+            
+            # Extract ONLY the 64 newly generated ESL channels. Shape: (64, Timepoints)
+            interpolated_data = evoked.copy().pick_channels(esl_chs).data
+            
+            # Transpose back to (Timepoints, 64 Sensors) to match Eelbrain format
+            all_subjects_spatial_data.append(interpolated_data.T)
+        
+        num_natives = len(Native_SUBJECTS)
+        
+        # --- B. Process ESLs (No Interpolation Needed) ---
+        for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
+            if esl_id in esl_subj_dict:
+                subject_str = esl_subj_dict[esl_id]
+                combined_labels.append(f"ESL_{esl_id} ({vst})")
+                
+                n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
+                f0_ndvar = n_trf.h[n_trf.x.index('Fzero')]
+                
+                # Already 64 channels. Shape: (Timepoints, 64 Sensors)
+                esl_data = f0_ndvar.get_data(dims=('time', 'sensor'))
+                all_subjects_spatial_data.append(esl_data)
+        
+        # ==========================================
+        # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
+        # ==========================================
+        # Stack everything into a 3D array: Shape (Total Subjects, Timepoints, 64 Sensors)
+        group_data = np.array(all_subjects_spatial_data)
+        
+        # Define your target time (e.g., 100 ms)
+        target_time_sec = 0.100 
+        time_axis = f0_ndvar.time.times 
+        t_index = np.argmin(np.abs(time_axis - target_time_sec))
+        
+        # Slice out the spatial topography at that exact millisecond
+        # Shape becomes: (Total Subjects, 64 Sensors)
+        spatial_pattern_at_t = group_data[:, t_index, :]
+        
+        # Correlate the subjects' spatial patterns against each other
+        # np.corrcoef correlates rows, so this yields a (Subjects x Subjects) matrix
+        spatial_rsm = np.corrcoef(spatial_pattern_at_t)
+        
+        # ==========================================
+        # 4. PLOT THE SPATIAL RSM
+        # ==========================================
+        plt.figure(figsize=(14, 12))
+        
+        sns.heatmap(spatial_rsm, 
+                    cmap='RdBu_r', 
+                    center=0, 
+                    vmin=-1, vmax=1, 
+                    square=True,
+                    xticklabels=combined_labels,  
+                    yticklabels=combined_labels)
+        
+        # Draw quadrants
+        plt.axhline(num_natives, color='black', linewidth=2)
+        plt.axvline(num_natives, color='black', linewidth=2)
+        
+        plt.title(f"First-Order Spatial RSM: Fzero Topography at {time_axis[t_index] * 1000:.0f} ms")
+        plt.xlabel("Subject ID")
+        plt.ylabel("Subject ID")
+        
+        plt.tight_layout() 
+        plt.savefig(DST_ESLs / f'FirstOrder_Spatial_Fzero_RSM_{target_time_sec*1000:.0f}ms.png')    
