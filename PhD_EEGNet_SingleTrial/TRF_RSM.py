@@ -485,8 +485,8 @@ if __name__ == "__main__":
         filename = f'Combined_EnvOnset_RSM_{int(tmin*1000):04d}_{int(tmax*1000):04d}ms.png'
         plt.savefig(DST_ESLs / filename)
         plt.close() # Important: Close plot to free up memory during the loop        
-        """
-        """
+        
+        
         ## BEFORE LOOP ##
         # ==========================================
         # 3. COMPUTE THE SECOND-ORDER GROUP RSM
@@ -520,9 +520,9 @@ if __name__ == "__main__":
         
         plt.tight_layout() 
         plt.savefig(DST / f'Combined_SecondOrder_Envelope_TRF_RSM_{tmin*1000:.0f}to{tmax*1000:.0f}ms.png')
-        """
         
-    
+        
+    """
     """
     ## VERSION one of between groups (F0 dynamics)
     # --- [Assume VST_df is already created and sorted here] ---
@@ -881,9 +881,12 @@ if __name__ == "__main__":
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
         
-        plt.title(f"First-Order Spatial RSM: Fzero Topography at {time_axis[t_index] * 1000:.0f} ms")
+        plt.title(f"First-Order Spatial RSM: Fzero Topography at {tmin*1000:.0f}-{tmax*1000:.0f} ms") #{time_axis[t_index] * 1000:.0f} ms")
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
+        filename = f'FirstOrder_Spatial_Fzero_RSM_({tmin*1000:.0f}-{tmax*1000:.0f} ms).png'
         plt.tight_layout() 
-        plt.savefig(DST_ESLs / f'FirstOrder_Spatial_Fzero_RSM_{target_time_sec*1000:.0f}ms.png')    
+        plt.savefig(DST_ESLs / filename)
+        plt.close() # Important: Close plot to free up memory during the loop
+        
