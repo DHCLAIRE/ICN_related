@@ -844,40 +844,60 @@ if __name__ == "__main__":
         num_natives = len(Native_SUBJECTS)
         
         # --- B. Process ESLs (With Dynamic Interpolation & Sorting) ---
+        print("--- Processing and sorting ESL group... ---")
         for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
             if esl_id in esl_subj_dict:
                 subject_str = esl_subj_dict[esl_id]
                 combined_labels.append(f"ESL_{esl_id} ({vst})")
                 
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
+                f0_ndvar = n_trf.h[n_trf.x.index('Fzero')]
                 
-                # --- MODIFICATION: Slice the time window immediately! ---
-                f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
+                # ==========================================
+                # --- NEW FIX: CASE-SENSITIVITY TRANSLATOR ---
+                # ==========================================
+                raw_esl_chs = list(f0_ndvar.sensor.names)
                 
-                esl_actual_chs = list(f0_ndvar_window.sensor.names)
+                # Create a dictionary mapping ALL CAPS to the standard MNE casing
+                # e.g., {'FZ': 'Fz', 'FP1': 'Fp1'}
+                standard_case_map = {ch.upper(): ch for ch in esl_montage.ch_names}
+                
+                # Translate the raw ESL channels into the standard format
+                esl_actual_chs = [standard_case_map.get(ch.upper(), ch) for ch in raw_esl_chs]
+                # ==========================================
+                
+                # Now the missing_chs logic will work perfectly!
                 missing_chs = [ch for ch in esl_chs if ch not in esl_actual_chs]
                 
                 if len(missing_chs) > 0:
-                    actual_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
+                    actual_data = f0_ndvar.get_data(dims=('sensor', 'time'))
                     n_times = actual_data.shape[1]
                     
                     combined_data = np.vstack((actual_data, np.zeros((len(missing_chs), n_times))))
                     
                     current_all_chs = esl_actual_chs + missing_chs
                     info_esl = mne.create_info(ch_names=current_all_chs, sfreq=500, ch_types=['eeg'] * len(current_all_chs))
+                    
+                    # MNE will no longer crash here!
                     info_esl.set_montage(esl_montage) 
                     
                     evoked = mne.EvokedArray(combined_data, info_esl)
                     evoked.info['bads'] = missing_chs
                     evoked.interpolate_bads(reset_bads=True, verbose=False)
                     
-                    esl_data_final = evoked.copy().pick_channels(esl_chs).data
+                    esl_data_final = evoked.copy().pick_channels(esl_chs).data.T
                 else:
-                    esl_data_final = f0_ndvar_window.sub(sensor=esl_chs).get_data(dims=('sensor', 'time'))
+                    # If no channels are missing, we still need to make sure the data 
+                    # is extracted in the exact order of our esl_chs template
+                    
+                    # Create a list of the indices mapping the template to the raw data
+                    ch_indices = [raw_esl_chs.index(ch) for ch in raw_esl_chs if standard_case_map.get(ch.upper(), ch) in esl_chs]
+                    
+                    # Reorder the raw data using those indices
+                    raw_data = f0_ndvar.get_data(dims=('time', 'sensor'))
+                    esl_data_final = raw_data[:, ch_indices]
                 
-                # --- MODIFICATION: Average across the time window ---
-                mean_spatial_map = esl_data_final.mean(axis=1)
-                all_subjects_spatial_data.append(mean_spatial_map)
+                all_subjects_spatial_data.append(esl_data_final)
         
         # ==========================================
         # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
