@@ -259,7 +259,8 @@ if __name__ == "__main__":
     #print(type(VST_df["VST"][0]))
     #print(VST_df.loc[0])
     """
-    ## ESL's within group's RSM based on VST ##
+    ## ESL's within group's RSM  ##
+    ## ESL RSM of Within Groups on Time X Time RSMs based on VST Starts ##
     # ... [Insert your VST_df creation code here] ...
     
     # 1. Sort the DataFrame by VST score in descending order (High to Low)
@@ -378,9 +379,11 @@ if __name__ == "__main__":
     plt.tight_layout() 
     # plt.show()    
     plt.savefig(DST / f'ESLs_time{target_time_sec}_Fzero_TRF_RSM_SortedVST.png')
+    ## ESL RSM of Within Groups on Time X Time RSMs based on VST ENDs ##
     """
+    
     """
-    ## RSM of Between Groups only on Time X Time RSMs##
+    ## RSM of Between Groups only on Time X Time RSMs Starts ##
     ## VERSION 2 : Calculate Between group RSM regardless the chn montages ##
     
     ## Calculate Between group RSM using a Time Window ##
@@ -487,7 +490,7 @@ if __name__ == "__main__":
         plt.close() # Important: Close plot to free up memory during the loop        
         
         
-        ## BEFORE LOOP ##
+        ## Time X Time RSM (BEFORE LOOP) ##
         # ==========================================
         # 3. COMPUTE THE SECOND-ORDER GROUP RSM
         # ==========================================
@@ -520,11 +523,11 @@ if __name__ == "__main__":
         
         plt.tight_layout() 
         plt.savefig(DST / f'Combined_SecondOrder_Envelope_TRF_RSM_{tmin*1000:.0f}to{tmax*1000:.0f}ms.png')
-        
+        ## RSM of Between Groups only on Time X Time RSMs Ends ##
         
     """
     """
-    ## VERSION one of between groups (F0 dynamics)
+    ## VERSION one of between groups (F0 dynamics) on Time X Time RSM Start ##
     # --- [Assume VST_df is already created and sorted here] ---
     VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
     sorted_esl_ids = VST_df_sorted['id'].tolist()
@@ -615,10 +618,10 @@ if __name__ == "__main__":
     
     plt.tight_layout() 
     plt.savefig(DST / 'Combined_SecondOrder_Fzero_TRF_RSM.png')
+    ## VERSION one of between groups (F0 dynamics) on Time X Time RSM End ##
     """
     
     """
-    
     ## Compute Between groups' RSM? ##
     #import numpy as np
     #import pandas as pd
@@ -742,7 +745,7 @@ if __name__ == "__main__":
     plt.savefig(DST / f'Combined_time{target_time_sec}_Fzero_TRF_RSM.png')
     """
     
-
+    ## Spatial RSM ##
     ## Interpolate the Native's 61 channels ##
     # ==========================================
     # 0. SETUP: DIRECTORIES & ESL SORTING
