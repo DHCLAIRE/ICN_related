@@ -827,7 +827,7 @@ if __name__ == "__main__":
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
             
             # --- MODIFICATION: Slice the time window immediately! ---
-            f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
+            f0_ndvar_window = n_trf.h[n_trf.x.index('onset')].sub(time=(tmin, tmax))
             
             native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
             n_times = native_data.shape[1]
@@ -863,7 +863,7 @@ if __name__ == "__main__":
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
     
                 # --- MISSING FIX 1: Slice the time window immediately! ---
-                f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
+                f0_ndvar_window = n_trf.h[n_trf.x.index('onset')].sub(time=(tmin, tmax))
     
                 # ==========================================
                 # --- CASE-SENSITIVITY TRANSLATOR ---
@@ -917,35 +917,102 @@ if __name__ == "__main__":
                 
         
         # ==========================================
-        # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
+        # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION & PERMUTATION
         # ==========================================
-        # Shape is now perfectly (Total Subjects, 64 Sensors)
+        # Shape is perfectly (Total Subjects, 64 Sensors)
         group_data = np.array(all_subjects_spatial_data)
-        
-        # We no longer need t_index! Just correlate the spatial maps directly.
-        spatial_rsm = np.corrcoef(group_data)
-        
+        num_total_subj = group_data.shape[0]
+    
+        # A. Calculate the REAL spatial RSM
+        spatial_rsm_real = np.corrcoef(group_data)
+    
+        # B. Run the Permutation Test (1000 iterations)
+        n_permutations = 1000
+        print(f"   Running {n_permutations} permutations...")
+    
+        # Create an empty 3D array to hold our 1000 fake RSMs
+        null_rsms = np.zeros((n_permutations, num_total_subj, num_total_subj))
+    
+        for i in range(n_permutations):
+            shuffled_data = np.zeros_like(group_data)
+    
+            # Shuffle the 64 channels independently for EVERY subject
+            for s in range(num_total_subj):
+                shuffled_data[s, :] = np.random.permutation(group_data[s, :])
+    
+            # Calculate the fake RSM for this iteration
+            null_rsms[i, :, :] = np.corrcoef(shuffled_data)
+    
+        # C. Calculate P-values
+        # Count how many times the fake correlation was >= the real correlation
+        # We use np.abs() to test for both strong positive and strong negative correlations (Two-tailed test)
+        exceedances = np.sum(np.abs(null_rsms) >= np.abs(spatial_rsm_real), axis=0)
+        p_values = exceedances / n_permutations
+    
         # ==========================================
-        # 4. PLOT THE SPATIAL RSM
+        # 4. PLOT THE THRESHOLDED SPATIAL RSM
         # ==========================================
         plt.figure(figsize=(14, 12))
-        
-        sns.heatmap(spatial_rsm, 
-                    cmap='RdBu_r', 
-                    center=0, 
-                    vmin=-1, vmax=1, 
-                    square=True,
-                    xticklabels=combined_labels,  
-                    yticklabels=combined_labels)
-        
+    
+        # Create a mask to hide non-significant pixels (p > 0.05)
+        # Also mask the diagonal (subjects correlated with themselves are always p=0 and r=1)
+        alpha_threshold = 0.05
+        mask = (p_values > alpha_threshold) | (np.eye(num_total_subj, dtype=bool))
+    
+        # Plot the heatmap, applying the statistical mask
+        sns.heatmap(spatial_rsm_real, 
+                        cmap='RdBu_r', 
+                        center=0, 
+                        vmin=-1, vmax=1, 
+                        square=True,
+                        mask=mask, # <--- THIS HIDES NON-SIGNIFICANT DATA
+                        xticklabels=combined_labels,  
+                        yticklabels=combined_labels,
+                        cbar_kws={'label': "Pearson's r (p < 0.05)"}) # Update label to reflect stats
+    
+        # Draw Native vs ESL dividing lines
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
-        
-        plt.title(f"Spatial RSM: Fzero_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
+    
+        plt.title(f"Thresholded Spatial RSM: EnvOnset-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
-        
-        filename = f'FirstOrder_Spatial_Fzero_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+    
+        filename = f'Thresholded_FirstOrder_Spatial_EnvOnset-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         plt.savefig(DST_ESLs / filename)
         plt.close()
+                    
+        ## ==========================================
+        ## 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
+        ## ==========================================
+        ## Shape is now perfectly (Total Subjects, 64 Sensors)
+        #group_data = np.array(all_subjects_spatial_data)
+        
+        ## We no longer need t_index! Just correlate the spatial maps directly.
+        #spatial_rsm = np.corrcoef(group_data)
+        
+        ## ==========================================
+        ## 4. PLOT THE SPATIAL RSM
+        ## ==========================================
+        #plt.figure(figsize=(14, 12))
+        
+        #sns.heatmap(spatial_rsm, 
+                    #cmap='RdBu_r', 
+                    #center=0, 
+                    #vmin=-1, vmax=1, 
+                    #square=True,
+                    #xticklabels=combined_labels,  
+                    #yticklabels=combined_labels)
+        
+        #plt.axhline(num_natives, color='black', linewidth=2)
+        #plt.axvline(num_natives, color='black', linewidth=2)
+        
+        #plt.title(f"Spatial RSM: Envelope_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
+        #plt.xlabel("Subject ID")
+        #plt.ylabel("Subject ID")
+        
+        #filename = f'FirstOrder_Spatial_Envelope_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        #plt.tight_layout() 
+        #plt.savefig(DST_ESLs / filename)
+        #plt.close()
