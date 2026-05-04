@@ -144,67 +144,58 @@ if __name__ == "__main__":
     esl_rsms = np.array(esl_rsms)
     
     # ==========================================
-    # 3. BRAIN-BEHAVIOR CORRELATION (VST vs. ESL RSMs)
+    # 3. COMPUTE SECOND-ORDER (SUBJECT x SUBJECT) RSM
     # ==========================================
-    print("--- Computing Correlation between VST and ESL Temporal RSMs ---")
+    print("--- Computing Second-Order Subject x Subject RSM ---")
     
-    # Convert VST scores to a numpy array
-    vst_array = np.array(sorted_esl_vsts)
-    n_times = esl_rsms.shape[1]
-
-    # Calculate the REAL correlation map
-    real_r_map = compute_r_map(esl_rsms, vst_array)
+    # To correlate 2D matrices, we must first flatten them into 1D vectors.
+    # We extract only the upper triangle of the Time x Time matrix to avoid duplicate data.
+    native_vectors = [rsm[np.triu_indices_from(rsm, k=1)] for rsm in native_rsms]
+    esl_vectors = [rsm[np.triu_indices_from(rsm, k=1)] for rsm in esl_rsms]
     
-    # --- PERMUTATION TEST ---
-    n_permutations = 1000
-    alpha_threshold = 0.05
-    print(f"--- Running {n_permutations} Permutations for VST Correlation ---")
+    # Create the label lists so they align perfectly with the axes
+    native_labels = [f"Nat_{int(subj[1:3])}" for subj in Native_SUBJECTS]
+    esl_labels = []
+    for esl_id, vst in zip(sorted_esl_ids, sorted_esl_vsts):
+        if esl_id in esl_subj_dict:
+            esl_labels.append(f"ESL_{esl_id} ({vst})")
+            
+    combined_labels = native_labels + esl_labels
+    num_natives = len(native_labels)
     
-    # Create an empty 3D array to hold our 1000 fake correlation maps
-    null_r_maps = np.zeros((n_permutations, n_times, n_times))
+    # Stack all subjects together. Shape: (52 Subjects, Total Unique Time Relationships)
+    group_temporal_vectors = np.vstack((native_vectors, esl_vectors))
     
-    for i in range(n_permutations):
-        # Shuffle the VST scores to break the brain-behavior relationship
-        shuffled_vst = np.random.permutation(vst_array)
-        null_r_maps[i] = compute_r_map(esl_rsms, shuffled_vst)
-        
-    # Calculate P-values (Two-tailed: looking for both strong positive and negative correlations)
-    exceedances = np.sum(np.abs(null_r_maps) >= np.abs(real_r_map), axis=0)
-    p_values = exceedances / n_permutations
-    
-    # Create a mask to HIDE any pixels where p > 0.05
-    significant_mask = p_values > alpha_threshold 
+    # Correlate the subjects! Shape will be (52 Subjects, 52 Subjects)
+    second_order_rsm = np.corrcoef(group_temporal_vectors)
 
     # ==========================================
-    # 4. PLOT THE THRESHOLDED VST CORRELATION MAP
+    # 4. PLOT THE SECOND-ORDER RSM
     # ==========================================
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(14, 12))
     
-    # 1. Plot the raw background very lightly (alpha=0.2) to show non-significant trends
-    sns.heatmap(real_r_map, cmap='RdBu_r', center=0, cbar=False, 
-                xticklabels=False, yticklabels=False, alpha=0.2)
+    sns.heatmap(second_order_rsm, 
+                cmap='RdBu_r', 
+                center=0, 
+                vmin=-1, vmax=1, 
+                square=True,
+                xticklabels=combined_labels,  
+                yticklabels=combined_labels,
+                cbar_kws={'label': "Spearman's ρ (Temporal Similarity)"})
     
-    # 2. Overlay ONLY the significant pixels at full opacity
-    sns.heatmap(real_r_map, cmap='RdBu_r', center=0, mask=significant_mask,
-                cbar_kws={'label': "Pearson's r (VST vs Neural RSM) p < 0.05"})
+    # Draw Native vs ESL dividing lines
+    plt.axhline(num_natives, color='black', linewidth=2)
+    plt.axvline(num_natives, color='black', linewidth=2)
     
-    # Format the axes to show time in milliseconds
-    ticks = np.arange(0, len(time_axis), 50) # Tick every 100ms (50 samples at 500Hz)
-    tick_labels = [f"{time_axis[i]*1000:.0f}" for i in ticks]
-    
-    plt.xticks(ticks, tick_labels, rotation=45)
-    plt.yticks(ticks, tick_labels, rotation=0)
-    
-    plt.title(f"Brain-Behavior Correlation: ESL Temporal RSM vs VST Scores\nPermutations: {n_permutations}, α = {alpha_threshold}")
-    plt.xlabel("Time (ms)")
-    plt.ylabel("Time (ms)")
+    plt.title(f"Second-Order Inter-Subject RSM: Full Temporal Dynamics (Envelope)") 
+    plt.xlabel("Subject ID (Sorted by descending VST)")
+    plt.ylabel("Subject ID (Sorted by descending VST)")
     
     plt.tight_layout() 
-    plt.savefig(DST_ESLs / 'Temporal_TimeXTime_VST_Correlation_Thresholded.png')
+    plt.savefig(DST_ESLs / 'SecondOrder_SubjectXSubject_Envelope_Temporal_RSM.png')
     plt.close()
+    print("--- Complete! ---")
     
-    print("--- Complete! ---")    
-
     ## ==========================================
     ## 3. 2D CLUSTER-BASED PERMUTATION TEST
     ## ==========================================
