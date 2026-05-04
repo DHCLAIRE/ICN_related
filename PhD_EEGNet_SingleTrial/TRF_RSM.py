@@ -13,6 +13,7 @@ import pandas as pd
 
 from pprint import pprint
 import numpy as np
+from scipy.stats import zscore  # <--- NEW IMPORT
 
 
 if __name__ == "__main__":
@@ -842,8 +843,14 @@ if __name__ == "__main__":
             # --- MODIFICATION: Average across the time window to get 1 spatial map ---
             # Shape goes from (64 Sensors, n_times) to just (64 Sensors,)
             mean_spatial_map = interpolated_data.mean(axis=1)
-            all_subjects_spatial_data.append(mean_spatial_map)
+            #all_subjects_spatial_data.append(mean_spatial_map)
         
+            # --- NEW FIX: Z-Score the 64-sensor spatial map ---
+            zscored_spatial_map = zscore(mean_spatial_map)
+        
+            all_subjects_spatial_data.append(zscored_spatial_map) # Append the z-scored version
+            
+            
         num_natives = len(Native_SUBJECTS)
         
         # --- B. Process ESLs (With Dynamic Interpolation & Sorting) ---
@@ -899,9 +906,15 @@ if __name__ == "__main__":
                 # --- MISSING FIX 2: Average across the time window! ---
                 # Shape goes from (64 Sensors, n_times) to just (64 Sensors,)
                 mean_spatial_map = esl_data_final.mean(axis=1)
-    
                 # Append the 1D spatial map, matching the Natives exactly
                 all_subjects_spatial_data.append(mean_spatial_map)
+                
+                # --- NEW FIX: Z-Score the 64-sensor spatial map ---
+                zscored_spatial_map = zscore(mean_spatial_map)
+            
+                # Append the 1D spatial map, matching the Natives exactly
+                all_subjects_spatial_data.append(zscored_spatial_map) # Append the z-scored version
+                
         
         # ==========================================
         # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
@@ -928,11 +941,11 @@ if __name__ == "__main__":
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
         
-        plt.title(f"First-Order Spatial RSM: Envelope Topography ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
+        plt.title(f"Spatial RSM: EnvOnset_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'FirstOrder_Spatial_Envelope_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        filename = f'FirstOrder_Spatial_EnvOnset_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         plt.savefig(DST_ESLs / filename)
         plt.close()
