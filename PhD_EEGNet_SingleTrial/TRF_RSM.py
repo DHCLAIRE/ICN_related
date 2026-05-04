@@ -827,7 +827,7 @@ if __name__ == "__main__":
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
             
             # --- MODIFICATION: Slice the time window immediately! ---
-            f0_ndvar_window = n_trf.h[n_trf.x.index('onset')].sub(time=(tmin, tmax))
+            f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
             
             native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
             n_times = native_data.shape[1]
@@ -863,7 +863,7 @@ if __name__ == "__main__":
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
     
                 # --- MISSING FIX 1: Slice the time window immediately! ---
-                f0_ndvar_window = n_trf.h[n_trf.x.index('onset')].sub(time=(tmin, tmax))
+                f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
     
                 # ==========================================
                 # --- CASE-SENSITIVITY TRANSLATOR ---
@@ -907,7 +907,7 @@ if __name__ == "__main__":
                 # Shape goes from (64 Sensors, n_times) to just (64 Sensors,)
                 mean_spatial_map = esl_data_final.mean(axis=1)
                 # Append the 1D spatial map, matching the Natives exactly
-                all_subjects_spatial_data.append(mean_spatial_map)
+                #all_subjects_spatial_data.append(mean_spatial_map)
                 
                 # --- NEW FIX: Z-Score the 64-sensor spatial map ---
                 zscored_spatial_map = zscore(mean_spatial_map)
@@ -941,11 +941,11 @@ if __name__ == "__main__":
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
         
-        plt.title(f"Spatial RSM: EnvOnset_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
+        plt.title(f"Spatial RSM: Fzero_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'FirstOrder_Spatial_EnvOnset_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        filename = f'FirstOrder_Spatial_Fzero_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         plt.savefig(DST_ESLs / filename)
         plt.close()
