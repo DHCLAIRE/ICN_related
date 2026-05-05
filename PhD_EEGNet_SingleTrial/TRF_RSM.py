@@ -771,7 +771,7 @@ if __name__ == "__main__":
     sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} Fzero+envelope+env_onset.pickle')
     
     # Extract the exact 59 channel names actually present in your data
-    actual_native_chs = sample_trf.h[sample_trf.x.index('Fzero')].sensor.names
+    actual_native_chs = sample_trf.h[sample_trf.x.index('onset')].sensor.names
     
     # Create safe names ONLY for those 59 channels
     native_chs_safe = [f"NAT_{ch}" for ch in actual_native_chs]
@@ -802,12 +802,17 @@ if __name__ == "__main__":
     
     print(f"Success! Super-montage created with {len(info_combined.ch_names)} channels.")    
     
-    
     # ==========================================
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
-    step = 0.050  # 50 ms interval
+    step = 0.050  
     start_times = np.arange(0, 1.000, step)  
+    
+    # --- NEW: Lists to store data for the line graph ---
+    plot_times = []
+    median_r_natives = []
+    median_r_esls = []
+    perm_95th_thresholds = []    
     
     # ==========================================
     # 2. THE MAIN TEMPORAL LOOP
@@ -827,7 +832,7 @@ if __name__ == "__main__":
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
             
             # --- MODIFICATION: Slice the time window immediately! ---
-            f0_ndvar_window = n_trf.h[n_trf.x.index('onset')].sub(time=(tmin, tmax))
+            f0_ndvar_window = n_trf.h[n_trf.x.index('envelope')].sub(time=(tmin, tmax))
             
             native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
             n_times = native_data.shape[1]
@@ -863,7 +868,7 @@ if __name__ == "__main__":
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
     
                 # --- MISSING FIX 1: Slice the time window immediately! ---
-                f0_ndvar_window = n_trf.h[n_trf.x.index('onset')].sub(time=(tmin, tmax))
+                f0_ndvar_window = n_trf.h[n_trf.x.index('envelope')].sub(time=(tmin, tmax))
     
                 # ==========================================
                 # --- CASE-SENSITIVITY TRANSLATOR ---
@@ -929,59 +934,122 @@ if __name__ == "__main__":
         # B. Run the Permutation Test (1000 iterations)
         n_permutations = 1000
         print(f"   Running {n_permutations} permutations...")
-    
-        # Create an empty 3D array to hold our 1000 fake RSMs
         null_rsms = np.zeros((n_permutations, num_total_subj, num_total_subj))
-    
+        
         for i in range(n_permutations):
             shuffled_data = np.zeros_like(group_data)
-    
-            # Shuffle the 64 channels independently for EVERY subject
             for s in range(num_total_subj):
                 shuffled_data[s, :] = np.random.permutation(group_data[s, :])
-    
-            # Calculate the fake RSM for this iteration
             null_rsms[i, :, :] = np.corrcoef(shuffled_data)
     
-        # C. Calculate P-values
+        # ==========================================
+        # --- NEW: EXTRACT MEDIANS & THRESHOLD ---
+        # ==========================================
+        # 1. Native Group Median (Top-Left Quadrant)
+        native_block = spatial_rsm_real[:num_natives, :num_natives]
+        idx_nat = np.triu_indices(num_natives, k=1) # Exclude diagonal
+        median_r_natives.append(np.median(native_block[idx_nat]))
+    
+        # 2. ESL Group Median (Bottom-Right Quadrant)
+        esl_block = spatial_rsm_real[num_natives:, num_natives:]
+        idx_esl = np.triu_indices(num_total_subj - num_natives, k=1)
+        median_r_esls.append(np.median(esl_block[idx_esl]))
+    
+        # 3. Permutation Threshold (95th percentile of the absolute fake correlations)
+        idx_all = np.triu_indices(num_total_subj, k=1)
+        fake_corrs_off_diag = null_rsms[:, idx_all[0], idx_all[1]]
+        threshold_95 = np.percentile(np.abs(fake_corrs_off_diag), 95)
+        perm_95th_thresholds.append(threshold_95)
+    
+        # 4. Save the timepoint (using the start of the window, in ms)
+        plot_times.append(tmin * 1000)
+        
+        # ==========================================
+        # --- MISSING FIX: CALCULATE P-VALUES FOR THE HEATMAP ---
+        # ==========================================
         # Count how many times the fake correlation was >= the real correlation
-        # We use np.abs() to test for both strong positive and strong negative correlations (Two-tailed test)
         exceedances = np.sum(np.abs(null_rsms) >= np.abs(spatial_rsm_real), axis=0)
         p_values = exceedances / n_permutations
+        
+        ## OLD VERSION STARTS ##
+        #for i in range(n_permutations):
+            #shuffled_data = np.zeros_like(group_data)
     
+            ## Shuffle the 64 channels independently for EVERY subject
+            #for s in range(num_total_subj):
+                #shuffled_data[s, :] = np.random.permutation(group_data[s, :])
+    
+            ## Calculate the fake RSM for this iteration
+            #null_rsms[i, :, :] = np.corrcoef(shuffled_data)
+    
+        ## C. Calculate P-values
+        ## Count how many times the fake correlation was >= the real correlation
+        ## We use np.abs() to test for both strong positive and strong negative correlations (Two-tailed test)
+        #exceedances = np.sum(np.abs(null_rsms) >= np.abs(spatial_rsm_real), axis=0)
+        #p_values = exceedances / n_permutations
+        ## OLD VERSION ENDS ##    
+        
         # ==========================================
         # 4. PLOT THE THRESHOLDED SPATIAL RSM
         # ==========================================
         plt.figure(figsize=(14, 12))
-    
-        # Create a mask to hide non-significant pixels (p > 0.05)
-        # Also mask the diagonal (subjects correlated with themselves are always p=0 and r=1)
+        
         alpha_threshold = 0.05
         mask = (p_values > alpha_threshold) | (np.eye(num_total_subj, dtype=bool))
-    
-        # Plot the heatmap, applying the statistical mask
+        
         sns.heatmap(spatial_rsm_real, 
                         cmap='RdBu_r', 
                         center=0, 
                         vmin=-1, vmax=1, 
                         square=True,
-                        mask=mask, # <--- THIS HIDES NON-SIGNIFICANT DATA
+                        mask=mask, 
                         xticklabels=combined_labels,  
                         yticklabels=combined_labels,
-                        cbar_kws={'label': "Pearson's r (p < 0.05)"}) # Update label to reflect stats
-    
-        # Draw Native vs ESL dividing lines
+                        cbar_kws={'label': "Pearson's r (p < 0.05)"}) 
+        
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
-    
-        plt.title(f"Thresholded Spatial RSM: EnvOnset-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
+        
+        plt.title(f"Thresholded Spatial RSM: Envelope-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
-    
-        filename = f'Thresholded_FirstOrder_Spatial_EnvOnset-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        
+        filename = f'Thresholded_FirstOrder_Spatial_Envelope-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
-        plt.savefig(DST_ESLs / filename)
+        #plt.savefig(DST_ESLs / filename)
         plt.close()
+
+# <--- NOTICE HOW WE UNINDENTED EVERYTHING BELOW THIS LINE TO BE OUTSIDE THE LOOP! --->
+
+# ==========================================
+# 5. PLOT THE TIME-SERIES LINE GRAPH
+# ==========================================
+print("--- Generating Time-Series Graph... ---")
+
+plt.figure(figsize=(12, 6))
+
+# Plot the three lines
+plt.plot(plot_times, median_r_natives, label='Native Group (Median r)', color='#1f77b4', linewidth=2.5, marker='o')
+plt.plot(plot_times, median_r_esls, label='ESL Group (Median r)', color='#d62728', linewidth=2.5, marker='o')
+plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.05)', color='black', linestyle='--', linewidth=2)
+
+# Aesthetics
+plt.title("Spatial Similarity Dynamics over Time: Natives vs. ESLs (Envelope-Zed)", fontsize=14)
+plt.xlabel("Time Window Start (ms)", fontsize=12)
+plt.ylabel("Median Pearson's r", fontsize=12)
+
+# Set x-ticks to match your 50ms intervals
+plt.xticks(plot_times, rotation=45)
+
+# Add a subtle grid
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.legend(fontsize=11)
+
+plt.tight_layout()
+plt.savefig(DST_ESLs / 'Median_RSM_TimeSeries_Envelope-Zed.png')
+plt.close()
+
+print("--- Pipeline Complete! ---")
                     
         ## ==========================================
         ## 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
