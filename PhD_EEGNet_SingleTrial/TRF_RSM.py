@@ -812,7 +812,11 @@ if __name__ == "__main__":
     plot_times = []
     median_r_natives = []
     median_r_esls = []
-    perm_95th_thresholds = []    
+    perm_95th_thresholds = []
+    
+    # --- NEW: Lists to accumulate the 3D matrices across time ---
+    all_time_raw_data = [] # Will hold the raw 64-sensor data
+    all_time_rsms = []     # Will hold the 59x59 correlation matrices    
     
     # ==========================================
     # 2. THE MAIN TEMPORAL LOOP
@@ -832,7 +836,7 @@ if __name__ == "__main__":
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
             
             # --- MODIFICATION: Slice the time window immediately! ---
-            f0_ndvar_window = n_trf.h[n_trf.x.index('envelope')].sub(time=(tmin, tmax))
+            f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
             
             native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
             n_times = native_data.shape[1]
@@ -868,7 +872,7 @@ if __name__ == "__main__":
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
     
                 # --- MISSING FIX 1: Slice the time window immediately! ---
-                f0_ndvar_window = n_trf.h[n_trf.x.index('envelope')].sub(time=(tmin, tmax))
+                f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
     
                 # ==========================================
                 # --- CASE-SENSITIVITY TRANSLATOR ---
@@ -930,7 +934,11 @@ if __name__ == "__main__":
     
         # A. Calculate the REAL spatial RSM
         spatial_rsm_real = np.corrcoef(group_data)
-    
+
+        # --- NEW: Save this window's raw data and RSM to our accumulator lists ---
+        all_time_raw_data.append(group_data)
+        all_time_rsms.append(spatial_rsm_real)
+        
         # B. Run the Permutation Test (1000 iterations)
         n_permutations = 1000
         print(f"   Running {n_permutations} permutations...")
@@ -1010,11 +1018,11 @@ if __name__ == "__main__":
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
         
-        plt.title(f"Thresholded Spatial RSM: Envelope-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
+        plt.title(f"Thresholded Spatial RSM: Fzero-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'Thresholded_FirstOrder_Spatial_Envelope-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        filename = f'Thresholded_FirstOrder_Spatial_Fzero-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         #plt.savefig(DST_ESLs / filename)
         plt.close()
@@ -1034,7 +1042,7 @@ plt.plot(plot_times, median_r_esls, label='ESL Group (Median r)', color='#d62728
 plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.05)', color='black', linestyle='--', linewidth=2)
 
 # Aesthetics
-plt.title("Spatial Similarity Dynamics over Time: Natives vs. ESLs (Envelope-Zed)", fontsize=14)
+plt.title("Spatial Similarity Dynamics over Time: Natives vs. ESLs (Fzero-Zed)", fontsize=14)
 plt.xlabel("Time Window Start (ms)", fontsize=12)
 plt.ylabel("Median Pearson's r", fontsize=12)
 
@@ -1046,8 +1054,29 @@ plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.legend(fontsize=11)
 
 plt.tight_layout()
-plt.savefig(DST_ESLs / 'Median_RSM_TimeSeries_Envelope-Zed.png')
+plt.savefig(DST_ESLs / 'Median_RSM_TimeSeries_Fzero-Zed.png')
 plt.close()
+
+print("--- Pipeline Complete! ---")
+
+# ==========================================
+# 6. SAVE THE 3D ARRAYS TO DISK (.npy)
+# ==========================================
+print("--- Saving 3D Arrays for Machine Learning & Analysis... ---")
+
+# 1. Save the Raw Data
+# Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 64 Sensors)
+final_3d_raw = np.array(all_time_raw_data)
+raw_filename = 'Raw_Spatial_Maps_Envelope-Zed_AllWindows.npy'
+np.save(DST_ESLs / raw_filename, final_3d_raw)
+print(f"Saved Raw Data: {raw_filename} | Shape: {final_3d_raw.shape}")
+
+# 2. Save the RSM Data
+# Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 59 Subjects)
+final_3d_rsm = np.array(all_time_rsms)
+rsm_filename = 'FirstOrder_Spatial_Envelope-Zed_RSM_AllWindows.npy'
+np.save(DST_ESLs / rsm_filename, final_3d_rsm)
+print(f"Saved RSM Data: {rsm_filename} | Shape: {final_3d_rsm.shape}")
 
 print("--- Pipeline Complete! ---")
                     
