@@ -236,29 +236,29 @@ if __name__ == "__main__":
     
     """
     
-    ## Include VST as proficiency level indicator##
-    ## To arrange the ESL according to the VST scores.
-    ## VST score of each sub of ESL ##
-    VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
-                     , '5.1', '6.1', '7.9', '8.7', '8.0', '8.8', '6.4', '7.0', '7.4', '6.6', '7.2'
-                     , '7.0', '7.3', '7.3', '7.7']  # 26 subs
-    VST_Score_float_LIST = [6.7, 7.3, 7.8, 8.2, 8.4, 6.4, 7.5, 6.7
-                            , 5.2, 5.3, 6.5, 5.1, 6.1, 7.9, 8.7, 8.0
-                            , 8.8, 6.4, 7.0, 7.4, 6.6, 7.2, 7.0, 7.3, 7.3, 7.7]
-    # exclude sub: 14 / 18 / 33 / 37
-    sub_idLIST = [10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27
-                  , 28, 29, 30, 31, 32, 34, 35, 36, 38, 39]
-    # Female = 1; Male = 2
-    sub_SexLIST = ["F", "M", "M", "F", "F", "M", "F", "M", "M", "F", "M", "F", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M"]
+    ### Include VST as proficiency level indicator##
+    ### To arrange the ESL according to the VST scores.
+    ### VST score of each sub of ESL ##
+    #VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
+                     #, '5.1', '6.1', '7.9', '8.7', '8.0', '8.8', '6.4', '7.0', '7.4', '6.6', '7.2'
+                     #, '7.0', '7.3', '7.3', '7.7']  # 26 subs
+    #VST_Score_float_LIST = [6.7, 7.3, 7.8, 8.2, 8.4, 6.4, 7.5, 6.7
+                            #, 5.2, 5.3, 6.5, 5.1, 6.1, 7.9, 8.7, 8.0
+                            #, 8.8, 6.4, 7.0, 7.4, 6.6, 7.2, 7.0, 7.3, 7.3, 7.7]
+    ## exclude sub: 14 / 18 / 33 / 37
+    #sub_idLIST = [10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27
+                  #, 28, 29, 30, 31, 32, 34, 35, 36, 38, 39]
+    ## Female = 1; Male = 2
+    #sub_SexLIST = ["F", "M", "M", "F", "F", "M", "F", "M", "M", "F", "M", "F", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M"]
      
-    # dictionary of lists 
-    VST_df = pd.DataFrame({'id': sub_idLIST, 'VST': VST_Score_float_LIST, 'gender':sub_SexLIST})
+    ## dictionary of lists 
+    #VST_df = pd.DataFrame({'id': sub_idLIST, 'VST': VST_Score_float_LIST, 'gender':sub_SexLIST})
        
-    #VST_df = pd.DataFrame(id_VST_DICT)
+    ##VST_df = pd.DataFrame(id_VST_DICT)
        
-    print(VST_df) 
-    #print(type(VST_df["VST"][0]))
-    #print(VST_df.loc[0])
+    #print(VST_df) 
+    ##print(type(VST_df["VST"][0]))
+    ##print(VST_df.loc[0])
     """
     ## ESL's within group's RSM  ##
     ## ESL RSM of Within Groups on Time X Time RSMs based on VST Starts ##
@@ -754,6 +754,36 @@ if __name__ == "__main__":
     #TRF_DIR_NATs = DATA_ROOT / 'TRFs_Natives'
     #TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
     
+    ## Set predictor's name ##
+    predictorLIST = ["Fzero", "envelope", "onset"]  #Fzero+envelope+env_onset.pickle
+    
+    predictorSTR = predictorLIST[0]
+    
+    ## Include VST as proficiency level indicator##
+    ## To arrange the ESL according to the VST scores.
+    ## VST score of each sub of ESL ##
+    VST_Score_STR_LIST = ['6.7', '7.3', '7.8', '8.2', '8.4', '6.4', '7.5', '6.7', '5.2', '5.3', '6.5'
+                     , '5.1', '6.1', '7.9', '8.7', '8.0', '8.8', '6.4', '7.0', '7.4', '6.6', '7.2'
+                     , '7.0', '7.3', '7.3', '7.7']  # 26 subs
+    VST_Score_float_LIST = [6.7, 7.3, 7.8, 8.2, 8.4, 6.4, 7.5, 6.7
+                            , 5.2, 5.3, 6.5, 5.1, 6.1, 7.9, 8.7, 8.0
+                            , 8.8, 6.4, 7.0, 7.4, 6.6, 7.2, 7.0, 7.3, 7.3, 7.7]
+    # exclude sub: 14 / 18 / 33 / 37
+    sub_idLIST = [10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27
+                  , 28, 29, 30, 31, 32, 34, 35, 36, 38, 39]
+    # Female = 1; Male = 2
+    sub_SexLIST = ["F", "M", "M", "F", "F", "M", "F", "M", "M", "F", "M", "F", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M", "F", "M"]
+     
+    # dictionary of lists 
+    VST_df = pd.DataFrame({'id': sub_idLIST, 'VST': VST_Score_float_LIST, 'gender':sub_SexLIST})
+       
+    #VST_df = pd.DataFrame(id_VST_DICT)
+       
+    print(VST_df) 
+    #print(type(VST_df["VST"][0]))
+    #print(VST_df.loc[0])
+    
+    ## Set VST as ESL's Rank ##
     VST_df_sorted = VST_df.sort_values(by='VST', ascending=False)
     sorted_esl_ids = VST_df_sorted['id'].tolist()
     sorted_esl_vsts = VST_df_sorted['VST'].tolist()
@@ -771,7 +801,7 @@ if __name__ == "__main__":
     sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} Fzero+envelope+env_onset.pickle')
     
     # Extract the exact 59 channel names actually present in your data
-    actual_native_chs = sample_trf.h[sample_trf.x.index('onset')].sensor.names
+    actual_native_chs = sample_trf.h[sample_trf.x.index(predictorSTR)].sensor.names #index('onset')].sensor.names
     
     # Create safe names ONLY for those 59 channels
     native_chs_safe = [f"NAT_{ch}" for ch in actual_native_chs]
@@ -836,7 +866,7 @@ if __name__ == "__main__":
             n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
             
             # --- MODIFICATION: Slice the time window immediately! ---
-            f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
+            f0_ndvar_window = n_trf.h[n_trf.x.index(predictorSTR)].sub(time=(tmin, tmax)) #index('Fzero')].sub(time=(tmin, tmax))
             
             native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
             n_times = native_data.shape[1]
@@ -872,7 +902,7 @@ if __name__ == "__main__":
                 n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
     
                 # --- MISSING FIX 1: Slice the time window immediately! ---
-                f0_ndvar_window = n_trf.h[n_trf.x.index('Fzero')].sub(time=(tmin, tmax))
+                f0_ndvar_window = n_trf.h[n_trf.x.index(predictorSTR)].sub(time=(tmin, tmax)) #index('Fzero')].sub(time=(tmin, tmax))
     
                 # ==========================================
                 # --- CASE-SENSITIVITY TRANSLATOR ---
@@ -1018,67 +1048,67 @@ if __name__ == "__main__":
         plt.axhline(num_natives, color='black', linewidth=2)
         plt.axvline(num_natives, color='black', linewidth=2)
         
-        plt.title(f"Thresholded Spatial RSM: Fzero-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
+        plt.title(f"Thresholded Spatial RSM: {predictorSTR}-Zed ({tmin*1000:.0f}-{tmax*1000:.0f} ms)\nPermutations: {n_permutations}, α = {alpha_threshold}") 
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'Thresholded_FirstOrder_Spatial_Fzero-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        filename = f'Thresholded_FirstOrder_Spatial_{predictorSTR}-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         #plt.savefig(DST_ESLs / filename)
         plt.close()
 
-# <--- NOTICE HOW WE UNINDENTED EVERYTHING BELOW THIS LINE TO BE OUTSIDE THE LOOP! --->
-
-# ==========================================
-# 5. PLOT THE TIME-SERIES LINE GRAPH
-# ==========================================
-print("--- Generating Time-Series Graph... ---")
-
-plt.figure(figsize=(12, 6))
-
-# Plot the three lines
-plt.plot(plot_times, median_r_natives, label='Native Group (Median r)', color='#1f77b4', linewidth=2.5, marker='o')
-plt.plot(plot_times, median_r_esls, label='ESL Group (Median r)', color='#d62728', linewidth=2.5, marker='o')
-plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.05)', color='black', linestyle='--', linewidth=2)
-
-# Aesthetics
-plt.title("Spatial Similarity Dynamics over Time: Natives vs. ESLs (Fzero-Zed)", fontsize=14)
-plt.xlabel("Time Window Start (ms)", fontsize=12)
-plt.ylabel("Median Pearson's r", fontsize=12)
-
-# Set x-ticks to match your 50ms intervals
-plt.xticks(plot_times, rotation=45)
-
-# Add a subtle grid
-plt.grid(axis='y', linestyle='--', alpha=0.7)
-plt.legend(fontsize=11)
-
-plt.tight_layout()
-plt.savefig(DST_ESLs / 'Median_RSM_TimeSeries_Fzero-Zed.png')
-plt.close()
-
-print("--- Pipeline Complete! ---")
-
-# ==========================================
-# 6. SAVE THE 3D ARRAYS TO DISK (.npy)
-# ==========================================
-print("--- Saving 3D Arrays for Machine Learning & Analysis... ---")
-
-# 1. Save the Raw Data
-# Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 64 Sensors)
-final_3d_raw = np.array(all_time_raw_data)
-raw_filename = 'Raw_Spatial_Maps_Envelope-Zed_AllWindows.npy'
-np.save(DST_ESLs / raw_filename, final_3d_raw)
-print(f"Saved Raw Data: {raw_filename} | Shape: {final_3d_raw.shape}")
-
-# 2. Save the RSM Data
-# Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 59 Subjects)
-final_3d_rsm = np.array(all_time_rsms)
-rsm_filename = 'FirstOrder_Spatial_Envelope-Zed_RSM_AllWindows.npy'
-np.save(DST_ESLs / rsm_filename, final_3d_rsm)
-print(f"Saved RSM Data: {rsm_filename} | Shape: {final_3d_rsm.shape}")
-
-print("--- Pipeline Complete! ---")
+    # <--- NOTICE HOW WE UNINDENTED EVERYTHING BELOW THIS LINE TO BE OUTSIDE THE LOOP! --->
+    
+    # ==========================================
+    # 5. PLOT THE TIME-SERIES LINE GRAPH
+    # ==========================================
+    print("--- Generating Time-Series Graph... ---")
+    
+    plt.figure(figsize=(12, 6))
+    
+    # Plot the three lines
+    plt.plot(plot_times, median_r_natives, label='Native Group (Median r)', color='#1f77b4', linewidth=2.5, marker='o')
+    plt.plot(plot_times, median_r_esls, label='ESL Group (Median r)', color='#d62728', linewidth=2.5, marker='o')
+    plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.05)', color='black', linestyle='--', linewidth=2)
+    
+    # Aesthetics
+    plt.title(f"Spatial Similarity Dynamics over Time: Natives vs. ESLs ({predictorSTR}-Zed)", fontsize=14)
+    plt.xlabel("Time Window Start (ms)", fontsize=12)
+    plt.ylabel("Median Pearson's r", fontsize=12)
+    
+    # Set x-ticks to match your 50ms intervals
+    plt.xticks(plot_times, rotation=45)
+    
+    # Add a subtle grid
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.legend(fontsize=11)
+    
+    plt.tight_layout()
+    plt.savefig(DST_ESLs / f'Median_RSM_TimeSeries_{predictorSTR}-Zed.png')
+    plt.close()
+    
+    print("--- Pipeline Complete! ---")
+    
+    # ==========================================
+    # 6. SAVE THE 3D ARRAYS TO DISK (.npy)
+    # ==========================================
+    print("--- Saving 3D Arrays for Machine Learning & Analysis... ---")
+    
+    # 1. Save the Raw Data
+    # Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 64 Sensors)
+    final_3d_raw = np.array(all_time_raw_data)
+    raw_filename = f'Raw_Spatial_Maps_{predictorSTR}-Zed_AllWindows.npy'
+    np.save(DST_ESLs / raw_filename, final_3d_raw)
+    print(f"Saved Raw Data: {raw_filename} | Shape: {final_3d_raw.shape}")
+    
+    # 2. Save the RSM Data
+    # Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 59 Subjects)
+    final_3d_rsm = np.array(all_time_rsms)
+    rsm_filename = f'FirstOrder_Spatial_{predictorSTR}-Zed_RSM_AllWindows.npy'
+    np.save(DST_ESLs / rsm_filename, final_3d_rsm)
+    print(f"Saved RSM Data: {rsm_filename} | Shape:{final_3d_rsm.shape}")
+    
+    print("--- Pipeline Complete! ---")
                     
         ## ==========================================
         ## 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
