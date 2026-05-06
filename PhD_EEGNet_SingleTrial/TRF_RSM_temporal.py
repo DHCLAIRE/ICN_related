@@ -108,7 +108,7 @@ if __name__ == "__main__":
         n_subj = int(subj[1:3])
         
         n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
-        f0_ndvar = n_trf.h[n_trf.x.index('envelope')]
+        f0_ndvar = n_trf.h[n_trf.x.index('onset')]
         
         # Extract the FULL 0 to 1 second epoch. 
         # Dims must be ('time', 'sensor') so np.corrcoef correlates time against time.
@@ -133,7 +133,7 @@ if __name__ == "__main__":
             subject_str = esl_subj_dict[esl_id]
             
             n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
-            f0_ndvar = n_trf.h[n_trf.x.index('envelope')]
+            f0_ndvar = n_trf.h[n_trf.x.index('onset')]
             
             X_f0 = f0_ndvar.sub(time=(0.0, 1.000)).get_data(dims=('time', 'sensor'))
             
@@ -187,12 +187,12 @@ if __name__ == "__main__":
     plt.axhline(num_natives, color='black', linewidth=2)
     plt.axvline(num_natives, color='black', linewidth=2)
     
-    plt.title(f"Second-Order Inter-Subject RSM: Full Temporal Dynamics (Envelope)") 
+    plt.title(f"Second-Order Inter-Subject RSM: Full Temporal Dynamics (EnvOnset)") 
     plt.xlabel("Subject ID (Sorted by descending VST)")
     plt.ylabel("Subject ID (Sorted by descending VST)")
     
     plt.tight_layout() 
-    plt.savefig(DST_ESLs / 'SecondOrder_SubjectXSubject_Envelope_Temporal_RSM.png')
+    plt.savefig(DST_ESLs / 'SecondOrder_SubjectXSubject_EnvOnset_Temporal_RSM.png')
     plt.close()
     print("--- Complete! ---")
     
