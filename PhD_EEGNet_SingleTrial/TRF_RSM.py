@@ -835,7 +835,7 @@ if __name__ == "__main__":
     # ==========================================
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
-    step = 0.050  
+    step = 0.010 
     start_times = np.arange(0, 1.000, step)  
     
     # --- NEW: Lists to store data for the line graph ---
@@ -1054,7 +1054,7 @@ if __name__ == "__main__":
         
         filename = f'Thresholded_FirstOrder_Spatial_{predictorSTR}-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
-        #plt.savefig(DST_ESLs / filename)
+        plt.savefig(DST_ESLs / filename)
         plt.close()
 
     # <--- NOTICE HOW WE UNINDENTED EVERYTHING BELOW THIS LINE TO BE OUTSIDE THE LOOP! --->
@@ -1072,7 +1072,7 @@ if __name__ == "__main__":
     plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.05)', color='black', linestyle='--', linewidth=2)
     
     # Aesthetics
-    plt.title(f"Spatial Similarity Dynamics over Time: Natives vs. ESLs ({predictorSTR}-Zed)", fontsize=14)
+    plt.title(f"Spatial Similarity Dynamics over Time: Natives vs. ESLs ({predictorSTR}-Zed)_10msINV", fontsize=14)
     plt.xlabel("Time Window Start (ms)", fontsize=12)
     plt.ylabel("Median Pearson's r", fontsize=12)
     
@@ -1084,7 +1084,7 @@ if __name__ == "__main__":
     plt.legend(fontsize=11)
     
     plt.tight_layout()
-    plt.savefig(DST_ESLs / f'Median_RSM_TimeSeries_{predictorSTR}-Zed.png')
+    plt.savefig(DST_ESLs / f'Median_RSM_TimeSeries_{predictorSTR}-Zed_10msINV.png')
     plt.close()
     
     print("--- Pipeline Complete! ---")
@@ -1097,14 +1097,14 @@ if __name__ == "__main__":
     # 1. Save the Raw Data
     # Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 64 Sensors)
     final_3d_raw = np.array(all_time_raw_data)
-    raw_filename = f'Raw_Spatial_Maps_{predictorSTR}-Zed_AllWindows.npy'
+    raw_filename = f'Raw_Spatial_Maps_{predictorSTR}-Zed_10msINV_AllWindows.npy'
     np.save(DST_ESLs / raw_filename, final_3d_raw)
     print(f"Saved Raw Data: {raw_filename} | Shape: {final_3d_raw.shape}")
     
     # 2. Save the RSM Data
     # Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 59 Subjects)
     final_3d_rsm = np.array(all_time_rsms)
-    rsm_filename = f'FirstOrder_Spatial_{predictorSTR}-Zed_RSM_AllWindows.npy'
+    rsm_filename = f'FirstOrder_Spatial_{predictorSTR}-Zed_RSM_10msINV_AllWindows.npy'
     np.save(DST_ESLs / rsm_filename, final_3d_rsm)
     print(f"Saved RSM Data: {rsm_filename} | Shape:{final_3d_rsm.shape}")
     
