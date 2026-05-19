@@ -755,9 +755,10 @@ if __name__ == "__main__":
     #TRF_DIR_ESLs = DATA_ROOT / 'TRFs_ESLs'
     
     ## Set predictor's name ##
-    predictorLIST = ["Fzero", "envelope", "onset"]  #Fzero+envelope+env_onset.pickle
+    #predictorLIST = ["Fzero", "envelope", "onset"]  #Fzero+envelope+env_onset.pickle
+    predictorLIST = ['word', 'lexical', 'non_lexical']  #words+lexical.pickle
     
-    predictorSTR = predictorLIST[0]
+    predictorSTR = predictorLIST[1]
     
     ## Include VST as proficiency level indicator##
     ## To arrange the ESL according to the VST scores.
@@ -798,7 +799,7 @@ if __name__ == "__main__":
     # --- MODIFICATION START ---
     # Load the FIRST Native subject temporarily just to see which 59 sensors survived preprocessing
     sample_subj = int(Native_SUBJECTS[0][1:3])
-    sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} Fzero+envelope+env_onset.pickle')
+    sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} words+lexical.pickle' ) #Fzero+envelope+env_onset.pickle')
     
     # Extract the exact 59 channel names actually present in your data
     actual_native_chs = sample_trf.h[sample_trf.x.index(predictorSTR)].sensor.names #index('onset')].sensor.names
@@ -835,7 +836,7 @@ if __name__ == "__main__":
     # ==========================================
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
-    step = 0.010 
+    step = 0.1#010 
     start_times = np.arange(0, 1.000, step)  
     
     # --- NEW: Lists to store data for the line graph ---
@@ -863,16 +864,24 @@ if __name__ == "__main__":
             n_subj = int(subj[1:3])
             combined_labels.append(f"Nat_{n_subj}") 
             
-            n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Fzero+envelope+env_onset.pickle')
+            n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} words+lexical.pickle') #Fzero+envelope+env_onset.pickle')
             
             # --- MODIFICATION: Slice the time window immediately! ---
             f0_ndvar_window = n_trf.h[n_trf.x.index(predictorSTR)].sub(time=(tmin, tmax)) #index('Fzero')].sub(time=(tmin, tmax))
             
             native_data = f0_ndvar_window.get_data(dims=('sensor', 'time'))
+            # --- MODIFICATION: Slice the time window immediately! ---
+            # ==========================================
+            # THE TRUTH TEST
+            # ==========================================
+            print(f"\n--- TESTING NATIVE {n_subj} ---")
+            print(f"Is native_data completely empty (all zeros) BEFORE we add the padding? : {np.all(native_data == 0)}")
+            print(f"First 3 sensors, First 3 timepoints from Eelbrain:\n{native_data[:3, :3]}")
+            # ==========================================
             n_times = native_data.shape[1]
             
             combined_data = np.vstack((native_data, np.zeros((len(esl_chs), n_times))))
-            
+            pprint(combined_data)
             evoked = mne.EvokedArray(combined_data, info_combined)
             evoked.info['bads'] = esl_chs 
             evoked.interpolate_bads(reset_bads=True, verbose=False)
@@ -885,10 +894,14 @@ if __name__ == "__main__":
             #all_subjects_spatial_data.append(mean_spatial_map)
         
             # --- NEW FIX: Z-Score the 64-sensor spatial map ---
-            zscored_spatial_map = zscore(mean_spatial_map)
-        
-            all_subjects_spatial_data.append(zscored_spatial_map) # Append the z-scored version
-            
+            # ADDed for avoiding NaN crash the median
+            # --- SAFE Z-SCORE ---
+            if np.std(mean_spatial_map) == 0:
+                zscored_spatial_map = np.zeros_like(mean_spatial_map)
+            else:
+                zscored_spatial_map = zscore(mean_spatial_map)
+                
+            all_subjects_spatial_data.append(zscored_spatial_map)
             
         num_natives = len(Native_SUBJECTS)
         
@@ -899,7 +912,7 @@ if __name__ == "__main__":
                 subject_str = esl_subj_dict[esl_id]
                 combined_labels.append(f"ESL_{esl_id} ({vst})")
     
-                n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Fzero+envelope+env_onset.pickle')
+                n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} words+lexical.pickle') #Fzero+envelope+env_onset.pickle')
     
                 # --- MISSING FIX 1: Slice the time window immediately! ---
                 f0_ndvar_window = n_trf.h[n_trf.x.index(predictorSTR)].sub(time=(tmin, tmax)) #index('Fzero')].sub(time=(tmin, tmax))
@@ -949,8 +962,13 @@ if __name__ == "__main__":
                 #all_subjects_spatial_data.append(mean_spatial_map)
                 
                 # --- NEW FIX: Z-Score the 64-sensor spatial map ---
-                zscored_spatial_map = zscore(mean_spatial_map)
-            
+                # ADDed for avoiding NaN crash the median
+                # --- SAFE Z-SCORE ---
+                if np.std(mean_spatial_map) == 0:
+                    zscored_spatial_map = np.zeros_like(mean_spatial_map)
+                else:
+                    zscored_spatial_map = zscore(mean_spatial_map)
+                    
                 # Append the 1D spatial map, matching the Natives exactly
                 all_subjects_spatial_data.append(zscored_spatial_map) # Append the z-scored version
                 
@@ -1063,7 +1081,8 @@ if __name__ == "__main__":
     # 5. PLOT THE TIME-SERIES LINE GRAPH
     # ==========================================
     print("--- Generating Time-Series Graph... ---")
-    
+    print("Checking Native Data:", median_r_natives[:5])
+    print("Checking Native Data:", median_r_esls[:5])
     plt.figure(figsize=(12, 6))
     
     # Plot the three lines
