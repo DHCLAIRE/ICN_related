@@ -1004,12 +1004,12 @@ if __name__ == "__main__":
         # 1. Native Group Median (Top-Left Quadrant)
         native_block = spatial_rsm_real[:num_natives, :num_natives]
         idx_nat = np.triu_indices(num_natives, k=1) # Exclude diagonal
-        median_r_natives.append(np.median(native_block[idx_nat]))
+        median_r_natives.append(np.nanmedian(native_block[idx_nat]))  # change from np.median() to np.nanmedian(), so that the median value won't be crashed by the NaN subjects
     
         # 2. ESL Group Median (Bottom-Right Quadrant)
         esl_block = spatial_rsm_real[num_natives:, num_natives:]
         idx_esl = np.triu_indices(num_total_subj - num_natives, k=1)
-        median_r_esls.append(np.median(esl_block[idx_esl]))
+        median_r_esls.append(np.nanmedian(esl_block[idx_esl])) # change from np.median() to np.nanmedian(), so that the median value won't be crashed by the NaN subjects
     
         # 3. Permutation Threshold (95th percentile of the absolute fake correlations)
         idx_all = np.triu_indices(num_total_subj, k=1)
