@@ -758,7 +758,7 @@ if __name__ == "__main__":
     #predictorLIST = ["Fzero", "envelope", "onset"]  #Fzero+envelope+env_onset.pickle
     predictorLIST = ['word', 'lexical', 'non_lexical']  #words+lexical.pickle
     
-    predictorSTR = predictorLIST[1]
+    predictorSTR = predictorLIST[0]
     
     ## Include VST as proficiency level indicator##
     ## To arrange the ESL according to the VST scores.
@@ -836,7 +836,7 @@ if __name__ == "__main__":
     # ==========================================
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
-    step = 0.1#010 
+    step = 0.2#010 
     start_times = np.arange(0, 1.000, step)  
     
     # --- NEW: Lists to store data for the line graph ---
@@ -1014,7 +1014,7 @@ if __name__ == "__main__":
         # 3. Permutation Threshold (95th percentile of the absolute fake correlations)
         idx_all = np.triu_indices(num_total_subj, k=1)
         fake_corrs_off_diag = null_rsms[:, idx_all[0], idx_all[1]]
-        threshold_95 = np.percentile(np.abs(fake_corrs_off_diag), 95)
+        threshold_95 = np.nanpercentile(np.abs(fake_corrs_off_diag), 95)
         perm_95th_thresholds.append(threshold_95)
     
         # 4. Save the timepoint (using the start of the window, in ms)
