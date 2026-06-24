@@ -756,9 +756,11 @@ if __name__ == "__main__":
     
     ## Set predictor's name ##
     #predictorLIST = ["Fzero", "envelope", "onset"]  #Fzero+envelope+env_onset.pickle
-    predictorLIST = ['word', 'lexical', 'non_lexical']  #words+lexical.pickle
+    #predictorLIST = ['word', 'lexical', 'non_lexical']  #words+lexical.pickle
+    predictorLIST = ['ngram', 'cfg', 'word', 'lexical', 'non_lexical']  #Ngram-CFG_all.pickle
     
-    predictorSTR = predictorLIST[0]
+    
+    predictorSTR = predictorLIST[1]
     
     ## Include VST as proficiency level indicator##
     ## To arrange the ESL according to the VST scores.
@@ -799,8 +801,8 @@ if __name__ == "__main__":
     # --- MODIFICATION START ---
     # Load the FIRST Native subject temporarily just to see which 59 sensors survived preprocessing
     sample_subj = int(Native_SUBJECTS[0][1:3])
-    sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} words+lexical.pickle' ) #Fzero+envelope+env_onset.pickle')
-    
+    sample_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{sample_subj:02d}' / f'S{sample_subj:02d} Ngram-CFG_all.pickle' ) #Fzero+envelope+env_onset.pickle')
+    sample_trf.x = ['ngram', 'cfg', 'word', 'lexical', 'non_lexical']
     # Extract the exact 59 channel names actually present in your data
     actual_native_chs = sample_trf.h[sample_trf.x.index(predictorSTR)].sensor.names #index('onset')].sensor.names
     
@@ -836,7 +838,7 @@ if __name__ == "__main__":
     # ==========================================
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
-    step = 0.2#010 
+    step = 0.010 
     start_times = np.arange(0, 1.000, step)  
     
     # --- NEW: Lists to store data for the line graph ---
@@ -864,8 +866,8 @@ if __name__ == "__main__":
             n_subj = int(subj[1:3])
             combined_labels.append(f"Nat_{n_subj}") 
             
-            n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} words+lexical.pickle') #Fzero+envelope+env_onset.pickle')
-            
+            n_trf = eelbrain.load.unpickle(TRF_DIR_NATs / f'S{n_subj:02d}' / f'S{n_subj:02d} Ngram-CFG_all.pickle') #Fzero+envelope+env_onset.pickle')
+            n_trf.x = ['ngram', 'cfg', 'word', 'lexical', 'non_lexical']
             # --- MODIFICATION: Slice the time window immediately! ---
             f0_ndvar_window = n_trf.h[n_trf.x.index(predictorSTR)].sub(time=(tmin, tmax)) #index('Fzero')].sub(time=(tmin, tmax))
             
@@ -912,8 +914,8 @@ if __name__ == "__main__":
                 subject_str = esl_subj_dict[esl_id]
                 combined_labels.append(f"ESL_{esl_id} ({vst})")
     
-                n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} words+lexical.pickle') #Fzero+envelope+env_onset.pickle')
-    
+                n_trf = eelbrain.load.unpickle(TRF_DIR_ESLs / subject_str[4:8] / f'{subject_str[4:8]} Ngram-CFG_all.pickle') #Fzero+envelope+env_onset.pickle')
+                n_trf.x = ['ngram', 'cfg', 'word', 'lexical', 'non_lexical']
                 # --- MISSING FIX 1: Slice the time window immediately! ---
                 f0_ndvar_window = n_trf.h[n_trf.x.index(predictorSTR)].sub(time=(tmin, tmax)) #index('Fzero')].sub(time=(tmin, tmax))
     
