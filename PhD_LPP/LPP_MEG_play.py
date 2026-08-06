@@ -132,8 +132,9 @@ PIN_UNREASONABLE = 7   # 不合理（黃色）
 
 
 if __name__ == "__main__":
-    data_path = "I:/Master Program/New_Thesis_topic/Alice(EEG dataset and stimuli)/audio/"
-    results_data_path = "I:/Master Program/New_Thesis_topic/Experiments_Results/12Qs_Ans/"
+    # Set Data path
+    data_root_path = "/Volumes/DH_4GB/"
+    results_data_path = "/Volumes/DH_4GB/LPP_Materials/"
 
     # sample_rate holds the sample rate of the wav file
     # in (sample/sec) format
@@ -170,9 +171,14 @@ if __name__ == "__main__":
     #correctnessLIST = []
     responseLIST = []
     Q_numLIST = []
+    
+    
 
     # key in number for notifying which subject it is
-    sub_id = str(input("Subject: "))
+    sub_id = str(input("Subject ID: "))
+    lang_typesSTR = str(input("Lang Type: "))
+    tape_numSTR = str(input("Tape Num: "))
+    
 
     # Full screen
     #win = visual.Window(color = [-1, -1, -1], units ="pix", fullscr = True)   # Present screen_Full
