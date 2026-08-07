@@ -218,12 +218,13 @@ def run_meg_experiment(sub_id, order_type, win, port,
 if __name__ == "__main__":
     
     # --- LAB PATH CONFIGURATION ---
-    # Update these folder paths to match your MEG lab testing PC (e.g., "C:/MEG_Data/LPP_Materials/")
-    materials_data_path = "audio/"  
+    # Set Data path (Make sure trailing slashes are present!)
+    data_root_path = "/Volumes/DH_4GB/"
+    results_data_path = "/Volumes/DH_4GB/LPP_Materials/"
     
     # --- INITIALIZE PSYCHOPY WINDOW ---
     # Set fullscr=True for actual testing in the MEG lab
-    win = visual.Window(size=[1024, 768], units="norm", fullscr=True)
+    win = visual.Window(size=[500, 500], units="norm", fullscr=True)
     
     # --- INITIALIZE PARALLEL PORT ---
     # Standard parallel port hardware address is 0x0378.
@@ -237,7 +238,7 @@ if __name__ == "__main__":
         win=win,
         port=meg_port,
         languages=["CHT", "ENG", "FRN"],
-        data_path=materials_data_path
+        data_path=results_data_path
     )
     
     win.close()
