@@ -53,10 +53,14 @@ def display_fix(win, duration=None):
 
 
 def play_audio_trial(file_name, port, writer=None, trial_info=None, 
-                     onset_code=2, offset_code=4, data_path=""):
+                     onset_code=2, offset_code=4, data_path="", max_duration=None):
     """
     Universal audio player: Plays ANY .wav file, sends MEG TTL triggers via 
     parallel port, checks for ESC to abort, and logs trial details to CSV.
+    
+    Parameters:
+        max_duration (float, optional): Maximum time in seconds to play the audio. 
+                                        If None, plays the entire file.
     """
     full_path = os.path.join(data_path, file_name)
     
@@ -70,8 +74,16 @@ def play_audio_trial(file_name, port, writer=None, trial_info=None,
     
     # 1. Read exact audio duration
     sample_rate, data = wavfile.read(full_path)
-    duration_sec = len(data) / sample_rate
-    print(f"\n--- Playing: {file_name} (Duration: {duration_sec:.2f}s) ---")
+    file_duration = len(data) / sample_rate
+    
+    # --- [MODIFICATION HERE] Determine actual playback duration ---
+    if max_duration is not None and max_duration < file_duration:
+        duration_sec = max_duration
+        print(f"\n--- Playing: {file_name} (Custom Cutoff: {duration_sec:.2f}s / Total: {file_duration:.2f}s) ---")
+    else:
+        duration_sec = file_duration
+        print(f"\n--- Playing: {file_name} (Full Duration: {duration_sec:.2f}s) ---")
+    # --------------------------------------------------------------
     
     # 2. Load sound stimulus
     script_sound = sound.Sound(full_path)
@@ -94,6 +106,10 @@ def play_audio_trial(file_name, port, writer=None, trial_info=None,
             raise ExitProcedureException(f"Experiment aborted by user during {file_name}")
         
         core.wait(0.01)
+        
+    # --- [MODIFICATION HERE] Stop audio early if cut off by max_duration ---
+    script_sound.stop()
+    # -----------------------------------------------------------------------
     
     # 5. OFFSET TRIGGER
     port.setData(offset_code)
