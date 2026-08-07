@@ -38,6 +38,8 @@ from psychopy import sound, core, visual, event, gui, monitors, clock, parallel 
 #import json
 print(sound.Sound)
 
+import os
+import csv
 import scipy
 from scipy.io import wavfile
 import numpy as np
@@ -66,38 +68,189 @@ key press: need to be set (we'll use 2 bottons in here')
 reaction time: need to be recorded
 '''
 
-# need to add feedbacks of scaling and texts records
+class ExitProcedureException(Exception):
+    """Custom exception raised to cleanly exit the listening procedure."""
+    pass
 
-def display_ins(STR, keyPressLIST = None):
-    '''
-    設定欲呈現的字串及指定的反應鍵後，將會呈現字串，並需按下指定反應鍵才會進到下一個字串。
-    若未指定反應鍵，則任意鍵皆可換下一張刺激
-    i.e display("啦啦啦", ['space'])
-    '''
+
+def play_language_tape_slice(sub_id, order_type, port, lang, tape_range, 
+                             writer, data_path="audio/"):
+    """
+    Plays a specific slice of tapes for a single language, sends MEG triggers,
+    and logs each trial to an open CSV writer.
+    
+    Parameters:
+        sub_id (str): Subject ID
+        order_type (str): e.g., 'Type A'
+        port: Initialized PsychoPy parallel port object
+        lang (str): Language code to play (e.g., 'CHT')
+        tape_range (range or list): Sequence of tape numbers (e.g., range(1, 4))
+        writer: Python csv.writer object for logging
+        data_path (str): Directory where wav files are stored
+    """
+    for tape_num in tape_range:
+        file_name = f"LPP_{lang}_tape_{tape_num}.wav"
+        full_path = os.path.join(data_path, file_name)
+        
+        # 1. Read exact audio duration
+        sample_rate, data = wavfile.read(full_path)
+        duration_sec = len(data) / sample_rate
+        print(f"\n--- Playing: {file_name} (Duration: {duration_sec:.2f}s) ---")
+        
+        # 2. Load audio
+        script_sound = sound.Sound(full_path)
+        
+        # --- 3. START PLAYBACK & SEND ONSET TRIGGER ---
+        script_sound.play()
+        
+        port.setData(2)
+        core.wait(0.01)  # 10 ms pulse width
+        port.setData(0)
+        
+        # 4. Active listening loop (allows ESC or Click to abort cleanly)
+        timer = core.Clock()
+        while timer.getTime() < duration_sec:
+            keys = event.getKeys(keyList=['escape'])
+            if 'escape' in keys:
+                script_sound.stop()
+                port.setData(99)  # Optional: Send an "aborted" trigger code to MEG
+                core.wait(0.01)
+                port.setData(0)
+                raise ExitProcedureException("Experiment aborted by user via ESC key.")
+            
+            core.wait(0.01)  # Small yield to prevent CPU hogging
+        
+        # --- 5. SEND OFFSET TRIGGER ---
+        port.setData(4)
+        core.wait(0.01)
+        port.setData(0)
+        
+        print(f"{file_name} DONE.")
+        
+        # 6. Log completion
+        writer.writerow([lang, tape_num, file_name, round(duration_sec, 4), "DONE"])
+        
+        # Inter-Trial Interval (1 second between tapes)
+        core.wait(1.0)
+
+
+"""
+def run_meg_experiment(sub_id, order_type, port, languages=["CHT", "ENG", "FRN"], 
+                       data_path="audio/"):
+    """
+    Master controller: Sets up logging, determines language order, and executes 
+    tape slices (1-3, 4-6, 7-9) by calling play_language_tape_slice three times.
+    
+    languages: A list where index 0 = L1, index 1 = L2, index 2 = L3.
+    """
+    # 1. Map order types to language presentation sequences
+    order_map = {
+        "Type A": [languages[0], languages[1], languages[2]],  # L1-L2-L3
+        "Type B": [languages[0], languages[2], languages[1]],  # L1-L3-L2
+        "Type C": [languages[1], languages[0], languages[2]],  # L2-L1-L3
+        "Type D": [languages[1], languages[2], languages[0]],  # L2-L3-L1
+        "Type E": [languages[2], languages[0], languages[1]],  # L3-L1-L2
+        "Type F": [languages[2], languages[1], languages[0]]   # L3-L2-L1
+    }
+    
+    if order_type not in order_map:
+        raise ValueError(f"Invalid order_type '{order_type}'. Must be one of: {list(order_map.keys())}")
+        
+    selected_langs = order_map[order_type]
+    
+    # 2. Prepare behavioral data logging file
+    clean_type = order_type.replace(" ", "")
+    log_filename = f"LPP_S{sub_id}{clean_type}_{selected_langs[0]}_{selected_langs[1]}_{selected_langs[2]}.csv"
+    
+    try:
+        with open(log_filename, mode='w', newline='', encoding='utf-8') as log_file:
+            writer = csv.writer(log_file)
+            writer.writerow(["language", "tape_num", "filename", "duration_sec", "status"])
+            
+            # --- CALL 1: First Language (Tapes 1 to 3) ---
+            print(f"\n=== STARTING BLOCK 1: {selected_langs[0]} (Tapes 1-3) ===")
+            play_language_tape_slice(
+                sub_id, order_type, port, 
+                lang=selected_langs[0], 
+                tape_range=range(1, 4),  # Plays tapes 1, 2, 3
+                writer=writer, 
+                data_path=data_path
+            )
+            
+            # --- CALL 2: Second Language (Tapes 4 to 6) ---
+            print(f"\n=== STARTING BLOCK 2: {selected_langs[1]} (Tapes 4-6) ===")
+            play_language_tape_slice(
+                sub_id, order_type, port, 
+                lang=selected_langs[1], 
+                tape_range=range(4, 7),  # Plays tapes 4, 5, 6
+                writer=writer, 
+                data_path=data_path
+            )
+            
+            # --- CALL 3: Third Language (Tapes 7 to 9) ---
+            print(f"\n=== STARTING BLOCK 3: {selected_langs[2]} (Tapes 7-9) ===")
+            play_language_tape_slice(
+                sub_id, order_type, port, 
+                lang=selected_langs[2], 
+                tape_range=range(7, 10), # Plays tapes 7, 8, 9
+                writer=writer, 
+                data_path=data_path
+            )
+            
+        print(f"\nAll 9 tapes completed successfully! Log saved to: {log_filename}")
+        
+    except ExitProcedureException as e:
+        print(f"\n[ABORTED]: {e}")
+        print(f"Partial data up to the abort point was saved to: {log_filename}")
+"""
+
+
+    from psychopy import visual, event, core
+    
+def display_ins(STR, keyPressLIST=None):
+    """
+    Displays instruction text on the screen and waits for a specific key press 
+    to proceed to the next text screen.
+    
+    If 'STR' contains the delimiter '\\\\', it splits the string into multiple 
+    sequential screens. If 'keyPressLIST' is None, pressing any key will advance 
+    to the next screen.
+    
+    Example usage:
+        display_ins("Welcome to the experiment!\\\\Press SPACE to start.", ['space'])
+    """
     instructionsLIST = STR.split("\\\\")
-    keyPressLIST = keyPressLIST
-
+    
     for t in instructionsLIST:
-    instructions = visual.TextStim(win = win, text = t)
-    instructions.draw()
-    win.flip()
-    event.waitKeys(keyList = keyPressLIST)
-    win.flip()
+        instructions = visual.TextStim(win=win, text=t)
+        instructions.draw()
+        win.flip()
+        event.waitKeys(keyList=keyPressLIST)
+        win.flip()  # Clears the screen after the key is pressed
 
-def display_fix():
-    '''
-    呈現"+"於螢幕中央
-    '''
-    fixation = visual.TextStim(win = win, text = "+")
+def display_fix(duration=None):
+    """
+    Displays a white fixation cross ('+') at the center of the screen.
+    
+    Parameters:
+        duration (float, optional): Time in seconds to hold the fixation cross 
+                                    on screen. If None, it just draws and flips 
+                                    without pausing execution.
+    """
+    fixation = visual.TextStim(win=win, text="+")
     fixation.draw()
     win.flip()
+    
+    if duration is not None:
+        core.wait(duration)
+        win.flip()  # Clears the screen after the duration expires
 
 """
 1. instructions >> press 'space'?? or other button?
 2. Button press >> one for each side (choose wisely)
 """
 
-# The MEG trigger port info
+# The AS-MEG trigger port info
 #port = parallel.ParallelPort('0x0378')
 
 ##============== MEG 或 筆電 轉換 ==========================
@@ -105,6 +258,7 @@ def display_fix():
 #### 筆電測試： USE_TRIGGER = False、USE_KEYPORT = False
 ##==========================================================
 
+# The NTU-MEG trigger port info
 USE_TRIGGER = True  # 是否啟用平行埠 trigger（筆電測試可 False）
 LPT_ADDRESS = 0x4FF8  # 平行埠位址（依 MEG 系統設定）
 DEBUG_TRIGGER = False  # port 不可用時是否印 trigger（正式收資料建議 False）
