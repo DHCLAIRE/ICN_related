@@ -1,7 +1,21 @@
+# To Change the backend setting to PTB
+from psychopy import prefs
+prefs.hardware['audioLib'] = ['PTB', 'pyo', 'pygame']
+
+# Set other python packages
+import psychtoolbox as ptb
+from psychopy import sound, core, visual, event, gui, monitors, clock, parallel
+print(sound.Sound)
+
 import os
 import csv
+import scipy
 from scipy.io import wavfile
-from psychopy import visual, sound, core, event
+import numpy as np
+from datetime import datetime, date
+import json
+import pandas as pd
+import random
 
 # =============================================================================
 # 1. CUSTOM EXCEPTION & DUMMY PORT FOR MACBOOK TESTING
@@ -51,12 +65,20 @@ def display_fix(win, duration=None):
 
 
 def play_audio_trial(file_name, port, writer=None, trial_info=None, 
-                     onset_code=2, offset_code=4, data_path="audio/"):
+                     onset_code=2, offset_code=4, data_path=""):
     """
     Universal audio player: Plays ANY .wav file, sends MEG TTL triggers 
     (or prints to console), checks for ESC to abort, and logs data to CSV.
     """
     full_path = os.path.join(data_path, file_name)
+    
+    # --- SAFETY CHECK ---
+    if not os.path.exists(full_path):
+        raise FileNotFoundError(
+            f"\n[ERROR] Could not find audio file at:\n   -> '{full_path}'\n"
+            f"Please check that your external drive is plugged in and the folder name is correct."
+        )
+    # --------------------
     
     # 1. Read exact duration
     sample_rate, data = wavfile.read(full_path)
@@ -104,7 +126,7 @@ def play_audio_trial(file_name, port, writer=None, trial_info=None,
 # =============================================================================
 
 def run_meg_experiment(sub_id, order_type, win, port, 
-                       languages=["CHT", "ENG", "FRN"], data_path="audio/"):
+                       languages=["CHT", "ENG", "FRN"], data_path=""):
     """
     Executes the full MEG experiment: displays instructions, plays tapes 
     followed by comprehension questions, and logs all events to one CSV file.
@@ -131,9 +153,10 @@ def run_meg_experiment(sub_id, order_type, win, port,
         (selected_langs[2], range(7, 10))   # Block 3: Tapes 7 to 9
     ]
     
-    # Prepare single CSV log file
+    # Prepare single CSV log file inside your results folder
     clean_type = order_type.replace(" ", "")
-    log_filename = f"LPP_S{sub_id}{clean_type}_{selected_langs[0]}_{selected_langs[1]}_{selected_langs[2]}.csv"
+    csv_name = f"LPP_S{sub_id}{clean_type}_{selected_langs[0]}_{selected_langs[1]}_{selected_langs[2]}.csv"
+    log_filename = os.path.join(data_path, csv_name)
     
     try:
         with open(log_filename, mode='w', newline='', encoding='utf-8') as log_file:
@@ -205,8 +228,12 @@ def run_meg_experiment(sub_id, order_type, win, port,
 # =============================================================================
 
 if __name__ == "__main__":
+    
+    # Set Data path (Make sure trailing slashes are present!)
+    data_root_path = "/Volumes/DH_4GB/"
+    results_data_path = "/Volumes/DH_4GB/LPP_Materials/"
+    
     # Initialize PsychoPy Window
-    # Fullscr=False is recommended when debugging/testing on macOS!
     win = visual.Window(size=[500, 500], units="norm", fullscr=False)
     
     # Use DummyParallelPort instead of real parallel hardware
@@ -219,7 +246,7 @@ if __name__ == "__main__":
         win=win,
         port=meg_port,
         languages=["CHT", "ENG", "FRN"],
-        data_path="audio/"
+        data_path=results_data_path
     )
     
     win.close()
