@@ -86,7 +86,7 @@ def play_audio_trial(file_name, port, writer=None, trial_info=None,
     # --------------------------------------------------------------
     
     # 2. Load sound stimulus
-    script_sound = sound.Sound(full_path)
+    script_sound = sound.Sound(full_path, stereo=True)
     
     # 3. ONSET TRIGGER & PLAYBACK
     script_sound.play()
@@ -195,25 +195,28 @@ def run_meg_experiment(sub_id, order_type, win, port,
                         port=port,
                         writer=writer,
                         trial_info=[sub_id, order_type, lang, "StoryTape", tape_num],
-                        onset_code=10 + tape_num,   # Unique onset trigger per tape (11-19)
-                        offset_code=50 + tape_num,  # Unique offset trigger per tape (51-59)
-                        data_path=data_path
+                        onset_code=10 + tape_num,
+                        offset_code=50 + tape_num,
+                        data_path=data_path,
+                        max_duration=60.0  # <-- SET YOUR CUSTOM DURATION IN SECONDS HERE
                     )
-                    
+                    """
                     # ---------------------------------------------------------
                     # B. PLAY COMPREHENSION QUESTION
                     # ---------------------------------------------------------
                     question_file = f"LPP_{lang}_question_{tape_num}.wav"
+                    # Play ONLY the first 30 seconds of the Story Tape:
                     play_audio_trial(
-                        file_name=question_file,
+                        file_name=tape_file,
                         port=port,
                         writer=writer,
-                        trial_info=[sub_id, order_type, lang, "ComprehensionQ", tape_num],
-                        onset_code=100 + tape_num,  # Unique onset trigger per question (101-109)
-                        offset_code=150 + tape_num, # Unique offset trigger per question (151-159)
-                        data_path=data_path
+                        trial_info=[sub_id, order_type, lang, "StoryTape", tape_num],
+                        onset_code=10 + tape_num,
+                        offset_code=50 + tape_num,
+                        data_path=data_path,
+                        max_duration=30.0  # <-- SET YOUR CUSTOM DURATION IN SECONDS HERE
                     )
-                    
+                    """
                     # Short pause between trials
                     core.wait(1.0)
                     
@@ -226,7 +229,6 @@ def run_meg_experiment(sub_id, order_type, win, port,
         print(f"Data saved up to abort point in: {log_filename}")
         display_ins(win, "Experiment aborted by user.", ['space'])
 
-
 # =============================================================================
 # 4. RUNNER EXECUTION (MEG LABORATORY MODE)
 # =============================================================================
@@ -235,21 +237,21 @@ if __name__ == "__main__":
     
     # --- LAB PATH CONFIGURATION ---
     # Set Data path (Make sure trailing slashes are present!)
-    data_root_path = "/Volumes/DH_4GB/"
-    results_data_path = "/Volumes/DH_4GB/LPP_Materials/"
+    data_root_path = "F:\LPP_Materials"  ##"/Volumes/DH_4GB/"
+    results_data_path = "F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
     
     # --- INITIALIZE PSYCHOPY WINDOW ---
     # Set fullscr=True for actual testing in the MEG lab
-    win = visual.Window(size=[500, 500], units="norm", fullscr=True)
+    win = visual.Window(size=[500, 500], units="norm", fullscr=False)
     
     # --- INITIALIZE PARALLEL PORT ---
     # Standard parallel port hardware address is 0x0378.
     # If your MEG lab PC uses a PCI-e parallel card, update the address (e.g., 0xD010, 0x3FF8).
-    meg_port = parallel.ParallelPort(address=0x0378)
+    meg_port = parallel.ParallelPort(address=0x4FF8)  #0x0378)
     
     # --- RUN EXPERIMENT ---
     run_meg_experiment(
-        sub_id="01",
+        sub_id="999",
         order_type="Type A",  # 'Type A' through 'Type F'
         win=win,
         port=meg_port,
