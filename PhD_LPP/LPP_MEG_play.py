@@ -72,66 +72,64 @@ class ExitProcedureException(Exception):
     """Custom exception raised to cleanly exit the listening procedure."""
     pass
 
-
-def play_language_tape_slice(sub_id, order_type, port, lang, tape_range, 
-                             writer, data_path="audio/"):
+def play_audio(file_name, port, writer=None, trial_info=None, 
+                     onset_code=2, offset_code=4, data_path="audio/"):
     """
-    Plays a specific slice of tapes for a single language, sends MEG triggers,
-    and logs each trial to an open CSV writer.
+    Plays ANY single audio file, sends customizable MEG onset/offset triggers,
+    checks for ESC key to abort, and optionally logs trial details to CSV.
     
     Parameters:
-        sub_id (str): Subject ID
-        order_type (str): e.g., 'Type A'
+        file_name (str): Name of the wav file (e.g., 'LPP_CHT_tape_1.wav' or 'CHT_q1.wav')
         port: Initialized PsychoPy parallel port object
-        lang (str): Language code to play (e.g., 'CHT')
-        tape_range (range or list): Sequence of tape numbers (e.g., range(1, 4))
-        writer: Python csv.writer object for logging
-        data_path (str): Directory where wav files are stored
+        writer (csv.writer, optional): Open CSV writer object for logging
+        trial_info (list, optional): Extra info to log in CSV [e.g., "CHT", "Tape", 1]
+        onset_code (int): TTL trigger code for audio start (default: 2)
+        offset_code (int): TTL trigger code for audio end (default: 4)
+        data_path (str): Folder where audio files are stored
     """
-    for tape_num in tape_range:
-        file_name = f"LPP_{lang}_tape_{tape_num}.wav"
-        full_path = os.path.join(data_path, file_name)
+    full_path = os.path.join(data_path, file_name)
+    
+    # 1. Read exact duration
+    sample_rate, data = wavfile.read(full_path)
+    duration_sec = len(data) / sample_rate
+    print(f"\n--- Playing: {file_name} (Duration: {duration_sec:.2f}s) ---")
+    
+    # 2. Load sound
+    script_sound = sound.Sound(full_path)
+    
+    # --- 3. ONSET TRIGGER & PLAYBACK ---
+    script_sound.play()
+    port.setData(onset_code)
+    core.wait(0.01)  # 10 ms TTL pulse
+    port.setData(0)
+    
+    # 4. Active listening loop (checks ESC every 10 ms)
+    timer = core.Clock()
+    while timer.getTime() < duration_sec:
+        keys = event.getKeys(keyList=['escape'])
+        if 'escape' in keys:
+            script_sound.stop()
+            port.setData(99)  # Abort trigger code
+            core.wait(0.01)
+            port.setData(0)
+            raise ExitProcedureException(f"Experiment aborted by user during {file_name}")
         
-        # 1. Read exact audio duration
-        sample_rate, data = wavfile.read(full_path)
-        duration_sec = len(data) / sample_rate
-        print(f"\n--- Playing: {file_name} (Duration: {duration_sec:.2f}s) ---")
-        
-        # 2. Load audio
-        script_sound = sound.Sound(full_path)
-        
-        # --- 3. START PLAYBACK & SEND ONSET TRIGGER ---
-        script_sound.play()
-        
-        port.setData(2)
-        core.wait(0.01)  # 10 ms pulse width
-        port.setData(0)
-        
-        # 4. Active listening loop (allows ESC or Click to abort cleanly)
-        timer = core.Clock()
-        while timer.getTime() < duration_sec:
-            keys = event.getKeys(keyList=['escape'])
-            if 'escape' in keys:
-                script_sound.stop()
-                port.setData(99)  # Optional: Send an "aborted" trigger code to MEG
-                core.wait(0.01)
-                port.setData(0)
-                raise ExitProcedureException("Experiment aborted by user via ESC key.")
-            
-            core.wait(0.01)  # Small yield to prevent CPU hogging
-        
-        # --- 5. SEND OFFSET TRIGGER ---
-        port.setData(4)
         core.wait(0.01)
-        port.setData(0)
-        
-        print(f"{file_name} DONE.")
-        
-        # 6. Log completion
-        writer.writerow([lang, tape_num, file_name, round(duration_sec, 4), "DONE"])
-        
-        # Inter-Trial Interval (1 second between tapes)
-        core.wait(1.0)
+    
+    # --- 5. OFFSET TRIGGER ---
+    port.setData(offset_code)
+    core.wait(0.01)
+    port.setData(0)
+    
+    print(f"{file_name} DONE.")
+    
+    # 6. Log to CSV if a writer was provided
+    if writer and trial_info is not None:
+        # Appends filename, duration, and status to whatever trial_info list you passed
+        writer.writerow(trial_info + [file_name, round(duration_sec, 4), "DONE"])
+    
+    # Small default Inter-Trial Interval
+    core.wait(0.5)
 
 
 """
