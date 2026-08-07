@@ -68,24 +68,41 @@ key press: need to be set (we'll use 2 bottons in here')
 reaction time: need to be recorded
 '''
 
+# =============================================================================
+# 1. CUSTOM EXCEPTION & HELPER FUNCTIONS
+# =============================================================================
+
 class ExitProcedureException(Exception):
     """Custom exception raised to cleanly exit the listening procedure."""
     pass
 
-def play_audio(file_name, port, writer=None, trial_info=None, 
+
+def display_ins(win, text_str, key_list=None):
+    """Displays instructions and waits for a keypress."""
+    screens = text_str.split("\\\\")
+    for t in screens:
+        stim = visual.TextStim(win=win, text=t, height=0.08, wrapWidth=1.5)
+        stim.draw()
+        win.flip()
+        event.waitKeys(keyList=key_list)
+        win.flip()
+
+
+def display_fix(win, duration=None):
+    """Displays a central fixation cross."""
+    fixation = visual.TextStim(win=win, text="+", height=0.15)
+    fixation.draw()
+    win.flip()
+    if duration is not None:
+        core.wait(duration)
+        win.flip()
+
+
+def play_audio_trial(file_name, port, writer=None, trial_info=None, 
                      onset_code=2, offset_code=4, data_path="audio/"):
     """
-    Plays ANY single audio file, sends customizable MEG onset/offset triggers,
-    checks for ESC key to abort, and optionally logs trial details to CSV.
-    
-    Parameters:
-        file_name (str): Name of the wav file (e.g., 'LPP_CHT_tape_1.wav' or 'CHT_q1.wav')
-        port: Initialized PsychoPy parallel port object
-        writer (csv.writer, optional): Open CSV writer object for logging
-        trial_info (list, optional): Extra info to log in CSV [e.g., "CHT", "Tape", 1]
-        onset_code (int): TTL trigger code for audio start (default: 2)
-        offset_code (int): TTL trigger code for audio end (default: 4)
-        data_path (str): Folder where audio files are stored
+    Universal audio player: Plays ANY .wav file, sends MEG TTL triggers,
+    checks for ESC to abort, and logs data to CSV.
     """
     full_path = os.path.join(data_path, file_name)
     
@@ -97,13 +114,13 @@ def play_audio(file_name, port, writer=None, trial_info=None,
     # 2. Load sound
     script_sound = sound.Sound(full_path)
     
-    # --- 3. ONSET TRIGGER & PLAYBACK ---
+    # 3. Onset Trigger & Playback
     script_sound.play()
     port.setData(onset_code)
     core.wait(0.01)  # 10 ms TTL pulse
     port.setData(0)
     
-    # 4. Active listening loop (checks ESC every 10 ms)
+    # 4. Active listening loop (checks ESC key every 10 ms)
     timer = core.Clock()
     while timer.getTime() < duration_sec:
         keys = event.getKeys(keyList=['escape'])
@@ -116,32 +133,31 @@ def play_audio(file_name, port, writer=None, trial_info=None,
         
         core.wait(0.01)
     
-    # --- 5. OFFSET TRIGGER ---
+    # 5. Offset Trigger
     port.setData(offset_code)
     core.wait(0.01)
     port.setData(0)
     
     print(f"{file_name} DONE.")
     
-    # 6. Log to CSV if a writer was provided
+    # 6. Log to CSV
     if writer and trial_info is not None:
-        # Appends filename, duration, and status to whatever trial_info list you passed
         writer.writerow(trial_info + [file_name, round(duration_sec, 4), "DONE"])
     
-    # Small default Inter-Trial Interval
-    core.wait(0.5)
+    core.wait(0.5)  # Brief delay before next event
 
 
-"""
-def run_meg_experiment(sub_id, order_type, port, languages=["CHT", "ENG", "FRN"], 
-                       data_path="audio/"):
+# =============================================================================
+# 2. MASTER EXPERIMENT CONTROLLER
+# =============================================================================
+
+def run_meg_experiment(sub_id, order_type, win, port, 
+                       languages=["CHT", "ENG", "FRN"], data_path="audio/"):
     """
-    Master controller: Sets up logging, determines language order, and executes 
-    tape slices (1-3, 4-6, 7-9) by calling play_language_tape_slice three times.
-    
-    languages: A list where index 0 = L1, index 1 = L2, index 2 = L3.
+    Executes the full MEG experiment: displays instructions, plays tapes 
+    followed by comprehension questions, and logs all events to one CSV file.
     """
-    # 1. Map order types to language presentation sequences
+    # Map counterbalanced orders (L1, L2, L3)
     order_map = {
         "Type A": [languages[0], languages[1], languages[2]],  # L1-L2-L3
         "Type B": [languages[0], languages[2], languages[1]],  # L1-L3-L2
@@ -152,96 +168,113 @@ def run_meg_experiment(sub_id, order_type, port, languages=["CHT", "ENG", "FRN"]
     }
     
     if order_type not in order_map:
-        raise ValueError(f"Invalid order_type '{order_type}'. Must be one of: {list(order_map.keys())}")
+        raise ValueError(f"Invalid order_type '{order_type}'. Must be: {list(order_map.keys())}")
         
     selected_langs = order_map[order_type]
     
-    # 2. Prepare behavioral data logging file
+    # Assign Language Blocks -> (Language, Tape_Range)
+    blocks = [
+        (selected_langs[0], range(1, 4)),   # Block 1: Tapes 1 to 3
+        (selected_langs[1], range(4, 7)),   # Block 2: Tapes 4 to 6
+        (selected_langs[2], range(7, 10))   # Block 3: Tapes 7 to 9
+    ]
+    
+    # Prepare single CSV log file
     clean_type = order_type.replace(" ", "")
     log_filename = f"LPP_S{sub_id}{clean_type}_{selected_langs[0]}_{selected_langs[1]}_{selected_langs[2]}.csv"
     
     try:
         with open(log_filename, mode='w', newline='', encoding='utf-8') as log_file:
             writer = csv.writer(log_file)
-            writer.writerow(["language", "tape_num", "filename", "duration_sec", "status"])
+            # Unified CSV Headers for both Story Tapes & Comprehension Qs
+            writer.writerow(["sub_id", "order_type", "language", "stim_type", "item_num", 
+                             "filename", "duration_sec", "status"])
             
-            # --- CALL 1: First Language (Tapes 1 to 3) ---
-            print(f"\n=== STARTING BLOCK 1: {selected_langs[0]} (Tapes 1-3) ===")
-            play_language_tape_slice(
-                sub_id, order_type, port, 
-                lang=selected_langs[0], 
-                tape_range=range(1, 4),  # Plays tapes 1, 2, 3
-                writer=writer, 
-                data_path=data_path
-            )
+            # Initial Experiment Welcome Screen
+            display_ins(win, "Welcome to the Listening Experiment.\\\\Press SPACE to begin.", ['space'])
             
-            # --- CALL 2: Second Language (Tapes 4 to 6) ---
-            print(f"\n=== STARTING BLOCK 2: {selected_langs[1]} (Tapes 4-6) ===")
-            play_language_tape_slice(
-                sub_id, order_type, port, 
-                lang=selected_langs[1], 
-                tape_range=range(4, 7),  # Plays tapes 4, 5, 6
-                writer=writer, 
-                data_path=data_path
-            )
+            # --- MAIN EXPERIMENT LOOP ---
+            for block_idx, (lang, tape_range) in enumerate(blocks, start=1):
+                
+                # Display block instructions before switching languages
+                display_ins(
+                    win, 
+                    f"Block {block_idx} of 3 ({lang}).\\\\Listen carefully to the story.\\\\Press SPACE when ready.", 
+                    ['space']
+                )
+                
+                for tape_num in tape_range:
+                    # Show Fixation cross before story starts (1 second)
+                    display_fix(win, duration=1.0)
+                    
+                    # ---------------------------------------------------------
+                    # A. PLAY STORY TAPE
+                    # ---------------------------------------------------------
+                    tape_file = f"LPP_{lang}_tape_{tape_num}.wav"
+                    play_audio_trial(
+                        file_name=tape_file,
+                        port=port,
+                        writer=writer,
+                        trial_info=[sub_id, order_type, lang, "StoryTape", tape_num],
+                        onset_code=10 + tape_num,   # Unique trigger per tape
+                        offset_code=50 + tape_num,
+                        data_path=data_path
+                    )
+                    
+                    # ---------------------------------------------------------
+                    # B. PLAY COMPREHENSION QUESTION
+                    # ---------------------------------------------------------
+                    question_file = f"LPP_{lang}_question_{tape_num}.wav"
+                    play_audio_trial(
+                        file_name=question_file,
+                        port=port,
+                        writer=writer,
+                        trial_info=[sub_id, order_type, lang, "ComprehensionQ", tape_num],
+                        onset_code=100 + tape_num,  # Unique trigger per question
+                        offset_code=150 + tape_num,
+                        data_path=data_path
+                    )
+                    
+                    # (Optional) Add your participant button-response recording here!
+                    # e.g., record_participant_answer(win, port, writer, ...)
+                    
+                    # Short pause between trials
+                    core.wait(1.0)
+                    
+            # Completion Screen
+            display_ins(win, "You have completed the experiment!\\\\Thank you for your participation.", ['space'])
+            print(f"\nAll 9 tapes completed successfully! Log saved to: {log_filename}")
             
-            # --- CALL 3: Third Language (Tapes 7 to 9) ---
-            print(f"\n=== STARTING BLOCK 3: {selected_langs[2]} (Tapes 7-9) ===")
-            play_language_tape_slice(
-                sub_id, order_type, port, 
-                lang=selected_langs[2], 
-                tape_range=range(7, 10), # Plays tapes 7, 8, 9
-                writer=writer, 
-                data_path=data_path
-            )
-            
-        print(f"\nAll 9 tapes completed successfully! Log saved to: {log_filename}")
-        
     except ExitProcedureException as e:
         print(f"\n[ABORTED]: {e}")
-        print(f"Partial data up to the abort point was saved to: {log_filename}")
-"""
+        print(f"Data saved up to abort point in: {log_filename}")
+        display_ins(win, "Experiment aborted by user.", ['space'])
 
 
-    from psychopy import visual, event, core
-    
-def display_ins(STR, keyPressLIST=None):
-    """
-    Displays instruction text on the screen and waits for a specific key press 
-    to proceed to the next text screen.
-    
-    If 'STR' contains the delimiter '\\\\', it splits the string into multiple 
-    sequential screens. If 'keyPressLIST' is None, pressing any key will advance 
-    to the next screen.
-    
-    Example usage:
-        display_ins("Welcome to the experiment!\\\\Press SPACE to start.", ['space'])
-    """
-    instructionsLIST = STR.split("\\\\")
-    
-    for t in instructionsLIST:
-        instructions = visual.TextStim(win=win, text=t)
-        instructions.draw()
-        win.flip()
-        event.waitKeys(keyList=keyPressLIST)
-        win.flip()  # Clears the screen after the key is pressed
+# =============================================================================
+# 3. RUNNER EXECUTION
+# =============================================================================
 
-def display_fix(duration=None):
-    """
-    Displays a white fixation cross ('+') at the center of the screen.
+if __name__ == "__main__":
+    # Initialize PsychoPy Window & Hardware
+    win = visual.Window(size=[1024, 768], units="norm", fullscr=False)
+    meg_port = parallel.ParallelPort(address=0x0378)
     
-    Parameters:
-        duration (float, optional): Time in seconds to hold the fixation cross 
-                                    on screen. If None, it just draws and flips 
-                                    without pausing execution.
-    """
-    fixation = visual.TextStim(win=win, text="+")
-    fixation.draw()
-    win.flip()
+    # Run Experiment (e.g., Sub '01', Type A order: CHT 1-3 -> ENG 4-6 -> FRN 7-9)
+    run_meg_experiment(
+        sub_id="01",
+        order_type="Type A",
+        win=win,
+        port=meg_port,
+        languages=["CHT", "ENG", "FRN"],
+        data_path="audio/"
+    )
     
-    if duration is not None:
-        core.wait(duration)
-        win.flip()  # Clears the screen after the duration expires
+    win.close()
+    core.quit()
+
+#======OLD script BLOCK================================================================================================
+
 
 """
 1. instructions >> press 'space'?? or other button?
