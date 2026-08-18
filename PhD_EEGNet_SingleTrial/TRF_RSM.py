@@ -838,7 +838,7 @@ if __name__ == "__main__":
     # ==========================================
     # 1. DEFINE THE TIME PARAMETERS
     # ==========================================
-    step = 0.010 
+    step = 0.200 
     start_times = np.arange(0, 1.000, step)  
     
     # --- NEW: Lists to store data for the line graph ---
@@ -1016,7 +1016,7 @@ if __name__ == "__main__":
         # 3. Permutation Threshold (95th percentile of the absolute fake correlations)
         idx_all = np.triu_indices(num_total_subj, k=1)
         fake_corrs_off_diag = null_rsms[:, idx_all[0], idx_all[1]]
-        threshold_95 = np.nanpercentile(np.abs(fake_corrs_off_diag), 95)
+        threshold_95 = np.nanpercentile(np.abs(fake_corrs_off_diag), 99)
         perm_95th_thresholds.append(threshold_95)
     
         # 4. Save the timepoint (using the start of the window, in ms)
@@ -1052,7 +1052,7 @@ if __name__ == "__main__":
         # ==========================================
         plt.figure(figsize=(14, 12))
         
-        alpha_threshold = 0.05
+        alpha_threshold = 0.01 #0.05
         mask = (p_values > alpha_threshold) | (np.eye(num_total_subj, dtype=bool))
         
         sns.heatmap(spatial_rsm_real, 
@@ -1072,7 +1072,7 @@ if __name__ == "__main__":
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'Thresholded_FirstOrder_Spatial_{predictorSTR}-Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        filename = f'Thresholded_FirstOrder_Spatial_{predictorSTR}-α={alpha_threshold}Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         plt.savefig(DST_ESLs / filename)
         plt.close()
@@ -1090,10 +1090,10 @@ if __name__ == "__main__":
     # Plot the three lines
     plt.plot(plot_times, median_r_natives, label='Native Group (Median r)', color='#1f77b4', linewidth=2.5, marker='o')
     plt.plot(plot_times, median_r_esls, label='ESL Group (Median r)', color='#d62728', linewidth=2.5, marker='o')
-    plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.05)', color='black', linestyle='--', linewidth=2)
+    plt.plot(plot_times, perm_95th_thresholds, label='Permutation Threshold (α=0.01)', color='black', linestyle='--', linewidth=2)
     
     # Aesthetics
-    plt.title(f"Spatial Similarity Dynamics over Time: Natives vs. ESLs ({predictorSTR}-Zed)_10msINV", fontsize=14)
+    plt.title(f"Spatial Similarity Dynamics over Time: Natives vs. ESLs ({predictorSTR}-α={alpha_threshold}Zed)_10msINV", fontsize=14)
     plt.xlabel("Time Window Start (ms)", fontsize=12)
     plt.ylabel("Median Pearson's r", fontsize=12)
     
@@ -1105,62 +1105,62 @@ if __name__ == "__main__":
     plt.legend(fontsize=11)
     
     plt.tight_layout()
-    plt.savefig(DST_ESLs / f'Median_RSM_TimeSeries_{predictorSTR}-Zed_10msINV.png')
+    plt.savefig(DST_ESLs / f'Median_RSM_TimeSeries_{predictorSTR}-α={alpha_threshold}Zed_10msINV.png')
     plt.close()
     
     print("--- Pipeline Complete! ---")
     
-    # ==========================================
-    # 6. SAVE THE 3D ARRAYS TO DISK (.npy)
-    # ==========================================
-    print("--- Saving 3D Arrays for Machine Learning & Analysis... ---")
+    ## ==========================================
+    ## 6. SAVE THE 3D ARRAYS TO DISK (.npy)
+    ## ==========================================
+    #print("--- Saving 3D Arrays for Machine Learning & Analysis... ---")
     
-    # 1. Save the Raw Data
-    # Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 64 Sensors)
-    final_3d_raw = np.array(all_time_raw_data)
-    raw_filename = f'Raw_Spatial_Maps_{predictorSTR}-Zed_10msINV_AllWindows.npy'
-    np.save(DST_ESLs / raw_filename, final_3d_raw)
-    print(f"Saved Raw Data: {raw_filename} | Shape: {final_3d_raw.shape}")
+    ## 1. Save the Raw Data
+    ## Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 64 Sensors)
+    #final_3d_raw = np.array(all_time_raw_data)
+    #raw_filename = f'Raw_Spatial_Maps_{predictorSTR}-Zed_10msINV_AllWindows.npy'
+    #np.save(DST_ESLs / raw_filename, final_3d_raw)
+    #print(f"Saved Raw Data: {raw_filename} | Shape: {final_3d_raw.shape}")
     
-    # 2. Save the RSM Data
-    # Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 59 Subjects)
-    final_3d_rsm = np.array(all_time_rsms)
-    rsm_filename = f'FirstOrder_Spatial_{predictorSTR}-Zed_RSM_10msINV_AllWindows.npy'
-    np.save(DST_ESLs / rsm_filename, final_3d_rsm)
-    print(f"Saved RSM Data: {rsm_filename} | Shape:{final_3d_rsm.shape}")
+    ## 2. Save the RSM Data
+    ## Stacks the list into a 3D array. Shape: (20 Timepoints, 59 Subjects, 59 Subjects)
+    #final_3d_rsm = np.array(all_time_rsms)
+    #rsm_filename = f'FirstOrder_Spatial_{predictorSTR}-Zed_RSM_10msINV_AllWindows.npy'
+    #np.save(DST_ESLs / rsm_filename, final_3d_rsm)
+    #print(f"Saved RSM Data: {rsm_filename} | Shape:{final_3d_rsm.shape}")
     
-    print("--- Pipeline Complete! ---")
+    #print("--- Pipeline Complete! ---")
                     
-        ## ==========================================
-        ## 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
-        ## ==========================================
-        ## Shape is now perfectly (Total Subjects, 64 Sensors)
-        #group_data = np.array(all_subjects_spatial_data)
+        ### ==========================================
+        ### 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION
+        ### ==========================================
+        ### Shape is now perfectly (Total Subjects, 64 Sensors)
+        ##group_data = np.array(all_subjects_spatial_data)
         
-        ## We no longer need t_index! Just correlate the spatial maps directly.
-        #spatial_rsm = np.corrcoef(group_data)
+        ### We no longer need t_index! Just correlate the spatial maps directly.
+        ##spatial_rsm = np.corrcoef(group_data)
         
-        ## ==========================================
-        ## 4. PLOT THE SPATIAL RSM
-        ## ==========================================
-        #plt.figure(figsize=(14, 12))
+        ### ==========================================
+        ### 4. PLOT THE SPATIAL RSM
+        ### ==========================================
+        ##plt.figure(figsize=(14, 12))
         
-        #sns.heatmap(spatial_rsm, 
-                    #cmap='RdBu_r', 
-                    #center=0, 
-                    #vmin=-1, vmax=1, 
-                    #square=True,
-                    #xticklabels=combined_labels,  
-                    #yticklabels=combined_labels)
+        ##sns.heatmap(spatial_rsm, 
+                    ##cmap='RdBu_r', 
+                    ##center=0, 
+                    ##vmin=-1, vmax=1, 
+                    ##square=True,
+                    ##xticklabels=combined_labels,  
+                    ##yticklabels=combined_labels)
         
-        #plt.axhline(num_natives, color='black', linewidth=2)
-        #plt.axvline(num_natives, color='black', linewidth=2)
+        ##plt.axhline(num_natives, color='black', linewidth=2)
+        ##plt.axvline(num_natives, color='black', linewidth=2)
         
-        #plt.title(f"Spatial RSM: Envelope_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
-        #plt.xlabel("Subject ID")
-        #plt.ylabel("Subject ID")
+        ##plt.title(f"Spatial RSM: Envelope_Zscored ({tmin*1000:.0f}-{tmax*1000:.0f} ms)") 
+        ##plt.xlabel("Subject ID")
+        ##plt.ylabel("Subject ID")
         
-        #filename = f'FirstOrder_Spatial_Envelope_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
-        #plt.tight_layout() 
-        #plt.savefig(DST_ESLs / filename)
-        #plt.close()
+        ##filename = f'FirstOrder_Spatial_Envelope_RSM_Zscored_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        ##plt.tight_layout() 
+        ##plt.savefig(DST_ESLs / filename)
+        ##plt.close()
