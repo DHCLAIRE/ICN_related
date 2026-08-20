@@ -49,9 +49,6 @@ if __name__ == "__main__":
         target_wavfileSTR = f"LPP_ENG_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
         audio_wavfile = results_data_path / Path(target_wavfileSTR)
         
-        # Set the ceiling of the dBFS baseline ()
-        max_dbfs = -10 
-        
         # 1. Load the stereo wav file (Shape: [samples, 2])
         sample_rate, data = wavfile.read(audio_wavfile)
         print(data.dtype)
@@ -76,7 +73,10 @@ if __name__ == "__main__":
             raise ValueError(f"Unsupported audio format: {original_dtype}")
         
         data = data.astype(np.float64) 
-        max_val = 32768.0 
+        max_val = 32768.0 # The max value of volume for 16-bit PCM
+        
+        # Set the ceiling of the dBFS baseline ()
+        max_dbfs = -10
         
         # 2. Calculate the current global RMS across BOTH channels combined
         current_rms = np.sqrt(np.mean(data**2))
@@ -103,7 +103,7 @@ if __name__ == "__main__":
             step_data = np.clip(step_data, -max_val, max_val - 1)
             
             # Export the file
-            output_name = f"{target_wavfileSTR}_{target_db}dBFS.wav"
+            output_name = f"{target_wavfileSTR[0:14]}_{target_db}dBFS.wav" #target_wavfileSTR[0:14]= exclude the .wav string in btw
             wavfile.write(results_data_path / Path(output_name), sample_rate, step_data.astype(np.int16))
             print(f"Generated: {output_name}")
         
