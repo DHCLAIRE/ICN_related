@@ -5,7 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from pathlib import Path
 import noisereduce as nr
-from pedalboard import Pedalboard, Compressor, Limiter, NoiseGate
+from pedalboard import Pedalboard, Compressor, Limiter, NoiseGate, HighShelfFilter
 """
 def generate_incremental_stimuli(input_path, base_name, max_dbfs):
     # 1. Load the stereo wav file (Shape: [samples, 2])
@@ -286,6 +286,7 @@ if __name__ == "__main__":
             Limiter(threshold_db=-1.0)
         ])
     """
+    """
     # Version 4 setting: smoother it!!
     board = Pedalboard([
             NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
@@ -296,6 +297,22 @@ if __name__ == "__main__":
             
             Limiter(threshold_db=-1.0)
         ])
+    """
+    # Version 5 setting: Ultra-smooth with high-frequency friction taming
+    board = Pedalboard([
+        NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+        
+        # GENTLER COMPRESSION:
+        Compressor(threshold_db=-14.0, ratio=2.0, attack_ms=10.0, release_ms=300.0),
+        
+        # --- NEW: TAMER FOR THE "FRICTION" ---
+        # This gently rolls off 2 decibels of high frequencies above 6,000 Hz. 
+        # It instantly kills that sharp, raspy consonant "s" and "t" friction 
+        # while leaving the core voice completely natural.
+        HighShelfFilter(cutoff_frequency_hz=6000.0, gain_db=-2.0),
+        
+        Limiter(threshold_db=-1.0)
+    ])
     
     # 3. Run the audio through the compressor
     # If the audio is stereo, pedalboard expects (channels, samples)
@@ -373,7 +390,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"new44_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"new55_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
