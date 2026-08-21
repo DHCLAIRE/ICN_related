@@ -284,10 +284,11 @@ if __name__ == "__main__":
             
         # 7. Convert back to original format and Export
         if original_dtype == np.int16:
-            # Scale back to 16-bit limits and apply hard safety clip
-            safe_clipped = np.clip(final_data * 32768.0, -32768.0, 32767.0)
+            # Scale back to 16-bit limits using the safer 32767.0 multiplier
+            safe_clipped = np.clip(final_data * 32767.0, -32768.0, 32767.0)
             final_output = safe_clipped.astype(np.int16)
         else:
+            # For 32-bit float, no multiplier is needed, just clip at 1.0
             safe_clipped = np.clip(final_data, -1.0, 1.0)
             final_output = safe_clipped.astype(original_dtype)
             
