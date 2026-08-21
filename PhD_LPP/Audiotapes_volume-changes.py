@@ -208,14 +208,14 @@ def generate_smart_incremental_stimuli(input_path, base_name, baseline_dbfs=-15,
 if __name__ == "__main__":
     
     # Set Data path (Make sure trailing slashes are present!)
-    #data_root_path = "/Volumes/DH_4GB/" #"F:\LPP_Materials"
-    data_root_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials"
-    #results_data_path = "/Volumes/DH_4GB/LPP_Materials/" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
-    results_data_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
+    data_root_path = "/Volumes/DH_4GB/" #"F:\LPP_Materials"
+    results_data_path = "/Volumes/DH_4GB/LPP_Materials/" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
+    #data_root_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials"
+    #results_data_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
     
     # Start the loop if audiotapes processing in batch
     #for tape_numSTR in range(1, 10):
-    target_wavfileSTR =  "LPP_CHT_tape_1_5min.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
+    target_wavfileSTR =  "LPP_ENG_tape_2_3min.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
     audio_wavfile = results_data_path / Path(target_wavfileSTR)
     
     # 1. Load the stereo wav file (Shape: [samples, 2])
@@ -228,25 +228,32 @@ if __name__ == "__main__":
     
     print(f"--- Processing: {target_wavfileSTR[:-4]} ---")
         
-    # 2. Normalize into a unified float scale [-1.0, 1.0] for math
-    if original_dtype == np.int16:
-        print("Format: 16-bit PCM")
+    # 2. Convert to a strict float scale [-1.0, 1.0] for math
+    if data.dtype == np.int16:
         work_data = data.astype(np.float64) / 32768.0
-    elif original_dtype in [np.float32, np.float64]:
-        print("Format: 32/64-bit Float")
+    elif data.dtype in [np.float32, np.float64]:
         work_data = data.astype(np.float64)
     else:
-        raise ValueError(f"Unsupported audio format: {original_dtype}")
+        # Fallback safeguard
+        max_val = np.max(np.abs(data))
+        work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
+        
+    # 3. FIX: Transpose Stereo Data for noisereduce
+    # noisereduce expects shape (channels, samples). scipy gives (samples, channels).
+    is_stereo = (len(work_data.shape) == 2)
+    if is_stereo:
+        work_data = work_data.T  
+        
+    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate)
     
-    # 3. Clean background noise (Hiss/Hum) universally
-    #print("Applying Spectral Noise Reduction...")
-    #clean_data = nr.reduce_noise(y=work_data, sr=sample_rate) #>> Don't do this cause it would crash my laptop
-    clean_data = work_data
+    # Transpose it back to (samples, channels) for SciPy export
+    if is_stereo:
+        clean_data = clean_data.T 
     
     # 4. Calculate RMS and establish the Baseline (e.g., -15 dBFS)
     current_rms = np.sqrt(np.mean(clean_data**2))
     if current_rms == 0:
-        raise ValueError("Error: Audio file is completely silent.")
+        raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
         
     baseline_rms = 10 ** (baseline_dbfs / 20.0)
     baseline_data = clean_data * (baseline_rms / current_rms)
