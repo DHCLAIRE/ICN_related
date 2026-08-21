@@ -208,21 +208,25 @@ def generate_smart_incremental_stimuli(input_path, base_name, baseline_dbfs=-15,
 if __name__ == "__main__":
     
     # Set Data path (Make sure trailing slashes are present!)
-    data_root_path = "/Volumes/DH_4GB/" #"F:\LPP_Materials"
-    results_data_path = "/Volumes/DH_4GB/LPP_Materials/" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
+    #data_root_path = "/Volumes/DH_4GB/" #"F:\LPP_Materials"
+    data_root_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials"
+    #results_data_path = "/Volumes/DH_4GB/LPP_Materials/" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
+    results_data_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
     
     # Start the loop if audiotapes processing in batch
     #for tape_numSTR in range(1, 10):
     target_wavfileSTR =  "LPP_CHT_tape_1_5min.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
     audio_wavfile = results_data_path / Path(target_wavfileSTR)
     
-    # 1. Load the stereo wav file (Shape: [samples, 2]), and set the target_rms_dbfs
+    # 1. Load the stereo wav file (Shape: [samples, 2])
     sample_rate, data = wavfile.read(audio_wavfile)
     #print(data.dtype)
     original_dtype = data.dtype
-    target_rms_dbfs = -15.0
+    # Set the baseline_rms_dbfs & max dB
+    baseline_dbfs = -15
+    max_dbfs = -10
     
-    print(f"--- Processing: {input_path} ---")
+    print(f"--- Processing: {target_wavfileSTR[:-4]} ---")
         
     # 2. Normalize into a unified float scale [-1.0, 1.0] for math
     if original_dtype == np.int16:
@@ -235,8 +239,9 @@ if __name__ == "__main__":
         raise ValueError(f"Unsupported audio format: {original_dtype}")
     
     # 3. Clean background noise (Hiss/Hum) universally
-    print("Applying Spectral Noise Reduction...")
-    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate)
+    #print("Applying Spectral Noise Reduction...")
+    #clean_data = nr.reduce_noise(y=work_data, sr=sample_rate) #>> Don't do this cause it would crash my laptop
+    clean_data = work_data
     
     # 4. Calculate RMS and establish the Baseline (e.g., -15 dBFS)
     current_rms = np.sqrt(np.mean(clean_data**2))
