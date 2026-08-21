@@ -284,7 +284,7 @@ if __name__ == "__main__":
         raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
         
     baseline_rms = 10 ** (baseline_dbfs / 20.0)
-    baseline_data = clean_data * (baseline_rms / current_rms)
+    baseline_data = compressed_data * (baseline_rms / current_rms)
     
     print(f"Starting increment generation from {baseline_dbfs} dBFS to {max_dbfs} dBFS...\n")
         
