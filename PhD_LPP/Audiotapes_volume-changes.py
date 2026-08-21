@@ -271,6 +271,8 @@ if __name__ == "__main__":
         Limiter(threshold_db=-1.0)
     ])
     """
+    """
+    # Version 3 setting: smoother than before, but I want it more smooth like the original
     board = Pedalboard([
             NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
             
@@ -280,6 +282,17 @@ if __name__ == "__main__":
             # attack_ms: 5.0 (Lets the very tip of the consonant pass before squeezing, preserving clarity)
             # release_ms: 250.0 (Releases the squeeze slowly, making the volume changes invisible/smooth)
             Compressor(threshold_db=-18.0, ratio=2.5, attack_ms=5.0, release_ms=250.0),
+            
+            Limiter(threshold_db=-1.0)
+        ])
+    """
+    # Version 4 setting: smoother it!!
+    board = Pedalboard([
+            NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+            # GENTLER COMPRESSION: 
+            # Raising threshold to -14.0 means it leaves normal speech entirely alone, 
+            # only smoothing out the harsh peaks.
+            Compressor(threshold_db=-14.0, ratio=2.0, attack_ms=10.0, release_ms=300.0),
             
             Limiter(threshold_db=-1.0)
         ])
@@ -305,8 +318,14 @@ if __name__ == "__main__":
     
     print(f"Starting increment generation from {baseline_dbfs} dBFS to {max_dbfs} dBFS...\n")
     
-    # --- NEW: Create a transparent Mastering Limiter to replace np.tanh ---
-    mastering_limiter = Pedalboard([Limiter(threshold_db=-0.2)])
+    #--- NEW: Create a transparent Mastering Limiter to replace np.tanh ---
+    ## Version 1 setting (paired with ver3 of compressor setting)
+    #mastering_limiter = Pedalboard([Limiter(threshold_db=-0.2)])
+    
+    # Give the mastering limiter a tiny bit more headroom (-0.5 instead of -0.2)
+    # This prevents it from clamping down too harshly on the final steps.
+    # Version 2 setting (paired with ver4 of compressor setting)
+    mastering_limiter = Pedalboard([Limiter(threshold_db=-0.5)])    
     
     # 5. THE LOOP: Generate each increment step-by-step
     for target_db in range(baseline_dbfs, max_dbfs + 1):
@@ -354,7 +373,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"new33_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"new44_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
