@@ -239,7 +239,7 @@ if __name__ == "__main__":
         max_val = np.max(np.abs(data))
         work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
     """
-    # Old parameters: still sound convered and static, but less than before
+    # Version 1 setting: still sound convered and static, but less than before
     # 1. Clean the background noise as usual
     clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.8)
     
@@ -255,6 +255,8 @@ if __name__ == "__main__":
     # Drop prop_decrease to 0.4. It will sound much more natural and clear.
     clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)
     
+    """
+    # Version 2 setting: sound less smooth
     # 2. Build the Studio Compressor Board + Noise Gate
     board = Pedalboard([
         # 1. NOISE GATE: Mutes the hiss completely during pauses in speech.
@@ -268,6 +270,19 @@ if __name__ == "__main__":
         # 3. LIMITER: Acts as an absolute brick wall at -1.0 dB to guarantee safety
         Limiter(threshold_db=-1.0)
     ])
+    """
+    board = Pedalboard([
+            NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+            
+            # SMOOTHER COMPRESSION:
+            # threshold_db: -18.0 (Only compresses the loudest peaks, lets the rest breathe)
+            # ratio: 2.5 (A gentler squeeze. For every 2.5dB over, 1dB passes)
+            # attack_ms: 5.0 (Lets the very tip of the consonant pass before squeezing, preserving clarity)
+            # release_ms: 250.0 (Releases the squeeze slowly, making the volume changes invisible/smooth)
+            Compressor(threshold_db=-18.0, ratio=2.5, attack_ms=5.0, release_ms=250.0),
+            
+            Limiter(threshold_db=-1.0)
+        ])
     
     # 3. Run the audio through the compressor
     # If the audio is stereo, pedalboard expects (channels, samples)
@@ -323,7 +338,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"new_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"new22_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
