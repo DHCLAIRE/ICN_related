@@ -238,7 +238,8 @@ if __name__ == "__main__":
         # Fallback safeguard
         max_val = np.max(np.abs(data))
         work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
-        
+    """
+    # Old parameters: still sound convered and static, but less than before
     # 1. Clean the background noise as usual
     clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.8)
     
@@ -247,6 +248,22 @@ if __name__ == "__main__":
         # Compressor catches the loud peaks and turns them down by a 3:1 ratio
         Compressor(threshold_db=-20.0, ratio=3.0, attack_ms=2.0, release_ms=100.0),
         # Limiter acts as an absolute brick wall at -1.0 dB to guarantee safety
+        Limiter(threshold_db=-1.0)
+    ])
+    """
+    # 1. FIX THE COVERED SOUND
+    # Drop prop_decrease to 0.4. It will sound much more natural and clear.
+    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)
+    
+    # 2. FIX THE STATIC SOUND
+    # We must make the compressor catch peaks faster and squash them harder
+    board = Pedalboard([
+        # threshold_db: -24.0 (Starts catching peaks earlier)
+        # ratio: 4.0 (Squashes them harder: for every 4dB it goes over, only 1dB is allowed)
+        # attack_ms: 1.0 (Reacts in 1 millisecond to catch sharp "P" and "K" sounds)
+        Compressor(threshold_db=-24.0, ratio=4.0, attack_ms=1.0, release_ms=100.0),
+        
+        # Limiter acts as the final safety net
         Limiter(threshold_db=-1.0)
     ])
     
@@ -304,7 +321,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"new_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
