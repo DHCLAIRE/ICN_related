@@ -390,7 +390,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"new55_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"new66_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
