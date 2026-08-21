@@ -304,7 +304,10 @@ if __name__ == "__main__":
     baseline_data = compressed_data * (baseline_rms / current_rms)
     
     print(f"Starting increment generation from {baseline_dbfs} dBFS to {max_dbfs} dBFS...\n")
-        
+    
+    # --- NEW: Create a transparent Mastering Limiter to replace np.tanh ---
+    mastering_limiter = Pedalboard([Limiter(threshold_db=-0.2)])
+    
     # 5. THE LOOP: Generate each increment step-by-step
     for target_db in range(baseline_dbfs, max_dbfs + 1):
         
@@ -318,13 +321,26 @@ if __name__ == "__main__":
         # 6. Conditional Check: Will THIS specific volume level cause static?
         highest_peak = np.max(np.abs(step_data))
         
+        # 6. FIX THE RASP: Use the Limiter instead of np.tanh
         if highest_peak > 1.0:
-            print(f"[{target_db} dBFS] Warning: Peak at {highest_peak:.2f}. Applying Soft-Clipping.")
-            # Apply mathematical curve to smooth the peaks
-            final_data = np.tanh(step_data)
+            print(f"[{target_db} dBFS] Peak at {highest_peak:.2f}. Applying transparent Limiter.")
+        
+            # Format shape for Pedalboard
+            if is_stereo:
+                step_data_pb = step_data.T
+            else:
+                step_data_pb = step_data
+        
+            # The Limiter catches the peaks safely without adding raspy saturation
+            final_data_pb = mastering_limiter(step_data_pb, sample_rate)
+        
+            # Revert shape
+            if is_stereo:
+                final_data = final_data_pb.T
+            else:
+                final_data = final_data_pb
         else:
             print(f"[{target_db} dBFS] Safe: Peak at {highest_peak:.2f}. Passing cleanly.")
-            # Leave the soundwave completely intact
             final_data = step_data
             
         # 7. Convert back to original format and Export
@@ -338,7 +354,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"new22_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"new33_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
