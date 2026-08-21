@@ -5,6 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from pathlib import Path
 import noisereduce as nr
+from pedalboard import Pedalboard, Compressor, Limiter
 """
 def generate_incremental_stimuli(input_path, base_name, max_dbfs):
     # 1. Load the stereo wav file (Shape: [samples, 2])
@@ -215,7 +216,7 @@ if __name__ == "__main__":
     
     # Start the loop if audiotapes processing in batch
     #for tape_numSTR in range(1, 10):
-    target_wavfileSTR =  "LPP_ENG_tape_2_3min.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
+    target_wavfileSTR =  "LPP_ENG_tape_2.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
     audio_wavfile = results_data_path / Path(target_wavfileSTR)
     
     # 1. Load the stereo wav file (Shape: [samples, 2])
@@ -238,21 +239,30 @@ if __name__ == "__main__":
         max_val = np.max(np.abs(data))
         work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
         
-    ## 3. FIX: Transpose Stereo Data for noisereduce
-    ## noisereduce expects shape (channels, samples). scipy gives (samples, channels).
-    #is_stereo = (len(work_data.shape) == 2)
-    #if is_stereo:
-        #work_data = work_data.T  
+    # 1. Clean the background noise as usual
+    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.8)
+    
+    # 2. Build the Studio Compressor Board
+    board = Pedalboard([
+        # Compressor catches the loud peaks and turns them down by a 3:1 ratio
+        Compressor(threshold_db=-20.0, ratio=3.0, attack_ms=2.0, release_ms=100.0),
+        # Limiter acts as an absolute brick wall at -1.0 dB to guarantee safety
+        Limiter(threshold_db=-1.0)
+    ])
+    
+    # 3. Run the audio through the compressor
+    # If the audio is stereo, pedalboard expects (channels, samples)
+    is_stereo = (len(clean_data.shape) == 2)
+    if is_stereo:
+        clean_data = clean_data.T
         
-    #clean_data = nr.reduce_noise(y=work_data, sr=sample_rate)
+    compressed_data = board(clean_data, sample_rate)
     
-    ## Transpose it back to (samples, channels) for SciPy export
-    #if is_stereo:
-        #clean_data = clean_data.T 
-    clean_data = work_data
-    
-    # 4. Calculate RMS and establish the Baseline (e.g., -15 dBFS)
-    current_rms = np.sqrt(np.mean(clean_data**2))
+    if is_stereo:
+        compressed_data = compressed_data.T
+        
+    # 4. Now calculate RMS and multiply safely!
+    current_rms = np.sqrt(np.mean(compressed_data**2))
     if current_rms == 0:
         raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
         
@@ -294,7 +304,7 @@ if __name__ == "__main__":
             final_output = safe_clipped.astype(original_dtype)
             
         # Export the file
-        output_name = f"{target_wavfileSTR[0:-4]}_{target_db}dBFS.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+        output_name = f"{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
         wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
