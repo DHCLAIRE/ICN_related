@@ -238,17 +238,18 @@ if __name__ == "__main__":
         max_val = np.max(np.abs(data))
         work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
         
-    # 3. FIX: Transpose Stereo Data for noisereduce
-    # noisereduce expects shape (channels, samples). scipy gives (samples, channels).
-    is_stereo = (len(work_data.shape) == 2)
-    if is_stereo:
-        work_data = work_data.T  
+    ## 3. FIX: Transpose Stereo Data for noisereduce
+    ## noisereduce expects shape (channels, samples). scipy gives (samples, channels).
+    #is_stereo = (len(work_data.shape) == 2)
+    #if is_stereo:
+        #work_data = work_data.T  
         
-    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate)
+    #clean_data = nr.reduce_noise(y=work_data, sr=sample_rate)
     
-    # Transpose it back to (samples, channels) for SciPy export
-    if is_stereo:
-        clean_data = clean_data.T 
+    ## Transpose it back to (samples, channels) for SciPy export
+    #if is_stereo:
+        #clean_data = clean_data.T 
+    clean_data = work_data
     
     # 4. Calculate RMS and establish the Baseline (e.g., -15 dBFS)
     current_rms = np.sqrt(np.mean(clean_data**2))
@@ -294,7 +295,7 @@ if __name__ == "__main__":
             
         # Export the file
         output_name = f"{target_wavfileSTR[0:-4]}_{target_db}dBFS.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
-        wavfile.write(results_data_path / Path(output_name), sample_rate, step_data.astype(np.int16))
+        wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
         
     print("\n--- Processing Complete ---")
     
