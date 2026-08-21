@@ -5,7 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from pathlib import Path
 import noisereduce as nr
-from pedalboard import Pedalboard, Compressor, Limiter
+from pedalboard import Pedalboard, Compressor, Limiter, NoiseGate
 """
 def generate_incremental_stimuli(input_path, base_name, max_dbfs):
     # 1. Load the stereo wav file (Shape: [samples, 2])
@@ -255,15 +255,17 @@ if __name__ == "__main__":
     # Drop prop_decrease to 0.4. It will sound much more natural and clear.
     clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)
     
-    # 2. FIX THE STATIC SOUND
-    # We must make the compressor catch peaks faster and squash them harder
+    # 2. Build the Studio Compressor Board + Noise Gate
     board = Pedalboard([
-        # threshold_db: -24.0 (Starts catching peaks earlier)
-        # ratio: 4.0 (Squashes them harder: for every 4dB it goes over, only 1dB is allowed)
-        # attack_ms: 1.0 (Reacts in 1 millisecond to catch sharp "P" and "K" sounds)
+        # 1. NOISE GATE: Mutes the hiss completely during pauses in speech.
+        # threshold_db: Adjust this based on your room. -35dB is a good start. 
+        # release_ms: 250ms lets the ends of words fade out naturally before muting.
+        NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+        
+        # 2. COMPRESSOR: Catches the loud peaks
         Compressor(threshold_db=-24.0, ratio=4.0, attack_ms=1.0, release_ms=100.0),
         
-        # Limiter acts as the final safety net
+        # 3. LIMITER: Acts as an absolute brick wall at -1.0 dB to guarantee safety
         Limiter(threshold_db=-1.0)
     ])
     
