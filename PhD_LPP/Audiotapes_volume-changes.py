@@ -218,7 +218,7 @@ if __name__ == "__main__":
     
     # Start the loop if audiotapes processing in batch
     for tape_numSTR in range(1, 10):
-        target_wavfileSTR =  f"LPP_ENG_tape_{tape_numSTR}.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
+        target_wavfileSTR =  f"LPP_CHT_tape_{tape_numSTR}.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
         audio_wavfile = results_data_path / Path(target_wavfileSTR)
         
         # 1. Load the stereo wav file (Shape: [samples, 2])
@@ -300,6 +300,17 @@ if __name__ == "__main__":
                 Limiter(threshold_db=-1.0)
             ])
         """
+        # 3. Run the audio through the compressor
+        # If the audio is stereo, pedalboard expects (channels, samples)
+        # **3-1. THE SHAPE FIX: Flip stereo data BEFORE it enters any processing tools
+        is_stereo = (len(work_data.shape) == 2)
+        if is_stereo:
+            work_data = work_data.T
+            
+        # 3-2. FIX THE COVERED SOUND
+        clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)        
+        
+        # 3-3. Build the Studio Compressor Board
         # Version 5 setting: Ultra-smooth with high-frequency friction taming
         board = Pedalboard([
             NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
@@ -315,19 +326,15 @@ if __name__ == "__main__":
             
             Limiter(threshold_db=-1.0)
         ])
-        
-        # 3. Run the audio through the compressor
-        # If the audio is stereo, pedalboard expects (channels, samples)
-        is_stereo = (len(clean_data.shape) == 2)
-        if is_stereo:
-            clean_data = clean_data.T
-            
+        # 3-4. Run the audio through the compressor
+        # (It is already flipped correctly, so we can feed it directly in!)
         compressed_data = board(clean_data, sample_rate)
-        
+
+        # 3-5. Flip it back to normal (samples, channels) for SciPy's RMS math and export
         if is_stereo:
             compressed_data = compressed_data.T
             
-        # 4. Now calculate RMS and multiply safely!
+        # 3-6. Now calculate RMS and multiply safely!
         current_rms = np.sqrt(np.mean(compressed_data**2))
         if current_rms == 0:
             raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
@@ -392,7 +399,7 @@ if __name__ == "__main__":
                 final_output = safe_clipped.astype(original_dtype)
                 
             # Export the file
-            output_name = f"new66_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+            output_name = f"{target_wavfileSTR[0:-4]}_{target_db}dBFS.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
             wavfile.write(LPP_tapes_path / Path(output_name), sample_rate, final_output)
             
     print("\n--- Processing Complete ---")
