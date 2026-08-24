@@ -209,189 +209,191 @@ def generate_smart_incremental_stimuli(input_path, base_name, baseline_dbfs=-15,
 if __name__ == "__main__":
     
     # Set Data path (Make sure trailing slashes are present!)
-    data_root_path = "/Volumes/DH_4GB/" #"F:\LPP_Materials"
-    results_data_path = "/Volumes/DH_4GB/LPP_Materials/" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
+    data_root_path = Path("/Volumes/DH_4GB/") #"F:\LPP_Materials"
+    results_data_path = Path("/Volumes/DH_4GB/LPP_Materials/") #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
     #data_root_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials"
     #results_data_path = "/Users/ting-hsin/Downloads/LPP_Materials/LPP_CHT_wav" #"F:\LPP_Materials" #"/Volumes/DH_4GB/LPP_Materials/"
+    LPP_tapes_path = results_data_path / 'LPP_sound_ups'
+    LPP_tapes_path.mkdir(exist_ok=True)
     
     # Start the loop if audiotapes processing in batch
-    #for tape_numSTR in range(1, 10):
-    target_wavfileSTR =  "LPP_ENG_tape_2.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
-    audio_wavfile = results_data_path / Path(target_wavfileSTR)
-    
-    # 1. Load the stereo wav file (Shape: [samples, 2])
-    sample_rate, data = wavfile.read(audio_wavfile)
-    #print(data.dtype)
-    original_dtype = data.dtype
-    # Set the baseline_rms_dbfs & max dB
-    baseline_dbfs = -15
-    max_dbfs = -10
-    
-    print(f"--- Processing: {target_wavfileSTR[:-4]} ---")
+    for tape_numSTR in range(1, 10):
+        target_wavfileSTR =  f"LPP_ENG_tape_{tape_numSTR}.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
+        audio_wavfile = results_data_path / Path(target_wavfileSTR)
         
-    # 2. Convert to a strict float scale [-1.0, 1.0] for math
-    if data.dtype == np.int16:
-        work_data = data.astype(np.float64) / 32768.0
-    elif data.dtype in [np.float32, np.float64]:
-        work_data = data.astype(np.float64)
-    else:
-        # Fallback safeguard
-        max_val = np.max(np.abs(data))
-        work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
-    """
-    # Version 1 setting: still sound convered and static, but less than before
-    # 1. Clean the background noise as usual
-    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.8)
-    
-    # 2. Build the Studio Compressor Board
-    board = Pedalboard([
-        # Compressor catches the loud peaks and turns them down by a 3:1 ratio
-        Compressor(threshold_db=-20.0, ratio=3.0, attack_ms=2.0, release_ms=100.0),
-        # Limiter acts as an absolute brick wall at -1.0 dB to guarantee safety
-        Limiter(threshold_db=-1.0)
-    ])
-    """
-    # 1. FIX THE COVERED SOUND
-    # Drop prop_decrease to 0.4. It will sound much more natural and clear.
-    clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)
-    
-    """
-    # Version 2 setting: sound less smooth
-    # 2. Build the Studio Compressor Board + Noise Gate
-    board = Pedalboard([
-        # 1. NOISE GATE: Mutes the hiss completely during pauses in speech.
-        # threshold_db: Adjust this based on your room. -35dB is a good start. 
-        # release_ms: 250ms lets the ends of words fade out naturally before muting.
-        NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+        # 1. Load the stereo wav file (Shape: [samples, 2])
+        sample_rate, data = wavfile.read(audio_wavfile)
+        #print(data.dtype)
+        original_dtype = data.dtype
+        # Set the baseline_rms_dbfs & max dB
+        baseline_dbfs = -15
+        max_dbfs = -10
         
-        # 2. COMPRESSOR: Catches the loud peaks
-        Compressor(threshold_db=-24.0, ratio=4.0, attack_ms=1.0, release_ms=100.0),
-        
-        # 3. LIMITER: Acts as an absolute brick wall at -1.0 dB to guarantee safety
-        Limiter(threshold_db=-1.0)
-    ])
-    """
-    """
-    # Version 3 setting: smoother than before, but I want it more smooth like the original
-    board = Pedalboard([
-            NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+        print(f"--- Processing: {target_wavfileSTR[:-4]} ---")
             
-            # SMOOTHER COMPRESSION:
-            # threshold_db: -18.0 (Only compresses the loudest peaks, lets the rest breathe)
-            # ratio: 2.5 (A gentler squeeze. For every 2.5dB over, 1dB passes)
-            # attack_ms: 5.0 (Lets the very tip of the consonant pass before squeezing, preserving clarity)
-            # release_ms: 250.0 (Releases the squeeze slowly, making the volume changes invisible/smooth)
-            Compressor(threshold_db=-18.0, ratio=2.5, attack_ms=5.0, release_ms=250.0),
-            
+        # 2. Convert to a strict float scale [-1.0, 1.0] for math
+        if data.dtype == np.int16:
+            work_data = data.astype(np.float64) / 32768.0
+        elif data.dtype in [np.float32, np.float64]:
+            work_data = data.astype(np.float64)
+        else:
+            # Fallback safeguard
+            max_val = np.max(np.abs(data))
+            work_data = data.astype(np.float64) / (max_val if max_val > 0 else 1.0)
+        """
+        # Version 1 setting: still sound convered and static, but less than before
+        # 1. Clean the background noise as usual
+        clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.8)
+        
+        # 2. Build the Studio Compressor Board
+        board = Pedalboard([
+            # Compressor catches the loud peaks and turns them down by a 3:1 ratio
+            Compressor(threshold_db=-20.0, ratio=3.0, attack_ms=2.0, release_ms=100.0),
+            # Limiter acts as an absolute brick wall at -1.0 dB to guarantee safety
             Limiter(threshold_db=-1.0)
         ])
-    """
-    """
-    # Version 4 setting: smoother it!!
-    board = Pedalboard([
+        """
+        # 1. FIX THE COVERED SOUND
+        # Drop prop_decrease to 0.4. It will sound much more natural and clear.
+        clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)
+        
+        """
+        # Version 2 setting: sound less smooth
+        # 2. Build the Studio Compressor Board + Noise Gate
+        board = Pedalboard([
+            # 1. NOISE GATE: Mutes the hiss completely during pauses in speech.
+            # threshold_db: Adjust this based on your room. -35dB is a good start. 
+            # release_ms: 250ms lets the ends of words fade out naturally before muting.
             NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
-            # GENTLER COMPRESSION: 
-            # Raising threshold to -14.0 means it leaves normal speech entirely alone, 
-            # only smoothing out the harsh peaks.
+            
+            # 2. COMPRESSOR: Catches the loud peaks
+            Compressor(threshold_db=-24.0, ratio=4.0, attack_ms=1.0, release_ms=100.0),
+            
+            # 3. LIMITER: Acts as an absolute brick wall at -1.0 dB to guarantee safety
+            Limiter(threshold_db=-1.0)
+        ])
+        """
+        """
+        # Version 3 setting: smoother than before, but I want it more smooth like the original
+        board = Pedalboard([
+                NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+                
+                # SMOOTHER COMPRESSION:
+                # threshold_db: -18.0 (Only compresses the loudest peaks, lets the rest breathe)
+                # ratio: 2.5 (A gentler squeeze. For every 2.5dB over, 1dB passes)
+                # attack_ms: 5.0 (Lets the very tip of the consonant pass before squeezing, preserving clarity)
+                # release_ms: 250.0 (Releases the squeeze slowly, making the volume changes invisible/smooth)
+                Compressor(threshold_db=-18.0, ratio=2.5, attack_ms=5.0, release_ms=250.0),
+                
+                Limiter(threshold_db=-1.0)
+            ])
+        """
+        """
+        # Version 4 setting: smoother it!!
+        board = Pedalboard([
+                NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+                # GENTLER COMPRESSION: 
+                # Raising threshold to -14.0 means it leaves normal speech entirely alone, 
+                # only smoothing out the harsh peaks.
+                Compressor(threshold_db=-14.0, ratio=2.0, attack_ms=10.0, release_ms=300.0),
+                
+                Limiter(threshold_db=-1.0)
+            ])
+        """
+        # Version 5 setting: Ultra-smooth with high-frequency friction taming
+        board = Pedalboard([
+            NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
+            
+            # GENTLER COMPRESSION:
             Compressor(threshold_db=-14.0, ratio=2.0, attack_ms=10.0, release_ms=300.0),
             
+            # --- NEW: TAMER FOR THE "FRICTION" ---
+            # This gently rolls off 2 decibels of high frequencies above 6,000 Hz. 
+            # It instantly kills that sharp, raspy consonant "s" and "t" friction 
+            # while leaving the core voice completely natural.
+            HighShelfFilter(cutoff_frequency_hz=6000.0, gain_db=-2.0),
+            
             Limiter(threshold_db=-1.0)
         ])
-    """
-    # Version 5 setting: Ultra-smooth with high-frequency friction taming
-    board = Pedalboard([
-        NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
         
-        # GENTLER COMPRESSION:
-        Compressor(threshold_db=-14.0, ratio=2.0, attack_ms=10.0, release_ms=300.0),
-        
-        # --- NEW: TAMER FOR THE "FRICTION" ---
-        # This gently rolls off 2 decibels of high frequencies above 6,000 Hz. 
-        # It instantly kills that sharp, raspy consonant "s" and "t" friction 
-        # while leaving the core voice completely natural.
-        HighShelfFilter(cutoff_frequency_hz=6000.0, gain_db=-2.0),
-        
-        Limiter(threshold_db=-1.0)
-    ])
-    
-    # 3. Run the audio through the compressor
-    # If the audio is stereo, pedalboard expects (channels, samples)
-    is_stereo = (len(clean_data.shape) == 2)
-    if is_stereo:
-        clean_data = clean_data.T
-        
-    compressed_data = board(clean_data, sample_rate)
-    
-    if is_stereo:
-        compressed_data = compressed_data.T
-        
-    # 4. Now calculate RMS and multiply safely!
-    current_rms = np.sqrt(np.mean(compressed_data**2))
-    if current_rms == 0:
-        raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
-        
-    baseline_rms = 10 ** (baseline_dbfs / 20.0)
-    baseline_data = compressed_data * (baseline_rms / current_rms)
-    
-    print(f"Starting increment generation from {baseline_dbfs} dBFS to {max_dbfs} dBFS...\n")
-    
-    #--- NEW: Create a transparent Mastering Limiter to replace np.tanh ---
-    ## Version 1 setting (paired with ver3 of compressor setting)
-    #mastering_limiter = Pedalboard([Limiter(threshold_db=-0.2)])
-    
-    # Give the mastering limiter a tiny bit more headroom (-0.5 instead of -0.2)
-    # This prevents it from clamping down too harshly on the final steps.
-    # Version 2 setting (paired with ver4 of compressor setting)
-    mastering_limiter = Pedalboard([Limiter(threshold_db=-0.5)])    
-    
-    # 5. THE LOOP: Generate each increment step-by-step
-    for target_db in range(baseline_dbfs, max_dbfs + 1):
-        
-        # Calculate multiplier relative to the baseline
-        db_difference = target_db - baseline_dbfs
-        step_multiplier = 10 ** (db_difference / 20.0)
-        
-        # Apply volume increase for this specific loop iteration
-        step_data = baseline_data * step_multiplier
-        
-        # 6. Conditional Check: Will THIS specific volume level cause static?
-        highest_peak = np.max(np.abs(step_data))
-        
-        # 6. FIX THE RASP: Use the Limiter instead of np.tanh
-        if highest_peak > 1.0:
-            print(f"[{target_db} dBFS] Peak at {highest_peak:.2f}. Applying transparent Limiter.")
-        
-            # Format shape for Pedalboard
-            if is_stereo:
-                step_data_pb = step_data.T
-            else:
-                step_data_pb = step_data
-        
-            # The Limiter catches the peaks safely without adding raspy saturation
-            final_data_pb = mastering_limiter(step_data_pb, sample_rate)
-        
-            # Revert shape
-            if is_stereo:
-                final_data = final_data_pb.T
-            else:
-                final_data = final_data_pb
-        else:
-            print(f"[{target_db} dBFS] Safe: Peak at {highest_peak:.2f}. Passing cleanly.")
-            final_data = step_data
+        # 3. Run the audio through the compressor
+        # If the audio is stereo, pedalboard expects (channels, samples)
+        is_stereo = (len(clean_data.shape) == 2)
+        if is_stereo:
+            clean_data = clean_data.T
             
-        # 7. Convert back to original format and Export
-        if original_dtype == np.int16:
-            # Scale back to 16-bit limits using the safer 32767.0 multiplier
-            safe_clipped = np.clip(final_data * 32767.0, -32768.0, 32767.0)
-            final_output = safe_clipped.astype(np.int16)
-        else:
-            # For 32-bit float, no multiplier is needed, just clip at 1.0
-            safe_clipped = np.clip(final_data, -1.0, 1.0)
-            final_output = safe_clipped.astype(original_dtype)
-            
-        # Export the file
-        output_name = f"new66_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
-        wavfile.write(results_data_path / Path(output_name), sample_rate, final_output)
+        compressed_data = board(clean_data, sample_rate)
         
+        if is_stereo:
+            compressed_data = compressed_data.T
+            
+        # 4. Now calculate RMS and multiply safely!
+        current_rms = np.sqrt(np.mean(compressed_data**2))
+        if current_rms == 0:
+            raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
+            
+        baseline_rms = 10 ** (baseline_dbfs / 20.0)
+        baseline_data = compressed_data * (baseline_rms / current_rms)
+        
+        print(f"Starting increment generation from {baseline_dbfs} dBFS to {max_dbfs} dBFS...\n")
+        
+        #--- NEW: Create a transparent Mastering Limiter to replace np.tanh ---
+        ## Version 1 setting (paired with ver3 of compressor setting)
+        #mastering_limiter = Pedalboard([Limiter(threshold_db=-0.2)])
+        
+        # Give the mastering limiter a tiny bit more headroom (-0.5 instead of -0.2)
+        # This prevents it from clamping down too harshly on the final steps.
+        # Version 2 setting (paired with ver4 of compressor setting)
+        mastering_limiter = Pedalboard([Limiter(threshold_db=-0.5)])    
+        
+        # 5. THE LOOP: Generate each increment step-by-step
+        for target_db in range(baseline_dbfs, max_dbfs + 1):
+            
+            # Calculate multiplier relative to the baseline
+            db_difference = target_db - baseline_dbfs
+            step_multiplier = 10 ** (db_difference / 20.0)
+            
+            # Apply volume increase for this specific loop iteration
+            step_data = baseline_data * step_multiplier
+            
+            # 6. Conditional Check: Will THIS specific volume level cause static?
+            highest_peak = np.max(np.abs(step_data))
+            
+            # 6. FIX THE RASP: Use the Limiter instead of np.tanh
+            if highest_peak > 1.0:
+                print(f"[{target_db} dBFS] Peak at {highest_peak:.2f}. Applying transparent Limiter.")
+            
+                # Format shape for Pedalboard
+                if is_stereo:
+                    step_data_pb = step_data.T
+                else:
+                    step_data_pb = step_data
+            
+                # The Limiter catches the peaks safely without adding raspy saturation
+                final_data_pb = mastering_limiter(step_data_pb, sample_rate)
+            
+                # Revert shape
+                if is_stereo:
+                    final_data = final_data_pb.T
+                else:
+                    final_data = final_data_pb
+            else:
+                print(f"[{target_db} dBFS] Safe: Peak at {highest_peak:.2f}. Passing cleanly.")
+                final_data = step_data
+                
+            # 7. Convert back to original format and Export
+            if original_dtype == np.int16:
+                # Scale back to 16-bit limits using the safer 32767.0 multiplier
+                safe_clipped = np.clip(final_data * 32767.0, -32768.0, 32767.0)
+                final_output = safe_clipped.astype(np.int16)
+            else:
+                # For 32-bit float, no multiplier is needed, just clip at 1.0
+                safe_clipped = np.clip(final_data, -1.0, 1.0)
+                final_output = safe_clipped.astype(original_dtype)
+                
+            # Export the file
+            output_name = f"new66_{target_wavfileSTR[0:-4]}_{target_db}dBFS_pedalboard.wav"  #target_wavfileSTR[0:-4]= exclude the .wav string in btw
+            wavfile.write(LPP_tapes_path / Path(output_name), sample_rate, final_output)
+            
     print("\n--- Processing Complete ---")
     
