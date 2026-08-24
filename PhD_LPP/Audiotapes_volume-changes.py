@@ -300,17 +300,6 @@ if __name__ == "__main__":
                 Limiter(threshold_db=-1.0)
             ])
         """
-        # 3. Run the audio through the compressor
-        # If the audio is stereo, pedalboard expects (channels, samples)
-        # **3-1. THE SHAPE FIX: Flip stereo data BEFORE it enters any processing tools
-        is_stereo = (len(work_data.shape) == 2)
-        if is_stereo:
-            work_data = work_data.T
-            
-        # 3-2. FIX THE COVERED SOUND
-        clean_data = nr.reduce_noise(y=work_data, sr=sample_rate, prop_decrease=0.4, stationary=True)        
-        
-        # 3-3. Build the Studio Compressor Board
         # Version 5 setting: Ultra-smooth with high-frequency friction taming
         board = Pedalboard([
             NoiseGate(threshold_db=-35.0, ratio=10, release_ms=250),
@@ -326,15 +315,19 @@ if __name__ == "__main__":
             
             Limiter(threshold_db=-1.0)
         ])
-        # 3-4. Run the audio through the compressor
-        # (It is already flipped correctly, so we can feed it directly in!)
+        
+        # 3. Run the audio through the compressor
+        # If the audio is stereo, pedalboard expects (channels, samples)
+        is_stereo = (len(clean_data.shape) == 2)
+        if is_stereo:
+            clean_data = clean_data.T
+            
         compressed_data = board(clean_data, sample_rate)
-
-        # 3-5. Flip it back to normal (samples, channels) for SciPy's RMS math and export
+        
         if is_stereo:
             compressed_data = compressed_data.T
             
-        # 3-6. Now calculate RMS and multiply safely!
+        # Now calculate RMS and multiply safely!
         current_rms = np.sqrt(np.mean(compressed_data**2))
         if current_rms == 0:
             raise ValueError(f"Error: {target_wavfileSTR[:-4]} file is completely silent.")
