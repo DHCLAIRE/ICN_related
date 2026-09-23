@@ -218,7 +218,7 @@ if __name__ == "__main__":
     
     # Start the loop if audiotapes processing in batch
     for tape_numSTR in range(1, 10):
-        target_wavfileSTR =  f"LPP_CHT_tape_{tape_numSTR}.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
+        target_wavfileSTR =  f"LPP_CHT_tape_{tape_numSTR}_mono.wav" #f"LPP_CHT_tape_{tape_numSTR}.wav" #"LPP_FRN_tape_1.wav"
         audio_wavfile = results_data_path / Path(target_wavfileSTR)
         
         # 1. Load the stereo wav file (Shape: [samples, 2])
