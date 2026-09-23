@@ -199,7 +199,7 @@ if __name__ == "__main__":
     start_times = np.arange(0, 1.000, step)
     n_permutations = 1000        # for the (A) consistency null
     n_mantel = 10000             # for the (B) IS-RSA Mantel
-    alpha_threshold = 0.01
+    alpha_threshold = 0.05
 
     plot_times = []
     median_r_natives, median_r_esls, thresh_perm = [], [], []
