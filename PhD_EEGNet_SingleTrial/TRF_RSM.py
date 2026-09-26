@@ -974,13 +974,16 @@ if __name__ == "__main__":
                 # Append the 1D spatial map, matching the Natives exactly
                 all_subjects_spatial_data.append(zscored_spatial_map) # Append the z-scored version
                 
-        
+        #print(len(all_subjects_spatial_data), len(all_subjects_spatial_data[0]), len(all_subjects_spatial_data[1]))
         # ==========================================
         # 3. FIRST-ORDER (SPATIAL) RSM COMPUTATION & PERMUTATION
         # ==========================================
         # Shape is perfectly (Total Subjects, 64 Sensors)
         group_data = np.array(all_subjects_spatial_data)
-        num_total_subj = group_data.shape[0]
+        #print(group_data.shape)
+        num_total_subj = group_data.shape[0] # 59
+        #num_total_channels = group_data.shape[1] # 64
+        #print(num_total_subj)
     
         # A. Calculate the REAL spatial RSM
         spatial_rsm_real = np.corrcoef(group_data)
@@ -996,6 +999,7 @@ if __name__ == "__main__":
         
         for i in range(n_permutations):
             shuffled_data = np.zeros_like(group_data)
+            #print(type(shuffled_data), len(shuffled_data))
             for s in range(num_total_subj):
                 shuffled_data[s, :] = np.random.permutation(group_data[s, :])
             null_rsms[i, :, :] = np.corrcoef(shuffled_data)
@@ -1016,7 +1020,7 @@ if __name__ == "__main__":
         # 3. Permutation Threshold (95th percentile of the absolute fake correlations)
         idx_all = np.triu_indices(num_total_subj, k=1)
         fake_corrs_off_diag = null_rsms[:, idx_all[0], idx_all[1]]
-        threshold_95 = np.nanpercentile(np.abs(fake_corrs_off_diag), 99)
+        threshold_95 = np.nanpercentile(np.abs(fake_corrs_off_diag), 95)
         perm_95th_thresholds.append(threshold_95)
     
         # 4. Save the timepoint (using the start of the window, in ms)
@@ -1052,8 +1056,8 @@ if __name__ == "__main__":
         # ==========================================
         plt.figure(figsize=(14, 12))
         
-        alpha_threshold = 0.01 #0.05
-        mask = (p_values > alpha_threshold) | (np.eye(num_total_subj, dtype=bool))
+        alpha_threshold = 0.05 #0.05
+        mask = (p_values > alpha_threshold) | (np.eye(num_total_subj, dtype=bool))  #?? What is this line of command for?
         
         sns.heatmap(spatial_rsm_real, 
                         cmap='RdBu_r', 
@@ -1072,7 +1076,7 @@ if __name__ == "__main__":
         plt.xlabel("Subject ID")
         plt.ylabel("Subject ID")
         
-        filename = f'Thresholded_FirstOrder_Spatial_{predictorSTR}-α={alpha_threshold}Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
+        filename = f'n_Thresholded_FirstOrder_Spatial_{predictorSTR}-α={alpha_threshold}Zed_RSM_{tmin*1000:.0f}-{tmax*1000:.0f}ms.png'
         plt.tight_layout() 
         plt.savefig(DST_ESLs / filename)
         plt.close()
@@ -1105,7 +1109,7 @@ if __name__ == "__main__":
     plt.legend(fontsize=11)
     
     plt.tight_layout()
-    plt.savefig(DST_ESLs / f'Median_RSM_TimeSeries_{predictorSTR}-α={alpha_threshold}Zed_10msINV.png')
+    plt.savefig(DST_ESLs / f'n_Median_RSM_TimeSeries_{predictorSTR}-α={alpha_threshold}Zed_10msINV.png')
     plt.close()
     
     print("--- Pipeline Complete! ---")
